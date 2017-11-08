@@ -1,0 +1,23 @@
+[
+	{
+		"userId": 1,
+		"emailId": "pkumar@nisum.com",
+		"name": "kumar",
+		"loginDate":"9/15/2017",
+		"roleId": 2
+	},
+	{
+		"userId": 2,
+		"emailId": "ykumar@nisum.com",
+		"name": "Prasanth",
+		"loginDate": "9/10/2017",
+		"roleId": 3
+	},
+	{
+		"userId": 3,
+		"emailId": "ykumar@nisum.com",
+		"name": "Prasanthkumae",
+		"loginDate": "9/9/2017",
+		"roleId": 3
+	}
+]

@@ -1,0 +1,51 @@
+<div class="col-md-2 disable-mobile right-sidebar" ng-init="mc.init()">
+	<ul>
+		<li class="widget widget-btn">
+			<button type="button" class="action ask-question" ng-click="mc.redirect();"
+				ng-class="{'disabled': urlChanged==='/addquestion'}">
+				<i class="fa fa-plus"></i> ASK A QUESTION
+			</button>
+		</li>
+		<li class="widget widget-statistic">
+			<ul>
+				<li class="questions-count">
+					<p>Questions
+					<p>
+						<span>{{questionCount}}</span>
+				</li>
+				<li class="members-count">
+					<p>Members
+					<p>
+						<span>{{userCount}}</span>
+				</li>
+			</ul>
+		</li>
+		<!-- END widget-statistic -->
+
+	</ul>
+</div>
+<div class="modal fade modal-submit-questions" id="addquestions"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header asks-question">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">
+					<i class="fa fa-times"></i>
+				</button>
+				<ul class="tabs-title">
+					<li id="title-tab-question"><h4 class="modal-title active"
+							id="tab-question">Ask a Question</h4>
+						</a></li>
+					<!-- 	<li id="title-tab-poll"><h4 class="modal-title" id="tab-poll">Create
+							a Poll</h4></li> -->
+				</ul>
+			</div>
+			<div class="modal-body">
+				<div class="<td>{{user.userId}}</td>"></div>
+
+
+			</div>
+		</div>
+	</div>
+</div>

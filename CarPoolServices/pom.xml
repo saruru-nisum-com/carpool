@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.nisum</groupId>
+	<artifactId>carpool-service-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>carpool-service-parent</name>
+	<url>http://maven.apache.org</url>
+
+	<modules>
+		<module>carpool-data-service</module>
+		<module>carpool-rest-service</module>
+	</modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<spring.version>4.1.6.RELEASE</spring.version>
+		<testng.version>6.8.13</testng.version>
+		<junit.version>4.11</junit.version>
+		<powermock.version>1.4.9</powermock.version>
+		<slf4j.version>1.7.7</slf4j.version>
+		<powermock.version>1.4.9</powermock.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
