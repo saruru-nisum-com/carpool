@@ -1,0 +1,17 @@
+[
+	{
+		"roleId": 1,
+		"role": "role1",
+		"createdDate": "9/25/2017"
+	},
+	{
+		"roleId": 2,
+		"role": "role2",
+		"createdDate": "9/15/2016"
+	},
+	{
+		"roleId": 3,
+		"role": "role3",
+		"createdDate": "8/15/2017"
+	}
+]
