@@ -1,0 +1,5 @@
+com/nisum/carpool/data/repository/PostRideRepository.class
+com/nisum/carpool/data/util/PersistenceConfig.class
+com/nisum/carpool/data/dao/impl/PostRideDaoImpl.class
+com/nisum/carpool/data/domain/PostRideDomain.class
+com/nisum/carpool/data/dao/api/PostRideDao.class
