@@ -1,6 +1,7 @@
 package com.nisum.carpool.util;
 
 public class Constants {
+<<<<<<< HEAD
 
 	public static final String MSG_RECORD_ADD = "Record Added Successfully !!";
 	public static final String MSG_RECORD_UPDATE = "Record Updated Successfully !!";
@@ -54,4 +55,8 @@ public class Constants {
 		public static final String YES="Y";
 		
 
+=======
+	public static final String MSG_RECORD_UPDATE = "Record Updated Successfully !!";
+	public static final String CATEGORY_EXISTS = "Category Already Exists !!";
+>>>>>>> 511863cd80fe851cc151ceebc4dc865525bc4cfa
 }

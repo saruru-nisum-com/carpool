@@ -4,7 +4,7 @@
 
 	<groupId>com.nisum</groupId>
 	<artifactId>carpool-service-parent</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
 
 	<name>carpool-service-parent</name>
@@ -23,19 +23,13 @@
 	</modules>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<spring.version>4.1.6.RELEASE</spring.version>
-		<testng.version>6.8.13</testng.version>
-		<junit.version>4.11</junit.version>
-		<powermock.version>1.4.9</powermock.version>
-		<slf4j.version>1.7.7</slf4j.version>
-		<powermock.version>1.4.9</powermock.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
+<<<<<<< HEAD
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
 			<version>4.0</version>
@@ -77,20 +71,73 @@
 				<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+=======
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<version>1.5.7.RELEASE</version>
+>>>>>>> 511863cd80fe851cc151ceebc4dc865525bc4cfa
 			<scope>test</scope>
 		</dependency>
+		<!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+			<version>1.0.0.RELEASE</version>
+		</dependency> -->
 	</dependencies>
 	<build>
 
+<<<<<<< HEAD
+=======
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<inherited>false</inherited>
+					<configuration>
+						<descriptorRefs>
+							<descriptorRef>project</descriptorRef>
+						</descriptorRefs>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+>>>>>>> 511863cd80fe851cc151ceebc4dc865525bc4cfa
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
+<<<<<<< HEAD
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>
+=======
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+
+>>>>>>> 511863cd80fe851cc151ceebc4dc865525bc4cfa
 	</build>
 </project>

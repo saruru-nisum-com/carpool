@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/util/KeyConstants.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/rest/api/UserRestService.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/exception/BlogServiceException.java
@@ -33,3 +34,14 @@
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/exception/UserServiceException.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/util/Constants.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/dto/UserRoleDTO.java
+=======
+/Users/nisum/Documents/GitHub/carpool-app/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/exception/PostRideServiceException.java
+/Users/nisum/Documents/GitHub/carpool-app/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/rest/api/PostRideRestService.java
+/Users/nisum/Documents/GitHub/carpool-app/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/dto/PostRideDto.java
+/Users/nisum/Documents/GitHub/carpool-app/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/api/PostRideService.java
+/Users/nisum/Documents/GitHub/carpool-app/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/dto/ServiceStatusDto.java
+/Users/nisum/Documents/GitHub/carpool-app/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/dto/Errors.java
+/Users/nisum/Documents/GitHub/carpool-app/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/util/PostRideServiceUtil.java
+/Users/nisum/Documents/GitHub/carpool-app/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/impl/PostRideServiceImpl.java
+/Users/nisum/Documents/GitHub/carpool-app/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/util/Constants.java
+>>>>>>> 511863cd80fe851cc151ceebc4dc865525bc4cfa

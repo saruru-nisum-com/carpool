@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 com/nisum/carpool/data/dao/impl/UserDAOImpl.class
 com/nisum/carpool/data/dao/impl/UserRoleDAOImpl.class
 com/nisum/carpool/data/domain/UserRole.class
@@ -6,3 +7,10 @@ com/nisum/carpool/data/dao/api/UserRoleDAO.class
 com/nisum/carpool/data/domain/User.class
 com/nisum/carpool/data/dao/api/UserDAO.class
 com/nisum/carpool/data/repository/UserRepository.class
+=======
+com/nisum/carpool/data/repository/PostRideRepository.class
+com/nisum/carpool/data/util/PersistenceConfig.class
+com/nisum/carpool/data/dao/impl/PostRideDaoImpl.class
+com/nisum/carpool/data/domain/PostRideDomain.class
+com/nisum/carpool/data/dao/api/PostRideDao.class
+>>>>>>> 511863cd80fe851cc151ceebc4dc865525bc4cfa
