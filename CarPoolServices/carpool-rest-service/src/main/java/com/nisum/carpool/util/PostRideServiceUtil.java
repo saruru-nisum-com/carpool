@@ -17,13 +17,18 @@ public class PostRideServiceUtil {
 		if (CollectionUtils.isNotEmpty(postRideList)) {
 			postRideList.forEach(postRide->{
 				PostRideDto postRideDto = new PostRideDto();
-				postRideDto.setPostRideId(postRide.getPostRideId());
+				postRideDto.setId(postRide.getId());
+				postRideDto.setParentid(postRide.getParentid());
+				postRideDto.setUserid(postRide.getUserid());
 				postRideDto.setVehicleType(postRide.getVehicleType());
-				postRideDto.setTotalNoOfSeats(postRide.getTotalNoOfSeats());
+				postRideDto.setTotalNoOfSeats(postRide.getNoofseats());
 				postRideDto.setFromDate(postRide.getFromDate());
 				postRideDto.setToDate(postRide.getToDate());
 				postRideDto.setStartTime(postRide.getStartTime());
-				postRideDto.setEndTime(postRide.getEndTime());
+				postRideDto.setToTime(postRide.getToTime());
+				postRideDto.setStatus(postRide.getStatus());
+				postRideDto.setCreateddate(postRide.getCreateddate());
+				postRideDto.setModifieddate(postRide.getModifieddate());
 				postRideDtos.add(postRideDto);
 			});
 		}
@@ -35,13 +40,18 @@ public class PostRideServiceUtil {
 
 		PostRideDto postRideDto = new PostRideDto();
 		if (ObjectUtils.anyNotNull(postRideDomain)) {
-			postRideDto.setPostRideId(postRideDomain.getPostRideId());
+			postRideDto.setId(postRideDomain.getId());
+			postRideDto.setParentid(postRideDomain.getParentid());
+			postRideDto.setUserid(postRideDomain.getUserid());
 			postRideDto.setVehicleType(postRideDomain.getVehicleType());
-			postRideDto.setTotalNoOfSeats(postRideDomain.getTotalNoOfSeats());
+			postRideDto.setTotalNoOfSeats(postRideDomain.getNoofseats());
 			postRideDto.setFromDate(postRideDomain.getFromDate());
 			postRideDto.setToDate(postRideDomain.getToDate());
 			postRideDto.setStartTime(postRideDomain.getStartTime());
-			postRideDto.setEndTime(postRideDomain.getEndTime());
+			postRideDto.setToTime(postRideDomain.getToTime());
+			postRideDto.setStatus(postRideDomain.getStatus());
+			postRideDto.setCreateddate(postRideDomain.getCreateddate());
+			postRideDto.setModifieddate(postRideDomain.getModifieddate());
 		}
 		return postRideDto;
 	}
@@ -49,13 +59,18 @@ public class PostRideServiceUtil {
 	public static PostRideDomain convertDtoTODao(PostRideDto postRideDto) {
 
 		PostRideDomain postRideDomain = new PostRideDomain();
-		postRideDomain.setPostRideId(postRideDto.getPostRideId());
+		postRideDomain.setId(postRideDto.getId());
+		postRideDomain.setParentid(postRideDto.getParentid());
+		postRideDomain.setUserid(postRideDto.getUserid());
 		postRideDomain.setVehicleType(postRideDto.getVehicleType());
-		postRideDomain.setTotalNoOfSeats(postRideDto.getTotalNoOfSeats());
+		postRideDomain.setNoofseats(postRideDto.getTotalNoOfSeats());
 		postRideDomain.setFromDate(postRideDto.getFromDate());
 		postRideDomain.setToDate(postRideDto.getToDate());
 		postRideDomain.setStartTime(postRideDto.getStartTime());
-		postRideDomain.setEndTime(postRideDto.getEndTime());
+		postRideDomain.setToTime(postRideDto.getToTime());
+		postRideDomain.setStatus(postRideDto.getStatus());
+		postRideDomain.setCreateddate(postRideDto.getCreateddate());
+		postRideDomain.setModifieddate(postRideDto.getModifieddate());
 		return postRideDomain;
 
 	}
