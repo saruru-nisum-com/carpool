@@ -40,7 +40,7 @@ public class PostRideRestService {
 		}catch (Exception e) {
 			Errors error = new Errors();
 			error.setErrorCode("Errors-UserRole");
-			error.setErrorMessage(Constants.CATEGORY_EXISTS);
+			//error.setErrorMessage(Constants.CATEGORY_EXISTS);
 			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
 		return responseEntity;
