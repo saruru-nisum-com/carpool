@@ -147,6 +147,7 @@ public class UserServiceUtil {
 	 */
 	public static User convertDtoObjectTODao(UserDTO userdto) {
 		User user = new User();
+		
 		user.setUserId(userdto.getUserId());
 		user.setUserName(userdto.getUserName());
 		user.setEmailId(userdto.getEmailId());

@@ -14,7 +14,7 @@ CREATE TABLE User (
   emailid text  ,
   username text ,
   loginDate timestamp ,
-  activeStatus text ,
+  activeStatus String ,
   roleId int ,
  notifications text,
  profilename text,
