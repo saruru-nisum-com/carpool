@@ -7,7 +7,6 @@
     <artifactId>carpool-service-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>com.nisum</groupId>
   <artifactId>carpool-data-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>carpool-data-service</name>

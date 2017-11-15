@@ -1,0 +1,8 @@
+com/nisum/carpool/data/dao/impl/UserDAOImpl.class
+com/nisum/carpool/data/dao/impl/UserRoleDAOImpl.class
+com/nisum/carpool/data/domain/UserRole.class
+com/nisum/carpool/data/repository/UserRoleRepository.class
+com/nisum/carpool/data/dao/api/UserRoleDAO.class
+com/nisum/carpool/data/domain/User.class
+com/nisum/carpool/data/dao/api/UserDAO.class
+com/nisum/carpool/data/repository/UserRepository.class
