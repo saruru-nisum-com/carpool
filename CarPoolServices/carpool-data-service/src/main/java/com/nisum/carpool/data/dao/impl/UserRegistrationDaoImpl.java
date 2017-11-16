@@ -16,7 +16,6 @@ public class UserRegistrationDaoImpl implements UserRegistrationDAO{
 	UserRegistrationRepository repository;
 	
 	@Override
-	
 	public UserRegistration findUserRegistrationByUserId(String userId,int isRider) {
 		logger.info("UserRegistrationDaoImpl :: findUserRegistrationByUserId :: Finding user by userId");
 		return repository.findByUserIdAndIsRider(userId,isRider);
