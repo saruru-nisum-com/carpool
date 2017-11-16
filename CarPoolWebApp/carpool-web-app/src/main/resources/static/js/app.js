@@ -59,30 +59,30 @@ var app = angular
 		.controller(
 				'mainController',
 				function($scope, $rootScope, localStorageService, $state,
-						$http, loginLogoutService, questionService) {
+						$http, loginLogoutService) {
 					var vm = this;
-					vm.redirect = function() {
-						$state.go('addquestion');
-					}
+//					vm.redirect = function() {
+//						$state.go('addquestion');
+//					}
 					vm.getProfile = function() {
 
 						vm.profile = localStorageService.get('profile');
 					}
-					vm.init = function() {
-						questionService
-								.getQuestionsCount()
-								.then(
-										function(response) {
-											if (response.errorCode === 500) {
-												$scope.message = response.errorMessage
-											} else {
-												$rootScope.questionCount = response.questionCount;
-												$rootScope.userCount = response.userCount;
-											}
-										}, function(response) {
-											console.log(response);
-										});
-					}
+//					vm.init = function() {
+//						questionService
+//								.getQuestionsCount()
+//								.then(
+//										function(response) {
+//											if (response.errorCode === 500) {
+//												$scope.message = response.errorMessage
+//											} else {
+//												$rootScope.questionCount = response.questionCount;
+//												$rootScope.userCount = response.userCount;
+//											}
+//										}, function(response) {
+//											console.log(response);
+//										});
+//					}
 					vm.logout = function() {
 
 						loginLogoutService.logout().then(function(response) {
