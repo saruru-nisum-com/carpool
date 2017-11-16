@@ -9,8 +9,10 @@ import java.util.Set;
 import org.apache.commons.collections4.CollectionUtils;
 
 import com.nisum.carpool.service.dto.UserDTO;
+import com.nisum.carpool.service.dto.UserRegistrationDto;
 import com.nisum.carpool.service.dto.UserRoleDTO;
 import com.nisum.carpool.data.domain.User;
+import com.nisum.carpool.data.domain.UserRegistration;
 import com.nisum.carpool.data.domain.UserRole;
 
 public class UserServiceUtil {
@@ -201,4 +203,40 @@ public class UserServiceUtil {
 		return user;
 	}
 
+	public static UserRegistrationDto convertDaoObjectToDto(UserRegistration reg) {
+		UserRegistrationDto dto=new UserRegistrationDto();
+		dto.setRegistrationId(reg.getRegistrationId());
+		dto.setCreatedDate(reg.getCreatedDate());
+		dto.setEmailNotification(reg.isEmailNotification());
+		dto.setIsRider(reg.getIsRider());
+		dto.setLatitude(reg.getLatitude());
+		dto.setLongitude(reg.getLongitude());
+		dto.setLocation(reg.getLocation());
+		dto.setMobile(reg.getMobile());
+		dto.setModifiedDate(reg.getModifiedDate());
+		dto.setNearby(reg.getNearby());
+		dto.setUserId(reg.getUserId());
+		dto.setVehicleType(reg.getVehicleType());
+		return dto;
+	}
+	
+	
+	public static UserRegistration convertDaoObjectToDto(UserRegistrationDto dto) {
+		UserRegistration userReg=new UserRegistration();
+		userReg.setRegistrationId(dto.getRegistrationId());
+		userReg.setCreatedDate(dto.getCreatedDate());
+		userReg.setEmailNotification(dto.isEmailNotification());
+		userReg.setIsRider(dto.getIsRider());
+		userReg.setLatitude(dto.getLatitude());
+		userReg.setLongitude(dto.getLongitude());
+		userReg.setLocation(dto.getLocation());
+		userReg.setMobile(dto.getMobile());
+		userReg.setModifiedDate(dto.getModifiedDate());
+		userReg.setNearby(dto.getNearby());
+		userReg.setUserId(dto.getUserId());
+		userReg.setVehicleType(dto.getVehicleType());
+		return userReg;
+	}
+	
+	
 }
