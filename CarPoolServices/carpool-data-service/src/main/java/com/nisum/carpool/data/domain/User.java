@@ -22,7 +22,7 @@ public class User implements Serializable {
 	private int roleId;
 	private Timestamp createDate;
 	private String image;
-	private byte[] imageIcon;
+	//private byte[] imageIcon;
 	private String profileName;
 	private String notifications;
 	
@@ -68,13 +68,13 @@ public class User implements Serializable {
 		this.notifications = notifications;
 	}
 
-	public byte[] getImageIcon() {
-		return imageIcon;
-	}
-
-	public void setImageIcon(byte[] imageIcon) {
-		this.imageIcon = imageIcon;
-	}
+//	public byte[] getImageIcon() {
+//		return imageIcon;
+//	}
+//
+//	public void setImageIcon(byte[] imageIcon) {
+//		this.imageIcon = imageIcon;
+//	}
 
 	
 
@@ -129,12 +129,12 @@ public class User implements Serializable {
 
 	
 	
-//	@Override
-//	public String toString() {
-//		return "User [userId=" + userId + ", emailId=" + emailId + ", userName=" + userName + ", loginDate=" + loginDate
-//				+ ", activeStatus=" + activeStatus + ", createDate=" + createDate + ", image=" + image + ", role="
-//				+ role + "]";
-//	}
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", emailId=" + emailId + ", userName=" + userName + ", loginDate=" + loginDate
+				+ ", activeStatus=" + activeStatus + ", createDate=" + createDate + ", image=" + image + ", roleId="
+				+ roleId + "]";
+	}
 
 	
 

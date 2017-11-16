@@ -24,8 +24,9 @@ public class UserDAOImpl implements UserDAO{
 	
 	@Override
 	public void saveUser(User user) {
-		System.out.println("user object::"+user.getEmailId()+"user Id="+user.getUserId()+""+user.getUserName());
 		
+		System.out.println("user email::"+user.getEmailId()+"user Id="+user.getUserId()+""+user.getUserName());
+		System.out.println("user obj"+user);
 		userRepository.save(user);
 	}
 
