@@ -1,5 +1,7 @@
 package com.nisum.carpool.data.dao.impl;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +25,20 @@ public class PostRideDaoImpl implements PostRideDao {
 		}
 		 return postRideDomain;
 	}
+	@Override
+	public String addPostRide(List<PostRideDomain> postRideDomain) {
+		
+			
+			for(PostRideDomain cp:postRideDomain) {
+				postRideRepository.save(cp);
+				
+			}
+		
+			return" saved suceesfully";
+		
+	}
+	
+	
+	
 
 }
