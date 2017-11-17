@@ -2,7 +2,7 @@ package com.nisum.carpool.service.dto;
 
 import java.sql.Timestamp;
 
-public class PostRideDto {
+public class CarpooldetailsDto {
 	private Integer id;
 	private Integer parentid;
 	private String userid;
@@ -113,7 +113,7 @@ public class PostRideDto {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PostRideDto other = (PostRideDto) obj;
+		CarpooldetailsDto other = (CarpooldetailsDto) obj;
 		if (createddate == null) {
 			if (other.createddate != null)
 				return false;
@@ -178,7 +178,7 @@ public class PostRideDto {
 	}
 	@Override
 	public String toString() {
-		return "PostRideDto [id=" + id + ", parentid=" + parentid + ", userid=" + userid + ", vehicleType="
+		return "CarpooldetailsDto [id=" + id + ", parentid=" + parentid + ", userid=" + userid + ", vehicleType="
 				+ vehicleType + ", totalNoOfSeats=" + totalNoOfSeats + ", fromDate=" + fromDate + ", toDate=" + toDate
 				+ ", startTime=" + startTime + ", toTime=" + toTime + ", status=" + status + ", createddate="
 				+ createddate + ", modifieddate=" + modifieddate + "]";

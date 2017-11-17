@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 //import java.util.Set;
 
-
+import org.springframework.data.cassandra.mapping.Indexed;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 
@@ -15,6 +15,7 @@ public class User implements Serializable {
 	
 	@PrimaryKey
 	private int userId;
+	@Indexed
 	private String emailId;
 	private String userName;
 	private Timestamp loginDate;

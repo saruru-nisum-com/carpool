@@ -8,8 +8,11 @@ import com.nisum.carpool.data.domain.UserRegistration;
 import com.nisum.carpool.service.api.UserRegistrationService;
 import com.nisum.carpool.service.dto.UserRegistrationDto;
 import com.nisum.carpool.util.UserServiceUtil;
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> f35401ad98b40b36782040a9c1a639f25d07d4b3
 @Service
 public class UserRegistrationServiceImpl implements UserRegistrationService{
 
