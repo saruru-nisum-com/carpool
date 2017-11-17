@@ -1,6 +1,8 @@
 package com.nisum.carpool.service.impl;
 
 
+import java.sql.Timestamp;
+
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,8 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	public ServiceStatusDto updateCarpooldetails(CarpooldetailsDto carpooldetailsDto) {
 		// TODO Auto-generated method stub
 		logger.info("CarpooldetailsServiceImpl : updateCarpooldetails");
+		Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
+		carpooldetailsDto.setModifieddate(modifiedDate);
 		Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
 		Carpooldetails updateCarpooldetails = carpooldetailsDAO.updateCarpooldetails(carpooldetails);
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
