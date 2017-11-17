@@ -7,7 +7,7 @@ import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 
 @Table("cp_carpooldetails")
-public class PostRideDomain implements Serializable{
+public class Carpooldetails implements Serializable{
 	/**
 	 * 
 	 */
@@ -124,7 +124,7 @@ public class PostRideDomain implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PostRideDomain other = (PostRideDomain) obj;
+		Carpooldetails other = (Carpooldetails) obj;
 		if (toTime == null) {
 			if (other.toTime != null)
 				return false;
@@ -189,7 +189,7 @@ public class PostRideDomain implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "PostRideDomain [id=" + id + ", parentid=" + parentid + ", userid=" + userid + ", vehicleType="
+		return "Carpooldetails [id=" + id + ", parentid=" + parentid + ", userid=" + userid + ", vehicleType="
 				+ vehicleType + ", noofseats=" + noofseats + ", fromDate=" + fromDate + ", toDate=" + toDate
 				+ ", fromtime=" + fromtime + ", toTime=" + toTime + ", status=" + status + ", createddate="
 				+ createddate + ", modifieddate=" + modifieddate + "]";

@@ -8,9 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableAutoConfiguration
-//@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 @EntityScan(basePackages = {"com.nisum.carpool.data.domain"})
-//@EnableJpaRepositories(basePackages = {"com.nisum.carpool.data"})
 @EnableCassandraRepositories(basePackages = {"com.nisum.carpool.data"})
 @EnableTransactionManagement
 public class PersistenceConfig {

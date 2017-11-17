@@ -8,12 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nisum.carpool.service.api.PostRideService;
+import com.nisum.carpool.service.api.CarpooldetailsService;
 import com.nisum.carpool.service.dto.Errors;
-import com.nisum.carpool.service.dto.PostRideDto;
+import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.util.Constants;
 
@@ -21,34 +20,30 @@ import com.nisum.carpool.util.Constants;
 
 @RestController
 @RequestMapping(value="/v1/carpool")
-public class PostRideRestService {
+public class CarpooldetailsRestService {
 	
 
-	private static Logger logger = LoggerFactory.getLogger(PostRideRestService.class);
+	private static Logger logger = LoggerFactory.getLogger(CarpooldetailsRestService.class);
 	@Autowired
-	PostRideService postRideService;
+	CarpooldetailsService carpooldetailsService;
 	
 	@RequestMapping(value="/update",method=RequestMethod.PUT)
-	public ResponseEntity<?> updatePostRide(@RequestBody PostRideDto postRideDto){
-		logger.info("PostRideRestService :: updatePostRide");
+	public ResponseEntity<?> updateCarpooldetails(@RequestBody CarpooldetailsDto carpooldetailsDto){
+		logger.info("CarpooldetailsRestService :: updateCarpooldetails");
 		ResponseEntity<?> responseEntity = null;
 		try {
-			ServiceStatusDto statusDto = postRideService.updatePostRide(postRideDto);
+			ServiceStatusDto statusDto = carpooldetailsService.updateCarpooldetails(carpooldetailsDto);
 			if(statusDto.isStatus()) {
 				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
 		}
 		}catch (Exception e) {
 			Errors error = new Errors();
 			error.setErrorCode("Errors-UserRole");
-			//error.setErrorMessage(Constants.CATEGORY_EXISTS);
+			error.setErrorMessage(Constants.CARPOOLDETAILS_EXISTS);
 			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
 		return responseEntity;
 		
 	}
 	
-	@RequestMapping(value="/hi",method=RequestMethod.GET)
-	public @ResponseBody String get() {
-		return "hello";
-	}
 }
