@@ -3,11 +3,13 @@ package com.nisum.carpool.data.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 
 import com.nisum.carpool.data.dao.api.UserRegistrationDAO;
 import com.nisum.carpool.data.domain.UserRegistration;
 import com.nisum.carpool.data.repository.UserRegistrationRepository;
 
+@Configuration
 public class UserRegistrationDaoImpl implements UserRegistrationDAO{
 
 	private static Logger logger = LoggerFactory.getLogger(UserRegistrationDaoImpl.class);
