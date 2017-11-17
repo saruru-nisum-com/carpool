@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -149,8 +150,9 @@ public class UserServiceUtil {
 	 */
 	public static User convertDtoObjectTODao(UserDTO userdto) {
 		User user = new User();
-		
-		user.setUserId(userdto.getUserId());
+		UUID idOne = UUID.randomUUID();
+		//user.setUserId(userdto.getUserId());
+		user.setUserId(idOne.hashCode());
 		user.setUserName(userdto.getUserName());
 		user.setEmailId(userdto.getEmailId());
 		user.setLoginDate(userdto.getLoginDate());
