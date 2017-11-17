@@ -11,7 +11,7 @@ public class Constants {
 	public static final String ERROR_MESSAGE = "Error While Creating Record !!";
 	public static final String UNKNOWN_EXCEPTION = "Unknown Exception !!";
 	public static final String INTERNALSERVERERROR = "Internal Server Error !!";
-
+	public static final String CARPOOLDETAILS_EXISTS="Carpool Details Aready Updated";
 	
 
 	public static final String USER_UPDATED = "User updated Successfully !!";
