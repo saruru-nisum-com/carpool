@@ -2,6 +2,7 @@ package com.nisum.carpool.service.api;
 
 import java.util.Map;
 
+import com.nisum.carpool.data.domain.User;
 import com.nisum.carpool.service.dto.UserDTO;
 
 /**
@@ -24,14 +25,14 @@ public interface UserService {
 	 * @return 
 	 */
 
-	public UserDTO updateUserDetails(UserDTO user);
+	public UserDTO updateUserDetails(User user);
 
 	/**
 	 * Find user given by userId
 	 * @param userId
 	 * @return user activeStatus
 	 */
-	public String findUserById(int userId);
+	public User findUserById(int userId);
 
 	/**
 	 * Returns list of users
