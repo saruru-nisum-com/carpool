@@ -1,7 +1,12 @@
 package com.nisum.carpool.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -73,6 +78,65 @@ public class CarpooldetailsServiceUtil {
 		carpooldetails.setModifieddate(carpooldetailsDto.getModifieddate());
 		return carpooldetails;
 
+	}
+	
+	public static int getNo_of_days(String fromDate, String toDate) {
+		
+		//to find number of days between two dates
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+		Date dateStart = null;
+		Date dateEnd = null;
+		
+		try {
+			dateStart = simpleDateFormat.parse(fromDate);
+		
+			dateEnd = simpleDateFormat.parse(toDate);
+	    
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	    int diff = (int) Math.round((dateEnd.getTime() - dateStart.getTime()) / (double) 86400000);
+	    
+		return diff;
+	}
+
+	public static int getRandomInt() {
+		// to find random generated int value
+		Random r = new Random();
+		return (10000000 + r.nextInt(89999999));
+	}
+
+	public static String getAddedDate(String date, int no_of_days) {
+		// to add days to a given date
+	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		
+		Date dateStart = null;
+			
+		try {
+			dateStart = simpleDateFormat.parse(date);
+	    
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(dateStart);
+		cal.add( Calendar.DATE, no_of_days );
+		
+		
+		SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/YYYY");
+		System.out.println(cal.getTime());
+		// Output "Wed Sep 26 14:23:28 EST 2012"
+
+		String formatted = format1.format(cal.getTime());
+		System.out.println(formatted);
+
+		return formatted;
 	}
 
 }
