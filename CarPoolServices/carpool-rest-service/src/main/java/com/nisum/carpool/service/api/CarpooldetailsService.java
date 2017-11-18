@@ -5,4 +5,6 @@ import com.nisum.carpool.service.dto.ServiceStatusDto;
 
 public interface CarpooldetailsService {
 	ServiceStatusDto updateCarpooldetails(CarpooldetailsDto carpooldetailsDto);
+	
+	ServiceStatusDto createCarPooldetails(CarpooldetailsDto carpooldetailsDto);
 }
