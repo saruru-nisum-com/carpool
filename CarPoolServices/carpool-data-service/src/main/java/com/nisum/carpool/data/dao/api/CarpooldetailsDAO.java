@@ -8,4 +8,6 @@ public interface CarpooldetailsDAO {
 	Carpooldetails updateCarpooldetails(Carpooldetails carpooldetails);
 	
 	public String addCarpoolDetails(List<Carpooldetails> carpooldetails);
+
+	public String checkValidCarpool(Carpooldetails carpooldetails);
 }
