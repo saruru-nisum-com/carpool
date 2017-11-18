@@ -10,6 +10,10 @@ import org.springframework.context.annotation.Configuration;
 import com.nisum.carpool.data.dao.api.CarpooldetailsDAO;
 import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.repository.CarpooldetailsRepository;
+import com.nisum.carpool.data.util.Constants;
+
+
+
 @Configuration
 public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	private static Logger logger = LoggerFactory.getLogger(CarpooldetailsDAOImpl.class);
@@ -29,17 +33,41 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	@Override
 	public String addCarpoolDetails(List<Carpooldetails> carpooldetails) {
 		
-			
+		logger.info("CarpooldetailsDAOImpl: createCarpooldetails");	
+		
 			for(Carpooldetails cp:carpooldetails) {
 				carpooldetailsRepository.save(cp);
 				
 			}
+			
+			logger.info("CarpooldetailsDAOImpl: createCarpooldetails");
 		
-			return" saved suceesfully";
+			return Constants.MSG_CARPOOL_ADD;
 		
 	}
 	
-	
-	
+	@Override
+	public String checkValidCarpool(Carpooldetails carpooldetails) {
+		// TODO Auto-generated method stub
+		logger.info("CarpooldetailsDAOImpl: checkValidCarpool");
+		
+		
+		String userid = carpooldetails.getUserid();
+		String fromdate = carpooldetails.getFromDate();
+		String todate = carpooldetails.getToDate();
+		
+		int countFromdate = carpooldetailsRepository.findEntriesWithDate(userid, fromdate);
+		int countTodate = carpooldetailsRepository.findEntriesWithDate(userid, todate);
+		
+		logger.info("countFromdate " + countFromdate);
+		logger.info("countTodate " + countTodate);
+		
+		if(countFromdate !=0 || countTodate !=0) 
+			return Constants.CARPOOLEXISTS;
+			else 
+				return Constants.VALID;	
 
+		
+	}
+	
 }
