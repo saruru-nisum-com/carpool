@@ -46,4 +46,32 @@ public class CarpooldetailsRestService {
 		
 	}
 	
+	@RequestMapping(value="/create", method=RequestMethod.POST, consumes="application/json", produces="application/json")
+	public ResponseEntity<?>  createCarPool(@RequestBody CarpooldetailsDto carpooldetailsDto)  {
+		
+		logger.info("CarPoolRestService :: createCarPool :: Creating Car Pool");	
+		ResponseEntity<?> responseEntity = null;
+		
+		try {
+			
+			ServiceStatusDto statusDto = carpooldetailsService.createCarPooldetails(carpooldetailsDto);
+			if(statusDto.isStatus()) {
+				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
+		}
+			
+			if(statusDto.getMessage().equals(Constants.CARPOOLEXISTS)) {
+				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.BAD_REQUEST);
+			}
+			
+		}catch (Exception e) {
+			Errors error = new Errors();
+			error.setErrorCode("BAD REQUEST");
+			error.setErrorMessage(Constants.MSG_CARPOOL_FAILED);
+			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
+		}
+		
+		return responseEntity;
+		
+	}
+	
 }
