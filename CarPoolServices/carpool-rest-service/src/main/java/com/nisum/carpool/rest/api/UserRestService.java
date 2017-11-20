@@ -71,7 +71,9 @@ public class UserRestService {
 			try {
 				//logger.info("userInfo findBy userId ");
 			//userInfo = userService.findByEmailId(strEmail1);
+				logger.info("find byuserId:::"+userDto.getUserId());
 				userData=userService.findUserById(userDto.getUserId());
+				logger.info("userDat fetched by Id"+userData);
 			}catch(Exception ex) {
 				ex.printStackTrace();
 			}
@@ -110,7 +112,7 @@ public class UserRestService {
 						role.setRoleId(dto.getRoleId());
 					}
 				}
-				userDto.setRole(role);
+				//userDto.setRoleId(dto.getRoleId());
 				userDto.setActiveStatus(Constants.USER_STATUS);
 				userService.saveUser(userDto);
 

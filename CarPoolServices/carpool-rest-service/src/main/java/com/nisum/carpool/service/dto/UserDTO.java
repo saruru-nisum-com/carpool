@@ -20,7 +20,7 @@ public class UserDTO implements Serializable {
 	private String emailId;
 	private String userName;
 	private Timestamp loginDate;
-	private UserRoleDTO role; //===============
+	private int roleId; //===============
 	private String activeStatus;
 	private Timestamp createDate;
 	private String image;
@@ -91,22 +91,14 @@ public class UserDTO implements Serializable {
 		this.loginDate = loginDate;
 	}
 
-	/**
-	 * Returns user role
-	 * 
-	 * @return
-	 */
-	public UserRoleDTO getRole() {
-		return role;
+	
+
+	public int getRoleId() {
+		return roleId;
 	}
 
-	/**
-	 * Sets role for a user
-	 * 
-	 * @param role
-	 */
-	public void setRole(UserRoleDTO role) {
-		this.role = role;
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
 	}
 
 	/**

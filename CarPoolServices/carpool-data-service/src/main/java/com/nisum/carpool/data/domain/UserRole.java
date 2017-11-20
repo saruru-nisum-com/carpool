@@ -2,7 +2,7 @@ package com.nisum.carpool.data.domain;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-
+import java.time.LocalDateTime;
 
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
@@ -16,7 +16,7 @@ public class UserRole implements Serializable {
 	@PrimaryKey
 	private int roleId;
 	private String role;
-	private Timestamp createdDate;
+	private LocalDateTime createdDate;
 
 	/**
 	 * Returns roleId
@@ -50,27 +50,20 @@ public class UserRole implements Serializable {
 		this.role = role;
 	}
 
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
+	}
+
 	/**
 	 * Returns role created time
 	 * @return
 	 */
-	public Timestamp getCreatedDate() {
-		return createdDate;
-	}
+	
 
-	/**
-	 * Sets role created time
-	 * @param date
-	 */
-	public void setCreatedDate(Timestamp date) {
-		this.createdDate = date;
-	}
-
-	 @Override
-	 public String toString() {
-	 return "UserRole [roleId=" + roleId + ", role=" + role + ", createdDate=" +
-	 createdDate + "]";
-	 }
-
+	
 	
 }
