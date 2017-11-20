@@ -1,22 +1,3 @@
-<<<<<<< HEAD
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/repository/UserRegistrationRepository.java
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/dao/impl/UserDAOImpl.java
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/domain/PostRideDomain.java
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/repository/PostRideRepository.java
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/domain/UserRegistration.java
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/dao/impl/UserRegistrationDaoImpl.java
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/domain/UserRole.java
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/dao/api/PostRideDao.java
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/dao/api/UserDAO.java
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/repository/UserRepository.java
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/repository/UserRoleRepository.java
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/dao/impl/UserRoleDAOImpl.java
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/dao/api/UserRegistrationDAO.java
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/util/PersistenceConfig.java
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/dao/impl/PostRideDaoImpl.java
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/dao/api/UserRoleDAO.java
-/Users/nisum/Dhiraj directory/carpool-app/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/domain/User.java
-=======
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/dao/impl/UserRegistrationDaoImpl.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/dao/api/UserRoleDAO.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/domain/UserRegistration.java
@@ -30,8 +11,8 @@
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/dao/api/CarpooldetailsDAO.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/dao/impl/CarpooldetailsDAOImpl.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/repository/UserRepository.java
+/Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/util/Constants.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/util/PersistenceConfig.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/domain/Carpooldetails.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/dao/api/UserRegistrationDAO.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-data-service/src/main/java/com/nisum/carpool/data/dao/api/UserDAO.java
->>>>>>> f35401ad98b40b36782040a9c1a639f25d07d4b3

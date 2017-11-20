@@ -209,6 +209,30 @@ public class UserServiceUtil {
 		//user.setProfileSettings(profileSettings);
 		return user;
 	}
+	public static User convertUpdateUserDtoTODao(UserDTO userdto) {
+		User user = new User();
+		//UUID idOne = UUID.randomUUID();
+		//user.setUserId(userdto.getUserId());
+		//user.setUserId(idOne.hashCode());
+		user.setUserId(userdto.getUserId());
+		user.setUserName(userdto.getUserName());
+		user.setEmailId(userdto.getEmailId());
+		user.setLoginDate(userdto.getLoginDate().toLocalDateTime());
+		user.setCreateDate(userdto.getCreateDate().toLocalDateTime());
+		user.setImage(userdto.getImage());
+		System.out.println("image iconnnn::"+userdto.getImageIcon());
+		//user.setImageIcon(userdto.getImageIcon());
+		user.setActiveStatus(userdto.getActiveStatus());
+		user.setNotifications(userdto.getNotifications());
+		user.setProfileName(userdto.getProfileName());
+		user.setRoleId(2);
+		
+		UserRole userRole = new UserRole();
+		userRole.setCreatedDate(userdto.getLoginDate().toLocalDateTime());
+		userRole.setRoleId(2);
+		userRole.setRole("user");
+		return user;
+	}
 
 	public static UserRegistrationDto convertDaoObjectToDto(UserRegistration reg) {
 		UserRegistrationDto dto=new UserRegistrationDto();

@@ -8,7 +8,7 @@ import com.nisum.carpool.data.domain.User;
 @Repository
 public interface UserRepository extends CrudRepository<User,Integer>{
   
-	@Query("select * from User where emailId = ?0")
+	@Query("select * from User where emailId = ?0 ALLOW FILTERING")
 	User findByEmailId(String emailId);
 	
 	public User findByUserId(int userId);
