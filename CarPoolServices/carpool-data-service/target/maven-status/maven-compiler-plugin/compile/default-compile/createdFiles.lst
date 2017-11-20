@@ -1,6 +1,9 @@
 com/nisum/carpool/data/repository/UserRegistrationRepository.class
 com/nisum/carpool/data/dao/api/UserRegistrationDAO.class
+<<<<<<< HEAD
+=======
 com/nisum/carpool/data/dao/impl/CarpooldetailsDAOImpl.class
+>>>>>>> f35401ad98b40b36782040a9c1a639f25d07d4b3
 com/nisum/carpool/data/dao/impl/UserRoleDAOImpl.class
 com/nisum/carpool/data/domain/UserRegistration.class
 com/nisum/carpool/data/domain/UserRole.class
