@@ -72,7 +72,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	
 	@Override
 	public List<Carpooldetails> getAllCarPoolDetails() {
-		logger.info("PostRideDaoImpl: getAllCarPoolDetails ::");
+		logger.info("PostRideDaoImpl: getAllCarPoolDetails ::"); 
 			return  (List<Carpooldetails>) carpooldetailsRepository.findAll();
 
 }
