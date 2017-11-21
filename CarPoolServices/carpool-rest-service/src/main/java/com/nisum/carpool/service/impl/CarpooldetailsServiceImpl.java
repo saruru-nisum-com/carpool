@@ -33,13 +33,13 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 		Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
 		carpooldetailsDto.setModifieddate(modifiedDate);
 		Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
-		Carpooldetails updateCarpooldetails = carpooldetailsDAO.updateCarpooldetails(carpooldetails);
+		String updateCarpooldetails = carpooldetailsDAO.updateCarpooldetails(carpooldetails);
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
 		if(ObjectUtils.anyNotNull(updateCarpooldetails))
 		{
-			logger.info("CarpooldetailsServiceImpl : updateCarpooldetails ::"+updateCarpooldetails.toString());
+			logger.info("CarpooldetailsServiceImpl : updateCarpooldetails ::"+updateCarpooldetails);
 			serviceStatusDto.setStatus(true);
-			serviceStatusDto.setMessage(Constants.MSG_RECORD_UPDATE);
+			serviceStatusDto.setMessage(updateCarpooldetails);
 		}
 		return serviceStatusDto;
 	}
@@ -147,7 +147,7 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	    
 	    	} 
 	    	
-	    	cp.setStartTime(carpooldetails.getStartTime());
+	    	cp.setFromtime(carpooldetails.getFromtime());
 	    	cp.setToTime(carpooldetails.getToTime());
 	    cp.setCreateddate(carpooldetails.getCreateddate());
 	    	cp.setModifieddate(carpooldetails.getModifieddate());
@@ -179,7 +179,7 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 				cr.setParentid(rd.getParentid());
 			    cr.setStatus(rd.getStatus());
 			    cr.setFromDate(rd.getFromDate());
-			    cr.setStartTime(rd.getStartTime());
+			    cr.setStartTime(rd.getFromtime());
 			    cr.setToDate(rd.getToDate());
 			    cr.setToTime(rd.getToTime());
 				
