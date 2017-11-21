@@ -7,6 +7,83 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 	
 	//driver/rider screen code starts here
 	
+	$scope.showError=false;
+	$scope.cb2wheel=false;
+	$scope.cb4wheel=false;
+	
+	
+	
+	$scope.registerAsDriver = function() {
+
+		alert('inside...');
+		console.log('checkbox values '+$scope.cb2wheel +'and '+$scope.cb4wheel);
+		
+		if ($scope.cb2wheel==false && $scope.cb4wheel==false) {
+			alert('Error in cb occured.');
+		}else {
+			//alert("register is clicked");
+			var registrationId = 1;//static for now, need to change
+			var userId = "test@tes.com";//static for now, need to change
+			var vehicleType = [1,2];//static for now, need to change
+			var location = "gachibowli";//static for now, need to change
+			var latitude = "24";//static for now, need to change
+			var longitude = "36";//static for now, need to change
+			var nearby = "near yellamma temple";//static for now, need to change
+			var mobile = "9000000000";//static for now, need to change
+			var emailNotification = true;//static for now, need to change
+			var isRider = 1;//static for now, need to change
+			var createdDate = "20171115074306232";//static for now, need to change
+			var modifiedDate = "20171115074306232";//static for now, need to change
+			//window.alert(parseFromDate + " " + parseEndTime);
+			
+			$scope.registerDriverJson = {
+					"registrationId" : registrationId,
+				    "userId" : userId,
+				    "vehicleType" :  vehicleType,
+				    "location" :location,
+				    "latitude" : latitude,
+				    "longitude" : longitude,
+				    "nearby" : nearby,
+				    "mobile" : mobile,
+				    "emailNotification" : emailNotification,
+				    "isRider" : isRider,
+				    "createdDate" : createdDate,
+				    "modifiedDate": modifiedDate
+			}
+			window.alert(JSON.stringify($scope.registerDriverJson));
+			carpoolRegistrationService.registerAsDriver($scope.registerDriverJson).then(function(response) {
+				window.alert("dhiraj");
+				if (response.errorCode === 500) {
+					$scope.message = response.errorMessage
+				}else {
+					window.alert('singh from server.............. :)'+JSON.stringify(response))
+					//$scope.names = response.records;
+				}
+			}, function(response) {
+				// console
+				window.alert("dks-- "+response)
+			});
+			var onSuccess = function (data, status, headers, config) {
+				$scope.isRegisteredAsDriver= true;
+	            alert('driver registered successfully.');
+	        };
+	        
+	        var onError = function (data, status, headers, config) {
+	            alert('Error occured.');
+	        };
+	        
+//	        $http.post('/student/submitData', { student:$scope.student })
+//	        .success(onSuccess)
+//	        .error(onError);
+
+		}
+		
+	}
+	
+	$scope.updateAsDriver = function() {
+		alert("update is clicked");
+	}
+
 	//driver/rider screen code ends here
 
 	$scope.data = [ {
