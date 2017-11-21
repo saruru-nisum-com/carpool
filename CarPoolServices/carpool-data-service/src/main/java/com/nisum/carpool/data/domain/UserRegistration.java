@@ -1,10 +1,19 @@
 package com.nisum.carpool.data.domain;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class UserRegistration {
-
+import org.springframework.data.cassandra.mapping.PrimaryKey;
+import org.springframework.data.cassandra.mapping.Table;
+@Table
+public class UserRegistration  implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@PrimaryKey
 	private int registrationId;
 	private String userId;
 	private List<Integer> vehicleType;
