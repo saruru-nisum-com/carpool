@@ -10,4 +10,6 @@ public interface CarpooldetailsDAO {
 	public String addCarpoolDetails(List<Carpooldetails> carpooldetails);
 
 	public String checkValidCarpool(Carpooldetails carpooldetails);
+	
+	List<Carpooldetails> getAllCarPoolDetails();
 }

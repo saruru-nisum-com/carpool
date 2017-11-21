@@ -1,5 +1,7 @@
 package com.nisum.carpool.rest.api;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +74,16 @@ public class CarpooldetailsRestService {
 		
 		return responseEntity;
 		
+	}
+	
+	
+	@RequestMapping(value = "/getCarPoolDetails", method = RequestMethod.GET)
+	public ResponseEntity<List<CarpooldetailsDto>> getCarPoolDetails()
+			{
+		List<CarpooldetailsDto> poolList=null;
+		
+		poolList=carpooldetailsService.getCarPoolDetails();
+		return new ResponseEntity<List<CarpooldetailsDto>>(poolList, HttpStatus.OK);
 	}
 	
 }

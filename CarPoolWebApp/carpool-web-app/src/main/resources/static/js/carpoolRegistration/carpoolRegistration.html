@@ -79,6 +79,10 @@ table, td {
 	border-radius: 5px;
 }
 
+.registerAsDriverBtn[disabled] {
+  background-color: #b2b2b2
+}
+
 .updateAsDriverBtn {
 	background-color: #3498db; /* blue */
 	border: none;
@@ -91,6 +95,10 @@ table, td {
 	margin: 4px 2px;
 	cursor: pointer;
 	border-radius: 5px;
+}
+
+.updateAsDriverBtn[disabled] {
+  background-color: #b2b2b2
 }
 
 .button4 {
@@ -110,53 +118,68 @@ table, td {
 				onclick="fnGoNav(1)">Driver</a></li>
 			<li><a href="javascript:void(0)" id='passengerId'
 				onclick="fnGoNav(2)">Passenger</a></li>
-			<li class="active"><a href="javascript:void(0)" id='postRideId'
+			<li class=""><a href="javascript:void(0)" id='postRideId'
 				onclick="fnGoNav(3)">Post A Ride</a></li>
 		</ul>
 		<br>
-		
+
 		<!-- driver registration tab code starts -->
 		<div id='driverDiv'>
-			<form action="driverForm" class="driverClass" novalidate>
+			<form name="driverForm" class="driverClass" novalidate>
 				<table>
 					<tr>
 						<td>Vehicle Type</td>
-						<td><input type="checkbox" name="vehicleType" >2-wheeler</td>
-					</tr>
-
-					<tr>
-						<td></td>
-						<td><input type="checkbox" name="vehicleType" >4-wheeler</td>
-					</tr>
-
-					<tr>
-						<td>Location</td>
-						<td><input type="text" ng-model="location"
-							placeholder="Enter location here" required=""></td>
-							<br />
-						    <div ng-show="form.$submitted || form.uName.$touched">
-						      <div ng-show="form.uName.$error.required">Tell us your name.</div>
-						    </div>
-					</tr>
-
-					<tr>
-						<td>NearBy(pickup)</td>
-						<td><input type="text" ng-model="location" required=""></td>
+						<td>
+							<input type="checkbox" name="cb2wheel" ng-model='cb2wheel' ng-true-value="2" ng-false-value="0"> 2-wheeler</input>
+						</td>
 					</tr>
 
 					<tr>
 						<td></td>
 						<td>
-							<button class="registerAsDriverBtn "
-								ng-click="registerAsDriver()">Register</button>
-							<button class="updateAsDriverBtn" ng-click="updateAsDriver()">Update</button>
+							<input type="checkbox" name="cb4wheel" ng-model='cb4wheel' ng-true-value="4" ng-false-value="0"> 4-wheeler</input>
+						</td>
+						<td>
+							<div ng-show="driverForm.$submitted && driverForm.$invalid" style="color:red" class="help-block">
+							check before proceed.
+						</div>
+					</td>
+					</tr>
+
+					<tr>
+						<td>Location</td>
+						<td><input type="text" name="location" ng-model="location"
+							placeholder="Enter location here" required=""> <br />
+							<div ng-show="driverForm.$submitted || driverForm.location.$touched">
+								<div ng-show="driverForm.location.$error.required " style="color:red">Tell us your
+									location.</div>
+							</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td>NearBy(pickup)</td>
+						<td><input type="text" name="nearBy" 
+									ng-model="nearBy"
+									required=""> <br />
+							<div ng-show="driverForm.$submitted || driverForm.nearBy.$touched">
+								<span ng-show="driverForm.nearBy.$error.required " style="color:red">Tell us your
+									pickup point.</span>
+							</div></td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td>
+							<button class="registerAsDriverBtn " ng-disabled="isRegisteredAsDriver == true" ng-click="registerAsDriver()">Register</button>
+							<button class="updateAsDriverBtn" ng-disabled="isRegisteredAsDriver !== true" ng-click="updateAsDriver()">Update</button>
 						</td>
 					</tr>
 				</table>
 			</form>
 		</div>
 		<!-- driver registration tab code ends -->
-		
+
 		<!-- rider registration tab code starts -->
 		<div id='passengerDiv'>
 			<form action="riderForm" class="riderClass">
@@ -188,9 +211,9 @@ table, td {
 				</table>
 			</form>
 		</div>
-		
+
 		<!-- rider registration tab code ends -->
-		
+
 		<!-- Post A Ride Design start  -->
 		<div id='postRideDiv'>
 			<div class="solid">
@@ -350,7 +373,7 @@ table, td {
 											<td>08:30 AM</td>
 											<td>06:30 PM</td>
 										</tr>
-										
+
 									</tbody>
 								</table>
 							</div>

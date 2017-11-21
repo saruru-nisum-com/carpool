@@ -2,6 +2,7 @@ package com.nisum.carpool.service.impl;
 
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -160,6 +161,50 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	    
 	    return carPoolList;
 	    
+	}
+	
+	public List<CarpooldetailsDto> getCarPoolDetails() {
+		List<CarpooldetailsDto> dto=new ArrayList<CarpooldetailsDto>();
+		try {
+			
+			SimpleDateFormat dmyFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			
+			List<Carpooldetails> listPost=carpooldetailsDAO.getAllCarPoolDetails();
+			for(Carpooldetails rd:listPost) {
+				CarpooldetailsDto cr=new CarpooldetailsDto();
+				cr.setUserid(rd.getUserid());
+				cr.setTotalNoOfSeats(rd.getNoofseats());
+				cr.setVehicleType(rd.getVehicleType());
+				cr.setParentid(rd.getParentid());
+			    cr.setStatus(rd.getStatus());
+			    cr.setFromDate(rd.getFromDate());
+			    cr.setStartTime(rd.getStartTime());
+			    cr.setToDate(rd.getToDate());
+			    cr.setToTime(rd.getToTime());
+				
+			    cr.setCreateddate(rd.getCreateddate());
+			   // cr.getModifieddate(rd.getModifieddate().getNanos())
+			    
+				/*String cst = dmyFormat.format(rd.getCreateddate().);
+				System.out.println("cst"+cst.length());
+				Timestamp csttimestamp = Timestamp.valueOf(cst);
+				cr.setCreateddate(csttimestamp);
+				
+				
+				//cr.setModifieddate(rd.getModifieddate());
+				String mst = dmyFormat.format(rd.getModifieddate().getTimezoneOffset());
+				Timestamp msttimestamp = Timestamp.valueOf(mst);
+				cr.setModifieddate(msttimestamp);
+				dto.add(cr);*/
+			}
+			
+		}catch(Exception e) {
+			System.out.println("postRide Service imple ::getCarPoolDetails"+e.getMessage());
+		}
+		
+		
+		return dto;
 	}
 	
 }
