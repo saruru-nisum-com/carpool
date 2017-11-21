@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 
-@Table
+@Table 
 public class UserRegistration  implements Serializable{
 	
 	/**
