@@ -24,6 +24,8 @@ CREATE TABLE User (
 
 );
 
+Create index carpool.emailIndex on User(emailId);
+
 CREATE TABLE cp_vehicletypes (
    id int, 
    vehicletype text,

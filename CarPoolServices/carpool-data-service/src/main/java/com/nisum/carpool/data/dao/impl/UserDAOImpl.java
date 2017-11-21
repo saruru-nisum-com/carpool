@@ -25,7 +25,7 @@ public class UserDAOImpl implements UserDAO{
 	@Override
 	public void saveUser(User user) {
 		
-		System.out.println("user email::"+user.getEmailId()+"user Id="+user.getUserId()+""+user.getUserName());
+		System.out.println("UserDaoImpl  saveUser email::"+user.getEmailId()+"user Id="+user.getUserId()+""+user.getUserName());
 		System.out.println("user obj"+user);
 		userRepository.save(user);
 	}
@@ -46,8 +46,8 @@ public class UserDAOImpl implements UserDAO{
 	@Override
 	public User updateUser(User user) {
 		logger.info("UserDAOImpl :: updateUser :: Updating user");
-			//return userRepository.save(user);
-		return null;
+			return userRepository.save(user);
+		//return null;
 	}
 	@Override
 	public int deleteUser(int userId) {
@@ -64,8 +64,10 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public User findByEmailId(String emailId) {
-		//return userRepository.findByEmailId(emailId);
-		return null;
+		System.out.println("user dao emailId::"+emailId);
+		User user= userRepository.findByEmailId(emailId);
+		logger.info("user info**"+user);
+		return user;
 	}
 
 

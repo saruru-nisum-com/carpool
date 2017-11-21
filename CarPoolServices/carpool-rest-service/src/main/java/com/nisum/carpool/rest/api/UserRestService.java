@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nisum.carpool.data.domain.User;
 //import com.nisum.carpool.service.api.EmailAccount;
 import com.nisum.carpool.service.api.UserRoleService;
 import com.nisum.carpool.service.api.UserService;
@@ -33,6 +34,7 @@ import com.nisum.carpool.service.exception.UserServiceException;
 import com.nisum.carpool.util.CommonsUtil;
 import com.nisum.carpool.util.Constants;
 //import com.nisum.carpool.util.MailSender;
+import com.nisum.carpool.util.UserServiceUtil;
 
 @RestController
 @RequestMapping(value = "/v1/user")
@@ -58,6 +60,7 @@ public class UserRestService {
 	public UserDTO addUser(@RequestBody UserDTO userDto) throws UserServiceException {
 
 		UserDTO userInfo = null;
+		User 	userData=null;
 		logger.info("UserRestService :: Creating Users :::");
 		logger.info("User Rest service"+userDto.getUserName()+"emailId::"+userDto.getEmailId());
 		
@@ -65,13 +68,22 @@ public class UserRestService {
 
 			String strEmail1 = null;
 			strEmail1 = userDto.getEmailId();
+			try {
+				logger.info("userInfo findBy emailId** ");
 			userInfo = userService.findByEmailId(strEmail1);
+				//logger.info("find byuserId:::"+userDto.getUserId());
+				//userData=userService.findUserById(userDto.getUserId());
+				logger.info("userData fetched by emailId**"+userInfo);
+			}catch(Exception ex) {
+				ex.printStackTrace();
+			}
 			if (userInfo != null && strEmail1.equals(userInfo.getEmailId())) {
+				logger.info("UserRestService ** in update User details :::");
 				userInfo.setLoginDate(CommonsUtil.getCurrentDateTime());
 				userService.updateUserDetails(userInfo);
 
 			} else {
-                     
+				logger.info("UserRestService :: save User details :::");
 				 BufferedImage image = null;
 				 URL url = new URL(userDto.getImage());
 				 image = ImageIO.read(url);
@@ -100,7 +112,7 @@ public class UserRestService {
 						role.setRoleId(dto.getRoleId());
 					}
 				}
-				userDto.setRole(role);
+				//userDto.setRoleId(dto.getRoleId());
 				userDto.setActiveStatus(Constants.USER_STATUS);
 				userService.saveUser(userDto);
 
@@ -132,9 +144,9 @@ public class UserRestService {
 		logger.info("UserRestService :: deleteUser :: Deleting User");
 		Errors error = new Errors();
 		try {
-			String activeStatus = userService.findUserById(userId);
+			User user = userService.findUserById(userId);
 			ServiceStatusDto serviceStatusDTO = new ServiceStatusDto();
-			if (activeStatus == null || activeStatus.equalsIgnoreCase("No")) {
+			if (user == null || user.getActiveStatus().equalsIgnoreCase("No")) {
 				error.setErrorCode("417");
 				error.setErrorMessage(Constants.USER_NOT_EXISTS);
 				return new ResponseEntity<Errors>(error, HttpStatus.EXPECTATION_FAILED);
@@ -187,6 +199,7 @@ public class UserRestService {
 		logger.info("UserRestService :: users::: update");
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
 		try {
+			//User user = UserServiceUtil.convertDtoObjectTODao(userDto);
 			Object obj = userService.updateUserDetails(userDto);
 			if (obj.equals(null)) {
 				serviceStatusDto.setMessage(Constants.USER_NOT_EXISTS);

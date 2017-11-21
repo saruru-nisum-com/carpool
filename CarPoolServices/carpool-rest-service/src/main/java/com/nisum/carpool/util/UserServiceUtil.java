@@ -1,10 +1,12 @@
 package com.nisum.carpool.util;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -32,15 +34,15 @@ public class UserServiceUtil {
 				userDto.setUserId(user.getUserId());
 				userDto.setActiveStatus(user.getActiveStatus());
 				userDto.setEmailId(user.getEmailId());
-				userDto.setLoginDate(user.getLoginDate());
+				userDto.setLoginDate(Timestamp.valueOf(user.getLoginDate()));
 				userDto.setUserName(user.getUserName());
 				userDto.setImage(user.getImage());
-				userDto.setCreateDate(user.getCreateDate());
+				userDto.setCreateDate(Timestamp.valueOf(user.getCreateDate()));
 				UserRoleDTO userRoleDTO = new UserRoleDTO();
 			//	userRoleDTO.setCreatedDate(user.getRole().getCreatedDate());
 				//userRoleDTO.setRole(user.getRole().getRole());
 				//userRoleDTO.setRoleId(user.getRole().getRoleId());
-				userDto.setRole(userRoleDTO);
+				userDto.setRoleId(user.getRoleId());
 				userDto.setNotifications(user.getNotifications());
 				userDto.setProfileName(user.getProfileName());
 				userDto.setProfileName(user.getProfileName());
@@ -73,17 +75,19 @@ public class UserServiceUtil {
 		userDTO.setUserName(user.getUserName());
 		userDTO.setEmailId(user.getEmailId());
 		userDTO.setImage(user.getImage());
-		userDTO.setLoginDate(user.getLoginDate());
-		userDTO.setCreateDate(user.getCreateDate());
+		userDTO.setLoginDate(Timestamp.valueOf(user.getLoginDate()));
+		userDTO.setCreateDate(Timestamp.valueOf(user.getCreateDate()));
 		userDTO.setActiveStatus(user.getActiveStatus());
 		//userDTO.setImageIcon(user.getImageIcon());
 		UserRoleDTO userRoleDTO = new UserRoleDTO();
 	//	userRoleDTO.setCreatedDate(user.getRole().getCreatedDate());
 	//	userRoleDTO.setRole(user.getRole().getRole());
 	//	userRoleDTO.setRoleId(user.getRole().getRoleId());
-		userDTO.setRole(userRoleDTO);
+		userDTO.setRoleId(user.getRoleId());
 		userDTO.setNotifications(user.getNotifications());
 		userDTO.setProfileName(user.getProfileName());
+		
+		
 	//	Set<Categories> categories = new HashSet<Categories>();
 		// Set<ProfileSetting> profileSettings = user.getProfileSettings();
 		/*
@@ -112,17 +116,17 @@ public class UserServiceUtil {
 		if (CollectionUtils.isNotEmpty(userDtoList)) {
 			for (UserDTO userlist : userDtoList) {
 				User user = new User();
-				user.setUserId(userlist.getUserId());
+				user.setUserId(UUID.randomUUID().hashCode());
 				user.setActiveStatus(userlist.getActiveStatus());
 				user.setEmailId(userlist.getEmailId());
-				user.setLoginDate(userlist.getLoginDate());
-				user.setCreateDate(userlist.getCreateDate());
+				user.setLoginDate(userlist.getLoginDate().toLocalDateTime());
+				user.setCreateDate(userlist.getCreateDate().toLocalDateTime());
 				user.setUserName(userlist.getUserName());
 				user.setImage(userlist.getImage());
 				UserRole userRole = new UserRole();
-				userRole.setCreatedDate(userlist.getRole().getCreatedDate());
-				userRole.setRole(userlist.getRole().getRole());
-				userRole.setRoleId(userlist.getRole().getRoleId());
+				//userRole.setCreatedDate(userlist.getRole().getCreatedDate());
+				//userRole.setRole(userlist.getRole().getRole());
+				//userRole.setRoleId(userlist.getRole().getRoleId());
 				//user.setRole(userRole);
 				user.setNotifications(userlist.getNotifications());
 				user.setProfileName(userlist.getProfileName());
@@ -149,24 +153,25 @@ public class UserServiceUtil {
 	 */
 	public static User convertDtoObjectTODao(UserDTO userdto) {
 		User user = new User();
-		
-		user.setUserId(userdto.getUserId());
+		UUID idOne = UUID.randomUUID();
+		//user.setUserId(userdto.getUserId());
+		user.setUserId(idOne.hashCode());
 		user.setUserName(userdto.getUserName());
 		user.setEmailId(userdto.getEmailId());
-		user.setLoginDate(userdto.getLoginDate());
-		user.setCreateDate(userdto.getCreateDate());
+		user.setLoginDate(userdto.getLoginDate().toLocalDateTime());
+		user.setCreateDate(userdto.getCreateDate().toLocalDateTime());
 		user.setImage(userdto.getImage());
 		System.out.println("image iconnnn::"+userdto.getImageIcon());
 		//user.setImageIcon(userdto.getImageIcon());
 		user.setActiveStatus(userdto.getActiveStatus());
-		UserRole userRole = new UserRole();
-		//userRole.setCreatedDate(userdto.getRole().getCreatedDate());
-		//System.out.println("user roleid:"+userdto.getRole().getRoleId()+"userdto role::"+userdto.getRole());
-		//userRole.setRole(userdto.getRole().getRole());
-		//userRole.setRoleId(userdto.getRole().getRoleId());
-		//user.setRole(userRole);
 		user.setNotifications(userdto.getNotifications());
 		user.setProfileName(userdto.getProfileName());
+		user.setRoleId(2);
+		
+		UserRole userRole = new UserRole();
+		userRole.setCreatedDate(userdto.getLoginDate().toLocalDateTime());
+		userRole.setRoleId(2);
+		userRole.setRole("user");
 		// ========================
 		//Set<ProfileSetting> profileSettings = new HashSet<>();
 
@@ -202,6 +207,30 @@ public class UserServiceUtil {
 		 * profileSet.add(profileSetting); }
 		 */
 		//user.setProfileSettings(profileSettings);
+		return user;
+	}
+	public static User convertUpdateUserDtoTODao(UserDTO userdto) {
+		User user = new User();
+		//UUID idOne = UUID.randomUUID();
+		//user.setUserId(userdto.getUserId());
+		//user.setUserId(idOne.hashCode());
+		user.setUserId(userdto.getUserId());
+		user.setUserName(userdto.getUserName());
+		user.setEmailId(userdto.getEmailId());
+		user.setLoginDate(userdto.getLoginDate().toLocalDateTime());
+		user.setCreateDate(userdto.getCreateDate().toLocalDateTime());
+		user.setImage(userdto.getImage());
+		System.out.println("image iconnnn::"+userdto.getImageIcon());
+		//user.setImageIcon(userdto.getImageIcon());
+		user.setActiveStatus(userdto.getActiveStatus());
+		user.setNotifications(userdto.getNotifications());
+		user.setProfileName(userdto.getProfileName());
+		user.setRoleId(2);
+		
+		UserRole userRole = new UserRole();
+		userRole.setCreatedDate(userdto.getLoginDate().toLocalDateTime());
+		userRole.setRoleId(2);
+		userRole.setRole("user");
 		return user;
 	}
 

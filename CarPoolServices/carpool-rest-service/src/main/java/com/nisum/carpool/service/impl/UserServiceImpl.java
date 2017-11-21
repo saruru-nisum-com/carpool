@@ -40,10 +40,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@CacheEvict(value = "Users", key = "#userDto" , allEntries=true, condition="#result!=null")
 	public UserDTO updateUserDetails(UserDTO userDto) {
-		logger.info("UserServiceImpl :: updateUserDetails :: Updating user detail");
-		User user = UserServiceUtil.convertDtoObjectTODao(userDto);
-		String userStatus = findUserById(user.getUserId());
-		if (userStatus != null) {
+		logger.info(" UserServiceImpl :: in updateUserDetails");
+		User user = UserServiceUtil.convertUpdateUserDtoTODao(userDto);
+		User userObj = findUserById(user.getUserId());
+		if (userObj != null) {
 			//profileSettingsDAO.deleteCategory(user.getEmailId());
 
 			User userDao = userDAO.updateUser(user);
@@ -61,14 +61,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Cacheable(value = "Users", key = "#userId",unless="#result==null")
-	public String findUserById(int userId) {
+	public User findUserById(int userId) {
 		logger.info("UserServiceImpl :: findUserById :: Finding user by userId");
 		User  user=userDAO.findUserById(userId);
 		String activeStatus = null;
 		if (user != null) {
 			activeStatus = user.getActiveStatus();
 		}
-		return activeStatus;
+		return user;
 	}
 	@Override
 	public long getUserCount() {

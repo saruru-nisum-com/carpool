@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Carppol Registration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<style>
+.error {
+	color: red !important;
+}
+
+div.solid { //
+	outline-style: solid !important;
+}
+
+.postRideCls {
+	text-align: center;
+	border: 3px solid #3498db;
+}
+
+table, td {
+	/* border: 1px solid grey;
+  border-collapse: collapse; */
+	padding: 5px;
+}
+
+.vehicleGrid {
+	text-align: -webkit-center !important;
+}
+
+.prTableReg {
+	width: 60% !important;
+}
+
+.vsCls {
+	width: 100px !important;
+}
+
+.prTabTh {
+	padding-left: 200px !important;
+}
+
+.prTabThAddBCls {
+	padding-left: 270px !important;
+}
+
+.buttonPostARideAddButCls {
+	background-color: #3498db; /* blue */
+	border: none;
+	color: white;
+	padding: 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 14px;
+	margin: 4px 2px;
+	cursor: pointer;
+}
+
+/* driver and rider css @author: Dhiraj singh*/
+.registerAsDriverBtn {
+	background-color: #3498db; /* blue */
+	border: none;
+	color: white;
+	padding: 10px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 14px;
+	margin: 4px 2px;
+	cursor: pointer;
+	border-radius: 5px;
+}
+
+.registerAsDriverBtn[disabled] {
+  background-color: #b2b2b2
+}
+
+.updateAsDriverBtn {
+	background-color: #3498db; /* blue */
+	border: none;
+	color: white;
+	padding: 10px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 14px;
+	margin: 4px 2px;
+	cursor: pointer;
+	border-radius: 5px;
+}
+
+.updateAsDriverBtn[disabled] {
+  background-color: #b2b2b2
+}
+
+.button4 {
+	border-radius: 12px;
+}
+
+.vGridCls {
+	border: 1px solid grey;
+	border-collapse: collapse;
+}
+</style>
+<body>
+	<div class="container">
+		<h3>Carpool Registration</h3>
+		<ul class="nav nav-tabs">
+			<li><a href="javascript:void(0)" id='driverId'
+				onclick="fnGoNav(1)">Driver</a></li>
+			<li><a href="javascript:void(0)" id='passengerId'
+				onclick="fnGoNav(2)">Passenger</a></li>
+			<li class=""><a href="javascript:void(0)" id='postRideId'
+				onclick="fnGoNav(3)">Post A Ride</a></li>
+		</ul>
+		<br>
+
+		<!-- driver registration tab code starts -->
+		<div id='driverDiv'>
+			<form name="driverForm" class="driverClass" novalidate>
+				<table>
+					<tr>
+						<td>Vehicle Type</td>
+						<td>
+							<input type="checkbox" name="cb2wheel" ng-model='cb2wheel'> 2-wheeler</input>
+						</td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td>
+							<input type="checkbox" name="cb4wheel" ng-model='cb4wheel'> 4-wheeler</input>
+						</td>
+						<td>
+							<div ng-show="driverForm.$submitted && driverForm.$invalid" style="color:red" class="help-block">
+							check before proceed.
+						</div>
+					</td>
+					</tr>
+
+					<tr>
+						<td>Location</td>
+						<td><input type="text" name="location" ng-model="location"
+							placeholder="Enter location here" required=""> <br />
+							<div ng-show="driverForm.$submitted || driverForm.location.$touched">
+								<div ng-show="driverForm.location.$error.required " style="color:red">Tell us your
+									location.</div>
+							</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td>NearBy(pickup)</td>
+						<td><input type="text" name="nearBy" 
+									ng-model="nearBy"
+									required=""> <br />
+							<div ng-show="driverForm.$submitted || driverForm.nearBy.$touched">
+								<span ng-show="driverForm.nearBy.$error.required " style="color:red">Tell us your
+									pickup point.</span>
+							</div></td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td>
+							<button class="registerAsDriverBtn " ng-disabled="isRegisteredAsDriver == true" ng-click="registerAsDriver()">Register</button>
+							<button class="updateAsDriverBtn" ng-disabled="isRegisteredAsDriver !== true" ng-click="updateAsDriver()">Update</button>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<!-- driver registration tab code ends -->
+
+		<!-- rider registration tab code starts -->
+		<div id='passengerDiv'>
+			<form action="riderForm" class="riderClass">
+				<table>
+					<tr>
+						<td>Location</td>
+						<td><input type="text" ng-model="location"
+							placeholder="Enter location here"></td>
+					</tr>
+
+					<tr>
+						<td>NearBy(pickup)</td>
+						<td><input type="text" ng-model="location"></td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td><input type="checkbox">Notify me via email</td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td>
+							<button class="registerAsDriverBtn " ng-click="registerAsRider()">Register</button>
+							<button class="updateAsDriverBtn" ng-click="updateAsRider()">Update</button>
+						</td>
+					</tr>
+
+				</table>
+			</form>
+		</div>
+
+		<!-- rider registration tab code ends -->
+
+		<!-- Post A Ride Design start  -->
+		<div id='postRideDiv'>
+			<div class="solid">
+
+				<form name="postRideForm" class='postRideCls'>
+					<table class='prTableReg'>
+						<tr>
+							<th class='prTabTh'>Vehicle Type:</th>
+							<td class='prTabTd'><select name="vehicleSelect"
+								id="vehicleSelect" ng-model="vehicleSelect"
+								ng-init=" vehicleSelect = data[0].id"
+								ng-options="option.id as option.name for option in data"
+								ng-change="fnVehicleType()"></select></td>
+						</tr>
+
+						<tr>
+							<th class='prTabTh'>Total No Of Seats:</th>
+							<td class='prTabTd'>
+								<div ng-switch="vehicleSelect">
+									<div ng-switch-when="0">
+										<input type="number" name="input" ng-model="seat.value"
+											min="0" max="0" class='vsCls' ng-readonly="true"><br>
+										<br>
+									</div>
+									<div ng-switch-when="2">
+										<input type="number" name="input" ng-model="seat.value"
+											min="1" max="1" value='1' class='vsCls' ng-readonly="true"><br>
+										<br>
+									</div>
+									<div ng-switch-when="4">
+										<input type="number" name="input" ng-model="seat.value"
+											min="1" max="4" class='vsCls' required><br> <br>
+									</div>
+								</div>
+							</td>
+						</tr>
+
+						<tr>
+							<th class='prTabTh'>From Date:</th>
+							<td class='prTabTd'><input type="date" id="exampleInput"
+								name="fromDate" ng-model="fromDate.value"
+								min="{{fromDate.currentDate | date: 'yyyy-MM-dd'}}"
+								placeholder="yyyy-MM-dd" required /> <span class="error"
+								ng-show="!postRideForm.fromDate.$valid"> Not a valid
+									date!</span></td>
+						</tr>
+
+
+						<tr>
+							<th class='prTabTh'>To Date:</th>
+							<td class='prTabTd'><input type="date" id="exampleInput"
+								name="toDate" ng-model="toDate.value"
+								min="{{toDate.currentDate | date: 'yyyy-MM-dd'}}"
+								placeholder="yyyy-MM-dd" required /> <span class="error"
+								ng-show="!postRideForm.toDate.$valid"> Not a valid date!</span>
+							</td>
+						</tr>
+
+						<tr>
+							<th class='prTabTh'>Start Time:</th>
+							<td class='prTabTd'><input type="time" id="exampleInput"
+								name="startTime" ng-model="startTime.value"
+								placeholder="HH:mm:ss" min="00:00:00" max="23:00:00" required />
+							</td>
+						</tr>
+						<tr>
+							<th class='prTabTh'>End Time:</th>
+							<td class='prTabTd'><input type="time" id="exampleInput"
+								name="endTime" ng-model="endTime.value" ng-bind="endTime"
+								placeholder="HH:mm:ss" min="00:00:00" max="23:00:00" required />
+							</td>
+						</tr>
+						<tr>
+							<td class='prTabThAddBCls'>
+								<button class="buttonPostARideAddButCls button4"
+									ng-click="fnAddPostRide()">Add</button>
+							</td>
+						</tr>
+					</table>
+
+					<hr>
+					<div class="vehicleGrid">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-xl-12">
+								<table class="table table-hover table-striped table-bordered">
+									<thead class="thead-inverse" align="center">
+										<tr>
+											<th>Select</th>
+											<th>Vehicle</th>
+											<th>Seats</th>
+											<th>From Date</th>
+											<th>To Date</th>
+											<th>Start Time</th>
+											<th>Return Time</th>
+										</tr>
+									</thead>
+									<tbody>
+										<!-- <tr ng-repeat="vGrid in vehicleList track by $index">
+											<div ng-switch="vGrid.parentId">
+												<div ng-switch-when="0">
+													<input type="number" name="input" ng-model="seat.value"
+														min="0" max="0" class='vsCls' ng-readonly="true"><br>
+													<br>
+												</div>
+												<div ng-switch-when="2">
+													<input type="number" name="input" ng-model="seat.value"
+														min="1" max="1" value='1' class='vsCls' ng-readonly="true"><br>
+													<br>
+												</div>
+												<div ng-switch-when="4">
+													<input type="number" name="input" ng-model="seat.value"
+														min="1" max="4" class='vsCls' required><br> <br>
+												</div>
+											</div> -->
+										<tr>
+											<td><a href="#" class="toggler" data-prod-cat="1">+</a></td>
+											<td>2</td>
+											<td>1</td>
+											<td>15/11/2017</td>
+											<td>18/11/2017</td>
+											<td>08:30 AM</td>
+											<td>06:30 PM</td>
+										</tr>
+										<tr class="cat1" style="display: none">
+											<td></td>
+											<td>2</td>
+											<td>1</td>
+											<td>15/11/2017</td>
+											<td>15/11/2017</td>
+											<td>08:30 AM</td>
+											<td>06:30 PM</td>
+										</tr>
+										<tr class="cat1" style="display: none">
+											<td></td>
+											<td>2</td>
+											<td>1</td>
+											<td>16/11/2017</td>
+											<td>16/11/2017</td>
+											<td>08:30 AM</td>
+											<td>06:30 PM</td>
+										</tr>
+										<tr class="cat1" style="display: none">
+											<td></td>
+											<td>2</td>
+											<td>1</td>
+											<td>17/11/2017</td>
+											<td>17/11/2017</td>
+											<td>08:30 AM</td>
+											<td>06:30 PM</td>
+										</tr>
+										<tr class="cat1" style="display: none">
+											<td></td>
+											<td>2</td>
+											<td>1</td>
+											<td>18/11/2017</td>
+											<td>18/11/2017</td>
+											<td>08:30 AM</td>
+											<td>06:30 PM</td>
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- Post A Ride Design end  -->
+	</div>
+
+</body>
+<script>
+	$(document).ready(function() {
+		$("#driverDiv").hide();
+		$("#passengerDiv").hide();
+		$("#postRideDiv").show();
+	});
+
+	function fnGoNav(obj) {
+		if (obj == 1) {
+			$("#driverDiv").show();
+			$("#passengerDiv").hide();
+			$("#postRideDiv").hide();
+		} else if (obj == 2) {
+			$("#driverDiv").hide();
+			$("#passengerDiv").show();
+			$("#postRideDiv").hide();
+		} else {
+			$("#driverDiv").hide();
+			$("#passengerDiv").hide();
+			$("#postRideDiv").show();
+		}
+	}
+
+	$(".toggler").click(function(e) {
+		e.preventDefault();
+		$('.cat' + $(this).attr('data-prod-cat')).toggle();
+	});
+</script>
+</html>

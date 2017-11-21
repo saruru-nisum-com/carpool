@@ -1,8 +1,8 @@
 var app = angular
 		.module(
 				'nisumApp',
-				[ 'ui.router', 'profileApp', 'loginApp', 'LocalStorageModule',
-						'textAngular', 'am.multiselect', 'google-signin', 'driverApp' ])
+				[ 'ui.router', 'profileApp', 'loginApp', 'carpoolRegistrationApp', 'LocalStorageModule',
+						'textAngular', 'am.multiselect', 'google-signin' ])
 
 		.config(function($stateProvider, $urlRouterProvider) {
 
@@ -28,14 +28,14 @@ var app = angular
 
 								$rootScope.urlChanged = $location.path();
 
-								var urls = [ '/home', '/profile' ]
+								var urls = [ '/home', '/profile', '/carpoolRegistration' ]
 								if (urls.indexOf($rootScope.urlChanged) > -1) {
 									$rootScope.navBarToggle = false;
 								} else if ($rootScope.urlChanged
 										.indexOf('/question/') > -1) {
 									$rootScope.navBarToggle = false;
 								} else {
-									$rootScope.navBarToggle = true;
+									$rootScope.navBarToggle = false;
 								}
 
 								// 
@@ -49,7 +49,7 @@ var app = angular
 
 								} else if (profile === null) {
 									$timeout(function() {
-										$state.go('login');
+										$state.go('carpoolRegistration');
 									}, 0);
 
 								}

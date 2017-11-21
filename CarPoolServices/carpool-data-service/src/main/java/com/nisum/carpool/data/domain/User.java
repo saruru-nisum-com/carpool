@@ -3,8 +3,9 @@ package com.nisum.carpool.data.domain;
 import java.io.Serializable;
 import java.sql.Timestamp;
 //import java.util.Set;
+import java.time.LocalDateTime;
 
-
+import org.springframework.data.cassandra.mapping.Indexed;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 
@@ -17,10 +18,10 @@ public class User implements Serializable {
 	private int userId;
 	private String emailId;
 	private String userName;
-	private Timestamp loginDate;
+	private LocalDateTime loginDate;
 	private String activeStatus;
 	private int roleId;
-	private Timestamp createDate;
+	private LocalDateTime createDate;
 	private String image;
 	//private byte[] imageIcon;
 	private String profileName;
@@ -30,7 +31,7 @@ public class User implements Serializable {
 		
 	}
 
-	public User(int userId, String emailId, String userName, Timestamp loginDate, String activeStatus, Timestamp createDate,
+	public User(int userId, String emailId, String userName, LocalDateTime loginDate, String activeStatus, LocalDateTime createDate,
 			String image, int roleId) {
 		super();
 		this.userId = userId;
@@ -95,14 +96,7 @@ public class User implements Serializable {
 	}
 
 
-	public Timestamp getLoginDate() {
-		return loginDate;
-	}
-
-	public void setLoginDate(Timestamp loginDate) {
-		this.loginDate = loginDate;
-	}
-
+	
 	public String getActiveStatus() {
 		return activeStatus;
 	}
@@ -111,11 +105,21 @@ public class User implements Serializable {
 		this.activeStatus = activeStatus;
 	}
 
-	public Timestamp getCreateDate() {
+	
+
+	public LocalDateTime getLoginDate() {
+		return loginDate;
+	}
+
+	public void setLoginDate(LocalDateTime loginDate) {
+		this.loginDate = loginDate;
+	}
+
+	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(Timestamp createDate) {
+	public void setCreateDate(LocalDateTime createDate) {
 		this.createDate = createDate;
 	}
 

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import com.nisum.carpool.data.dao.api.UserRegistrationDAO;
 import com.nisum.carpool.data.domain.UserRegistration;
 import com.nisum.carpool.data.repository.UserRegistrationRepository;
+
 @Configuration
 public class UserRegistrationDaoImpl implements UserRegistrationDAO{
 
