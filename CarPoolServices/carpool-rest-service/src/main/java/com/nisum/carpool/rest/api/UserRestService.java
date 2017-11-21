@@ -69,16 +69,18 @@ public class UserRestService {
 			String strEmail1 = null;
 			strEmail1 = userDto.getEmailId();
 			try {
-				//logger.info("userInfo findBy userId ");
-			//userInfo = userService.findByEmailId(strEmail1);
-				userData=userService.findUserById(userDto.getUserId());
+				logger.info("userInfo findBy emailId** ");
+			userInfo = userService.findByEmailId(strEmail1);
+				//logger.info("find byuserId:::"+userDto.getUserId());
+				//userData=userService.findUserById(userDto.getUserId());
+				logger.info("userData fetched by emailId**"+userInfo);
 			}catch(Exception ex) {
 				ex.printStackTrace();
 			}
-			if (userData != null && strEmail1.equals(userData.getEmailId())) {
+			if (userInfo != null && strEmail1.equals(userInfo.getEmailId())) {
 				logger.info("UserRestService ** in update User details :::");
 				userInfo.setLoginDate(CommonsUtil.getCurrentDateTime());
-				userService.updateUserDetails(userData);
+				userService.updateUserDetails(userInfo);
 
 			} else {
 				logger.info("UserRestService :: save User details :::");
@@ -110,7 +112,7 @@ public class UserRestService {
 						role.setRoleId(dto.getRoleId());
 					}
 				}
-				userDto.setRole(role);
+				//userDto.setRoleId(dto.getRoleId());
 				userDto.setActiveStatus(Constants.USER_STATUS);
 				userService.saveUser(userDto);
 
@@ -197,8 +199,8 @@ public class UserRestService {
 		logger.info("UserRestService :: users::: update");
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
 		try {
-			User user = UserServiceUtil.convertDtoObjectTODao(userDto);
-			Object obj = userService.updateUserDetails(user);
+			//User user = UserServiceUtil.convertDtoObjectTODao(userDto);
+			Object obj = userService.updateUserDetails(userDto);
 			if (obj.equals(null)) {
 				serviceStatusDto.setMessage(Constants.USER_NOT_EXISTS);
 				return new ResponseEntity<ServiceStatusDto>(serviceStatusDto, HttpStatus.NOT_FOUND);
@@ -227,8 +229,7 @@ public class UserRestService {
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
 		try {
 			for (UserDTO userDto : usersDTO) {
-				User user = UserServiceUtil.convertDtoObjectTODao(userDto);
-				userService.updateUserDetails(user);
+				userService.updateUserDetails(userDto);
 			}
 			serviceStatusDto.setMessage(Constants.USER_UPDATED);
 			return new ResponseEntity<ServiceStatusDto>(serviceStatusDto, HttpStatus.OK);

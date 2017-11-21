@@ -15,7 +15,7 @@ public class UserRoleServiceUtil {
 	public static UserRole convertDtoToDao(UserRoleDTO userRoleDto ) {
 		UserRole userRole=new UserRole();
 		userRole.setRole(userRoleDto.getRole());
-		userRole.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+		userRole.setCreatedDate(CommonsUtil.getCurrentDateTime().toLocalDateTime());
 		return userRole;
 	}
 
@@ -26,7 +26,7 @@ public class UserRoleServiceUtil {
 			 UserRoleDTO userRoleDTO= new UserRoleDTO();		
 			 	userRoleDTO.setRoleId(userRole.getRoleId());
 			 	userRoleDTO.setRole(userRole.getRole());		
-			 	userRoleDTO.setCreatedDate(userRole.getCreatedDate());
+			 	userRoleDTO.setCreatedDate(Timestamp.valueOf(userRole.getCreatedDate()));
 			 	userRoleDTOs.add(userRoleDTO);
 			}
 		}
@@ -37,7 +37,7 @@ public class UserRoleServiceUtil {
 		UserRole userRole=new UserRole();
 		userRole.setRoleId(userRoleDto.getRoleId());
 		userRole.setRole(userRoleDto.getRole());
-		userRole.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+		userRole.setCreatedDate(CommonsUtil.getCurrentDateTime().toLocalDateTime());
 		return userRole;
 	}
 	

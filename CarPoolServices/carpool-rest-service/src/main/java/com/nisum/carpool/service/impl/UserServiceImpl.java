@@ -39,11 +39,11 @@ public class UserServiceImpl implements UserService {
 	}
 	@Override
 	@CacheEvict(value = "Users", key = "#userDto" , allEntries=true, condition="#result!=null")
-	public UserDTO updateUserDetails(User user) {
-		logger.info("UserServiceImpl :: updateUserDetails");
-	//	User user = UserServiceUtil.convertDtoObjectTODao(userDto);
-		//User userObj = findUserById(user.getUserId());
-		if (user != null) {
+	public UserDTO updateUserDetails(UserDTO userDto) {
+		logger.info(" UserServiceImpl :: in updateUserDetails");
+		User user = UserServiceUtil.convertUpdateUserDtoTODao(userDto);
+		User userObj = findUserById(user.getUserId());
+		if (userObj != null) {
 			//profileSettingsDAO.deleteCategory(user.getEmailId());
 
 			User userDao = userDAO.updateUser(user);

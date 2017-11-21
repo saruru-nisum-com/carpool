@@ -1,5 +1,7 @@
 package com.nisum.carpool.rest.api;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,44 @@ public class CarpooldetailsRestService {
 		}
 		return responseEntity;
 		
+	}
+	
+	@RequestMapping(value="/create", method=RequestMethod.POST, consumes="application/json", produces="application/json")
+	public ResponseEntity<?>  createCarPool(@RequestBody CarpooldetailsDto carpooldetailsDto)  {
+		
+		logger.info("CarPoolRestService :: createCarPool :: Creating Car Pool");	
+		ResponseEntity<?> responseEntity = null;
+		
+		try {
+			
+			ServiceStatusDto statusDto = carpooldetailsService.createCarPooldetails(carpooldetailsDto);
+			if(statusDto.isStatus()) {
+				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
+		}
+			
+			if(statusDto.getMessage().equals(Constants.CARPOOLEXISTS)) {
+				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.BAD_REQUEST);
+			}
+			
+		}catch (Exception e) {
+			Errors error = new Errors();
+			error.setErrorCode("BAD REQUEST");
+			error.setErrorMessage(Constants.MSG_CARPOOL_FAILED);
+			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
+		}
+		
+		return responseEntity;
+		
+	}
+	
+	
+	@RequestMapping(value = "/getCarPoolDetails", method = RequestMethod.GET)
+	public ResponseEntity<List<CarpooldetailsDto>> getCarPoolDetails()
+			{
+		List<CarpooldetailsDto> poolList=null;
+		
+		poolList=carpooldetailsService.getCarPoolDetails();
+		return new ResponseEntity<List<CarpooldetailsDto>>(poolList, HttpStatus.OK);
 	}
 	
 }
