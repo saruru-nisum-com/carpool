@@ -21,7 +21,7 @@ app.factory('carpoolRegistrationService', function($http, $q, localStorageServic
 	ls.registerAsDriver=function() {
 		var deferred = $q.defer();
 
-		$http.post('v1/user/create', data).success(function(response) {
+		$http.post('v1/carpool/registerdriver', data).success(function(response) {
 			deferred.resolve(response);
 		}).error(function(response) {
 			deferred.reject(response);

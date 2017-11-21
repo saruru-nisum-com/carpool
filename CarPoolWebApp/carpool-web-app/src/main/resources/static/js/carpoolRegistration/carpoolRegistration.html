@@ -130,14 +130,14 @@ table, td {
 					<tr>
 						<td>Vehicle Type</td>
 						<td>
-							<input type="checkbox" name="cb2wheel" ng-model='cb2wheel'> 2-wheeler</input>
+							<input type="checkbox" name="cb2wheel" ng-model='cb2wheel' ng-true-value="2" ng-false-value="0"> 2-wheeler</input>
 						</td>
 					</tr>
 
 					<tr>
 						<td></td>
 						<td>
-							<input type="checkbox" name="cb4wheel" ng-model='cb4wheel'> 4-wheeler</input>
+							<input type="checkbox" name="cb4wheel" ng-model='cb4wheel' ng-true-value="4" ng-false-value="0"> 4-wheeler</input>
 						</td>
 						<td>
 							<div ng-show="driverForm.$submitted && driverForm.$invalid" style="color:red" class="help-block">

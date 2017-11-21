@@ -24,15 +24,23 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 			//alert("register is clicked");
 			var registrationId = 1;//static for now, need to change
 			var userId = "test@tes.com";//static for now, need to change
-			var vehicleType = [1,2];//static for now, need to change
-			var location = "gachibowli";//static for now, need to change
+			if($scope.cb2wheel==2 && $scope.cb4wheel==4){
+				var vehicleType = [$scope.cb2wheel, $scope.cb4wheel];
+			}else if($scope.cb2wheel==2 && $scope.cb4wheel==0){
+				var vehicleType = [$scope.cb2wheel];
+				
+			}else if($scope.cb4wheel==4 && $scope.cb2wheel==0){
+				var vehicleType = [$scope.cb4wheel];
+				
+			}
+			var location = $scope.location;
 			var latitude = "24";//static for now, need to change
 			var longitude = "36";//static for now, need to change
-			var nearby = "near yellamma temple";//static for now, need to change
+			var nearby = $scope.nearBy;
 			var mobile = "9000000000";//static for now, need to change
 			var emailNotification = true;//static for now, need to change
 			var isRider = 1;//static for now, need to change
-			var createdDate = "20171115074306232";//static for now, need to change
+			var createdDate = $filter('date')(new Date(), 'yyyy-MM-dd');
 			var modifiedDate = "20171115074306232";//static for now, need to change
 			//window.alert(parseFromDate + " " + parseEndTime);
 			
