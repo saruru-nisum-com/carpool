@@ -12,13 +12,10 @@ app.factory('carpoolRegistrationService', function($http, $q, localStorageServic
     	}).error(function(response) {
 			deferred.reject(response);
     		})
-	  console.log(deferred)
-		debugger;
 		return deferred.promise;
-	  window.alert(123456)
 	}
 	
-	ls.registerAsDriver=function() {
+	ls.registerAsDriver=function(data) {
 		var deferred = $q.defer();
 
 		$http.post('v1/carpool/registerdriver', data).success(function(response) {

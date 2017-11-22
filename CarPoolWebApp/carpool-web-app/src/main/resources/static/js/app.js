@@ -49,7 +49,7 @@ var app = angular
 
 								} else if (profile === null) {
 									$timeout(function() {
-										$state.go('carpoolRegistration');
+										$state.go('login');
 									}, 0);
 
 								}

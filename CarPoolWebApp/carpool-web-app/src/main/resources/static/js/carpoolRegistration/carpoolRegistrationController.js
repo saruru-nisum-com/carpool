@@ -15,15 +15,18 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 	
 	$scope.registerAsDriver = function() {
 
-		alert('inside...');
+		//alert('inside...');
 		console.log('checkbox values '+$scope.cb2wheel +'and '+$scope.cb4wheel);
 		
 		if ($scope.cb2wheel==false && $scope.cb4wheel==false) {
-			alert('Error in cb occured.');
+			alert('Please select the vehicle type.');
 		}else {
 			//alert("register is clicked");
-			var registrationId = 1;//static for now, need to change
-			var userId = "test@tes.com";//static for now, need to change
+			var registrationId = Math.floor(Math.random() * 100000000) + 1 ;//static for now, need to change
+
+			var profileSessionData = localStorageService.get('profile');
+			
+			var userId = profileSessionData.emailId;//static for now, need to change
 			if($scope.cb2wheel==2 && $scope.cb4wheel==4){
 				var vehicleType = [$scope.cb2wheel, $scope.cb4wheel];
 			}else if($scope.cb2wheel==2 && $scope.cb4wheel==0){
@@ -41,7 +44,7 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 			var emailNotification = true;//static for now, need to change
 			var isRider = 1;//static for now, need to change
 			var createdDate = $filter('date')(new Date(), 'yyyy-MM-dd');
-			var modifiedDate = "20171115074306232";//static for now, need to change
+			var modifiedDate = $filter('date')(new Date(), 'yyyy-MM-dd');
 			//window.alert(parseFromDate + " " + parseEndTime);
 			
 			$scope.registerDriverJson = {
@@ -58,18 +61,20 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 				    "createdDate" : createdDate,
 				    "modifiedDate": modifiedDate
 			}
-			window.alert(JSON.stringify($scope.registerDriverJson));
+			//window.alert("what am i sending to the server::: "+JSON.stringify($scope.registerDriverJson));
 			carpoolRegistrationService.registerAsDriver($scope.registerDriverJson).then(function(response) {
-				window.alert("dhiraj");
+				//window.alert("dhiraj");
 				if (response.errorCode === 500) {
 					$scope.message = response.errorMessage
 				}else {
-					window.alert('singh from server.............. :)'+JSON.stringify(response))
+					//window.alert('singh from server.............. :)'+JSON.stringify(response));
+					$scope.isRegisteredAsDriver= true;
+		            alert('driver registered successfully.');
 					//$scope.names = response.records;
 				}
 			}, function(response) {
 				// console
-				window.alert("dks-- "+response)
+				//window.alert("dks-- "+response)
 			});
 			var onSuccess = function (data, status, headers, config) {
 				$scope.isRegisteredAsDriver= true;
@@ -139,7 +144,6 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 		var parseToDate = $filter('date')(new Date(toDate), 'dd/MM/yyyy');
 		var parseStartTime = $filter('date')(new Date(startTime), 'h:mm a');
 		var parseEndTime = $filter('date')(new Date(endTime), 'h:mm a');
-		window.alert(parseFromDate + " " + parseEndTime);
 
 		// Start date and End date difference validation starts
 //		var d1 = new Date(parseFromDate);
@@ -149,26 +153,115 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 //		window.alert(DaysDiff);
 		// end
 
+		
+		var profileData = localStorageService.get('profile');
+		var userid= profileData.emailId;
 		$scope.postRide = {
 				"vType" : vType,
 				"vSeatCap" : vSeatCap,
 				"fromDate" : parseFromDate,
 				"toDate" : parseToDate,
 				"startTime" : parseStartTime,
-				"endTime" : parseEndTime
+				"endTime" : parseEndTime,
+				"userid" : userid
 		}
 
-		window.alert(JSON.stringify($scope.postRide))
 		carpoolRegistrationService.rideAddToGridFn($scope.postRide).then(function(response) {
 
-			window.alert(123)
 			if (response.errorCode === 500) {
 				$scope.message = response.errorMessage
 			} else {
 //				localStorageService.set('profile', response);
-				window.alert('Hold on.............. :)'+JSON.stringify(response))
 				$scope.names = response.records;
 //				$state.go("carpoolRegistration");
+				
+				var vehicleList = [ {
+			        "parentId" : "1",
+			        "isParent" : "true",
+			        "isChild" : "false",
+			        "vType" : "2",
+			        "vSeatCap" : "1",
+			        "fromDate" : "15/11/2017",
+			        "toDate" : "16/11/2017",
+			        "startTime" : "08:30AM",
+			        "endTime" : "07:00PM"
+			    }, {
+			        "childId" : "1",
+			        "parentId" : "1",
+			        "isParent" : "false",
+			        "isChild" : "true",
+			        "vType" : "2",
+			        "vSeatCap" : "1",
+			        "fromDate" : "15/11/2017",
+			        "toDate" : "15/11/2017",
+			        "startTime" : "08:30AM",
+			        "endTime" : "07:00PM"
+			    }, {
+			        "childId" : "1",
+			        "parentId" : "1",
+			        "isParent" : "false",
+			        "isChild" : "true",
+			        "vType" : "2",
+			        "vSeatCap" : "1",
+			        "fromDate" : "16/11/2017",
+			        "toDate" : "16/11/2017",
+			        "startTime" : "08:30AM",
+			        "endTime" : "07:00PM"
+			    }, {
+			        "parentId" : "2",
+			        "isParent" : "true",
+			        "isChild" : "false",
+			        "vType" : "4",
+			        "vSeatCap" : "3",
+			        "fromDate" : "17/11/2017",
+			        "toDate" : "18/11/2017",
+			        "startTime" : "08:30AM",
+			        "endTime" : "07:00PM"
+			    }, {
+			        "childId" : "2",
+			        "parentId" : "2",
+			        "isParent" : "false",
+			        "isChild" : "true",
+			        "vType" : "4",
+			        "vSeatCap" : "3",
+			        "fromDate" : "17/11/2017",
+			        "toDate" : "17/11/2017",
+			        "startTime" : "08:30AM",
+			        "endTime" : "07:00PM"
+			    }, {
+			        "childId" : "2",
+			        "parentId" : "2",
+			        "isParent" : "false",
+			        "isChild" : "true",
+			        "vType" : "4",
+			        "vSeatCap" : "3",
+			        "fromDate" : "18/11/2017",
+			        "toDate" : "18/11/2017",
+			        "startTime" : "08:30AM",
+			        "endTime" : "07:00PM"
+			    } ];
+				
+				
+				var skipStep = true;
+				var sortedVehicle = {};
+			    for (var i = 0; i < vehicleList.length; i++) {
+			        if (!sortedVehicle[vehicleList[i].parentId]) {
+			            sortedVehicle[vehicleList[i].parentId] = [];
+			            sortedVehicle[vehicleList[i].parentId]
+			                    .push(vehicleList[i]);
+			            skipStep = false;
+			        }
+			        if (skipStep) {
+			            sortedVehicle[vehicleList[i].parentId]
+			                    .push(vehicleList[i]);
+			        }
+			        skipStep = true;
+			    }
+
+			    console.log('sortedImages: ', sortedVehicle);
+			    $scope.foo = sortedVehicle;
+				
+				
 			}
 		}, function(response) {
 			// console
@@ -186,6 +279,14 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 	}
 	// end
 
+	
+	
 	$scope.userselected = [];
+	
+	$scope.display = function(childId){
+        $("."+childId).toggle();
+    }
+	
+	
 
 });

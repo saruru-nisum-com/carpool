@@ -12,6 +12,7 @@ public class RegisterServiceUtil {
 		registerDomain.setVehicletype(registerDTO.getVehicleType());
 		registerDomain.setLocation(registerDTO.getLocation());
 		registerDomain.setLatitude(registerDTO.getLatitude());
+		registerDomain.setLongitude(registerDTO.getLongitude());
 		registerDomain.setNearby(registerDTO.getNearby());
 		registerDomain.setMobile(registerDTO.getMobile());
 		registerDomain.setEmailnotification(registerDTO.isEmailNotification());

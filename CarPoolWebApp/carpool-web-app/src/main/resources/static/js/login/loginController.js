@@ -18,7 +18,7 @@ loginApp.controller('loginController', function($scope, $state,
 				} else {
 					localStorageService.set('profile', response);
 
-					$state.go("configurations");
+					$state.go("carpoolRegistration");
 				}
 			}, function(response) {
 				// console
