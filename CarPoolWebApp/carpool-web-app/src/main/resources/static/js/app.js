@@ -2,7 +2,7 @@ var app = angular
 		.module(
 				'nisumApp',
 				[ 'ui.router', 'profileApp', 'loginApp', 'carpoolRegistrationApp', 'LocalStorageModule',
-						'textAngular', 'am.multiselect', 'google-signin' ])
+						'textAngular', 'am.multiselect', 'google-signin','configurationsApp'])
 
 		.config(function($stateProvider, $urlRouterProvider) {
 
@@ -49,7 +49,7 @@ var app = angular
 
 								} else if (profile === null) {
 									$timeout(function() {
-										$state.go('carpoolRegistration');
+										$state.go('login');
 									}, 0);
 
 								}
