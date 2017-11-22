@@ -83,7 +83,7 @@ public class CarpooldetailsServiceUtil {
 	public static int getNo_of_days(String fromDate, String toDate) {
 		
 		//to find number of days between two dates
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/YYYY");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
 		Date dateStart = null;
 		Date dateEnd = null;
@@ -111,7 +111,7 @@ public class CarpooldetailsServiceUtil {
 
 	public static String getAddedDate(String date, int no_of_days) {
 		// to add days to a given date
-	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/YYYY");
+	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		
 		Date dateStart = null;
 			
@@ -129,7 +129,7 @@ public class CarpooldetailsServiceUtil {
 		cal.add( Calendar.DATE, no_of_days );
 		
 		
-		SimpleDateFormat format1 = new SimpleDateFormat("MM/dd/YYYY");
+		SimpleDateFormat format1 = new SimpleDateFormat("MM/dd/yyyy");
 		System.out.println(cal.getTime());
 		// Output "Wed Sep 26 14:23:28 EST 2012"
 
