@@ -34,8 +34,9 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
          return Constants.MSG_CARPOOL_UPDATE_MULTI;
 			
 	}
+	
 	@Override
-	public String addCarpoolDetails(List<Carpooldetails> carpooldetails) {
+	public List<Carpooldetails> addCarpoolDetails(List<Carpooldetails> carpooldetails) {
 		
 		logger.info("CarpooldetailsDAOImpl: createCarpooldetails");	
 		
@@ -46,7 +47,7 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 			
 			logger.info("CarpooldetailsDAOImpl: createCarpooldetails");
 		
-			return Constants.MSG_CARPOOL_ADD;
+			return carpooldetails;
 		
 	}
 	
