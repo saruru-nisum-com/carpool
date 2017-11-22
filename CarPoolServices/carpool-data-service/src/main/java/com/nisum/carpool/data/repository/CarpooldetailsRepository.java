@@ -23,7 +23,7 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	List<Integer> getListOfIdsByParentid(int parentid);
 	
 	@Query("update cp_carpooldetails set fromtime=:#{#carpoolDetails.fromtime}, totime=:#{#carpoolDetails.toTime},"
-			+ "noofseats=:#{#carpoolDetails.noofseats}, vehicletype=:#{#carpoolDetails.vehicleType} where id IN (:listOfIds)")
+			+ "noofseats=:#{#carpoolDetails.noofseats}, modifieddate=:#{#carpoolDetails.modifieddate}, vehicletype=:#{#carpoolDetails.vehicleType} where id IN (:listOfIds)")
 	Integer udpateMultipleCarpoolDetails(@Param("carpoolDetails") Carpooldetails carpoolDetails, @Param("listOfIds") List<Integer> listOfIds);
 
 }

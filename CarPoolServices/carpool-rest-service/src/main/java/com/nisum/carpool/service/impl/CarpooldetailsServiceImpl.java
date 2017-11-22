@@ -26,11 +26,11 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	private static Logger logger = LoggerFactory.getLogger(CarpooldetailsServiceImpl.class);
 	@Autowired
 	CarpooldetailsDAO carpooldetailsDAO;
+	Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
 	@Override
 	public ServiceStatusDto updateCarpooldetails(CarpooldetailsDto carpooldetailsDto) {
 		// TODO Auto-generated method stub
 		logger.info("CarpooldetailsServiceImpl : updateCarpooldetails");
-		Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
 		carpooldetailsDto.setModifieddate(modifiedDate);
 		Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
 		String updateCarpooldetails = carpooldetailsDAO.updateCarpooldetails(carpooldetails);
