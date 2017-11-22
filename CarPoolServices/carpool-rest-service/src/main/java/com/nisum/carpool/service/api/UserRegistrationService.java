@@ -6,5 +6,5 @@ public interface UserRegistrationService {
 
 	
 	public UserRegistrationDto getUserRegistrationProfile(UserRegistrationDto dto) ;
-		
+	public String searchLocation(UserRegistrationDto userRegistrationDto)throws Exception;
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,13 @@ public class UserRestService {
 
 	@Autowired
 	UserRoleService userRoleService;
-
+	
+	@Autowired
+	UserRegistrationRestService userRegService;
+	
+	@Autowired
+	HttpServletRequest httpRequest;
+	
 	//private static EmailAccount emailAccount;
 
 	/**
@@ -117,8 +124,9 @@ public class UserRestService {
 				userService.saveUser(userDto);
 
 				//MailSender.sendEmail(emailAccount.getAdminemail(), emailAccount.getAdminpassword(), strEmail1,null,
-					//	emailAccount.getSubject(), MailSender.messageBody(userDto.getUserName()));
-
+				//	emailAccount.getSubject(), MailSender.messageBody(userDto.getUserName()));
+			//	userRegService.getUserProfile(userRegDto, isRider);
+				httpRequest.setAttribute("userSession", userDto);
 				userInfo = userDto;
 			}
 

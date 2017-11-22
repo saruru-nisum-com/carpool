@@ -37,6 +37,11 @@ public class UserRegistrationRestService {
 		return new ResponseEntity<UserRegistrationDto>(userRegDto, HttpStatus.OK);
 	}
 
-	
+	@RequestMapping(value = "/locations", method = RequestMethod.POST)
+	public String getLocation(@RequestBody UserRegistrationDto userRegistrationDto) throws Exception {
+		System.out.println("coming to rest.......");
+		return service.searchLocation(userRegistrationDto);
+
+	}
 	
 }

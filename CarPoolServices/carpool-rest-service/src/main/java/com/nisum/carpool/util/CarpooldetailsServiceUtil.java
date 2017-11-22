@@ -29,7 +29,7 @@ public class CarpooldetailsServiceUtil {
 				carpooldetailsDto.setTotalNoOfSeats(c.getNoofseats());
 				carpooldetailsDto.setFromDate(c.getFromDate());
 				carpooldetailsDto.setToDate(c.getToDate());
-				carpooldetailsDto.setStartTime(c.getStartTime());
+				carpooldetailsDto.setStartTime(c.getFromtime());
 				carpooldetailsDto.setToTime(c.getToTime());
 				carpooldetailsDto.setStatus(c.getStatus());
 				carpooldetailsDto.setCreateddate(c.getCreateddate());
@@ -52,7 +52,7 @@ public class CarpooldetailsServiceUtil {
 			carpooldetailsDto.setTotalNoOfSeats(carpooldetails.getNoofseats());
 			carpooldetailsDto.setFromDate(carpooldetails.getFromDate());
 			carpooldetailsDto.setToDate(carpooldetails.getToDate());
-			carpooldetailsDto.setStartTime(carpooldetails.getStartTime());
+			carpooldetailsDto.setStartTime(carpooldetails.getFromtime());
 			carpooldetailsDto.setToTime(carpooldetails.getToTime());
 			carpooldetailsDto.setStatus(carpooldetails.getStatus());
 			carpooldetailsDto.setCreateddate(carpooldetails.getCreateddate());
@@ -71,7 +71,7 @@ public class CarpooldetailsServiceUtil {
 		carpooldetails.setNoofseats(carpooldetailsDto.getTotalNoOfSeats());
 		carpooldetails.setFromDate(carpooldetailsDto.getFromDate());
 		carpooldetails.setToDate(carpooldetailsDto.getToDate());
-		carpooldetails.setStartTime(carpooldetailsDto.getStartTime());
+		carpooldetails.setFromtime(carpooldetailsDto.getStartTime());
 		carpooldetails.setToTime(carpooldetailsDto.getToTime());
 		carpooldetails.setStatus(carpooldetailsDto.getStatus());
 		carpooldetails.setCreateddate(carpooldetailsDto.getCreateddate());

@@ -10,17 +10,17 @@ INSERT INTO UserRole (roleid,role,createdDate) VALUES (1,'Admin', '2017-11-13');
 INSERT INTO UserRole (roleid,role,createdDate) VALUES (2,'User', '2017-11-13');
 
 CREATE TABLE User (
-  userId int,
+  userId int PRIMARY KEY,
   emailid text  ,
   username text ,
   loginDate timestamp ,
-  activeStatus String ,
+  activeStatus text ,
   roleId int ,
  notifications text,
  profilename text,
  image blob,
- createdate timestamp,
- PRIMARY KEY (userId)
+ createdate timestamp
+ 
 
 );
 

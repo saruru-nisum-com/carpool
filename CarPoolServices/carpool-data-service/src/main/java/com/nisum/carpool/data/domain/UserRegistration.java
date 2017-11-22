@@ -89,6 +89,13 @@ public class UserRegistration {
 	public void setModifiedDate(Timestamp modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
+	@Override
+	public String toString() {
+		return "UserRegistration [registrationId=" + registrationId + ", userId=" + userId + ", vehicleType="
+				+ vehicleType + ", location=" + location + ", latitude=" + latitude + ", longitude=" + longitude
+				+ ", nearby=" + nearby + ", mobile=" + mobile + ", emailNotification=" + emailNotification
+				+ ", isRider=" + isRider + ", createdDate=" + createdDate + ", modifiedDate=" + modifiedDate + "]";
+	}
 	
 	
 	

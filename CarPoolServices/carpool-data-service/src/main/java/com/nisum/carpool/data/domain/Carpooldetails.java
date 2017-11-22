@@ -68,10 +68,10 @@ public class Carpooldetails implements Serializable{
 	public void setToDate(String toDate) {
 		this.toDate = toDate;
 	}
-	public String getStartTime() {
+	public String getFromtime() {
 		return fromtime;
 	}
-	public void setStartTime(String fromtime) {
+	public void setFromtime(String fromtime) {
 		this.fromtime = fromtime;
 	}
 	public String getToTime() {

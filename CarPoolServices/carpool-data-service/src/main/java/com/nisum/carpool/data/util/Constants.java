@@ -56,6 +56,8 @@ public class Constants {
 		public static final String YES="Y";
 		public static final String MSG_CARPOOL_ADD = "Carpool Added Successfully !!";
 		public static final String MSG_CARPOOL_FAILED = "Adding Carpool Failed !!";
+		public static final String MSG_CARPOOL_UPDATE_SINGLE = "Current record Updated Successfully !!";
+		public static final String MSG_CARPOOL_UPDATE_MULTI = "All CarpoolDetails Updated Successfully !!";
 		
 		public static final String VALID = "valid";
 		public static final String NOTVALID = "not valid";

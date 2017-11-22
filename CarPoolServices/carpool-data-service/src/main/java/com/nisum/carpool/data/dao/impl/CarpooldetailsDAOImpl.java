@@ -20,18 +20,23 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	@Autowired
 	CarpooldetailsRepository carpooldetailsRepository;
 	@Override
-	public Carpooldetails updateCarpooldetails(Carpooldetails carpooldetails) {
-	/*	try{
-			logger.info("PostRideDaoImpl: updatePostRideDao ::");
-		  postRideRepository.save(carpooldetails);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}*/
+public String updateCarpooldetails(Carpooldetails carpooldetails) {
+		
 		logger.info("CarpooldetailsDAOImpl: updateCarpooldetails");
-		 return carpooldetailsRepository.save(carpooldetails);
+		Long countByParentid = carpooldetailsRepository.countByParentid(carpooldetails.getId());
+		
+        if(countByParentid == 1) {
+        	    carpooldetailsRepository.save(carpooldetails);
+			return Constants.MSG_CARPOOL_UPDATE_SINGLE;
+		}
+         List<Integer> listOfIds = carpooldetailsRepository.getListOfIdsByParentid(carpooldetails.getId());
+         carpooldetailsRepository.udpateMultipleCarpoolDetails(carpooldetails, listOfIds);
+         return Constants.MSG_CARPOOL_UPDATE_MULTI;
+			
 	}
+	
 	@Override
-	public String addCarpoolDetails(List<Carpooldetails> carpooldetails) {
+	public List<Carpooldetails> addCarpoolDetails(List<Carpooldetails> carpooldetails) {
 		
 		logger.info("CarpooldetailsDAOImpl: createCarpooldetails");	
 		
@@ -42,7 +47,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 			
 			logger.info("CarpooldetailsDAOImpl: createCarpooldetails");
 		
-			return Constants.MSG_CARPOOL_ADD;
+			return carpooldetails;
 		
 	}
 	

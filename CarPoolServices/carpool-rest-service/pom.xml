@@ -29,6 +29,10 @@
       <artifactId>carpool-data-service</artifactId>
       <version>0.0.1-SNAPSHOT</version>
       </dependency>
-    
+
+      <dependency>
+      	<groupId>com.googlecode.json-simple</groupId>
+      	<artifactId>json-simple</artifactId>
+      </dependency>
   </dependencies>
 </project>

@@ -40,8 +40,8 @@ public class CarpooldetailsRestService {
 		}
 		}catch (Exception e) {
 			Errors error = new Errors();
-			error.setErrorCode("Errors-UserRole");
-			error.setErrorMessage(Constants.CARPOOLDETAILS_EXISTS);
+			error.setErrorCode("BAD REQUEST");
+			error.setErrorMessage(Constants.MSG_UPDATE_CARPOOL_FAILED);
 			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
 		return responseEntity;
