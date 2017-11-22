@@ -7,7 +7,7 @@ import com.nisum.carpool.data.domain.Carpooldetails;
 public interface CarpooldetailsDAO {
 	public String updateCarpooldetails(Carpooldetails carpooldetails);
 	
-	public String addCarpoolDetails(List<Carpooldetails> carpooldetails);
+	public List<Carpooldetails> addCarpoolDetails(List<Carpooldetails> carpooldetails);
 
 	public String checkValidCarpool(Carpooldetails carpooldetails);
 	
