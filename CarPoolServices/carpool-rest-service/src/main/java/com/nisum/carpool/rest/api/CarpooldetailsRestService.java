@@ -49,31 +49,42 @@ public class CarpooldetailsRestService {
 	}
 	
 	@RequestMapping(value="/create", method=RequestMethod.POST, consumes="application/json", produces="application/json")
-	public ResponseEntity<?>  createCarPool(@RequestBody CarpooldetailsDto carpooldetailsDto)  {
-		
-		logger.info("CarPoolRestService :: createCarPool :: Creating Car Pool");	
-		ResponseEntity<?> responseEntity = null;
-		
-		try {
-			
-			ServiceStatusDto statusDto = carpooldetailsService.createCarPooldetails(carpooldetailsDto);
-			if(statusDto.isStatus()) {
-				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
-		}
-			
-			if(statusDto.getMessage().equals(Constants.CARPOOLEXISTS)) {
-				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.BAD_REQUEST);
-			}
-			
-		}catch (Exception e) {
-			Errors error = new Errors();
-			error.setErrorCode("BAD REQUEST");
-			error.setErrorMessage(Constants.MSG_CARPOOL_FAILED);
-			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
-		}
-		
-		return responseEntity;
-		
+    public ResponseEntity<?>  createCarPool(@RequestBody CarpooldetailsDto carpooldetailsDto)  {
+        
+       logger.info("CarPoolRestService :: createCarPool :: Creating Car Pool");    
+       
+       List<CarpooldetailsDto> cplist = carpooldetailsService.createCarPooldetails(carpooldetailsDto);
+        try {
+            
+       
+       if(cplist == null) {
+            
+           ServiceStatusDto statusDto = new ServiceStatusDto();
+            statusDto.setStatus(false);
+            statusDto.setMessage(Constants.MSG_CARPOOL_FAILED);
+            ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.BAD_REQUEST);
+            return entity;
+            
+       }
+        
+       else {
+            
+           ResponseEntity<List<CarpooldetailsDto>> entity = new ResponseEntity<List<CarpooldetailsDto>>(cplist, HttpStatus.OK);
+            return entity;
+            
+       }
+        
+       }catch(Exception e) {
+            
+           
+           ServiceStatusDto statusDto = new ServiceStatusDto();
+            statusDto.setStatus(false);
+            statusDto.setMessage(Constants.MSG_CARPOOL_FAILED);
+            ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.BAD_REQUEST);
+            return entity;
+        
+       }
+        
 	}
 	
 	

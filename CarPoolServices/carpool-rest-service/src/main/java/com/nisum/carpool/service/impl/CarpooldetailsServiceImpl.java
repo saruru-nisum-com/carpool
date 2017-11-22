@@ -45,40 +45,33 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	}
 	
 	@Override
-	public ServiceStatusDto createCarPooldetails(CarpooldetailsDto carpooldetailsDto) {
-		// TODO Auto-generated method stub
-		logger.info("PostRideServiceImpl:createCarPool");
-		
-		Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
-		
-		String validstatus = checkValidCarpool(carpooldetails);
-		logger.info("validstatus " + validstatus);
-		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
-		
-		if(validstatus.equals(Constants.CARPOOLEXISTS)) {
-			
-			logger.info("PostRideServiceImpl: posting a ride failed ");
-			serviceStatusDto.setStatus(false);
-			serviceStatusDto.setMessage(Constants.CARPOOLEXISTS);
-			return serviceStatusDto;
+    public List<CarpooldetailsDto> createCarPooldetails(CarpooldetailsDto carpooldetailsDto) {
+        // TODO Auto-generated method stub
+        logger.info("CarpooldetailsServiceImpl:createCarPool");
+        
+       Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
+        
+       String validstatus = checkValidCarpool(carpooldetails);
+        logger.info("validstatus " + validstatus);
+        
+       if(validstatus.equals(Constants.CARPOOLEXISTS)) {
+            
+           
+           logger.info("PostRideServiceImpl: posting a ride failed ");
+            return null;
 
-			
-		}
-		
-		logger.info("valid code");
-		List<Carpooldetails> carPoolList = processPostRideDomain(carpooldetails);
+           
+       }
+        
+       logger.info("valid code");
+        List<Carpooldetails> carPoolList = processPostRideDomain(carpooldetails);
+        
+       List<Carpooldetails> cpd = carpooldetailsDAO.addCarpoolDetails(carPoolList);
+        
 
-	    String status = carpooldetailsDAO.addCarpoolDetails(carPoolList);
-	    if(status.equals(Constants.MSG_CARPOOL_ADD))
-		{
-			logger.info("CarpooldetailsServiceImpl: posted a ride succesfully ");
-			serviceStatusDto.setStatus(true);
-			serviceStatusDto.setMessage(Constants.MSG_CARPOOL_ADD);
-		}
-		return serviceStatusDto;
-
-	}
-
+       return CarpooldetailsServiceUtil.convertDaoTODto(cpd);
+      
+    }
 	private String checkValidCarpool(Carpooldetails carpooldetails) {
 		
 		//to check if the carpool is already available in db for the user with the given fromdate and todate
