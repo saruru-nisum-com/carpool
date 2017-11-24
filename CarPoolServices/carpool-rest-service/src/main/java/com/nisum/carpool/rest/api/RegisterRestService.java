@@ -9,17 +9,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nisum.carpool.service.api.RegisterService;
-
-import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.Errors;
+import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.service.exception.RegisterServiceException;
+import com.nisum.carpool.service.exception.UserServiceException;
 import com.nisum.carpool.util.CommonsUtil;
 
 @RestController
@@ -44,17 +45,17 @@ public class RegisterRestService {
 			List<Integer> list = new ArrayList<>();
 			list.add(4);
 			
-//			registerDTO.setRegistrationId(76763);
-//			registerDTO.setIsRider(0);
-//			registerDTO.setLatitude("23322323");
-//			registerDTO.setLocation("dsdnmn");
-//			registerDTO.setMobile("8943434434");
-//			registerDTO.setUserId("test@tes.com");
-//			registerDTO.setVehicleType(list);
-//			registerDTO.setNearby("NELO");
-//			registerDTO.setCreatedDate(CommonsUtil.getCurrentDateTime());
-//			registerDTO.setModifiedDate(CommonsUtil.getCurrentDateTime());
-//			registerDTO.setEmailNotification(false);
+			registerDTO.setRegistrationId(76763);
+			registerDTO.setIsRider(0);
+			registerDTO.setLatitude("23322323");
+			registerDTO.setLocation("dsdnmn");
+			registerDTO.setMobile("8943434434");
+			registerDTO.setUserId("test@tes.com");
+			registerDTO.setVehicleType(list);
+			registerDTO.setNearby("NELO");
+			registerDTO.setCreatedDate(CommonsUtil.getCurrentDateTime());
+			registerDTO.setModifiedDate(CommonsUtil.getCurrentDateTime());
+			registerDTO.setEmailNotification(false);
 			ServiceStatusDto statusDto = registerService.registerDriverorRider(registerDTO);
 			if(statusDto.isStatus()) {
 				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
@@ -66,9 +67,6 @@ public class RegisterRestService {
 			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
 		return responseEntity;
-		
-		
-		
 	}
 	
 	@RequestMapping(value = "/registerrider", method = RequestMethod.POST,  consumes = "application/json", produces = "application/json")
@@ -80,20 +78,20 @@ public class RegisterRestService {
 			// Duplicate Check need to add it on later point of time 
 			
 			// Hard Coded Data
-//			List<Integer> list = new ArrayList<>();
-//			list.add(4);
-//			
-//			registerDTO.setRegistrationId(76763);
-//			registerDTO.setIsRider(0);
-//			registerDTO.setLatitude("23322323");
-//			registerDTO.setLocation("dsdnmn");
-//			registerDTO.setMobile("8943434434");
-//			registerDTO.setUserId("test@tes.com");
-//			registerDTO.setVehicleType(list);
-//			registerDTO.setNearby("NELO");
-//			registerDTO.setCreatedDate(CommonsUtil.getCurrentDateTime());
-//			registerDTO.setModifiedDate(CommonsUtil.getCurrentDateTime());
-//			registerDTO.setEmailNotification(false);
+			List<Integer> list = new ArrayList<>();
+			list.add(4);
+			
+			registerDTO.setRegistrationId(76763);
+			registerDTO.setIsRider(0);
+			registerDTO.setLatitude("23322323");
+			registerDTO.setLocation("dsdnmn");
+			registerDTO.setMobile("8943434434");
+			registerDTO.setUserId("test@tes.com");
+			registerDTO.setVehicleType(list);
+			registerDTO.setNearby("NELO");
+			registerDTO.setCreatedDate(CommonsUtil.getCurrentDateTime());
+			registerDTO.setModifiedDate(CommonsUtil.getCurrentDateTime());
+			registerDTO.setEmailNotification(false);
 			ServiceStatusDto statusDto = registerService.registerDriverorRider(registerDTO);
 			if(statusDto.isStatus()) {
 				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
@@ -105,8 +103,26 @@ public class RegisterRestService {
 			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
 		return responseEntity;
-		
-		
 	}
 	
+	
+
+	@RequestMapping(value = "/getProfile/{userId}", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
+	public ResponseEntity<List<RegisterDTO>> getUserProfile(@PathVariable String userId)
+			throws UserServiceException {
+		logger.info("UserProfileRestService :: users profile::: get");
+		RegisterDTO regDto=new RegisterDTO();
+		regDto.setUserId(userId);
+		List<RegisterDTO> list = registerService.getUserRegistrationProfile(regDto);
+
+		return new ResponseEntity<List<RegisterDTO>>(list, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/locations", method = RequestMethod.POST)
+	public String getLocation(@RequestBody RegisterDTO regDto) throws Exception {
+		System.out.println("coming to rest.......");
+		return registerService.searchLocation(regDto);
+
+	}
+
 }

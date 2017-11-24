@@ -50,7 +50,7 @@ public class UserRestService {
 	UserRoleService userRoleService;
 	
 	@Autowired
-	UserRegistrationRestService userRegService;
+	RegisterRestService userRegService;
 	
 	@Autowired
 	HttpServletRequest httpRequest;

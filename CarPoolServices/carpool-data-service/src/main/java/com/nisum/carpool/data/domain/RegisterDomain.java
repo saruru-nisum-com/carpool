@@ -2,8 +2,10 @@ package com.nisum.carpool.data.domain;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.cassandra.mapping.CassandraType;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 @Table("cp_userregistration")
@@ -25,8 +27,8 @@ public class RegisterDomain implements Serializable{
 	private String mobile;
 	private boolean emailnotification;
 	private int isrider;
-	private Timestamp createddate;
-	private Timestamp modifieddate;
+	private LocalDateTime createddate;
+	private LocalDateTime modifieddate;
 	/**
 	 * @return the registrationid
 	 */
@@ -147,35 +149,17 @@ public class RegisterDomain implements Serializable{
 	public void setIsrider(int isrider) {
 		this.isrider = isrider;
 	}
-	/**
-	 * @return the createddate
-	 */
-	public Timestamp getCreateddate() {
+	public LocalDateTime getCreateddate() {
 		return createddate;
 	}
-	/**
-	 * @param createddate the createddate to set
-	 */
-	public void setCreateddate(Timestamp createddate) {
+	public void setCreateddate(LocalDateTime createddate) {
 		this.createddate = createddate;
 	}
-	/**
-	 * @return the modifieddate
-	 */
-	public Timestamp getModifieddate() {
+	public LocalDateTime getModifieddate() {
 		return modifieddate;
 	}
-	/**
-	 * @param modifieddate the modifieddate to set
-	 */
-	public void setModifieddate(Timestamp modifieddate) {
+	public void setModifieddate(LocalDateTime modifieddate) {
 		this.modifieddate = modifieddate;
 	}
-	/**
-	 * @return the serialversionuid
-	 */
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	
+		
 }
