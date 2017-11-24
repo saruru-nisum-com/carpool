@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,6 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.nisum.carpool.data.dao.impl.CarpooldetailsDAOImpl;
 import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.repository.CarpooldetailsRepository;
+import com.nisum.carpool.data.util.Constants;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -26,6 +28,31 @@ public class CarpooldetailsDAOTest {
 	
 	@Mock
 	CarpooldetailsRepository carpooldetailsRepository;
+	
+        Carpooldetails carpooldetails;
+
+	
+	List<Carpooldetails> carpooldetailsExpectedList;
+	
+	@Before
+	public void setup() {
+		carpooldetailsExpectedList=new ArrayList<Carpooldetails>();
+        carpooldetails=new Carpooldetails();
+		carpooldetails.setCreateddate(new Timestamp(System.currentTimeMillis()));
+		carpooldetails.setFromDate("13254345");
+		carpooldetails.setId(1);
+		carpooldetails.setModifieddate(new Timestamp(System.currentTimeMillis()));
+		carpooldetails.setNoofseats(20);
+		carpooldetails.setParentid(112);
+		carpooldetails.setFromtime("23467");
+		carpooldetails.setStatus(1);
+		carpooldetails.setToDate("14356u756i7op");
+		carpooldetails.setToTime("987");
+		carpooldetails.setUserid("wefgre@jh.com");
+		carpooldetails.setVehicleType(2);
+		
+	}
+	
 	
 	@Test
 	public void updateCarpooldetailsTest1() {
@@ -74,4 +101,72 @@ public class CarpooldetailsDAOTest {
 		String expected="All CarpoolDetails Updated Successfully !!";
 		assertEquals(expected, actual);
 	}
+	
+	@Test
+	public void addCarpoolDetailsTest() {
+		
+	 carpooldetailsExpectedList.add(carpooldetails);
+		//String response=Constants.MSG_CARPOOL_ADD;
+		
+		
+		
+		
+		when(carpooldetailsRepository.save(carpooldetails)).thenReturn(carpooldetails);
+
+ List<Carpooldetails> actual = carpooldetailsDAOImpl.addCarpoolDetails(carpooldetailsExpectedList);
+
+		assertEquals(carpooldetailsExpectedList, actual);
+		
+		
+		
+	}
+	
+	@Test
+	public void checkValidCarpoolTest() {
+		String userid ="radhi@nisum.com"; 
+		String fromdate ="23-02-2017"; 
+		String todate = "24-09-2017";
+		
+		carpooldetails.setUserid("radhi@nisum.com");
+		carpooldetails.setFromDate("23-02-2017");
+		carpooldetails.setToDate("24-09-2017");
+		
+		
+		
+		String response=Constants.VALID;
+		
+	    when(carpooldetailsRepository.findEntriesWithDate(userid, fromdate)).thenReturn(0);
+		when(carpooldetailsRepository.findEntriesWithDate(userid, todate)).thenReturn(0);
+	     String actual = carpooldetailsDAOImpl.checkValidCarpool(carpooldetails);
+	
+
+		assertEquals(response,actual);
+		
+		
+		
+	}
+	
+	@Test
+	public void checkValidCarpoolFailTest() {
+		String userid ="radhi@nisum.com"; 
+		String fromdate ="23-02-2017"; 
+		String todate = "24-09-2017";
+		
+		carpooldetails.setUserid("radhi@nisum.com");
+		carpooldetails.setFromDate("23-02-2017");
+		carpooldetails.setToDate("24-09-2017");
+		
+		
+		String response=Constants.CARPOOLEXISTS;
+		
+	    when(carpooldetailsRepository.findEntriesWithDate(userid, fromdate)).thenReturn(5);
+		when(carpooldetailsRepository.findEntriesWithDate(userid, todate)).thenReturn(5);
+	     String actual = carpooldetailsDAOImpl.checkValidCarpool(carpooldetails);
+	
+      
+		assertEquals(response,actual);
+		
+		
+	}	
+	
 }
