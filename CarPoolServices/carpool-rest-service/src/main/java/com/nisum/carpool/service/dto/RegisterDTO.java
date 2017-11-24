@@ -6,6 +6,12 @@ import java.util.List;
 
 public class RegisterDTO implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	
 	private Integer registrationId; 
 	private String userId;
 	private List<Integer> vehicleType;

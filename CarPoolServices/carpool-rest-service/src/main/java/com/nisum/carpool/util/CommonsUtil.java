@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class CommonsUtil {
@@ -22,4 +23,13 @@ public class CommonsUtil {
 		return timestamp;
 	}
 
+	
+	public static Timestamp convertLocalDateTimeToTimeStamp(LocalDateTime localTime) {
+		return Timestamp.valueOf(localTime);
+	}
+	
+	
+	public static LocalDateTime convertTimeStampToLocalDateTime(Timestamp time) {
+		return time.toLocalDateTime();
+	}
 }
