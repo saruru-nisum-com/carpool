@@ -107,7 +107,7 @@ public class RegisterRestService {
 	
 	
 
-	@RequestMapping(value = "/getProfile/{userId}", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/getProfile/{userId}", method = RequestMethod.GET,  produces = "application/json")
 	public ResponseEntity<List<RegisterDTO>> getUserProfile(@PathVariable String userId)
 			throws UserServiceException {
 		logger.info("UserProfileRestService :: users profile::: get");
