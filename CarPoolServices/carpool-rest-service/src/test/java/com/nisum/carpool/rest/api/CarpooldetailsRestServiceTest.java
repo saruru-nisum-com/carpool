@@ -1,7 +1,12 @@
 package com.nisum.carpool.rest.api;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,5 +51,57 @@ public class CarpooldetailsRestServiceTest {
 		assertEquals(expectedResponseEntity.getStatusCode(), actualResponseEntity.getStatusCode());
 		assertEquals(expectedResponseEntity.getBody().toString(), actualResponseEntity.getBody().toString());
 	}
+	@Test
+	public void createCarPoolTest() {
+		List<CarpooldetailsDto>  carpooldetailsDtoList=new ArrayList<CarpooldetailsDto>();
+		
+		CarpooldetailsDto carpooldetailsDto=new CarpooldetailsDto();
+		carpooldetailsDto.setCreateddate(new Timestamp(System.currentTimeMillis()));
+		carpooldetailsDto.setFromDate("13254345");
+		carpooldetailsDto.setId(1);
+		carpooldetailsDto.setModifieddate(new Timestamp(System.currentTimeMillis()));
+		carpooldetailsDto.setTotalNoOfSeats(20);
+		carpooldetailsDto.setParentid(112);
+		carpooldetailsDto.setStartTime("23467");
+		carpooldetailsDto.setStatus(1);
+		carpooldetailsDto.setToDate("14356u756i7op");
+		carpooldetailsDto.setToTime("987");
+		carpooldetailsDto.setUserid("wefgre@jh.com");
+		carpooldetailsDto.setVehicleType(2);
+		
+		carpooldetailsDtoList.add(carpooldetailsDto);
+		
+		when(carpooldetailsService.createCarPooldetails(carpooldetailsDto)).thenReturn(carpooldetailsDtoList);
+		
+		ResponseEntity<List<CarpooldetailsDto>> entity = new ResponseEntity<List<CarpooldetailsDto>>(carpooldetailsDtoList, HttpStatus.OK);
+		ResponseEntity<?> actual = carpooldetailsRestService.createCarPool(carpooldetailsDto);
+		assertEquals(entity.getBody(), actual.getBody());
+		
+		
+		
+	}
+	
+	@Test
+	public void createCarPoollistNullTest() {
+		//List<CarpooldetailsDto>  carpooldetailsDtoList=new ArrayList<CarpooldetailsDto>();
+		CarpooldetailsDto carpooldetailsDto=new CarpooldetailsDto();
+		
+		
+		ServiceStatusDto statusDto = new ServiceStatusDto();
+        statusDto.setStatus(false);
+        statusDto.setMessage(Constants.MSG_CARPOOL_FAILED);
+		
+		when(carpooldetailsService.createCarPooldetails(carpooldetailsDto)).thenReturn(null);
+		
+		
+        ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.BAD_REQUEST);
+        
+        ResponseEntity<ServiceStatusDto> actual = (ResponseEntity<ServiceStatusDto>) carpooldetailsRestService.createCarPool(carpooldetailsDto);
+        //assertEquals(entity.getBody(), actual.getBody());
+        
+        assertThat(actual.getBody()).isEqualToComparingFieldByField(entity.getBody());
+	}
+	
+	
 	
 }
