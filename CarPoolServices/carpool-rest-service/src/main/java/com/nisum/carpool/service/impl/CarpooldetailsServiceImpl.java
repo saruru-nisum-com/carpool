@@ -72,7 +72,7 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
        return CarpooldetailsServiceUtil.convertDaoTODto(cpd);
       
     }
-	private String checkValidCarpool(Carpooldetails carpooldetails) {
+	public String checkValidCarpool(Carpooldetails carpooldetails) {
 		
 		//to check if the carpool is already available in db for the user with the given fromdate and todate
 		
@@ -142,10 +142,10 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	    	
 	    	cp.setFromtime(carpooldetails.getFromtime());
 	    	cp.setToTime(carpooldetails.getToTime());
-	    cp.setCreateddate(carpooldetails.getCreateddate());
-	    	cp.setModifieddate(carpooldetails.getModifieddate());
+	    	cp.setCreateddate(new Timestamp(System.currentTimeMillis()));
+	    	cp.setModifieddate(new Timestamp(System.currentTimeMillis()));
 	    	cp.setNoofseats(carpooldetails.getNoofseats());
-	    cp.setStatus(carpooldetails.getStatus());
+	    cp.setStatus(1);
 	    	cp.setUserid(carpooldetails.getUserid());
 	    	cp.setVehicleType(carpooldetails.getVehicleType());
 	    	
