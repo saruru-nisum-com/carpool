@@ -1,22 +1,18 @@
 package com.nisum.carpool.service.impl;
 
-<<<<<<< HEAD
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat; 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-=======
 import static org.junit.Assert.*;
->>>>>>> 46f46334141d1e8323e24560009d1790ce4e2801
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-<<<<<<< HEAD
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
