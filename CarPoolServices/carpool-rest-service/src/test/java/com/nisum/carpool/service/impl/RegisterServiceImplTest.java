@@ -1,5 +1,6 @@
 package com.nisum.carpool.service.impl;
 
+<<<<<<< HEAD
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -7,11 +8,15 @@ import static org.mockito.Mockito.when;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+=======
+import static org.junit.Assert.*;
+>>>>>>> 46f46334141d1e8323e24560009d1790ce4e2801
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+<<<<<<< HEAD
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -19,6 +24,7 @@ import com.nisum.carpool.data.dao.api.RegisterDAO;
 import com.nisum.carpool.data.domain.RegisterDomain;
 import com.nisum.carpool.data.repository.RegisterRepository;
 import com.nisum.carpool.service.api.RegisterService;
+import org.mockito.runners.MockitoJUnitRunner;
 import com.nisum.carpool.service.dto.RegisterDTO;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -96,5 +102,18 @@ public class RegisterServiceImplTest {
 		List<RegisterDTO> actual = registerServiceImpl.getUserRegistrationProfile(dto);
 
 		assertThat(actual.size()).isEqualTo(expected.size());
+	}
+	RegisterDTO registerDTO = null;
+
+	@Before
+	public void setUp() {
+		registerDTO = new RegisterDTO();
+		registerDTO.setLocation("Hyderabad");
+	}
+
+	@Test
+	public void testSearhLocation() throws Exception {
+		registerServiceImpl.searchLocation(registerDTO);
+		assertEquals(registerDTO.getLocation(), "Hyderabad");
 	}
 }
