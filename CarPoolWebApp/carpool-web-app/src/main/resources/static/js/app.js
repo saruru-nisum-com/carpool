@@ -42,9 +42,9 @@ var app = angular
 								var profile = localStorageService
 										.get("profile");
 								if (profile !== (undefined || null)
-										&& $rootScope.urlChanged === '/login') {
+										&& $rootScope.urlChanged === '/carpoolRegistration') {
 									$timeout(function() {
-										$state.go('configurations');
+										$state.go('carpoolRegistration');
 									}, 0);
 
 								} else if (profile === null) {

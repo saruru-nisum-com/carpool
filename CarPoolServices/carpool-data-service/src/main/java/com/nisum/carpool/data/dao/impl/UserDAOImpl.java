@@ -39,8 +39,8 @@ public class UserDAOImpl implements UserDAO{
 	@Override
 	public List<User> getUsers() {
 		logger.info("UserDAOImpl :: getUsers :: Get list of users");
-		//return userRepository.findAll();
-		return null;
+		return (List<User>) userRepository.findAll();
+		//return null;
 	}
 	
 	@Override
@@ -64,9 +64,9 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public User findByEmailId(String emailId) {
-		System.out.println("user dao emailId::"+emailId);
+		System.out.println("user dao findBy emailId::"+emailId);
 		User user= userRepository.findByEmailId(emailId);
-		logger.info("user info**"+user);
+		//logger.info("user info**"+user);
 		return user;
 	}
 

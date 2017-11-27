@@ -69,7 +69,7 @@ public class UserServiceUtil {
 		userDTO.setUserId(user.getUserId());
 		userDTO.setUserName(user.getUserName());
 		userDTO.setEmailId(user.getEmailId());
-		userDTO.setImage(user.getImage());
+		//userDTO.setImage(user.getImage());
 		userDTO.setLoginDate(Timestamp.valueOf(user.getLoginDate()));
 		userDTO.setCreateDate(Timestamp.valueOf(user.getCreateDate()));
 		userDTO.setActiveStatus(user.getActiveStatus());
@@ -214,7 +214,7 @@ public class UserServiceUtil {
 		user.setEmailId(userdto.getEmailId());
 		user.setLoginDate(userdto.getLoginDate().toLocalDateTime());
 		user.setCreateDate(userdto.getCreateDate().toLocalDateTime());
-		user.setImage(userdto.getImage());
+		//user.setImage(userdto.getImage());
 		System.out.println("image iconnnn::"+userdto.getImageIcon());
 		//user.setImageIcon(userdto.getImageIcon());
 		user.setActiveStatus(userdto.getActiveStatus());

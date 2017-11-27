@@ -5,6 +5,9 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,53 +28,74 @@ public class UserServiceTest {
 
 	@InjectMocks
 	UserServiceImpl userServiceImpl;
-	
+
 	@Mock
 	UserDAO userDao;
-	
-	User user = new User();
+
+	User user;
 	UserDTO userDTO =new UserDTO();
-	
-	
+
+	Timestamp timestamp;
 	UserServiceUtil serviceUtil= new UserServiceUtil();
-	
+
 	@Before
 	public void setUp()throws Exception{
+		Timestamp createdDate=new Timestamp(1511249628);
 		MockitoAnnotations.initMocks(this);
 		userDTO.setUserId(1222);
-		userDTO.setActiveStatus("YES");
 		userDTO.setEmailId("abc@nisum.com");
 		userDTO.setImage("");
+		userDTO.setUserName("abc");
 		userDTO.setLoginDate(CommonsUtil.getCurrentDateTime());
 		userDTO.setCreateDate(CommonsUtil.getCurrentDateTime());
-		
+
+		user= new User(1222, "abc@nisum.com", "", createdDate.toLocalDateTime(), "", 
+				createdDate.toLocalDateTime(),
+				"", 2);
 	}
-	
+
 	@Test
 	public void testGetByUserId() {
-	when(userDao.findUserById(userDTO.getUserId())).thenReturn(user);
-	User user1 =	userServiceImpl.findUserById(userDTO.getUserId());
-	assertNotNull(user);
-	assertEquals(user.getUserId(), user1.getUserId());
-		
+		when(userDao.findUserById(userDTO.getUserId())).thenReturn(user);
+		User user1 =	userServiceImpl.findUserById(userDTO.getUserId());
+		assertNotNull(user1);
+		assertEquals(user.getUserId(), user1.getUserId());
+
 	}
+
+	@Test
 	public void testGetByEmailId() {
+
 		when(userDao.findByEmailId(userDTO.getEmailId())).thenReturn(user);
+		//UserDTO U=UserServiceUtil.convertDaoObjectToDto(user);
 		UserDTO userDTO1=	userServiceImpl.findByEmailId(userDTO.getEmailId());
-		
+
 		assertNotNull(userDTO1);
-		assertEquals(user.getEmailId(), userDTO1.getEmailId());
-		
+		assertEquals(userDTO.getEmailId(), userDTO1.getEmailId());
+
 	}
-	
+
 	@Test
 	public void testAddUser() {
 		doNothing().when(userDao).saveUser(any(user.getClass()));
 		userServiceImpl.saveUser(userDTO);
-		
+
 	}
 
-	
-	
-	
+	@Test
+		public void testUpdateUser() {
+			userDTO.setUserName("john");
+	//		User user = UserServiceUtil.convertUpdateUserDtoTODao(userDTO);
+	//		when(userServiceImpl.findUserById(user.getUserId())).thenReturn(user);
+	//		//when(userServiceImpl.findUserById(userDTO.getUserId())).thenReturn(user);
+			when(userDao.findUserById(userDTO.getUserId())).thenReturn(user);
+			when(userDao.updateUser(user)).thenReturn(user);
+			UserDTO resultUserDTO=	userServiceImpl.updateUserDetails(userDTO);
+			assertEquals(userDTO.getUserName(),resultUserDTO.getUserName());
+			
+		}
+	//	
+
+
+
 }
