@@ -93,15 +93,27 @@ public class CarpooldetailsRestService {
 	@RequestMapping(value = "/getCarPoolDetails", method = RequestMethod.GET)
 	public ResponseEntity<?> getCarPoolDetails(@RequestParam(required = false, value = "location") String location)
 			{
-		List<CustomerCarpooldetailsDto> poolList=null;
 		
-		poolList=carpooldetailsService.getCarPoolDetails(location);
-		if(poolList==null || poolList.isEmpty())
+		List<CustomerCarpooldetailsDto> poolList=null;
+		try
 		{
-			return new ResponseEntity<String>(Constants.NO_RECORDS_FOUND, HttpStatus.OK);	
+			poolList=carpooldetailsService.getCarPoolDetails(location);
+			
+			if(poolList==null || poolList.isEmpty())
+			{
+				return new ResponseEntity<String>(Constants.NO_RECORDS_FOUND, HttpStatus.OK);	
+			}
+			return new ResponseEntity<List<CustomerCarpooldetailsDto>>(poolList, HttpStatus.OK);
+			
 		}
-		return new ResponseEntity<List<CustomerCarpooldetailsDto>>(poolList, HttpStatus.OK);
+		catch (Exception e) {
+			
+			
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		
 	}
+			
 	
 	
 }
