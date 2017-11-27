@@ -7,6 +7,8 @@ public class Constants {
 	public static final String MSG_RECORD_NOT_UPDATE = "Sorry Record Not Updated !!";
 	public static final String QUESTION_NOT_EXIST = "Question Details doest'n Exist !!";
 	public static final String REPLY_NOT_EXISTS = "Reply Details doest'n Exist !!";
+	
+	public static final String NO_RECORDS_FOUND = "Records not available  !!";
 
 	public static final String ERROR_MESSAGE = "Error While Creating Record !!";
 	public static final String UNKNOWN_EXCEPTION = "Unknown Exception !!";
