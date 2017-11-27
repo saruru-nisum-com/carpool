@@ -12,4 +12,5 @@ public interface CarpooldetailsDAO {
 	public String checkValidCarpool(Carpooldetails carpooldetails);
 	
 	List<Carpooldetails> getAllCarPoolDetails();
+	public List<Carpooldetails> getCarPoolByMailID(String email);
 }

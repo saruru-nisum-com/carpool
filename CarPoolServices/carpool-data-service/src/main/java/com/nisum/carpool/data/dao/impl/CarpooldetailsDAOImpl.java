@@ -82,4 +82,9 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 
 }
 	
+	public List<Carpooldetails> getCarPoolByMailID(String email)
+	{
+	return	carpooldetailsRepository.getCarPoolsByEmail(email);
+	}
+	
 }

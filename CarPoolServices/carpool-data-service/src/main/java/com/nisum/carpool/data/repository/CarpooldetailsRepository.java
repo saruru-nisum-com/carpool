@@ -7,7 +7,9 @@ import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.data.cassandra.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
 import com.nisum.carpool.data.domain.Carpooldetails;
+import com.nisum.carpool.data.domain.RegisterDomain;
 
 
 
@@ -26,4 +28,15 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 			+ "noofseats=:#{#carpoolDetails.noofseats}, modifieddate=:#{#carpoolDetails.modifieddate}, vehicletype=:#{#carpoolDetails.vehicleType} where id IN (:listOfIds)")
 	Integer udpateMultipleCarpoolDetails(@Param("carpoolDetails") Carpooldetails carpoolDetails, @Param("listOfIds") List<Integer> listOfIds);
 
+	@Query("select * from cp_userregistration where userid=:?0  ALLOW FILTERING")
+	public RegisterDomain findByEmail(String email);
+	
+	@Query("select * from cp_userregistration where location=?0  ALLOW FILTERING")
+	public List<RegisterDomain> findByLocation(@Param("location")String location);
+	
+	@Query("select * from cp_carpooldetails where userid=?0 allow filtering")
+	List<Carpooldetails> getCarPoolsByEmail(String email);
+	
+	
+	
 }
