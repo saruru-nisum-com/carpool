@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-data-service/src/test/java/com/nisum/carpool/data/dao/api/impl/CarpooldetailsDAOTest.java
+=======
+/Users/Nisum/cars/carpool/CarPoolServices/carpool-data-service/src/test/java/com/nisum/carpool/data/dao/api/impl/CarpooldetailsDAOTest.java
+>>>>>>> 0a36679f1e1aa4ee64211d2c2380036090a45ab6

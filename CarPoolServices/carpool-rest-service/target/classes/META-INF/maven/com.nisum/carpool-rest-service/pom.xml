@@ -34,5 +34,12 @@
       	<groupId>com.googlecode.json-simple</groupId>
       	<artifactId>json-simple</artifactId>
       </dependency>
+<<<<<<< HEAD
+=======
+      <dependency>
+      	<groupId>org.springframework.boot</groupId>
+      	<artifactId>spring-boot-starter-test</artifactId>
+      </dependency>
+>>>>>>> 0a36679f1e1aa4ee64211d2c2380036090a45ab6
   </dependencies>
 </project>

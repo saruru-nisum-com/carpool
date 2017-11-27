@@ -3,6 +3,7 @@ package com.nisum.carpool.service.api;
 import java.util.List;
 
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
+import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 
 public interface CarpooldetailsService {
@@ -10,5 +11,7 @@ public interface CarpooldetailsService {
 	
 	List<CarpooldetailsDto> createCarPooldetails(CarpooldetailsDto carpooldetailsDto);
 	
-	 List<CarpooldetailsDto> getCarPoolDetails();
+	 List<CustomerCarpooldetailsDto> getCarPoolDetails(String location);
+	 
+	 
 }

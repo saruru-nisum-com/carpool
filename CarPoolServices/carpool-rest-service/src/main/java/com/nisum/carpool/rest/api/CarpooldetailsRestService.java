@@ -10,11 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nisum.carpool.service.api.CarpooldetailsService;
-import com.nisum.carpool.service.dto.Errors;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
+import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
+import com.nisum.carpool.service.dto.Errors;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.util.Constants;
 
@@ -89,12 +91,29 @@ public class CarpooldetailsRestService {
 	
 	
 	@RequestMapping(value = "/getCarPoolDetails", method = RequestMethod.GET)
-	public ResponseEntity<List<CarpooldetailsDto>> getCarPoolDetails()
+	public ResponseEntity<?> getCarPoolDetails(@RequestParam(required = false, value = "location") String location)
 			{
-		List<CarpooldetailsDto> poolList=null;
 		
-		poolList=carpooldetailsService.getCarPoolDetails();
-		return new ResponseEntity<List<CarpooldetailsDto>>(poolList, HttpStatus.OK);
+		List<CustomerCarpooldetailsDto> poolList=null;
+		try
+		{
+			poolList=carpooldetailsService.getCarPoolDetails(location);
+			
+			if(poolList==null || poolList.isEmpty())
+			{
+				return new ResponseEntity<String>(Constants.NO_RECORDS_FOUND, HttpStatus.OK);	
+			}
+			return new ResponseEntity<List<CustomerCarpooldetailsDto>>(poolList, HttpStatus.OK);
+			
+		}
+		catch (Exception e) {
+			
+			
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		
 	}
+			
+	
 	
 }

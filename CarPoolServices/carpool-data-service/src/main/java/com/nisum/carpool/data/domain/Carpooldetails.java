@@ -2,6 +2,7 @@ package com.nisum.carpool.data.domain;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
@@ -24,8 +25,14 @@ public class Carpooldetails implements Serializable{
 	private String fromtime;
 	private String toTime;
 	private Integer status;
-	private Timestamp createddate;
-	private Timestamp modifieddate;
+	//private Timestamp createddate;
+    //private Timestamp modifieddate;
+	
+	private LocalDateTime createddate;
+	private LocalDateTime modifieddate; 
+	
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -86,16 +93,17 @@ public class Carpooldetails implements Serializable{
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	public Timestamp getCreateddate() {
+	
+	public LocalDateTime getCreateddate() {
 		return createddate;
 	}
-	public void setCreateddate(Timestamp createddate) {
+	public void setCreateddate(LocalDateTime createddate) {
 		this.createddate = createddate;
 	}
-	public Timestamp getModifieddate() {
+	public LocalDateTime getModifieddate() {
 		return modifieddate;
 	}
-	public void setModifieddate(Timestamp modifieddate) {
+	public void setModifieddate(LocalDateTime modifieddate) {
 		this.modifieddate = modifieddate;
 	}
 	@Override
