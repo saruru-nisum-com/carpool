@@ -68,16 +68,32 @@ CREATE TABLE cp_carpooldetails (
    modifieddate timestamp
 );
 
+------ Version II ----------
+
+drop table cp_carpoolriderdetails;
 CREATE TABLE cp_carpoolriderdetails (
-   id int PRIMARY KEY,
-   cpid int,
-   userid text,
-   status int,
-   pickupat varchar,
-   dropat varchar,
-   createddate timestamp,
-   modifieddate timestamp
-    
-); 
+   id int PRIMARY KEY,
+   cpid int,
+   emailid text,
+   status int,
+   reason int,
+   notifyme boolean,
+   rewards double,
+   createddate timestamp,
+   modifieddate timestamp
+    
+);
+alter table cp_userregistration add  gender int;
+alter table cp_userregistration drop userid;
+alter table cp_userregistration add emailid text;
+alter table cp_carpooldetails drop userid;
+alter table cp_carpooldetails add emailid text;
+alter table cp_carpooldetails add rewards double;
+
+
+
+
+
+
 
  
