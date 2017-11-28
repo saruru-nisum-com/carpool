@@ -3,7 +3,9 @@ package com.nisum.carpool.service.impl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
@@ -166,7 +168,7 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	    return carPoolList;
 	    
 	}
-	public List<CustomerCarpooldetailsDto> getCarPoolDetails(String location)
+	/*public List<CustomerCarpooldetailsDto> getCarPoolDetails(String location)
 	{
 		List<Carpooldetails> carpoolList = new ArrayList<>();
 		
@@ -228,7 +230,69 @@ if(registerDomain!=null && registerDomain.size()>0) {
 
 		return customerCarpooldetailsDtoList;
 
+	}*/
+	
+	public List<CustomerCarpooldetailsDto> getCarPoolDetails(String location)
+	{
+		List<Carpooldetails> carpoolLists = new ArrayList<>();
+		
+		List<CustomerCarpooldetailsDto> carpoolListbyLocation = new ArrayList<>();
+		List<CustomerCarpooldetailsDto> customerCarpooldetailsDtoList = new ArrayList<>();
+		
+		//List<String> useridsList=null;
+         Set<String> useridsSet=null;
+		//useridsList=	carpooldetailsDAO.getAllUserIDs();
+         carpoolLists= (List<Carpooldetails>) carpooldetailsDAO.getAllCarPoolDetails();
+         
+		if(carpoolLists!=null)
+		{
+			useridsSet=new HashSet<>();
+		for(Carpooldetails car:carpoolLists)
+		{
+	
+			
+			useridsSet.add(car.getUserid());
+		}
+			
+			for(String userid:useridsSet)
+			{
+				List<Carpooldetails> carpoolList=	carpooldetailsDAO.getCarPoolByMailID(userid);
+				User user=userDAO.findByEmailId(userid);
+				List<RegisterDomain> registerDomain=	registerDAO.findUserRegistrationByUserId(userid);
+				CustomerCarpooldetailsDto carpooldetailsDto=new CustomerCarpooldetailsDto();
+				carpooldetailsDto.setListCarpoolDetails(carpoolList);
+				if(user!=null)
+				carpooldetailsDto.setUserName(user.getUserName());
+				if(registerDomain!=null && registerDomain.size()>0) {
+				carpooldetailsDto.setLocation(registerDomain.get(0).getLocation());
+				carpooldetailsDto.setMobile(registerDomain.get(0).getMobile());
+				}
+				customerCarpooldetailsDtoList.add(carpooldetailsDto);
+				
+			
+			}
+			if(location!=null)
+			{
+				for(CustomerCarpooldetailsDto customerCarpooldetailsDto:customerCarpooldetailsDtoList)
+				{
+					if(location.equalsIgnoreCase(customerCarpooldetailsDto.getLocation()))
+							{
+						carpoolListbyLocation.add(customerCarpooldetailsDto);
+							}
+				}
+				return carpoolListbyLocation;
+				
+			}
+			return customerCarpooldetailsDtoList;
+
+		}
+
+	
+	
+		return customerCarpooldetailsDtoList;
 	}
+	
+	
 	
 	
 }
