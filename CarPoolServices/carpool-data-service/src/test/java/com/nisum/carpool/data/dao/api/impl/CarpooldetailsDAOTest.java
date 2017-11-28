@@ -38,10 +38,10 @@ public class CarpooldetailsDAOTest {
 	public void setup() {
 		carpooldetailsExpectedList=new ArrayList<Carpooldetails>();
         carpooldetails=new Carpooldetails();
-		carpooldetails.setCreateddate(new Timestamp(System.currentTimeMillis()));
+		carpooldetails.setCreateddate(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
 		carpooldetails.setFromDate("13254345");
 		carpooldetails.setId(1);
-		carpooldetails.setModifieddate(new Timestamp(System.currentTimeMillis()));
+		carpooldetails.setModifieddate(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
 		carpooldetails.setNoofseats(20);
 		carpooldetails.setParentid(112);
 		carpooldetails.setFromtime("23467");
@@ -69,8 +69,8 @@ public class CarpooldetailsDAOTest {
 		carpooldetails.setFromtime("12:30");
 		carpooldetails.setToTime("13:30");
 		carpooldetails.setStatus(1);
-		carpooldetails.setCreateddate(createdDate);
-		carpooldetails.setModifieddate(modifiedDate);
+		carpooldetails.setCreateddate(createdDate.toLocalDateTime());
+		carpooldetails.setModifieddate(modifiedDate.toLocalDateTime());
 		when(carpooldetailsRepository.countByParentid(carpooldetails.getParentid())).thenReturn(1L);
 		when(carpooldetailsRepository.save(carpooldetails)).thenReturn(carpooldetails);
 		String actual=carpooldetailsDAOImpl.updateCarpooldetails(carpooldetails);
@@ -92,8 +92,8 @@ public class CarpooldetailsDAOTest {
 		carpooldetails.setFromtime("12:30");
 		carpooldetails.setToTime("13:30");
 		carpooldetails.setStatus(1);
-		carpooldetails.setCreateddate(createdDate);
-		carpooldetails.setModifieddate(modifiedDate);
+		carpooldetails.setCreateddate(createdDate.toLocalDateTime());
+		carpooldetails.setModifieddate(modifiedDate.toLocalDateTime());
 		List<Integer> list= Arrays.asList(1,2);
 		when(carpooldetailsRepository.getListOfIdsByParentid(carpooldetails.getParentid())).thenReturn(list);
 		when(carpooldetailsRepository.udpateMultipleCarpoolDetails(carpooldetails, list)).thenReturn(2);

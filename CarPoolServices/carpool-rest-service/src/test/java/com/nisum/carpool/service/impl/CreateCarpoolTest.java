@@ -24,6 +24,7 @@ import com.nisum.carpool.data.util.Constants;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.impl.CarpooldetailsServiceImpl;
 import com.nisum.carpool.util.CarpooldetailsServiceUtil;
+import com.nisum.carpool.util.CommonsUtil;
 
 @SpringBootTest
 @RunWith(PowerMockRunner.class)
@@ -73,8 +74,8 @@ public class CreateCarpoolTest {
 		cpd.setParentid(12345);
 		cpd.setFromDate("05/11/2017");
 		cpd.setToDate("05/14/2017");
-		cpd.setCreateddate(t1);
-		cpd.setModifieddate(t1);
+		cpd.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
+		cpd.setModifieddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
 		cpd.setNoofseats(4);
 		cpd.setStatus(1);
 		cpd.setFromtime("1600");
@@ -95,8 +96,8 @@ public class CreateCarpoolTest {
 		c1.setParentid(12345);
 		c1.setFromDate("05/11/2017");
 		c1.setToDate("05/14/2017");
-		c1.setCreateddate(t1);
-		c1.setModifieddate(t1);
+		c1.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
+		c1.setModifieddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
 		c1.setNoofseats(4);
 		c1.setStatus(1);
 		c1.setFromtime("1600");
@@ -111,8 +112,8 @@ public class CreateCarpoolTest {
 		c2.setParentid(12345);
 		c2.setFromDate("05/11/2017");
 		c2.setToDate("05/11/2017");
-		c2.setCreateddate(t1);
-		c2.setModifieddate(t1);
+		c2.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
+		c2.setModifieddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
 		c2.setNoofseats(4);
 		c2.setStatus(1);
 		c2.setFromtime("1600");
@@ -126,8 +127,8 @@ public class CreateCarpoolTest {
 		c3.setParentid(12345);
 		c3.setFromDate("05/12/2017");
 		c3.setToDate("05/12/2017");
-		c3.setCreateddate(t1);
-		c3.setModifieddate(t1);
+		c3.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
+		c3.setModifieddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
 		c3.setNoofseats(4);
 		c3.setStatus(1);
 		c3.setFromtime("1600");
@@ -141,8 +142,8 @@ public class CreateCarpoolTest {
 		c4.setParentid(12345);
 		c4.setFromDate("05/13/2017");
 		c4.setToDate("05/13/2017");
-		c4.setCreateddate(t1);
-		c4.setModifieddate(t1);
+		c4.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
+		c4.setModifieddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
 		c4.setNoofseats(4);
 		c4.setStatus(1);
 		c4.setFromtime("1600");
@@ -156,8 +157,8 @@ public class CreateCarpoolTest {
 		c5.setParentid(12345);
 		c5.setFromDate("05/14/2017");
 		c5.setToDate("05/14/2017");
-		c5.setCreateddate(t1);
-		c5.setModifieddate(t1);
+		c5.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
+		c5.setModifieddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
 		c5.setNoofseats(4);
 		c5.setStatus(1);
 		c5.setFromtime("1600");
@@ -303,8 +304,8 @@ public class CreateCarpoolTest {
 		c1.setParentid(12345);
 		c1.setFromDate("05/11/2017");
 		c1.setToDate("05/14/2017");
-		c1.setCreateddate(t1);
-		c1.setModifieddate(t1);
+		c1.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
+		c1.setModifieddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
 		c1.setNoofseats(4);
 		c1.setStatus(1);
 		c1.setFromtime("1600");
@@ -319,8 +320,8 @@ public class CreateCarpoolTest {
 		c2.setParentid(12345);
 		c2.setFromDate("05/11/2017");
 		c2.setToDate("05/11/2017");
-		c2.setCreateddate(t1);
-		c2.setModifieddate(t1);
+		c2.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
+		c2.setModifieddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
 		c2.setNoofseats(4);
 		c2.setStatus(1);
 		c2.setFromtime("1600");
@@ -334,8 +335,8 @@ public class CreateCarpoolTest {
 		c3.setParentid(12345);
 		c3.setFromDate("05/12/2017");
 		c3.setToDate("05/12/2017");
-		c3.setCreateddate(t1);
-		c3.setModifieddate(t1);
+		c3.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
+		c3.setModifieddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
 		c3.setNoofseats(4);
 		c3.setStatus(1);
 		c3.setFromtime("1600");
@@ -349,8 +350,8 @@ public class CreateCarpoolTest {
 		c4.setParentid(12345);
 		c4.setFromDate("05/13/2017");
 		c4.setToDate("05/13/2017");
-		c4.setCreateddate(t1);
-		c4.setModifieddate(t1);
+		c4.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
+		c4.setModifieddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
 		c4.setNoofseats(4);
 		c4.setStatus(1);
 		c4.setFromtime("1600");
@@ -364,8 +365,8 @@ public class CreateCarpoolTest {
 		c5.setParentid(12345);
 		c5.setFromDate("05/14/2017");
 		c5.setToDate("05/14/2017");
-		c5.setCreateddate(t1);
-		c5.setModifieddate(t1);
+		c5.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
+		c5.setModifieddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
 		c5.setNoofseats(4);
 		c5.setStatus(1);
 		c5.setFromtime("1600");
@@ -385,8 +386,8 @@ public class CreateCarpoolTest {
 		cpd.setParentid(12345);
 		cpd.setFromDate("05/11/2017");
 		cpd.setToDate("05/14/2017");
-		cpd.setCreateddate(t1);
-		cpd.setModifieddate(t1);
+		cpd.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
+		cpd.setModifieddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
 		cpd.setNoofseats(4);
 		cpd.setStatus(1);
 		cpd.setFromtime("1600");
@@ -410,8 +411,8 @@ public class CreateCarpoolTest {
 		c1.setParentid(12345);
 		c1.setFromDate("05/11/2017");
 		c1.setToDate("05/14/2017");
-		c1.setCreateddate(t1);
-		c1.setModifieddate(t1);
+		c1.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
+		c1.setModifieddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
 		c1.setNoofseats(4);
 		c1.setStatus(1);
 		c1.setFromtime("1600");
@@ -436,8 +437,8 @@ public class CreateCarpoolTest {
 		c1.setParentid(12345);
 		c1.setFromDate("05/11/2017");
 		c1.setToDate("05/14/2017");
-		c1.setCreateddate(t1);
-		c1.setModifieddate(t1);
+		c1.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
+		c1.setModifieddate(CommonsUtil.convertTimeStampToLocalDateTime(t1));
 		c1.setNoofseats(4);
 		c1.setStatus(1);
 		c1.setFromtime("1600");

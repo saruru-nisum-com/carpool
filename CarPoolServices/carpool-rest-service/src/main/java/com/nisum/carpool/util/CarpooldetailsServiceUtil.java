@@ -32,8 +32,8 @@ public class CarpooldetailsServiceUtil {
 				carpooldetailsDto.setStartTime(c.getFromtime());
 				carpooldetailsDto.setToTime(c.getToTime());
 				carpooldetailsDto.setStatus(c.getStatus());
-				carpooldetailsDto.setCreateddate(c.getCreateddate());
-				carpooldetailsDto.setModifieddate(c.getModifieddate());
+				carpooldetailsDto.setCreateddate(CommonsUtil.convertLocalDateTimeToTimeStamp(c.getCreateddate()));
+				carpooldetailsDto.setModifieddate(CommonsUtil.convertLocalDateTimeToTimeStamp(c.getModifieddate()));
 				carpooldetailsDtos.add(carpooldetailsDto);
 			});
 		}
@@ -55,8 +55,8 @@ public class CarpooldetailsServiceUtil {
 			carpooldetailsDto.setStartTime(carpooldetails.getFromtime());
 			carpooldetailsDto.setToTime(carpooldetails.getToTime());
 			carpooldetailsDto.setStatus(carpooldetails.getStatus());
-			carpooldetailsDto.setCreateddate(carpooldetails.getCreateddate());
-			carpooldetailsDto.setModifieddate(carpooldetails.getModifieddate());
+			carpooldetailsDto.setCreateddate(CommonsUtil.convertLocalDateTimeToTimeStamp(carpooldetails.getCreateddate()));
+			carpooldetailsDto.setModifieddate(CommonsUtil.convertLocalDateTimeToTimeStamp(carpooldetails.getModifieddate()));
 		}
 		return carpooldetailsDto;
 	}
@@ -74,8 +74,8 @@ public class CarpooldetailsServiceUtil {
 		carpooldetails.setFromtime(carpooldetailsDto.getStartTime());
 		carpooldetails.setToTime(carpooldetailsDto.getToTime());
 		carpooldetails.setStatus(carpooldetailsDto.getStatus());
-		carpooldetails.setCreateddate(carpooldetailsDto.getCreateddate());
-		carpooldetails.setModifieddate(carpooldetailsDto.getModifieddate());
+		carpooldetails.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(carpooldetailsDto.getCreateddate()));
+		carpooldetails.setModifieddate(CommonsUtil.convertTimeStampToLocalDateTime(carpooldetailsDto.getModifieddate()));
 		return carpooldetails;
 
 	}
