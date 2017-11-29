@@ -1,7 +1,9 @@
 package com.nisum.carpool.data.dao.impl;
 
+import java.sql.Timestamp;
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import com.nisum.carpool.data.dao.api.CarpooldetailsDAO;
 import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.repository.CarpooldetailsRepository;
 import com.nisum.carpool.data.util.Constants;
+//import com.nisum.carpool.service.dto.CarpooldetailsDto;
 
 
 
@@ -35,6 +38,47 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 			
 	}
 	
+	
+	
+	@Override
+	public String cancelCarpooldetails(Carpooldetails carpooldetails) {
+		// TODO Auto-generated method stub
+		
+		logger.info("CarpooldetailsDAOImpl: cancel Carpooldetails getby Id"+carpooldetails.getId());
+		List<Integer> listOfIds =null;
+		Long countByParentid = carpooldetailsRepository.findById(carpooldetails.getId());
+		//carpooldetailsRepository.findOne(
+		System.out.println("in daoimpl cancel by parentId"+countByParentid);
+		   if(countByParentid == 1) {
+			   System.out.println("in parent cancel");
+       	    carpooldetailsRepository.save(carpooldetails);
+		}
+		    listOfIds = carpooldetailsRepository.getListOfIdsByParentid(carpooldetails.getId());
+		    Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
+		   System.out.println("listOfIds in cancel pool daoimpl:"+listOfIds.size());
+		  try {
+			  System.out.println("in child update.parentId.."+carpooldetails.getId());
+			  List<Carpooldetails> poolData=carpooldetailsRepository.findByParentid(carpooldetails.getId());
+			  if(poolData!=null) {
+					  if (CollectionUtils.isNotEmpty(poolData)) {
+						  poolData.forEach(c->{
+								c.setStatus(3);
+							  c.setModifieddate(modifiedDate.toLocalDateTime());
+								carpooldetailsRepository.save(c);
+							});
+						 }
+				  } 
+			  
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 //  }
+		   return Constants.MSG_CARPOOL_CANCEL;
+	}
+	
+	
+	
 	@Override
 	public List<Carpooldetails> addCarpoolDetails(List<Carpooldetails> carpooldetails) {
 		
@@ -47,7 +91,7 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 			
 			logger.info("CarpooldetailsDAOImpl: createCarpooldetails");
 		
-			return carpooldetailsRepository.getCarPoolsByEmail(carpooldetails.get(0).getUserid());
+			return carpooldetails;
 		
 	}
 	
@@ -86,5 +130,6 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 	{
 	return	carpooldetailsRepository.getCarPoolsByEmail(email);
 	}
-	
+
+
 }
