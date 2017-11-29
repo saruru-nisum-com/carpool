@@ -145,7 +145,7 @@ table, td {
 						<td><input type="checkbox" name="cb4wheel"
 							ng-model='cb4wheel' ng-true-value="4" ng-false-value="0">
 							4-wheeler</input> <br />
-						<div ng-show="driverForm.$submitted && driverForm.$invalid"
+							<div ng-show="driverForm.$submitted && driverForm.$invalid"
 								style="color: red" class="help-block">check before
 								proceed.</div></td>
 						<td></td>
@@ -153,8 +153,8 @@ table, td {
 
 					<tr>
 						<td>Location</td>
-						<td><input type="text" name="location" ng-model="location"
-							placeholder="Enter location here" required=""> <br />
+						<td><input type="text" gm-places-autocomplete name="location"
+							ng-model="autocomplete" /> <br />
 							<div
 								ng-show="driverForm.$submitted || driverForm.location.$touched">
 								<div ng-show="driverForm.location.$error.required "
@@ -406,8 +406,8 @@ table, td {
 	}
 
 	$(".toggler").click(function(e) {
-        e.preventDefault();
-        $('.cat' + $(this).attr('data-prod-cat')).toggle();
-    });
+		e.preventDefault();
+		$('.cat' + $(this).attr('data-prod-cat')).toggle();
+	});
 </script>
 </html>

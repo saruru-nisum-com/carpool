@@ -116,7 +116,7 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 	}
 	
 	$scope.updateAsDriver = function() {
-		alert("update is clicked");
+		alert("update button is clicked");
 	}
 
 	$scope.registerAsRider = function() {
