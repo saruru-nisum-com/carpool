@@ -3,17 +3,15 @@ adminApp.controller('configurationsController',
 	$scope.carpoolList=[];
 	$scope.userLocation = localStorageService.get('location');
 	$scope.userName = commonService.userName;
-	$scope.vehicleDetails=[{"id":1,"vehicletype":"bike","noofseats":1},{"id":2,"vehicletype":"car","noofseats":3}];
+	$scope.vehicleDetails=[];
+	$scope.location="hyd";
 	
 	$scope.getCarpools = function() {
-		$scope.getCarPoolObj={
-				'location':'hyd'
-		}
-		$scope.carpoolList = [];
-			carpoolService.getCarPools($scope.getCarPoolObj.location).then(function(response) {
+			carpoolService.getCarPools($scope.location).then(function(response) {
 				if (response.errorCode) {
 					$scope.message = response.errorMessage
 				} else {
+					$scope.getVehicleDetails();
 					$scope.carpoolList=response;
 				}
 			}, function(response) {
@@ -22,7 +20,6 @@ adminApp.controller('configurationsController',
 	}
 	
 	$scope.getAllCarpools = function() {
-		$scope.carpoolList = [];
 		carpoolService.getAllCarPools().then(function(response) {
 			if (response.errorCode) {
 				$scope.message = response.errorMessage
@@ -41,6 +38,19 @@ adminApp.controller('configurationsController',
 		} else {
 			$scope.getCarpools();
 		}
+	}
+	
+	$scope.getVehicleDetails = function() {
+		carpoolService.getVehicleDetails().then(function(response) {
+			if (response.errorCode) {
+				$scope.message = response.errorMessage
+			} else {
+				$scope.vehicleDetails=response;
+			}
+		}, function(response) {
+			console.log(response);
+		})
+		
 	}
 	
 });
