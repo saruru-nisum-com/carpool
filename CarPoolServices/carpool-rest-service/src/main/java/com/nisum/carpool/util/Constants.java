@@ -33,7 +33,9 @@ public class Constants {
 
 	public static final String  USER_ROLE_CANNOTBE_SAME ="UserRole cannot be same";
 	
-	
+	public static final String MSG_CARPOOL_CANCEL = "Carpool Cancelled Successfully !!";
+	public static final String MSG_CARPOOL_CANCEL_MULTI = "All CarpoolDetails Cancelled Successfully !!";
+	public static final String MSG_CANCEL_CARPOOL_FAILED = "Cancel Carpool Failed !!";
 	
 	// Email configuration for new user account
 		public static final String GMAIL_SMTP="mail.smtp.auth";

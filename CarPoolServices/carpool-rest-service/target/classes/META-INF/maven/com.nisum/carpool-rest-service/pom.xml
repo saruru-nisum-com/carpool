@@ -18,12 +18,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-      </dependency>    
+       
       <dependency>
        <groupId>com.nisum</groupId>
       <artifactId>carpool-data-service</artifactId>
@@ -34,12 +29,9 @@
       	<groupId>com.googlecode.json-simple</groupId>
       	<artifactId>json-simple</artifactId>
       </dependency>
-<<<<<<< HEAD
-=======
       <dependency>
       	<groupId>org.springframework.boot</groupId>
       	<artifactId>spring-boot-starter-test</artifactId>
       </dependency>
->>>>>>> 0a36679f1e1aa4ee64211d2c2380036090a45ab6
   </dependencies>
 </project>

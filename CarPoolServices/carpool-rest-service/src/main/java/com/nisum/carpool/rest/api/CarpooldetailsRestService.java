@@ -50,6 +50,24 @@ public class CarpooldetailsRestService {
 		
 	}
 	
+	@RequestMapping(value="/cancel",method=RequestMethod.PUT)
+	public ResponseEntity<?> cancelCarpooldetails(@RequestBody CarpooldetailsDto carpooldetailsDto){
+		logger.info("CarpooldetailsRestService :: updateCarpooldetails");
+		ResponseEntity<?> responseEntity = null;
+		try {
+			ServiceStatusDto statusDto = carpooldetailsService.updateCarpooldetails(carpooldetailsDto);
+			if(statusDto.isStatus()) {
+				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
+		}
+		}catch (Exception e) {
+			Errors error = new Errors();
+			error.setErrorCode("BAD REQUEST");
+			error.setErrorMessage(Constants.MSG_CANCEL_CARPOOL_FAILED);
+			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
+		}
+		return responseEntity;
+		
+	}
 	@RequestMapping(value="/create", method=RequestMethod.POST, consumes="application/json", produces="application/json")
     public ResponseEntity<?>  createCarPool(@RequestBody CarpooldetailsDto carpooldetailsDto)  {
         
@@ -113,7 +131,6 @@ public class CarpooldetailsRestService {
 		}
 		
 	}
-			
 	
 	
 }

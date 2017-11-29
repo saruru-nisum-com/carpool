@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.nisum.carpool.data.dao.api.impl.CarpooldetailsDAOTest
--------------------------------------------------------------------------------
-<<<<<<< HEAD
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.169 sec - in com.nisum.carpool.data.dao.api.impl.CarpooldetailsDAOTest
-=======
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.258 sec - in com.nisum.carpool.data.dao.api.impl.CarpooldetailsDAOTest
->>>>>>> 0a36679f1e1aa4ee64211d2c2380036090a45ab6
