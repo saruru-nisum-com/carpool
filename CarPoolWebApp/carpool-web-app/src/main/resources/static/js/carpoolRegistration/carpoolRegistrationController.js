@@ -10,23 +10,33 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 	$scope.showError=false;
 	$scope.cb2wheel=false;
 	$scope.cb4wheel=false;
-	
-	
+	$scope.lat = undefined;
+    $scope.lng = undefined;
+	$scope.selectedLocation = undefined;
+	$scope.$on('gmPlacesAutocomplete::placeChanged', function(){
+		
+		console.log('carpool method ')
+		$scope.selectedLocation = $scope.autocomplete.getPlace().name;
+	      var location = $scope.autocomplete.getPlace().geometry.location;
+	      $scope.lat = location.lat();
+	      $scope.lng = location.lng();
+	      $scope.$apply();
+	  });
 	
 	$scope.registerAsDriver = function() {
 
-		//alert('inside...');
 		console.log('checkbox values '+$scope.cb2wheel +'and '+$scope.cb4wheel);
 		
 		if ($scope.cb2wheel==false && $scope.cb4wheel==false) {
 			alert('Please select the vehicle type.');
 		}else {
-			//alert("register is clicked");
 			var registrationId = Math.floor(Math.random() * 100000000) + 1 ;//static for now, need to change
 
 			var profileSessionData = localStorageService.get('profile');
 			
-			var userId = profileSessionData.emailId;//static for now, need to change
+			var userId = profileSessionData.emailId;//"dsingh@nisum.com"//profileSessionData.emailId;
+			//alert("hi user id : "+userId);
+			$scope.userId = userId
 			if($scope.cb2wheel==2 && $scope.cb4wheel==4){
 				var vehicleType = [$scope.cb2wheel, $scope.cb4wheel];
 			}else if($scope.cb2wheel==2 && $scope.cb4wheel==0){
@@ -36,9 +46,9 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 				var vehicleType = [$scope.cb4wheel];
 				
 			}
-			var location = $scope.location;
-			var latitude = "24";//static for now, need to change
-			var longitude = "36";//static for now, need to change
+			var location = $scope.selectedLocation;
+			var latitude = $scope.lat;//static for now, need to change
+			var longitude = $scope.lng;//static for now, need to change
 			var nearby = $scope.nearBy;
 			var mobile = "9000000000";//static for now, need to change
 			var emailNotification = true;//static for now, need to change
@@ -63,14 +73,26 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 			}
 			//window.alert("what am i sending to the server::: "+JSON.stringify($scope.registerDriverJson));
 			carpoolRegistrationService.registerAsDriver($scope.registerDriverJson).then(function(response) {
-				//window.alert("dhiraj");
 				if (response.errorCode === 500) {
 					$scope.message = response.errorMessage
 				}else {
-					//window.alert('singh from server.............. :)'+JSON.stringify(response));
+
+					
 					$scope.isRegisteredAsDriver= true;
 		            alert('driver registered successfully.');
 					//$scope.names = response.records;
+		            //alert("***** "+$scope.userId);
+		            carpoolRegistrationService.getRegisterDriverData($scope.userId).then(function(response) {
+		            	if (response.errorCode === 500) {
+							$scope.message = response.errorMessage
+						}else {
+							//alert('harish service called successfully.');
+							window.alert('singh from server.............. :)'+JSON.stringify(response));
+						}
+		            }, function(response) {
+						// console
+						//window.alert("dks-- "+response)
+					});
 				}
 			}, function(response) {
 				// console
@@ -97,6 +119,15 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 		alert("update is clicked");
 	}
 
+	$scope.registerAsRider = function() {
+		//alert("update is clicked");
+		console.log('register is clicked');
+	}
+	
+	$scope.updateAsRider = function() {
+		alert("update is clicked");
+	}
+	
 	//driver/rider screen code ends here
 
 	$scope.data = [ {
