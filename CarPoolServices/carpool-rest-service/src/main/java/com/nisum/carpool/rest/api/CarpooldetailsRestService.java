@@ -55,7 +55,7 @@ public class CarpooldetailsRestService {
 		logger.info("CarpooldetailsRestService :: updateCarpooldetails");
 		ResponseEntity<?> responseEntity = null;
 		try {
-			ServiceStatusDto statusDto = carpooldetailsService.updateCarpooldetails(carpooldetailsDto);
+			ServiceStatusDto statusDto = carpooldetailsService.cancelCarpooldetails(carpooldetailsDto);
 			if(statusDto.isStatus()) {
 				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
 		}
