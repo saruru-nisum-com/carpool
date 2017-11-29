@@ -25,6 +25,22 @@ app.factory('carpoolRegistrationService', function($http, $q, localStorageServic
 		})
 		return deferred.promise;
 	}
+	
+	ls.getRegisterDriverData=function(data) {
+		var deferred = $q.defer()
+		var encodedUrl = encodeURI("v1/carpool/getProfile/"+data);
+		alert(encodedUrl);
+		$http.get(encodedUrl).success(function(response) {
+
+			console.log("=====> v1/carpool/getProfile/"+data);
+			console.log("got success");
+			deferred.resolve(response);
+		}).error(function(response) {
+			deferred.reject(response);
+		})
+			
+		return deferred.promise;
+	}
 	return ls;
 
 });
