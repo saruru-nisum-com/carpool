@@ -66,4 +66,5 @@ public class Constants {
 		public static final String VALID = "valid";
 		public static final String NOTVALID = "not valid";
 		public static final String CARPOOLEXISTS = "Car Pool already exists";
+		public static final String CANCELING_RIDE_FAILED = "Canceling Car Pool failed";
 }

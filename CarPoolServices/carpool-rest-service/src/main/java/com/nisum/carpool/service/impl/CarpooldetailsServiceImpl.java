@@ -83,6 +83,9 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
         // TODO Auto-generated method stub
         logger.info("CarpooldetailsServiceImpl:createCarPool");
         
+        carpooldetailsDto.setCreateddate(new Timestamp(System.currentTimeMillis()));
+        carpooldetailsDto.setModifieddate(new Timestamp(System.currentTimeMillis()));
+        
        Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
         
        String validstatus = checkValidCarpool(carpooldetails);
@@ -113,6 +116,7 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 		logger.info("CarpooldetailsServiceImpl:checkValidCarpool");
 		
 		return carpooldetailsDAO.checkValidCarpool(carpooldetails);
+		
 		
 	}
 	
