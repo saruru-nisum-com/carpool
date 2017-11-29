@@ -1,5 +1,6 @@
 package com.nisum.carpool.service.impl;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,15 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 		 List<CarpoolRiderDetails> cpList = carpoolRiderdetailsDAO.getRiderBookingDetails(emailId);
 		
 		return CarpoolRiderDetailsServiceUtil.convertDaoTODto(cpList);
+	}
+
+	@Override
+	public String cancelCarpoolRiderDetails(int cpid) {
+		// TODO Auto-generated method stub
+		
+	String cancelRiderStatus=	carpoolRiderdetailsDAO.cancelCarpoolRiderDetails(cpid);
+		
+		return cancelRiderStatus;
 	}
 
 }

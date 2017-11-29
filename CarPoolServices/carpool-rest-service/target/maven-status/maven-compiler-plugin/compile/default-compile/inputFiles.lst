@@ -6,11 +6,14 @@
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/impl/CarPoolRiderDetailsServiceImpl.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/util/CommonsUtil.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/util/UserConstants.java
+/Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/dto/Erros.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/impl/UserServiceImpl.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/api/CarpooldetailsService.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/exception/CarpooldetailsServiceException.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/exception/MeetingRoomException.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/api/UserService.java
+/Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/dto/VehicleTypesDTO.java
+/Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/api/VehicleTypesService.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/util/UserRoleServiceUtil.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/rest/api/UserRoleRestService.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/util/RegisterServiceUtil.java
@@ -23,9 +26,12 @@
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/api/UserProfileService.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/exception/TrainingsServiceException.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/exception/CategoryServiceException.java
+/Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/rest/api/VehicleTypesRestService.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/dto/UserDTO.java
+/Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/exception/VehicleTypesException.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/rest/api/UserRestService.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/exception/BlogServiceException.java
+/Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/util/VehicleTypesUtil.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/rest/api/CarpoolRiderDetailsRestService.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/exception/ExceptionControllerAdvice.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/impl/UserProfileServiceImpl.java
@@ -33,6 +39,7 @@
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/dto/CarpoolRiderDetailsDTO.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/exception/BookMeetingRoomRestServiceException.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/util/ExceptionConstans.java
+/Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/impl/VehicleTypesServiceImpl.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/exception/LocationException.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/exception/QuestionariesServiceException.java
 /Users/nisum/Desktop/CarpoolAppGit/carpool/CarPoolServices/carpool-rest-service/src/main/java/com/nisum/carpool/service/exception/QuestionariesRepliesServiceException.java

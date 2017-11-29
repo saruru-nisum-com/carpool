@@ -5,6 +5,8 @@ com/nisum/carpool/service/exception/UserRoleServiceException.class
 com/nisum/carpool/util/UserRoleServiceUtil.class
 com/nisum/carpool/service/impl/UserRoleServiceImpl.class
 com/nisum/carpool/util/CarpoolRiderDetailsServiceUtil.class
+com/nisum/carpool/rest/api/VehicleTypesRestService.class
+com/nisum/carpool/service/impl/VehicleTypesServiceImpl.class
 com/nisum/carpool/service/impl/UserServiceImpl.class
 com/nisum/carpool/service/exception/QuestionariesServiceException.class
 com/nisum/carpool/service/exception/RegisterServiceException.class
@@ -22,7 +24,9 @@ com/nisum/carpool/util/DateUtil.class
 com/nisum/carpool/service/exception/LocationException.class
 com/nisum/carpool/service/exception/QuestionariesRepliesServiceException.class
 com/nisum/carpool/service/dto/CustomerCarpooldetailsDto.class
+com/nisum/carpool/service/dto/Erros.class
 com/nisum/carpool/service/dto/ServiceStatusDto.class
+com/nisum/carpool/service/dto/VehicleTypesDTO.class
 com/nisum/carpool/service/exception/BookMeetingRoomException.class
 com/nisum/carpool/service/exception/CategoryServiceException.class
 com/nisum/carpool/rest/api/CarpooldetailsRestService.class
@@ -30,10 +34,13 @@ com/nisum/carpool/service/dto/Errors.class
 com/nisum/carpool/service/dto/CarpoolRiderDetailsDTO.class
 com/nisum/carpool/util/UserConstants.class
 com/nisum/carpool/service/dto/UserRoleDTO.class
+com/nisum/carpool/service/exception/VehicleTypesException.class
 com/nisum/carpool/service/impl/RegisterServiceImpl.class
 com/nisum/carpool/service/dto/UserProfileDTO.class
 com/nisum/carpool/service/exception/BlogServiceException.class
+com/nisum/carpool/util/VehicleTypesUtil.class
 com/nisum/carpool/service/api/CarpooldetailsService.class
+com/nisum/carpool/service/api/VehicleTypesService.class
 com/nisum/carpool/service/dto/CarpooldetailsDto.class
 com/nisum/carpool/util/RegisterServiceUtil.class
 com/nisum/carpool/rest/api/UserProfileRestServices.class

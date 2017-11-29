@@ -8,5 +8,7 @@ import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
 public interface CarpoolRiderDetailsService {
 	
 	List<CarpoolRiderDetailsDTO> getRiderBookingDetails(String emailId); 
+	
+	String cancelCarpoolRiderDetails(int cpid);
 
 }
