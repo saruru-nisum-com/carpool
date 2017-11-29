@@ -61,6 +61,9 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
     public List<CarpooldetailsDto> createCarPooldetails(CarpooldetailsDto carpooldetailsDto) {
         // TODO Auto-generated method stub
         logger.info("CarpooldetailsServiceImpl:createCarPool");
+	    
+	carpooldetailsDto.setCreateddate(new Timestamp(System.currentTimeMillis()));
+        carpooldetailsDto.setModifieddate(new Timestamp(System.currentTimeMillis()));
         
         carpooldetailsDto.setCreateddate(new Timestamp(System.currentTimeMillis()));
         carpooldetailsDto.setModifieddate(new Timestamp(System.currentTimeMillis()));

@@ -90,8 +90,16 @@ alter table cp_carpooldetails drop userid;
 alter table cp_carpooldetails add emailid text;
 alter table cp_carpooldetails add rewards double;
 
+------ Version III ----------
 
+alter table cp_carpoolriderdetails drop notifyme;
 
+CREATE TABLE cp_carpoolridernotifications (
+   id int PRIMARY KEY,
+   cpid int,
+   emailid text,
+   notified boolean
+   );
 
 
 
