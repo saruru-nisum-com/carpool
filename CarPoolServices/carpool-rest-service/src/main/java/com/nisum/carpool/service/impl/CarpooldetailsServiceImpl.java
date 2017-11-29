@@ -155,8 +155,8 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	    	
 	    	cp.setFromtime(carpooldetails.getFromtime());
 	    	cp.setToTime(carpooldetails.getToTime());
-	    //	cp.setCreateddate(new Timestamp(System.currentTimeMillis()));
-	   // 	cp.setModifieddate(new Timestamp(System.currentTimeMillis()));
+	    	cp.setCreateddate(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+	    	cp.setModifieddate(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
 	    	cp.setNoofseats(carpooldetails.getNoofseats());
 	    cp.setStatus(1);
 	    	cp.setUserid(carpooldetails.getUserid());
