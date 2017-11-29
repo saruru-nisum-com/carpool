@@ -153,8 +153,8 @@ table, td {
 
 					<tr>
 						<td>Location</td>
-						<td><input type="text" gm-places-autocomplete name="location"
-							ng-model="autocomplete" /> <br />
+						<td><input type="text" gm-places-autocomplete name="driverLocation"
+							ng-model="autocomplete" placeholder="Enter location here" /> <br />
 							<div
 								ng-show="driverForm.$submitted || driverForm.location.$touched">
 								<div ng-show="driverForm.location.$error.required "
@@ -176,7 +176,7 @@ table, td {
 					<tr>
 						<td></td>
 						<td>
-							<button class="registerAsDng-model="
+							<button class="registerAsDriverBtn"
 								driverForm.cb4wheel.$error.required || driverForm.cb2wheel.$error.required || driverForm.nearBy.$error.required ||  driverForm.location.$error.required" ng-disabled="driverForm.cb4wheel.$error.required || driverForm.cb2wheel.$error.required || driverForm.nearBy.$error.required ||  driverForm.location.$error.required || isRegisteredAsDriver == true"
 								ng-click="registerAsDriver()">Register</button>
 							<button class="updateAsDriverBtn"
@@ -195,8 +195,8 @@ table, td {
 				<table>
 					<tr>
 						<td>Location</td>
-						<td><input type="text" ng-model="location"
-							placeholder="Enter location here"></td>
+						<td><input type="text" gm-places-autocomplete
+							ng-model="autocomplete" placeholder="Enter location here"></td>
 					</tr>
 
 					<tr>
@@ -212,7 +212,7 @@ table, td {
 					<tr>
 						<td></td>
 						<td>
-							<button class="registerAsDriverBtn " ng-click="registerAsRider()">Register</button>
+							<button class="registerAsDriverBtn" ng-click="registerAsRider()">Register</button>
 							<button class="updateAsDriverBtn" ng-click="updateAsRider()">Update</button>
 						</td>
 					</tr>
