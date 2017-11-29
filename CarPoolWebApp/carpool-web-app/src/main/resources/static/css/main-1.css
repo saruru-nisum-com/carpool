@@ -5036,6 +5036,10 @@ body.admin-bar .q-filter-waypoints {
  .irs-lc-details {
 	position: relative;
 	padding: 0 40px;
+	color: white;
+	width: fit-content;
+    padding-left: 23px;
+    padding-right: 7px
 }
 
 .irs-lct-thumb {
@@ -5151,6 +5155,8 @@ body.admin-bar .q-filter-waypoints {
 	background-color: #f5f5f5;
 	margin-bottom: 30px;
 	margin-top: 20px;
+	width: 495px;
+    height: 120px;
 }
 
 .img-fluid {
@@ -5315,4 +5321,12 @@ body.admin-bar .q-filter-waypoints {
 .login.forgot-password:hover, .login.forgot-password:active, .login.forgot-password:focus
 	{
 	color: rgb(12, 97, 33);
+}
+.button{
+	color: black;
+}
+.tStyle{
+	color:white;
+	height: 100px;
+    width: 319px;
 }
