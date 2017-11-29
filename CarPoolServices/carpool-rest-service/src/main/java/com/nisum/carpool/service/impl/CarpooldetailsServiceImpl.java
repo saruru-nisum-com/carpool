@@ -62,6 +62,9 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
         // TODO Auto-generated method stub
         logger.info("CarpooldetailsServiceImpl:createCarPool");
         
+        carpooldetailsDto.setCreateddate(new Timestamp(System.currentTimeMillis()));
+        carpooldetailsDto.setModifieddate(new Timestamp(System.currentTimeMillis()));
+        
        Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
         
        String validstatus = checkValidCarpool(carpooldetails);
@@ -155,8 +158,8 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	    	
 	    	cp.setFromtime(carpooldetails.getFromtime());
 	    	cp.setToTime(carpooldetails.getToTime());
-	    	cp.setCreateddate(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
-	    	cp.setModifieddate(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+	    	cp.setCreateddate(carpooldetails.getCreateddate());
+	    	cp.setModifieddate(carpooldetails.getModifieddate());
 	    	cp.setNoofseats(carpooldetails.getNoofseats());
 	    cp.setStatus(1);
 	    	cp.setUserid(carpooldetails.getUserid());
