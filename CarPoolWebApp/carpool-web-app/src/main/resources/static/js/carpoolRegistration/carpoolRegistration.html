@@ -13,10 +13,11 @@
 </head>
 <style>
 vehicleGridCls {
-    font-family: arial, sans-serif !important;
-    border-collapse: collapse !important;
-    width: 100% !important;
+	font-family: arial, sans-serif !important;
+	border-collapse: collapse !important;
+	width: 100% !important;
 }
+
 .error {
 	color: red !important;
 }
@@ -85,7 +86,7 @@ table, td {
 }
 
 .registerAsDriverBtn[disabled] {
-  background-color: #b2b2b2
+	background-color: #b2b2b2
 }
 
 .updateAsDriverBtn {
@@ -103,7 +104,7 @@ table, td {
 }
 
 .updateAsDriverBtn[disabled] {
-  background-color: #b2b2b2
+	background-color: #b2b2b2
 }
 
 .button4 {
@@ -134,52 +135,53 @@ table, td {
 				<table>
 					<tr>
 						<td>Vehicle Type</td>
-						<td>
-							<input type="checkbox" name="cb2wheel" ng-model='cb2wheel' ng-true-value="2" ng-false-value="0"> 2-wheeler</input>
-						</td>
+						<td><input type="checkbox" name="cb2wheel"
+							ng-model='cb2wheel' ng-true-value="2" ng-false-value="0">
+							2-wheeler</input></td>
 					</tr>
 
 					<tr>
 						<td></td>
-						<td>
-							<input type="checkbox" name="cb4wheel" ng-model='cb4wheel' ng-true-value="4" ng-false-value="0"> 4-wheeler</input>
-						<br/><div ng-show="driverForm.$submitted && driverForm.$invalid" style="color:red" class="help-block">
-							check before proceed.
-						</div>
-						
-						</td>
-						<td>
-							
-					</td>
+						<td><input type="checkbox" name="cb4wheel"
+							ng-model='cb4wheel' ng-true-value="4" ng-false-value="0">
+							4-wheeler</input> <br />
+							<div ng-show="driverForm.$submitted && driverForm.$invalid"
+								style="color: red" class="help-block">check before
+								proceed.</div></td>
+						<td></td>
 					</tr>
 
 					<tr>
 						<td>Location</td>
-						<td><input type="text" name="location" ng-model="location"
-							placeholder="Enter location here" required=""> <br />
-							<div ng-show="driverForm.$submitted || driverForm.location.$touched">
-								<div ng-show="driverForm.location.$error.required " style="color:red">Tell us your
-									location.</div>
-							</div>
-						</td>
+						<td><input type="text" gm-places-autocomplete name="location"
+							ng-model="autocomplete" /> <br />
+							<div
+								ng-show="driverForm.$submitted || driverForm.location.$touched">
+								<div ng-show="driverForm.location.$error.required "
+									style="color: red">Tell us your location.</div>
+							</div></td>
 					</tr>
 
 					<tr>
 						<td>NearBy(pickup)</td>
-						<td><input type="text" name="nearBy" 
-									ng-model="nearBy"
-									required=""> <br />
-							<div ng-show="driverForm.$submitted || driverForm.nearBy.$touched">
-								<span ng-show="driverForm.nearBy.$error.required " style="color:red">Tell us your
-									pickup point.</span>
+						<td><input type="text" name="nearBy" ng-model="nearBy"
+							required=""> <br />
+							<div
+								ng-show="driverForm.$submitted || driverForm.nearBy.$touched">
+								<span ng-show="driverForm.nearBy.$error.required "
+									style="color: red">Tell us your pickup point.</span>
 							</div></td>
 					</tr>
 
 					<tr>
 						<td></td>
 						<td>
-							<button class="registerAsDng-model="driverForm.cb4wheel.$error.required || driverForm.cb2wheel.$error.required || driverForm.nearBy.$error.required ||  driverForm.location.$error.required" ng-disabled="driverForm.cb4wheel.$error.required || driverForm.cb2wheel.$error.required || driverForm.nearBy.$error.required ||  driverForm.location.$error.required || isRegisteredAsDriver == true" ng-click="registerAsDriver()">Register</button>
-							<button class="updateAsDriverBtn" ng-disabled="isRegisteredAsDriver !== true" ng-click="updateAsDriver()">Update</button>
+							<button class="registerAsDng-model="
+								driverForm.cb4wheel.$error.required || driverForm.cb2wheel.$error.required || driverForm.nearBy.$error.required ||  driverForm.location.$error.required" ng-disabled="driverForm.cb4wheel.$error.required || driverForm.cb2wheel.$error.required || driverForm.nearBy.$error.required ||  driverForm.location.$error.required || isRegisteredAsDriver == true"
+								ng-click="registerAsDriver()">Register</button>
+							<button class="updateAsDriverBtn"
+								ng-disabled="isRegisteredAsDriver !== true"
+								ng-click="updateAsDriver()">Update</button>
 						</td>
 					</tr>
 				</table>
@@ -303,44 +305,48 @@ table, td {
 
 					<hr>
 					<div data-ng-repeat="(key, val) in foo">
-                    <table class="vehicleGridCls">
-                         <thead>
-                            <tr>
-                                <th scope="col"></th>
-                                <td scope="col"><b>Vehicle</b></td>
-                                <td scope="col"><b>Seats</b></td>
-                                <td scope="col"><b>From Date</b></td>
-                                <td scope="col"><b>To Date</b></td>
-                                <td scope="col"><b>Start Time</b></td>
-                                <td scope="col"><b>Return Time</b></td>
-                                <td scope="col"><b>Action</b></td>
-                            </tr>
-                        </thead> 
-                        <!-- <tbody data-ng-repeat="(key, val) in foo"> -->
-                        <tbody data-ng-repeat="v in val">
-                                <!-- <tr data-ng-if="v.isParent === 'true'" class="toggler" data-prod-cat="v.parentId" data-ng-click="display(v.parentId)"> -->
-                                <tr data-ng-if="v.isParent === 'true'" class="toggler" data-prod-cat="v.parentId" >
-                                    <td><button class="btn-primary" data-ng-click="display(v.parentId)">+</button></td>
-                                    <td>{{v.vType}}</td>
-                                    <td>{{v.vSeatCap}}</td>
-                                    <td>{{v.fromDate}}</td>
-                                    <td>{{v.toDate}}</td>
-                                    <td>{{v.startTime}}</td>
-                                    <td>{{v.endTime}}</td>
-                                </tr>
-                                <tr data-ng-if="v.isChild === 'true'" class='{{v.childId}}' style="display:none">
-                                    <td><button class="btn-primary">-</button></td>
-                                    <td>{{v.vType}}</td>
-                                    <td>{{v.vSeatCap}}</td>
-                                    <td>{{v.fromDate}}</td>
-                                    <td>{{v.toDate}}</td>
-                                    <td>{{v.startTime}}</td>
-                                    <td>{{v.endTime}}</td>
-                                    <td><button class="btn-primary" data-ng-click="update(v.parentId)">update</button>
-                                    <button class="btn-primary" data-ng-click="delete(v.parentId)">delete</button></td>
-                                </tr> 
-                                
-                                <!-- <tr data-ng-repeat="v in val" data-ng-if="v.isChild">
+						<table class="vehicleGridCls">
+							<thead>
+								<tr>
+									<th scope="col"></th>
+									<td scope="col"><b>Vehicle</b></td>
+									<td scope="col"><b>Seats</b></td>
+									<td scope="col"><b>From Date</b></td>
+									<td scope="col"><b>To Date</b></td>
+									<td scope="col"><b>Start Time</b></td>
+									<td scope="col"><b>Return Time</b></td>
+									<td scope="col"><b>Action</b></td>
+								</tr>
+							</thead>
+							<!-- <tbody data-ng-repeat="(key, val) in foo"> -->
+							<tbody data-ng-repeat="v in val">
+								<!-- <tr data-ng-if="v.isParent === 'true'" class="toggler" data-prod-cat="v.parentId" data-ng-click="display(v.parentId)"> -->
+								<tr data-ng-if="v.isParent === 'true'" class="toggler"
+									data-prod-cat="v.parentId">
+									<td><button class="btn-primary"
+											data-ng-click="display(v.parentId)">+</button></td>
+									<td>{{v.vType}}</td>
+									<td>{{v.vSeatCap}}</td>
+									<td>{{v.fromDate}}</td>
+									<td>{{v.toDate}}</td>
+									<td>{{v.startTime}}</td>
+									<td>{{v.endTime}}</td>
+								</tr>
+								<tr data-ng-if="v.isChild === 'true'" class='{{v.childId}}'
+									style="display: none">
+									<td><button class="btn-primary">-</button></td>
+									<td>{{v.vType}}</td>
+									<td>{{v.vSeatCap}}</td>
+									<td>{{v.fromDate}}</td>
+									<td>{{v.toDate}}</td>
+									<td>{{v.startTime}}</td>
+									<td>{{v.endTime}}</td>
+									<td><button class="btn-primary"
+											data-ng-click="update(v.parentId)">update</button>
+										<button class="btn-primary" data-ng-click="delete(v.parentId)">delete</button></td>
+								</tr>
+
+								<!-- <tr data-ng-repeat="v in val" data-ng-if="v.isChild">
                                     <td><button class="btn btn-light">- {{v.isChild}}</button></td>
                                     <td>{{v.vType}}</td>
                                     <td>{{v.vSeatCap}}</td>
@@ -351,7 +357,7 @@ table, td {
                                 </tr> -->
 
 
-                            <!-- <tr ng-repeat="todo in todos" ng-if="todo.isParent">
+								<!-- <tr ng-repeat="todo in todos" ng-if="todo.isParent">
                                 <td><button class="btn btn-light"
                                         ng-click="displayChild(todo.parentID)">+</button></td>
                                 <td>{{todo.parentID}}</td>
@@ -366,9 +372,9 @@ table, td {
                                 <td>{{child.fromDate}}</td>
                                 <td>{{child.endDate}}</td>
                             </tr> -->
-                        </tbody>
-                    </table>
-                    </div>
+							</tbody>
+						</table>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -400,8 +406,8 @@ table, td {
 	}
 
 	$(".toggler").click(function(e) {
-        e.preventDefault();
-        $('.cat' + $(this).attr('data-prod-cat')).toggle();
-    });
+		e.preventDefault();
+		$('.cat' + $(this).attr('data-prod-cat')).toggle();
+	});
 </script>
 </html>

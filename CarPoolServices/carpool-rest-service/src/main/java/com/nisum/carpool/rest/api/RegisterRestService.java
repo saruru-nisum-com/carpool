@@ -42,20 +42,20 @@ public class RegisterRestService {
 			// Duplicate Check need to add it on later point of time 
 			
 			// Hard Coded Data
-			List<Integer> list = new ArrayList<>();
-			list.add(4);
+			//List<Integer> list = new ArrayList<>();
+			//list.add(4);
 			
-			registerDTO.setRegistrationId(76763);
-			registerDTO.setIsRider(0);
-			registerDTO.setLatitude("23322323");
-			registerDTO.setLocation("dsdnmn");
-			registerDTO.setMobile("8943434434");
-			registerDTO.setUserId("test@tes.com");
-			registerDTO.setVehicleType(list);
-			registerDTO.setNearby("NELO");
-			registerDTO.setCreatedDate(CommonsUtil.getCurrentDateTime());
-			registerDTO.setModifiedDate(CommonsUtil.getCurrentDateTime());
-			registerDTO.setEmailNotification(false);
+//			registerDTO.setRegistrationId(76763);
+//			registerDTO.setIsRider(0);
+//			registerDTO.setLatitude("23322323");
+//			registerDTO.setLocation("dsdnmn");
+//			registerDTO.setMobile("8943434434");
+//			registerDTO.setUserId("test@tes.com");
+//			registerDTO.setVehicleType(list);
+//			registerDTO.setNearby("NELO");
+//			registerDTO.setCreatedDate(CommonsUtil.getCurrentDateTime());
+//			registerDTO.setModifiedDate(CommonsUtil.getCurrentDateTime());
+//			registerDTO.setEmailNotification(false);
 			ServiceStatusDto statusDto = registerService.registerDriverorRider(registerDTO);
 			if(statusDto.isStatus()) {
 				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
@@ -78,20 +78,20 @@ public class RegisterRestService {
 			// Duplicate Check need to add it on later point of time 
 			
 			// Hard Coded Data
-			List<Integer> list = new ArrayList<>();
-			list.add(4);
+			//List<Integer> list = new ArrayList<>();
+			//list.add(4);
 			
-			registerDTO.setRegistrationId(76763);
-			registerDTO.setIsRider(0);
-			registerDTO.setLatitude("23322323");
-			registerDTO.setLocation("dsdnmn");
-			registerDTO.setMobile("8943434434");
-			registerDTO.setUserId("test@tes.com");
-			registerDTO.setVehicleType(list);
-			registerDTO.setNearby("NELO");
-			registerDTO.setCreatedDate(CommonsUtil.getCurrentDateTime());
-			registerDTO.setModifiedDate(CommonsUtil.getCurrentDateTime());
-			registerDTO.setEmailNotification(false);
+//			registerDTO.setRegistrationId(76763);
+//			registerDTO.setIsRider(0);
+//			registerDTO.setLatitude("23322323");
+//			registerDTO.setLocation("dsdnmn");
+//			registerDTO.setMobile("8943434434");
+//			registerDTO.setUserId("test@tes.com");
+//			registerDTO.setVehicleType(list);
+//			registerDTO.setNearby("NELO");
+//			registerDTO.setCreatedDate(CommonsUtil.getCurrentDateTime());
+//			registerDTO.setModifiedDate(CommonsUtil.getCurrentDateTime());
+//			registerDTO.setEmailNotification(false);
 			ServiceStatusDto statusDto = registerService.registerDriverorRider(registerDTO);
 			if(statusDto.isStatus()) {
 				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
@@ -107,7 +107,7 @@ public class RegisterRestService {
 	
 	
 
-	@RequestMapping(value = "/getProfile/{userId}", method = RequestMethod.GET,  produces = "application/json")
+	@RequestMapping(value = "/getProfile/{userId:.+}", method = RequestMethod.GET,  produces = "application/json")
 	public ResponseEntity<List<RegisterDTO>> getUserProfile(@PathVariable String userId)
 			throws UserServiceException {
 		logger.info("UserProfileRestService :: users profile::: get");
