@@ -13,9 +13,9 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 	$scope.lat = undefined;
     $scope.lng = undefined;
 	$scope.selectedLocation = undefined;
+	$scope.autocomplete = undefined;
+	
 	$scope.$on('gmPlacesAutocomplete::placeChanged', function(){
-		
-		console.log('carpool method ')
 		$scope.selectedLocation = $scope.autocomplete.getPlace().name;
 	      var location = $scope.autocomplete.getPlace().geometry.location;
 	      $scope.lat = location.lat();
@@ -23,10 +23,42 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 	      $scope.$apply();
 	  });
 	
+	/*
+	 * @author dhiraj1125
+	 * Method to get the Driver/Rider details and check if he is already registered 
+	 * as a driver or the rider.
+	 * @param userId
+	 */
+	$scope.getRegisteredDriverData = function() {
+		var profileSessionData = localStorageService.get('profile');
+		$scope.userId = profileSessionData.emailId;
+		carpoolRegistrationService.getRegisterDriverData($scope.userId).then (function(response){
+			angular.forEach(response, function(value, key) {
+				if(value.isRider == 0) {//If isRider value is '0' then he is registered as Driver.
+					$scope.isRegisteredAsDriver = true;
+					$scope.autocomplete = value.location;
+					$scope.nearBy = value.nearby;
+					angular.forEach(value.vehicleType, function(value) {
+						if(value == 2) 
+							$scope.cb2wheel = 2;
+						else
+							$scope.cb4wheel = 4;
+					})
+				} else if(value.isRider == 1){//If isRider value is '1' then he is registered as Rider.
+					//TODO: Logic to populate the input data if user is already registered as a Rider.
+					console.log("Registered as Rider");
+				}
+			});
+		});
+	}
+	
+	/*
+	 * On load method call to get the registered user data. 
+	 */
+	$scope.getRegisteredDriverData();
+	
 	$scope.registerAsDriver = function() {
-
 		console.log('checkbox values '+$scope.cb2wheel +'and '+$scope.cb4wheel);
-		
 		if ($scope.cb2wheel==false && $scope.cb4wheel==false) {
 			alert('Please select the vehicle type.');
 		}else {
@@ -76,8 +108,6 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 				if (response.errorCode === 500) {
 					$scope.message = response.errorMessage
 				}else {
-
-					
 					$scope.isRegisteredAsDriver= true;
 		            alert('driver registered successfully.');
 					//$scope.names = response.records;
@@ -115,8 +145,44 @@ carpoolRegApp.controller('carpoolRegistrationController', function($scope,
 		
 	}
 	
+	/*
+	 * @author dhiraj1125
+	 * Method to update the Driver data.
+	 */
 	$scope.updateAsDriver = function() {
-		alert("update button is clicked");
+		console.log("Update driver data method called.");
+		
+		var profileSessionData = localStorageService.get('profile');
+		var userId = profileSessionData.emailId;
+		$scope.userId = userId
+		
+		if($scope.cb2wheel==2 && $scope.cb4wheel==4){
+			var vehicleType = [$scope.cb2wheel, $scope.cb4wheel];
+		}else if($scope.cb2wheel==2 && $scope.cb4wheel==0){
+			var vehicleType = [$scope.cb2wheel];
+		}else if($scope.cb4wheel==4 && $scope.cb2wheel==0){
+			var vehicleType = [$scope.cb4wheel];
+		}
+
+		var data = {
+				"userId" : userId,
+				"location" : $scope.autocomplete,
+				"nearBy" : $scope.nearBy,
+				"vehicleType" :  vehicleType,
+		}
+		carpoolRegistrationService.updateDriverData(data).then(function(successResponse) {
+			console.log("Driver data updated successfuly"+successResponse);
+		}, function(errorResponse) {
+			console.log("Failed to update the driver data."+errorResponse);
+		});
+		
+		var onSuccess = function (data, status, headers, config) {
+            alert('Driver data updated successfully.');
+        };
+        
+        var onError = function (data, status, headers, config) {
+            alert('Error occured while updating the driver data.');
+        };
 	}
 
 	$scope.registerAsRider = function() {
