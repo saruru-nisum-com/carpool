@@ -58,7 +58,8 @@
 	display: none !important;
 }
 </style>
-<link rel='stylesheet' id='style-css'  href='css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='style-css' href='css/style.css'
+	type='text/css' media='all' />
 </head>
 <body ng-app="nisumApp"
 	class="home page-template page-template-page-questions page-template-page-questions-php page page-id-12 cbp-spmenu-push">
@@ -72,7 +73,7 @@
 
 			<ui-view></ui-view>
 			<!-- main views -->
-<!-- 
+			<!-- 
 			<div ng-if="!navBarToggle">
 				<div class="rightbar" ng-include="'js/partials/rightsidebar.html'"></div>
 			</div> -->
@@ -112,8 +113,7 @@
 	width: 90%;
 }
 
-bootstrap.css: 1585
-.container {
+bootstrap.css: 1585 .container {
 	padding-right: 15px;
 	padding-left: 15px;
 	margin-right: auto;
@@ -203,11 +203,11 @@ bootstrap.css: 1585
 	</div>
 
 
-
-
-
-
-
+	<script
+		src="https://maps.google.com/maps/api/js?key=AIzaSyCGAYpF7AnslFZ8bMRQU-a--i_zLi9FK6Y&libraries=places"
+		type="text/javascript"></script>
+		
+		
 	<!-- bootstrap scripts -->
 	<script src='bower_components/moment/min/moment.min.js'></script>
 	<script src="bower_components/jquery/dist/jquery.js"></script>
@@ -234,6 +234,9 @@ bootstrap.css: 1585
 	<script
 		src='http://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.0/textAngular.min.js'></script>
 
+	<script
+		src="http://jvandemo.github.io/angularjs-google-maps/dist/angularjs-google-maps.js"></script>
+
 	<script src="js/directives/google-plus-signin.js"></script>
 	<!-- module scripts -->
 	<!--  <script src='js/questions/questions.js'></script>-->
@@ -252,7 +255,7 @@ bootstrap.css: 1585
 	<script src='js/services/carpoolService.js'></script>
 	<script src='js/services/roleService.js'></script>
 	<script src='js/services/userService.js'></script>
-<!-- 	<script src='js/services/commentService.js'></script> -->
+	<!-- 	<script src='js/services/commentService.js'></script> -->
 	<!-- <script src='js/services/trainingService.js'></script> -->
 	<script src='js/services/loginLogoutService.js'></script>
 	<script src='js/services/carpoolRegistrationService.js'></script>
