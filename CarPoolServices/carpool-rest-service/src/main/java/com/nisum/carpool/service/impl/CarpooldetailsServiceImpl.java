@@ -96,6 +96,7 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 		
 		return carpooldetailsDAO.checkValidCarpool(carpooldetails);
 		
+		
 	}
 	
 	public static List<Carpooldetails> processPostRideDomain(Carpooldetails carpooldetails) {
