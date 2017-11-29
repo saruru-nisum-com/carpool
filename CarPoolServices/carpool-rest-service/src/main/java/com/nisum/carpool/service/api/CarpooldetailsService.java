@@ -14,4 +14,6 @@ public interface CarpooldetailsService {
 	 List<CustomerCarpooldetailsDto> getCarPoolDetails(String location);
 	 
 	 
+	 ServiceStatusDto cancelCarpooldetails(CarpooldetailsDto carpooldetailsDto);
+	 
 }

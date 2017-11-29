@@ -3,7 +3,6 @@ package com.nisum.carpool.service.impl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -58,12 +57,30 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	}
 	
 	@Override
+	public ServiceStatusDto cancelCarpooldetails(CarpooldetailsDto carpooldetailsDto) {
+		// TODO Auto-generated method stub
+		logger.info("CarpooldetailsServiceImpl : cancel Carpooldetails");
+		
+		carpooldetailsDto.setModifieddate(modifiedDate);
+		
+		Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertUpdateDtoTODao(carpooldetailsDto);
+		String cancelCarpooldetails = carpooldetailsDAO.cancelCarpooldetails(carpooldetails);
+		System.out.println("Carpooldetails after cancel  dao message::"+cancelCarpooldetails);
+		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
+		if(ObjectUtils.anyNotNull(cancelCarpooldetails))
+		{
+			logger.info("CarpooldetailsServiceImpl : cancel Carpooldetails ::"+cancelCarpooldetails);
+			serviceStatusDto.setStatus(true);
+			serviceStatusDto.setMessage(cancelCarpooldetails);
+		}
+		return serviceStatusDto;
+	}
+	
+	
+	@Override
     public List<CarpooldetailsDto> createCarPooldetails(CarpooldetailsDto carpooldetailsDto) {
         // TODO Auto-generated method stub
         logger.info("CarpooldetailsServiceImpl:createCarPool");
-	    
-	carpooldetailsDto.setCreateddate(new Timestamp(System.currentTimeMillis()));
-        carpooldetailsDto.setModifieddate(new Timestamp(System.currentTimeMillis()));
         
         carpooldetailsDto.setCreateddate(new Timestamp(System.currentTimeMillis()));
         carpooldetailsDto.setModifieddate(new Timestamp(System.currentTimeMillis()));

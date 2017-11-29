@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.domain.RegisterDomain;
+import java.lang.Integer;
 
 
 
@@ -18,8 +19,17 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	
 	@Query("select count(*) from cp_carpooldetails where userid=:userid and fromdate=:date ALLOW FILTERING")
 	public int findEntriesWithDate(@Param("userid") String userid, @Param("date") String date);
+	
 	@Query("select count(*) from cp_carpooldetails where parentid=?0 ALLOW FILTERING")
 	Long countByParentid(int parentid);
+	
+	@Query("select count(*) from cp_carpooldetails where id=?0 ALLOW FILTERING")
+	Long findById(int id);
+	
+	//@Query("select * from cp_carpooldetails where parentid=?0 ALLOW FILTERING")
+	//public Carpooldetails findByParentid(int parentid);
+	@Query("select * from cp_carpooldetails where parentid=?0 ALLOW FILTERING")
+	List<Carpooldetails> findByParentid(Integer parentid);
 	
 	@Query("select id from cp_carpooldetails where parentid=?0 allow filtering")
 	List<Integer> getListOfIdsByParentid(int parentid);
@@ -37,6 +47,8 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	@Query("select * from cp_carpooldetails where userid=?0 allow filtering")
 	List<Carpooldetails> getCarPoolsByEmail(String email);
 	
-	
-	
+	@Query("update cp_carpooldetails set modifieddate=:#{#carpoolDetails.modifieddate}, status=:#{#carpoolDetails.status} where parentid=:#{#carpoolDetails.parentid}")
+	Integer cancelMultipleCarpoolDetails(@Param("carpoolDetails") Carpooldetails carpoolDetails);
 }
+
+

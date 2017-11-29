@@ -76,10 +76,30 @@ public class CarpooldetailsServiceUtil {
 		carpooldetails.setStatus(carpooldetailsDto.getStatus());
 		carpooldetails.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(carpooldetailsDto.getCreateddate()));
 		carpooldetails.setModifieddate(CommonsUtil.convertTimeStampToLocalDateTime(carpooldetailsDto.getModifieddate()));
+		//carpooldetails.setCreateddate(carpooldetailsDto.getCreateddate());
+		//carpooldetails.setModifieddate(carpooldetailsDto.getModifieddate());
 		return carpooldetails;
 
 	}
 	
+	public static Carpooldetails convertUpdateDtoTODao(CarpooldetailsDto carpooldetailsDto) {
+		System.out.println("in convertUtils cancel..pool"+carpooldetailsDto.getStatus());
+		Carpooldetails carpooldetails = new Carpooldetails();
+		carpooldetails.setId(carpooldetailsDto.getId());
+		carpooldetails.setParentid(carpooldetailsDto.getParentid());
+		carpooldetails.setUserid(carpooldetailsDto.getUserid());
+		carpooldetails.setVehicleType(carpooldetailsDto.getVehicleType());
+		carpooldetails.setNoofseats(carpooldetailsDto.getTotalNoOfSeats());
+		carpooldetails.setFromDate(carpooldetailsDto.getFromDate());
+		carpooldetails.setToDate(carpooldetailsDto.getToDate());
+		carpooldetails.setFromtime(carpooldetailsDto.getStartTime());
+		carpooldetails.setToTime(carpooldetailsDto.getToTime());
+		carpooldetails.setStatus(carpooldetailsDto.getStatus());
+		//carpooldetails.setCreateddate(carpooldetailsDto.getCreateddate());
+		carpooldetails.setModifieddate(carpooldetailsDto.getModifieddate().toLocalDateTime());
+		return carpooldetails;
+
+	}
 	public static int getNo_of_days(String fromDate, String toDate) {
 		
 		//to find number of days between two dates

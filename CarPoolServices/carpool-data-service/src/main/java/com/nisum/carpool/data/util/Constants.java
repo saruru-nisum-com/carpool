@@ -59,6 +59,10 @@ public class Constants {
 		public static final String MSG_CARPOOL_UPDATE_SINGLE = "Current record Updated Successfully !!";
 		public static final String MSG_CARPOOL_UPDATE_MULTI = "All CarpoolDetails Updated Successfully !!";
 		
+		public static final String MSG_CARPOOL_CANCEL = "Carpool Cancelled Successfully !!";
+		public static final String MSG_CARPOOL_CANCEL_MULTI = "All CarpoolDetails Cancelled Successfully !!";
+		
+		
 		public static final String VALID = "valid";
 		public static final String NOTVALID = "not valid";
 		public static final String CARPOOLEXISTS = "Car Pool already exists";
