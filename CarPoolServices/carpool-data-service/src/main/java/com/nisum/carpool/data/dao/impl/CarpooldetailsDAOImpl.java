@@ -150,4 +150,10 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 		return carpoolDets;
 	}
 	
+	@Override
+	public Carpooldetails getCarPoolByCpID(int cpId) {
+		return carpooldetailsRepository.getCarPoolsByCpId(cpId);
+	}
+	
+
 }
