@@ -4,6 +4,9 @@
 <body>
 <!-- driver registration tab code starts -->
 	<div id='driverDiv'>
+		<div id = "leftHandMenu">
+			<div ng-include="'js/partials/leftSideMenu.html'"></div>
+		</div>
 		<form name="driverForm" class="driverClass" novalidate>
 			<table>
 				<tr>
@@ -57,22 +60,8 @@
 			</table>
 		</form>
 	</div>
-	<div id = "leftHandMenu">
-			<div ng-include="'js/partials/leftSideMenu.html'"></div>
-		</div>
-	<!-- driver registration tab code ends -->
-		
-<!-- <div ng-app="driverApp">
- 
-<p>Registration</p>
-<p>Vehicle Type: <div><input type="checkbox">2-wheeler<br><input type="checkbox">4-wheeler</div></p>
-<p>Location : <input type="text" ng-model="location" placeholder="Enter location here"></p>
-<p>NearBy(pickup) : <input type="text" ng-model="location"></p>
-<h1>your location {{location}}</h1>
-<button type="submit">Register</button>
-<button type="submit">Update</button>
 
-</div> -->
+	<!-- driver registration tab code ends -->
 
 </body>
 </html>
