@@ -105,6 +105,10 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
        List<Carpooldetails> cpd = carpooldetailsDAO.addCarpoolDetails(carPoolList);
         
 
+       if(cpd == null) return null; 
+       
+       else 
+        
        return CarpooldetailsServiceUtil.convertDaoTODto(cpd);
       
     }
