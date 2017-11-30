@@ -47,8 +47,17 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	@Query("select * from cp_carpooldetails where userid=?0 allow filtering")
 	List<Carpooldetails> getCarPoolsByEmail(String email);
 	
+
 	@Query("update cp_carpooldetails set modifieddate=:#{#carpoolDetails.modifieddate}, status=:#{#carpoolDetails.status} where parentid=:#{#carpoolDetails.parentid}")
 	Integer cancelMultipleCarpoolDetails(@Param("carpoolDetails") Carpooldetails carpoolDetails);
-}
 
+
+
+
+	@Query("select * from cp_carpooldetails where id=?0 allow filtering")
+	Carpooldetails  getCarPoolsByCpId(int cpId);
+	
+	
+	
+}
 

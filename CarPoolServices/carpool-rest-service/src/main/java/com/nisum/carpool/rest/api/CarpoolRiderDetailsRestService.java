@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
+import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
 
 @RestController
 @RequestMapping(value = "/v1/carpool")

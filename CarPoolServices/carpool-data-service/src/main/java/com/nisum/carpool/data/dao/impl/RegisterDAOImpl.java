@@ -34,9 +34,9 @@ public class RegisterDAOImpl implements RegisterDAO {
 	 * This method is used to load the rider driver details by userid
 	 */
 	@Override
-	public List<RegisterDomain> findUserRegistrationByUserId(String userId) {
+	public List<RegisterDomain> findUserRegistrationByUserId(String emaiId) {
 		logger.info("UserRegistrationDaoImpl :: findUserRegistrationByUserId :: Finding user by userId");
-		return registerRepository.findByUserId(userId);
+		return registerRepository.findByUserId(emaiId);
 	}
 
 

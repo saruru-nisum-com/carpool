@@ -11,7 +11,7 @@ import com.nisum.carpool.data.domain.RegisterDomain;
 @Repository
  public interface RegisterRepository extends CassandraRepository<RegisterDomain> {
 
-	@Query("select * from cp_userregistration where userid= ?0 allow filtering")
-	List<RegisterDomain> findByUserId(String userId);
+	@Query("select * from cp_userregistration where emailid= ?0 allow filtering")
+	List<RegisterDomain> findByUserId(String emailId);
 	
 }

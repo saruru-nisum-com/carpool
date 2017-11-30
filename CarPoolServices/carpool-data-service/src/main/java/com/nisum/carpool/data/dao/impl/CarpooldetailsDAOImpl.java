@@ -132,4 +132,10 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 	}
 
 
+	@Override
+	public Carpooldetails getCarPoolByCpID(int cpId) {
+		return carpooldetailsRepository.getCarPoolsByCpId(cpId);
+	}
+	
+
 }
