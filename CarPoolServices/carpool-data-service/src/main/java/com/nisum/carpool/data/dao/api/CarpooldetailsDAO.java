@@ -18,10 +18,7 @@ public interface CarpooldetailsDAO {
 
 	public List<Carpooldetails> getCarPoolByMailID(String email);
 	
-<<<<<<< HEAD
 	public Carpooldetails  loadCarpoolDetailsById(int carpoolId)throws Exception;
 	
-=======
->>>>>>> 6f1d8c4ac69fb41e5d2c674f3b982340f17cc30e
 	public Carpooldetails getCarPoolByCpID(int cpId);
 }
