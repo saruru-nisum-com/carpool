@@ -28,8 +28,8 @@ public class CarpooldetailsServiceImplTest {
 	@Mock
 	CarpooldetailsDAO carpooldetailsDAO;
 	
-	@Mock
-	ObjectUtils objectUtils;
+	//@Mock
+	//ObjectUtils objectUtils;
 	
 	CarpooldetailsDto carpooldetailsDto = new CarpooldetailsDto();
 	
