@@ -170,7 +170,7 @@ table, td {
 }
 
 .grid {
-	font-family: verdana;
+	font-family: ‘Raleway’, sans-serif;
 	border-collapse: collapse;
 	width: 100%;
 	/*top: 20px;*/
@@ -197,14 +197,18 @@ table, td {
 
 .grid img:hover, button:hover {
 	opacity: 0.6;
+	cursor: pointer;
 }
 
 .grid button {,
 	position: relative;
 	margin-right: 5px;
+	background-color: #337ab7 ;
+    cursor: pointer;
 }
 
 .grid tr:hover {
 	background-color: #ebf5f9;
-	color: SteelBlue;
+	color: #00B3E3;
 }
+

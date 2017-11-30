@@ -17,7 +17,7 @@
 </style>
 <body>
 	<div class="container">
-		<h4>Share A Ride</h4>
+		<h3 style="color:#00B3E3">Share A Ride</h3>
 
 		<!-- driver registration tab code starts -->
 		<!-- <div id='driverDiv'>
@@ -217,11 +217,11 @@
 						<td>{{value.toDate}}</td>
 						<td>{{value.startTime}}</td>
 						<td>{{value.toTime}}</td>
-						<td><img src="images/./view.png" style="left: -10px" title="view" />
+						<td><img src="images/./view.png" style="left: -10px" title="view" ng-click="activate(checkedData)"/>
 							<img src="images/./edit.png"
-							style="width: 20px; height: 20px; left: -5px;" title="edit" /> <img
+							style="width: 20px; height: 20px; left: -5px;" title="edit" ng-click="activate(checkedData)" /> <img
 							src="images/./delete2.png" style="width: 20px; height: 20px;"
-							title="delete" /></td>
+							title="delete" ng-click="activate(checkedData)" /></td>
 					</tr>
 					<tr ng-repeat="x in value.child" class="hideChild{{key}}"
 						ng-show="show{{key}}">
@@ -233,11 +233,11 @@
 						<td>{{x.toDate}}</td>
 						<td>{{x.startTime}}</td>
 						<td>{{x.toTime}}</td>
-						<td><img src="images/./view.png" style="left: -10px" title="view" />
+						<td><img src="images/./view.png" style="left: -10px" title="view" ng-click="activate(checkedData)" />
 							<img src="images/./edit.png"
-							style="width: 20px; height: 20px; left: -5px;" title="edit" /> <img
+							style="width: 20px; height: 20px; left: -5px;" title="edit" ng-click="activate(checkedData)" /> <img
 							src="images/./delete2.png" style="width: 20px; height: 20px;"
-							title="delete" /></td>
+							title="delete" ng-click="activate(checkedData)"/></td>
 					</tr>
 				</tbody>
 			</table>

@@ -698,7 +698,14 @@ carpoolRegApp
 
 												// for Checkbox toggle
 
-												$scope.checkedData = false;
+											    $scope.checkedData = false;
+											    
+											    $scope.activate = function(x){
+											        
+											        if(x){
+											            alert("clicked");
+											        }
+											    }
 
 											}
 										}, function(response) {
