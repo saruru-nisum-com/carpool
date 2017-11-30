@@ -82,8 +82,15 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 				RiderBookingDetailsDTO carpoolRiderdetailsDto = new RiderBookingDetailsDTO();
 				int cpid = car.getCpid();
 
-				Carpooldetails carpool = carpooldetailsDAO.getCarPoolByCpID(cpid);
-				String email = carpool.getUserid();
+				Carpooldetails carpool;
+				String email="";
+				try {
+					carpool = carpooldetailsDAO.loadCarpoolDetailsById(cpid);
+					email = carpool.getEmailId();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
 				User user = userDAO.findByEmailId(email);
 				List<RegisterDomain> registerDomain = registerDAO.findUserRegistrationByUserId(email);
 				carpoolRiderdetailsDto.setEmail(email);
