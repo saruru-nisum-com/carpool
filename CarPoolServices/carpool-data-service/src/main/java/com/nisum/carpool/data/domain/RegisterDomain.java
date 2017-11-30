@@ -1,11 +1,9 @@
 package com.nisum.carpool.data.domain;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.data.cassandra.mapping.CassandraType;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 @Table("cp_userregistration")

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nisum.carpool.data.util.Pool_Status;
+import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.api.CarpooldetailsService;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
@@ -31,6 +33,9 @@ public class CarpooldetailsRestService {
 	private static Logger logger = LoggerFactory.getLogger(CarpooldetailsRestService.class);
 	@Autowired
 	CarpooldetailsService carpooldetailsService;
+	
+	@Autowired
+	CarpoolRiderDetailsService carpoolRiderService;
 	
 	@RequestMapping(value="/update",method=RequestMethod.PUT)
 	public ResponseEntity<?> updateCarpooldetails(@RequestBody CarpooldetailsDto carpooldetailsDto){
@@ -66,6 +71,16 @@ public class CarpooldetailsRestService {
 			error.setErrorMessage(Constants.MSG_CANCEL_CARPOOL_FAILED);
 			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
+		
+		//update in Carpool rider
+		try {
+			String cancelRider=	carpoolRiderService.cancelCarpoolRiderDetails(carpooldetailsDto.getId());
+			logger.info("msg for Carpoll rider cancel"+cancelRider);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return responseEntity;
 		
 	}

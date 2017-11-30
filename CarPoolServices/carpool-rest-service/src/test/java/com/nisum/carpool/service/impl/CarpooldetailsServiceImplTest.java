@@ -20,17 +20,19 @@ import com.nisum.carpool.util.CarpooldetailsServiceUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CarpooldetailsServiceImplTest {
+	
 	@Mock
 	CarpooldetailsDAO carpooldetailsDAO;
 	@Mock
 	ObjectUtils objectUtils;
 	@InjectMocks
 	CarpooldetailsServiceImpl carpooldetailsServiceImpl;
+
 	@Test
 	public void updateCarpooldetailsTest() {
-		Timestamp createdDate=new Timestamp(1511249628);
+		Timestamp createdDate = new Timestamp(1511249628);
 		Timestamp modifiedDate = carpooldetailsServiceImpl.modifiedDate;
-		CarpooldetailsDto carpooldetailsDto=new CarpooldetailsDto();
+		CarpooldetailsDto carpooldetailsDto = new CarpooldetailsDto();
 		carpooldetailsDto.setId(1);
 		carpooldetailsDto.setParentid(1);
 		carpooldetailsDto.setEmailId("mbheemanapalli@nisum.com");
@@ -44,19 +46,13 @@ public class CarpooldetailsServiceImplTest {
 		carpooldetailsDto.setCreateddate(createdDate);
 		carpooldetailsDto.setModifieddate(modifiedDate);
 		Carpooldetails convertDtoTODao = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
-		when(carpooldetailsDAO.updateCarpooldetails(convertDtoTODao)).thenReturn("Current record Updated Successfully !!");
-		//when(objectUtils.allNotNull(convertDtoTODao)).thenReturn(true);
+		when(carpooldetailsDAO.updateCarpooldetails(convertDtoTODao))
+				.thenReturn("Current record Updated Successfully !!");
+		// when(objectUtils.allNotNull(convertDtoTODao)).thenReturn(true);
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
 		serviceStatusDto.setStatus(true);
 		serviceStatusDto.setMessage("Current record Updated Successfully !!");
 		ServiceStatusDto actualStatus = carpooldetailsServiceImpl.updateCarpooldetails(carpooldetailsDto);
 		assertEquals(serviceStatusDto.getMessage(), actualStatus.getMessage());
 	}
-	
-	
-	
-	
-	
-	
-	
 }

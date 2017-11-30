@@ -63,7 +63,7 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 			  if(poolData!=null) {
 					  if (CollectionUtils.isNotEmpty(poolData)) {
 						  poolData.forEach(c->{
-								c.setStatus(3);
+								c.setStatus(4);
 							  c.setModifieddate(modifiedDate.toLocalDateTime());
 								carpooldetailsRepository.save(c);
 							});
