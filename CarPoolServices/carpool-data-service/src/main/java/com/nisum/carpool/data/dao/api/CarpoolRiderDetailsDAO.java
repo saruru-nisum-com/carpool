@@ -8,4 +8,6 @@ import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 public interface CarpoolRiderDetailsDAO {
 
 	public List<CarpoolRiderDetails> getRiderBookingDetails(String emailId);
+	
+	public List<CarpoolRiderDetails> findCarpoolRiderDetailsByCPId(int cpid);
 }

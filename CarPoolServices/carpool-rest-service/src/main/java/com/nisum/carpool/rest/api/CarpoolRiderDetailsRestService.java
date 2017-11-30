@@ -14,22 +14,31 @@ import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
 
 @RestController
-@RequestMapping(value="/v1/carpool")
+@RequestMapping(value = "/v1/carpool")
 public class CarpoolRiderDetailsRestService {
-	
+
 	@Autowired
 	CarpoolRiderDetailsService carpoolRiderDetailsService;
-	
+
 	@RequestMapping(value = "/getRiderBookingDetails/{emailID}", method = RequestMethod.GET)
-	public ResponseEntity<List<CarpoolRiderDetailsDTO>> getRiderBookingDetails(@PathVariable("emailID") String emailID){
-		
-		String emailId=emailID+".com";
-		
-		System.out.println("emailId"+emailId);
-		
+	public ResponseEntity<List<CarpoolRiderDetailsDTO>> getRiderBookingDetails(
+			@PathVariable("emailID") String emailID) {
+
+		String emailId = emailID + ".com";
+
+		System.out.println("emailId" + emailId);
+
 		List<CarpoolRiderDetailsDTO> poolList = carpoolRiderDetailsService.getRiderBookingDetails(emailId);
 		return new ResponseEntity<List<CarpoolRiderDetailsDTO>>(poolList, HttpStatus.OK);
-		
+
+	}
+
+	@RequestMapping(value = "/findCarpoolRiderDetailsByCPId/{cpid}", method = RequestMethod.GET)
+	public ResponseEntity<List<CarpoolRiderDetailsDTO>> findCarpoolRiderDetailsByCPId(@PathVariable("cpid") int cpid) {
+
+		List<CarpoolRiderDetailsDTO> poolList = carpoolRiderDetailsService.findCarpoolRiderDetailsByCPId(cpid);
+		return new ResponseEntity<List<CarpoolRiderDetailsDTO>>(poolList, HttpStatus.OK);
+
 	}
 
 }

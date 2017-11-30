@@ -8,9 +8,12 @@ import org.springframework.data.repository.query.Param;
 
 import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 
-
-public interface CarpoolRiderDetailsRepository extends  CassandraRepository<CarpoolRiderDetails>{
+public interface CarpoolRiderDetailsRepository extends CassandraRepository<CarpoolRiderDetails> {
+	
 	@Query("select * from cp_carpoolriderdetails where emailid=:emailId ALLOW FILTERING")
-	List<CarpoolRiderDetails>  getRiderBookingDetails(@Param("emailId") String emailId);
+	List<CarpoolRiderDetails> getRiderBookingDetails(@Param("emailId") String emailId);
+	
+	@Query("select * from cp_carpoolriderdetails where cpid=:cpid ALLOW FILTERING")
+	List<CarpoolRiderDetails> findCarpoolRiderDetailsByCPId(@Param("cpid") int cpid);
 
 }

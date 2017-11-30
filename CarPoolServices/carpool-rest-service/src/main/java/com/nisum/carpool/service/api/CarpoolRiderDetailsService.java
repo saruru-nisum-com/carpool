@@ -4,9 +4,10 @@ import java.util.List;
 
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
 
-
 public interface CarpoolRiderDetailsService {
-	
-	List<CarpoolRiderDetailsDTO> getRiderBookingDetails(String emailId); 
+
+	List<CarpoolRiderDetailsDTO> getRiderBookingDetails(String emailId);
+
+	List<CarpoolRiderDetailsDTO> findCarpoolRiderDetailsByCPId(int cpid);
 
 }
