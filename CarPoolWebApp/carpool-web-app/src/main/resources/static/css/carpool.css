@@ -1,0 +1,210 @@
+vehicleGridCls {
+	font-family: arial, sans-serif !important;
+	border-collapse: collapse !important;
+	width: 100% !important;
+}
+
+.error {
+	color: red !important;
+}
+
+div.solid { //
+	outline-style: solid !important;
+}
+
+.postRideCls {
+	text-align: center;
+	border: 3px solid #3498db;
+}
+
+table, td {
+	/* border: 1px solid grey;
+  border-collapse: collapse; */
+	padding: 5px;
+}
+
+.vehicleGrid {
+	text-align: -webkit-center !important;
+}
+
+.prTableReg {
+	width: 60% !important;
+}
+
+.vsCls {
+	width: 200px !important;
+}
+
+.prTabTh {
+	padding-left: 200px !important;
+}
+
+.prTabThAddBCls {
+	padding-left: 270px !important;
+}
+
+.buttonPostARideAddButCls {
+	background-color: #3498db; /* blue */
+	border: none;
+	color: white;
+	padding: 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 14px;
+	margin: 4px 2px;
+	cursor: pointer;
+}
+
+/* driver and rider css @author: Dhiraj singh*/
+.registerAsDriverBtn {
+	background-color: #3498db; /* blue */
+	border: none;
+	color: white;
+	padding: 10px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 14px;
+	margin: 4px 2px;
+	cursor: pointer;
+	border-radius: 5px;
+}
+
+.registerAsDriverBtn[disabled] {
+	background-color: #b2b2b2
+}
+
+.updateAsDriverBtn {
+	background-color: #3498db; /* blue */
+	border: none;
+	color: white;
+	padding: 10px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 14px;
+	margin: 4px 2px;
+	cursor: pointer;
+	border-radius: 5px;
+}
+
+.updateAsDriverBtn[disabled] {
+	background-color: #b2b2b2
+}
+
+.button4 {
+	border-radius: 12px;
+}
+
+.vGridCls {
+	border: 1px solid grey;
+	border-collapse: collapse;
+}
+
+.vehicleGridCls {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+	top: 50px;
+	position: relative;
+}
+
+.vehicleGridCls td, .vehicleGridCls th {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+
+.vehicleGridCls tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+.vehicleGridCls tr:hover {
+	background-color: #ddd;
+}
+
+.vehicleGridCls th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+	background-color: LightGray;
+	color: SteelBlue;
+}
+
+.postARideTableCls {
+	border-collapse: separate !important;
+	border-spacing: 0 1em !important;
+}
+
+.postARideTableCls td:nth-child(2) {
+	padding-left: 80px;
+}
+
+.postARideTableCls td:nth-child(1) {
+	font-family: verdana;
+}
+
+.postARideTableCls input, select {
+	width: 200px;
+	height: 25px;
+	border-radius: 5px;
+	border: 1px solid black !important;
+}
+
+.postARideTableCls button {
+	background-color: rgba(0, 178, 226, .6) !important;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	width: 85px;
+	height: 55px;
+	text-align: center;
+	font-size: 16px;
+	font-family: verdana
+}
+
+.postARideTableCls div {
+	margin: auto;
+	width: 500px;
+	height: 300px;
+}
+
+.grid {
+	font-family: verdana;
+	border-collapse: collapse;
+	width: 100%;
+	/*top: 20px;*/
+	position: relative;
+	margin: 5px;
+}
+
+.grid td, .grid th {
+	border: 1px solid #ddd;
+	text-align: center;
+	padding: 5px;
+}
+
+.grid th {
+	background-color: SteelBlue;
+	color: white;
+}
+
+.grid img {
+	position: relative;
+	width: 25px;
+	height: 25px;
+}
+
+.grid img:hover, button:hover {
+	opacity: 0.6;
+}
+
+.grid button {,
+	position: relative;
+	margin-right: 5px;
+}
+
+.grid tr:hover {
+	background-color: #ebf5f9;
+	color: SteelBlue;
+}
