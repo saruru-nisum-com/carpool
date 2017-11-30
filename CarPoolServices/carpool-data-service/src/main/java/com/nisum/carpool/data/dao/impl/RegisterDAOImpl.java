@@ -39,8 +39,6 @@ public class RegisterDAOImpl implements RegisterDAO {
 		return registerRepository.findByUserId(emailId);
 	}
 	
-	
-
 	/**
 	 * @author Harish Kumar Gudivada
 	 * 

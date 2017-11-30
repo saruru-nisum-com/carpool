@@ -46,4 +46,6 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	Integer cancelMultipleCarpoolDetails(@Param("carpoolDetails") Carpooldetails carpoolDetails);
 	
 	public Carpooldetails findCarpoolDetailsById(int id);
+	
 }
+
