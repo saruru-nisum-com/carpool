@@ -2,8 +2,67 @@
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 <body>
+<!-- driver registration tab code starts -->
+	<div id='driverDiv'>
+		<form name="driverForm" class="driverClass" novalidate>
+			<table>
+				<tr>
+					<td>Vehicle Type</td>
+					<td><input type="checkbox" name="cb2wheel" ng-model='cb2wheel'
+						ng-true-value="2" ng-false-value="0"> 2-wheeler</input></td>
+				</tr>
 
-<div ng-app="driverApp">
+				<tr>
+					<td></td>
+					<td><input type="checkbox" name="cb4wheel" ng-model='cb4wheel'
+						ng-true-value="4" ng-false-value="0"> 4-wheeler</input> <br />
+						<div ng-show="driverForm.$submitted && driverForm.$invalid"
+							style="color: red" class="help-block">check before proceed.</div></td>
+					<td></td>
+				</tr>
+
+				<tr>
+					<td>Location</td>
+					<td><input type="text" gm-places-autocomplete
+						name="driverLocation" ng-model="autocomplete"
+						placeholder="Enter location here" /> <br />
+						<div
+							ng-show="driverForm.$submitted || driverForm.location.$touched">
+							<div ng-show="driverForm.location.$error.required "
+								style="color: red">Tell us your location.</div>
+						</div></td>
+				</tr>
+
+				<tr>
+					<td>NearBy(pickup)</td>
+					<td><input type="text" name="nearBy" ng-model="nearBy"
+						required=""> <br />
+						<div ng-show="driverForm.$submitted || driverForm.nearBy.$touched">
+							<span ng-show="driverForm.nearBy.$error.required "
+								style="color: red">Tell us your pickup point.</span>
+						</div></td>
+				</tr>
+
+				<tr>
+					<td></td>
+					<td>
+						<button class="registerAsDriverBtn"
+							driverForm.cb4wheel.$error.required || driverForm.cb2wheel.$error.required || driverForm.nearBy.$error.required ||  driverForm.location.$error.required" ng-disabled="driverForm.cb4wheel.$error.required || driverForm.cb2wheel.$error.required || driverForm.nearBy.$error.required ||  driverForm.location.$error.required || isRegisteredAsDriver == true"
+							ng-click="registerAsDriver()">Register</button>
+						<button class="updateAsDriverBtn"
+							ng-disabled="isRegisteredAsDriver !== true"
+							ng-click="updateAsDriver()">Update</button>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div id = "leftHandMenu">
+			<div ng-include="'js/partials/leftSideMenu.html'"></div>
+		</div>
+	<!-- driver registration tab code ends -->
+		
+<!-- <div ng-app="driverApp">
  
 <p>Registration</p>
 <p>Vehicle Type: <div><input type="checkbox">2-wheeler<br><input type="checkbox">4-wheeler</div></p>
@@ -13,7 +72,7 @@
 <button type="submit">Register</button>
 <button type="submit">Update</button>
 
-</div>
+</div> -->
 
 </body>
 </html>
