@@ -28,7 +28,7 @@ public class RegisterServiceUtil {
 		dto.setMobile(reg.getMobile());
 		dto.setModifiedDate(Timestamp.valueOf(reg.getModifieddate()));
 		dto.setNearby(reg.getNearby());
-		dto.setUserId(reg.getUserid());
+		dto.setEmailId(reg.getEmailid());
 		dto.setVehicleType(reg.getVehicletype());
 		return dto;
 	}
@@ -52,7 +52,7 @@ public class RegisterServiceUtil {
 		userReg.setMobile(dto.getMobile());
 		userReg.setModifieddate(dto.getModifiedDate().toLocalDateTime());
 		userReg.setNearby(dto.getNearby());
-		userReg.setUserid(dto.getUserId());
+		userReg.setEmailid(dto.getEmailId());
 		userReg.setVehicletype(dto.getVehicleType());
 		return userReg;
 	}

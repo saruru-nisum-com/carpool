@@ -17,7 +17,7 @@ public class Carpooldetails implements Serializable{
 	@PrimaryKey
 	private Integer id;
 	private Integer parentid;
-	private String userid;
+	private String emailId;
 	private Integer vehicleType;
 	private Integer noofseats;
 	private String fromDate;
@@ -25,6 +25,7 @@ public class Carpooldetails implements Serializable{
 	private String fromtime;
 	private String toTime;
 	private Integer status;
+	private String location;
 	//private Timestamp createddate;
     //private Timestamp modifieddate;
 	
@@ -45,11 +46,11 @@ public class Carpooldetails implements Serializable{
 	public void setParentid(Integer parentid) {
 		this.parentid = parentid;
 	}
-	public String getUserid() {
-		return userid;
+	public String getEmailId() {
+		return emailId;
 	}
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
 	}
 	public Integer getVehicleType() {
 		return vehicleType;
@@ -106,6 +107,12 @@ public class Carpooldetails implements Serializable{
 	public void setModifieddate(LocalDateTime modifieddate) {
 		this.modifieddate = modifieddate;
 	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -120,8 +127,9 @@ public class Carpooldetails implements Serializable{
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((toDate == null) ? 0 : toDate.hashCode());
 		result = prime * result + ((noofseats == null) ? 0 : noofseats.hashCode());
-		result = prime * result + ((userid == null) ? 0 : userid.hashCode());
+		result = prime * result + ((emailId == null) ? 0 : emailId.hashCode());
 		result = prime * result + ((vehicleType == null) ? 0 : vehicleType.hashCode());
+		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		return result;
 	}
 	@Override
@@ -183,23 +191,29 @@ public class Carpooldetails implements Serializable{
 				return false;
 		} else if (!noofseats.equals(other.noofseats))
 			return false;
-		if (userid == null) {
-			if (other.userid != null)
+		if (emailId == null) {
+			if (other.emailId != null)
 				return false;
-		} else if (!userid.equals(other.userid))
+		} else if (!emailId.equals(other.emailId))
 			return false;
 		if (vehicleType == null) {
 			if (other.vehicleType != null)
 				return false;
 		} else if (!vehicleType.equals(other.vehicleType))
 			return false;
+		if (location == null) {
+			if (other.location != null)
+				return false;
+		} else if (!location.equals(other.location))
+			return false;
+		
 		return true;
 	}
 	@Override
 	public String toString() {
-		return "Carpooldetails [id=" + id + ", parentid=" + parentid + ", userid=" + userid + ", vehicleType="
+		return "Carpooldetails [id=" + id + ", parentid=" + parentid + ", emailId=" + emailId + ", vehicleType="
 				+ vehicleType + ", noofseats=" + noofseats + ", fromDate=" + fromDate + ", toDate=" + toDate
 				+ ", fromtime=" + fromtime + ", toTime=" + toTime + ", status=" + status + ", createddate="
-				+ createddate + ", modifieddate=" + modifieddate + "]";
+				+ createddate + ", modifieddate=" + modifieddate + ", Location:"+location+"]";
 	}
 }

@@ -15,4 +15,6 @@ public interface CarpooldetailsDAO {
 	
 	List<Carpooldetails> getAllCarPoolDetails();
 	public List<Carpooldetails> getCarPoolByMailID(String email);
+	
+	public Carpooldetails  loadCarpoolDetailsById(int carpoolId)throws Exception;
 }

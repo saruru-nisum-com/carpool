@@ -8,5 +8,6 @@ public interface RegisterDAO {
 
 	
 	public RegisterDomain registerDriverorRider(RegisterDomain registerDomain);
-	List<RegisterDomain> findUserRegistrationByUserId(String userId);
+	List<RegisterDomain> findUserRegistrationByUserId(String emailId);
+	public String getLocationOfRegisteredUser(String emailId);
 }

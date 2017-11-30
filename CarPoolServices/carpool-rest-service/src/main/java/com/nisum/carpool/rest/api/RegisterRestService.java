@@ -107,12 +107,12 @@ public class RegisterRestService {
 	
 	
 
-	@RequestMapping(value = "/getProfile/{userId:.+}", method = RequestMethod.GET,  produces = "application/json")
-	public ResponseEntity<List<RegisterDTO>> getUserProfile(@PathVariable String userId)
+	@RequestMapping(value = "/getProfile/{emailId:.+}", method = RequestMethod.GET,  produces = "application/json")
+	public ResponseEntity<List<RegisterDTO>> getUserProfile(@PathVariable String emailId)
 			throws UserServiceException {
 		logger.info("UserProfileRestService :: users profile::: get");
 		RegisterDTO regDto=new RegisterDTO();
-		regDto.setUserId(userId);
+		regDto.setEmailId(emailId);
 		List<RegisterDTO> list = registerService.getUserRegistrationProfile(regDto);
 
 		return new ResponseEntity<List<RegisterDTO>>(list, HttpStatus.OK);
@@ -126,3 +126,4 @@ public class RegisterRestService {
 	}
 
 }
+

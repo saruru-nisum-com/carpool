@@ -48,7 +48,7 @@ public class CarpooldetailsDAOTest {
 		carpooldetails.setStatus(1);
 		carpooldetails.setToDate("14356u756i7op");
 		carpooldetails.setToTime("987");
-		carpooldetails.setUserid("wefgre@jh.com");
+		carpooldetails.setEmailId("wefgre@jh.com");
 		carpooldetails.setVehicleType(2);
 		
 	}
@@ -61,7 +61,7 @@ public class CarpooldetailsDAOTest {
 		Carpooldetails carpooldetails = new Carpooldetails();
 		carpooldetails.setId(1);
 		carpooldetails.setParentid(1);
-		carpooldetails.setUserid("mbheemanapalli@nisum.com");
+		carpooldetails.setEmailId("mbheemanapalli@nisum.com");
 		carpooldetails.setVehicleType(2);
 		carpooldetails.setNoofseats(1);
 		carpooldetails.setFromDate("2017-11-23");
@@ -84,7 +84,7 @@ public class CarpooldetailsDAOTest {
 		Carpooldetails carpooldetails = new Carpooldetails();
 		carpooldetails.setId(1);
 		carpooldetails.setParentid(1);
-		carpooldetails.setUserid("mbheemanapalli@nisum.com");
+		carpooldetails.setEmailId("mbheemanapalli@nisum.com");
 		carpooldetails.setVehicleType(2);
 		carpooldetails.setNoofseats(1);
 		carpooldetails.setFromDate("2017-11-23");
@@ -127,7 +127,7 @@ public class CarpooldetailsDAOTest {
 		String fromdate ="23-02-2017"; 
 		String todate = "24-09-2017";
 		
-		carpooldetails.setUserid("radhi@nisum.com");
+		carpooldetails.setEmailId("radhi@nisum.com");
 		carpooldetails.setFromDate("23-02-2017");
 		carpooldetails.setToDate("24-09-2017");
 		
@@ -152,7 +152,7 @@ public class CarpooldetailsDAOTest {
 		String fromdate ="23-02-2017"; 
 		String todate = "24-09-2017";
 		
-		carpooldetails.setUserid("radhi@nisum.com");
+		carpooldetails.setEmailId("radhi@nisum.com");
 		carpooldetails.setFromDate("23-02-2017");
 		carpooldetails.setToDate("24-09-2017");
 		

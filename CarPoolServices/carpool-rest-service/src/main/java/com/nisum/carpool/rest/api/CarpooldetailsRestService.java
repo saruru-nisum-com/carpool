@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -130,6 +131,26 @@ public class CarpooldetailsRestService {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		
+	}
+	
+	/**
+	 * @author Harish Kumar Gudivada
+	 * @param id
+	 * @return
+	 */
+	
+	@RequestMapping(value="/getCarpoolRideData/{id}", method = RequestMethod.GET, produces="application/json")
+	public ResponseEntity<?> getCarpoolDetailsById(@PathVariable int id){
+		CarpooldetailsDto carpoolDto=null;
+		try {
+			carpoolDto=carpooldetailsService.loadCarpoolDetailsById(id);
+			if(carpoolDto!=null && carpoolDto.getId()==0) {
+				return new ResponseEntity<String>("Data Is Not Available", HttpStatus.NO_CONTENT);
+			}
+		}catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<CarpooldetailsDto>(carpoolDto, HttpStatus.OK);
 	}
 	
 	

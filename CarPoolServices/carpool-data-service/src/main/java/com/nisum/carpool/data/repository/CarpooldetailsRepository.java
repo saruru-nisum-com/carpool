@@ -17,9 +17,9 @@ import java.lang.Integer;
 @Repository
 public interface CarpooldetailsRepository extends CassandraRepository<Carpooldetails>{
 	
-	@Query("select count(*) from cp_carpooldetails where userid=:userid and fromdate=:date ALLOW FILTERING")
-	public int findEntriesWithDate(@Param("userid") String userid, @Param("date") String date);
-	
+	@Query("select count(*) from cp_carpooldetails where emailid=:emailid and fromdate=:date ALLOW FILTERING")
+	public int findEntriesWithDate(@Param("emailid") String emailid, @Param("date") String date);
+
 	@Query("select count(*) from cp_carpooldetails where parentid=?0 ALLOW FILTERING")
 	Long countByParentid(int parentid);
 	
@@ -38,17 +38,11 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 			+ "noofseats=:#{#carpoolDetails.noofseats}, modifieddate=:#{#carpoolDetails.modifieddate}, vehicletype=:#{#carpoolDetails.vehicleType} where id IN (:listOfIds)")
 	Integer udpateMultipleCarpoolDetails(@Param("carpoolDetails") Carpooldetails carpoolDetails, @Param("listOfIds") List<Integer> listOfIds);
 
-	@Query("select * from cp_userregistration where userid=:?0  ALLOW FILTERING")
-	public RegisterDomain findByEmail(String email);
-	
-	@Query("select * from cp_userregistration where location=?0  ALLOW FILTERING")
-	public List<RegisterDomain> findByLocation(@Param("location")String location);
-	
-	@Query("select * from cp_carpooldetails where userid=?0 allow filtering")
+	@Query("select * from cp_carpooldetails where emailid=?0 allow filtering")
 	List<Carpooldetails> getCarPoolsByEmail(String email);
 	
 	@Query("update cp_carpooldetails set modifieddate=:#{#carpoolDetails.modifieddate}, status=:#{#carpoolDetails.status} where parentid=:#{#carpoolDetails.parentid}")
 	Integer cancelMultipleCarpoolDetails(@Param("carpoolDetails") Carpooldetails carpoolDetails);
+	
+	public Carpooldetails findCarpoolDetailsById(int id);
 }
-
-

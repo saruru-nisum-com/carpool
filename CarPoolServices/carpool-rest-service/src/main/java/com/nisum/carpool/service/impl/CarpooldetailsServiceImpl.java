@@ -85,24 +85,22 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
         
         carpooldetailsDto.setCreateddate(new Timestamp(System.currentTimeMillis()));
         carpooldetailsDto.setModifieddate(new Timestamp(System.currentTimeMillis()));
+
+        String location = registerDAO.getLocationOfRegisteredUser(carpooldetailsDto.getEmailId());
+        carpooldetailsDto.setLocation(location);
         
        Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
         
        String validstatus = checkValidCarpool(carpooldetails);
         logger.info("validstatus " + validstatus);
-        
        if(validstatus.equals(Constants.CARPOOLEXISTS)) {
             
-           
            logger.info("PostRideServiceImpl: posting a ride failed ");
             return null;
-
-           
        }
         
        logger.info("valid code");
         List<Carpooldetails> carPoolList = processPostRideDomain(carpooldetails);
-        
        List<Carpooldetails> cpd = carpooldetailsDAO.addCarpoolDetails(carPoolList);
         
 
@@ -184,9 +182,9 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	    	cp.setModifieddate(carpooldetails.getModifieddate());
 	    	cp.setNoofseats(carpooldetails.getNoofseats());
 	    cp.setStatus(1);
-	    	cp.setUserid(carpooldetails.getUserid());
+	    	cp.setEmailId(carpooldetails.getEmailId());
 	    	cp.setVehicleType(carpooldetails.getVehicleType());
-	    	
+	    	cp.setLocation(carpooldetails.getLocation());
 	    	carPoolList.add(cp);
 	}
 	    
@@ -276,7 +274,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		{
 	
 			
-			useridsSet.add(car.getUserid());
+			useridsSet.add(car.getEmailId());
 		}
 			
 			for(String userid:useridsSet)
@@ -316,8 +314,24 @@ if(registerDomain!=null && registerDomain.size()>0) {
 	
 		return customerCarpooldetailsDtoList;
 	}
+
 	
-	
+	/**
+	 * @author Harish Kumar Gudivada
+	 * 
+	 * This method is to get the carpool ride details from dao based on carpool id and convert the dao class dto
+	 */
+	@Override
+	public CarpooldetailsDto loadCarpoolDetailsById(int carpoolId) {
+		CarpooldetailsDto carpoolDetsDto=null;
+		try {
+		Carpooldetails carpooldets= carpooldetailsDAO.loadCarpoolDetailsById(carpoolId);
+		carpoolDetsDto= CarpooldetailsServiceUtil.convertDaoToDtoInstance(carpooldets);
+		}catch (Exception e) {
+			logger.error("Exception Occured in Class:CarpooldetailsServiceImpl Method:loadCarpoolDetailsById Message:"+e.getMessage());
+		}
+		return carpoolDetsDto;
+	}
 	
 	
 }

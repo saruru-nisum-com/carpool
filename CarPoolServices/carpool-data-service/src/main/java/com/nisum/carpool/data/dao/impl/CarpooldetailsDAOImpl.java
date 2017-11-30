@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.cassandra.repository.MapId;
 
 import com.nisum.carpool.data.dao.api.CarpooldetailsDAO;
 import com.nisum.carpool.data.domain.Carpooldetails;
@@ -101,7 +102,7 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 		logger.info("CarpooldetailsDAOImpl: checkValidCarpool");
 		
 		
-		String userid = carpooldetails.getUserid();
+		String userid = carpooldetails.getEmailId();
 		String fromdate = carpooldetails.getFromDate();
 		String todate = carpooldetails.getToDate();
 		
@@ -131,5 +132,22 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 	return	carpooldetailsRepository.getCarPoolsByEmail(email);
 	}
 
-
+	
+	/**
+	 * @author Harish Kumar Gudivada
+	 * 
+	 * This method is used to load the carpool ride details based on carpool id from Repository
+	 */
+	@Override
+	public Carpooldetails loadCarpoolDetailsById(int carpoolId) throws Exception{
+		Carpooldetails carpoolDets=null;
+		try {
+			carpoolDets=carpooldetailsRepository.findCarpoolDetailsById(carpoolId);
+		}catch (Exception e) {
+			logger.error("Exception Occured in Class:CarpooldetailsDAOImpl Method:loadCarpoolDetailsById Message:"+e.getMessage());
+			throw e;
+		}
+		return carpoolDets;
+	}
+	
 }

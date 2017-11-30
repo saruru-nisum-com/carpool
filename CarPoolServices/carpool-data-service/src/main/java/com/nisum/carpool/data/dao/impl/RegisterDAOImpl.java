@@ -31,13 +31,29 @@ public class RegisterDAOImpl implements RegisterDAO {
 	/**
 	 * @author Harish Kumar Gudivada
 	 * 
-	 * This method is used to load the rider driver details by userid
+	 * This method is used to load the rider driver details by emailId
 	 */
 	@Override
-	public List<RegisterDomain> findUserRegistrationByUserId(String userId) {
-		logger.info("UserRegistrationDaoImpl :: findUserRegistrationByUserId :: Finding user by userId");
-		return registerRepository.findByUserId(userId);
+	public List<RegisterDomain> findUserRegistrationByUserId(String emailId) {
+		logger.info("UserRegistrationDaoImpl :: findUserRegistrationByUserId :: Finding user by emailId");
+		return registerRepository.findByUserId(emailId);
 	}
+	
+	
+
+	/**
+	 * @author Harish Kumar Gudivada
+	 * 
+	 * This method is used to load the Location Of Registered User With emailId
+	 */
+	@Override
+	public String getLocationOfRegisteredUser(String emailId) {
+		logger.info("UserRegistrationDaoImpl :: getLocationOfRegisteredUser :: Finding Location by emailId");
+		System.out.println("emailId--"+emailId);
+		return registerRepository.findByEmail(emailId).getLocation();
+	}
+
+	
 
 
 }

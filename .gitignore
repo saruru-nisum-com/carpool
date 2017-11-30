@@ -1,8 +1,8 @@
-# General
+:# General
 .DS_Store
 .AppleDouble
 .LSOverride
-
+*.class
 target/
 .metadata
 bin/

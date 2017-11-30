@@ -57,7 +57,7 @@ public class RegisterServiceImpl  implements RegisterService{
 	 */
 	@Override
 	public List<RegisterDTO> getUserRegistrationProfile(RegisterDTO dto) {
-		List<RegisterDomain> list=registerDAO.findUserRegistrationByUserId(dto.getUserId());
+		List<RegisterDomain> list=registerDAO.findUserRegistrationByUserId(dto.getEmailId());
 		List<RegisterDTO> listDto=new ArrayList<>();
 		for(RegisterDomain reg:list) {
 			RegisterDTO userRegDto = RegisterServiceUtil.convertDaoObjectToDto(reg);
@@ -78,7 +78,7 @@ public class RegisterServiceImpl  implements RegisterService{
 			JSONObject response = getLatLong(regDto.getLocation());
 			latitude = response.get("latitude").toString();
 			longitude = response.get("longitude").toString();
-			userRegistration.setUserid(regDto.getUserId());
+			userRegistration.setEmailid(regDto.getEmailId());
 			userRegistration.setLocation(regDto.getLocation());
 			userRegistration.setLatitude(latitude);
 			userRegistration.setLongitude(longitude);

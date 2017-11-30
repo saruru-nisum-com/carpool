@@ -39,7 +39,7 @@ public class RegisterRestServiceTest {
 
 		List<RegisterDTO> regList = new ArrayList<>();
 		RegisterDTO registerDto = new RegisterDTO();
-		registerDto.setUserId("user1");
+		registerDto.setEmailId("user1");
 		registerDto.setEmailNotification(true);
 		registerDto.setIsRider(1);
 		registerDto.setLocation("HYD");
@@ -56,13 +56,13 @@ public class RegisterRestServiceTest {
 
 		ResponseEntity<List<RegisterDTO>> expected = new ResponseEntity<>(regList, HttpStatus.OK);
 
-		String userId = "user1";
+		String emailId = "user1";
 		RegisterDTO regDto = new RegisterDTO();
-		regDto.setUserId(userId);
+		regDto.setEmailId(emailId);
 
 		when(registerServiceImpl.getUserRegistrationProfile(regDto)).thenReturn(regList);
 
-		ResponseEntity<List<RegisterDTO>> actual = registerRestService.getUserProfile(userId);
+		ResponseEntity<List<RegisterDTO>> actual = registerRestService.getUserProfile(emailId);
 
 		assertEquals(expected.getStatusCode(), actual.getStatusCode());
 	}
