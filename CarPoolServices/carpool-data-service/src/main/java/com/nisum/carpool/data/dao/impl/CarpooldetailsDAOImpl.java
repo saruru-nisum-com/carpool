@@ -85,14 +85,20 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 		
 		logger.info("CarpooldetailsDAOImpl: createCarpooldetails");	
 		
+		try {
+			
 			for(Carpooldetails cp:carpooldetails) {
 				carpooldetailsRepository.save(cp);
 				
 			}
 			
-			logger.info("CarpooldetailsDAOImpl: createCarpooldetails");
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+			
 		
-			return carpooldetails;
+			return carpooldetailsRepository.getCarPoolsByEmail(carpooldetails.get(0).getEmailId());
 		
 	}
 	
@@ -148,11 +154,6 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 			throw e;
 		}
 		return carpoolDets;
-	}
-	
-	@Override
-	public Carpooldetails getCarPoolByCpID(int cpId) {
-		return carpooldetailsRepository.getCarPoolsByCpId(cpId);
 	}
 	
 
