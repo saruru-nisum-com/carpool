@@ -10,13 +10,18 @@ import java.util.Random;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.nisum.carpool.data.domain.Carpooldetails;
+import com.nisum.carpool.rest.api.CarpooldetailsRestService;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 
 
 public class CarpooldetailsServiceUtil {
+	private static Logger logger = LoggerFactory.getLogger(CarpooldetailsServiceUtil.class);
 	public static List<CarpooldetailsDto> convertDaoTODto(List<Carpooldetails> carpooldetailsList) {
+		
 		List<CarpooldetailsDto> carpooldetailsDtos = new ArrayList<>();
 		
 		if (CollectionUtils.isNotEmpty(carpooldetailsList)) {
@@ -93,7 +98,6 @@ public class CarpooldetailsServiceUtil {
 	}
 	
 	public static Carpooldetails convertUpdateDtoTODao(CarpooldetailsDto carpooldetailsDto) {
-		System.out.println("in convertUtils cancel..pool"+carpooldetailsDto.getStatus());
 		Carpooldetails carpooldetails = new Carpooldetails();
 		carpooldetails.setId(carpooldetailsDto.getId());
 		carpooldetails.setParentid(carpooldetailsDto.getParentid());

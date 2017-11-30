@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
+import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
 
 @RestController
 @RequestMapping(value = "/v1/carpool")
@@ -21,15 +22,15 @@ public class CarpoolRiderDetailsRestService {
 	CarpoolRiderDetailsService carpoolRiderDetailsService;
 
 	@RequestMapping(value = "/getRiderBookingDetails/{emailID}", method = RequestMethod.GET)
-	public ResponseEntity<List<CarpoolRiderDetailsDTO>> getRiderBookingDetails(
+	public ResponseEntity<List<RiderBookingDetailsDTO>> getRiderBookingDetails(
 			@PathVariable("emailID") String emailID) {
 
 		String emailId = emailID + ".com";
 
 		System.out.println("emailId==" + emailId);
 
-		List<CarpoolRiderDetailsDTO> poolList = carpoolRiderDetailsService.getRiderBookingDetails(emailId);
-		return new ResponseEntity<List<CarpoolRiderDetailsDTO>>(poolList, HttpStatus.OK);
+		List<RiderBookingDetailsDTO> poolList = carpoolRiderDetailsService.getRiderBookingDetails(emailId);
+		return new ResponseEntity<List<RiderBookingDetailsDTO>>(poolList, HttpStatus.OK);
 
 	}
 

@@ -5,13 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nisum.carpool.data.dao.api.UserDAO;
+import com.nisum.carpool.data.domain.User;
 import com.nisum.carpool.service.api.UserProfileService;
 import com.nisum.carpool.service.dto.UserDTO;
 import com.nisum.carpool.service.dto.UserProfileDTO;
 import com.nisum.carpool.util.UserServiceUtil;
 //import com.nisum.portal.data.dao.api.ProfileSettingsDAO;
-import com.nisum.carpool.data.dao.api.UserDAO;
-import com.nisum.carpool.data.domain.User;
 
 @Service
 public class UserProfileServiceImpl implements UserProfileService {
