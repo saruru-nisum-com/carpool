@@ -1,7 +1,6 @@
 package com.nisum.carpool.data.domain;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import org.springframework.data.cassandra.mapping.PrimaryKey;

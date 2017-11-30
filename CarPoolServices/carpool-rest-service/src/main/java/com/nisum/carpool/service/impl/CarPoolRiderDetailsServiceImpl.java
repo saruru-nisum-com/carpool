@@ -15,15 +15,20 @@ import com.nisum.carpool.util.CarpoolRiderDetailsServiceUtil;
 @Service
 public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsService {
 
-	
 	@Autowired
 	CarpoolRiderDetailsDAO carpoolRiderdetailsDAO;
-	
+
 	@Override
 	public List<CarpoolRiderDetailsDTO> getRiderBookingDetails(String emailId) {
-		// TODO Auto-generated method stub
-		 List<CarpoolRiderDetails> cpList = carpoolRiderdetailsDAO.getRiderBookingDetails(emailId);
-		
+
+		List<CarpoolRiderDetails> cpList = carpoolRiderdetailsDAO.getRiderBookingDetails(emailId);
+		return CarpoolRiderDetailsServiceUtil.convertDaoTODto(cpList);
+	}
+
+	@Override
+	public List<CarpoolRiderDetailsDTO> findCarpoolRiderDetailsByCPId(int cpid) {
+
+		List<CarpoolRiderDetails> cpList = carpoolRiderdetailsDAO.findCarpoolRiderDetailsByCPId(cpid);
 		return CarpoolRiderDetailsServiceUtil.convertDaoTODto(cpList);
 	}
 
