@@ -31,7 +31,7 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 		return carpoolRiderDetailsRepository.findCarpoolRiderDetailsByCPId(cpid);
 	}
 
-
+	//cancel Rider details when Driver cancel carpool
 	@Override
 	public String cancelCarpoolRiderDetails(int cpid) {
 		
