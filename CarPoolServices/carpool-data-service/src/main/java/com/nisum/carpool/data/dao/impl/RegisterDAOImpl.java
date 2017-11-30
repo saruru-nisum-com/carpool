@@ -49,7 +49,6 @@ public class RegisterDAOImpl implements RegisterDAO {
 	@Override
 	public String getLocationOfRegisteredUser(String emailId) {
 		logger.info("UserRegistrationDaoImpl :: getLocationOfRegisteredUser :: Finding Location by emailId");
-		System.out.println("emailId--"+emailId);
 		return registerRepository.findByEmail(emailId).getLocation();
 	}
 
