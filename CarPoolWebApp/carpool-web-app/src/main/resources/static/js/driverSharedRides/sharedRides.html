@@ -1,0 +1,46 @@
+<div>
+	<div>
+
+		<div align="center" style="color: #2535A9;">
+			<h3>Available car pools</h3>
+		</div>
+
+		<div ng-if="carpoolList.length>0" ng-repeat="carpool in carpoolList">
+
+			<div ng-if="detailas.id==details.parentid"
+				ng-repeat="details in carpool.listCarpoolDetails"
+				style="float: left">
+				<div ng-repeat="vehicle in vehicleDetails"
+					ng-if="vehicle.id==details.vehicleType">
+
+					<a href="https://www.w3schools.com">
+						<table class="tStyle" frame="box"
+							data-ng-style="{'background-color': carpool.status=='completed' ? 'red' : 'green'}">
+							<tr>
+								<td>ProvidedBy: userName &nbsp;</td>
+								<td>VehicleType: car</td>
+							</tr>
+							<tr>
+								<td>FromDate: date</td>
+								<td>ToDate: date</td>
+							</tr>
+							<tr>
+								<td>Location: location &nbsp;</td>
+								<td>PoolStatus: status</td>
+							</tr>
+							<tr>
+							<td><button name="Details">Details</button></td>
+							<td><button name="Cancel">Cancel</button></td>
+							</tr>
+						</table>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- <div align="center" ng-if="carpoolList.length<=0">No Car pools
+		Available</div> -->
+
+</div>
+

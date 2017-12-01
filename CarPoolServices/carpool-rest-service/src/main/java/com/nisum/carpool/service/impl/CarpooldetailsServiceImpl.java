@@ -191,7 +191,7 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	    	cp.setModifieddate(carpooldetails.getModifieddate());
 	    	cp.setNoofseats(carpooldetails.getNoofseats());
 
-	    cp.setStatus(Pool_Status.OPEN);
+	    cp.setStatus(Pool_Status.OPEN.getValue());
 
 	    	cp.setEmailId(carpooldetails.getEmailId());
 
