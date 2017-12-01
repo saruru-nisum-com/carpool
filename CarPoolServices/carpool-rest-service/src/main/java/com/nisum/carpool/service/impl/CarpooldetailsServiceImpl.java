@@ -87,7 +87,8 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
         carpooldetailsDto.setCreateddate(new Timestamp(System.currentTimeMillis()));
         carpooldetailsDto.setModifieddate(new Timestamp(System.currentTimeMillis()));
 
-        // code added by Harish Kumar Gudivada for loading the location from user registration and saving in the carpool details
+        // code added by Harish Kumar Gudivada on 30th November 2017
+        //for loading the location from user registration and saving in the carpool details
         String location = registerDAO.getLocationOfRegisteredUser(carpooldetailsDto.getEmailId());
         carpooldetailsDto.setLocation(location);
         //end
