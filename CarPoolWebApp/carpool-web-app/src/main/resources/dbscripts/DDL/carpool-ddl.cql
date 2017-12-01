@@ -39,7 +39,7 @@ insert into cp_vehicletypes (id, vehicletype, noofseats) values (2, 'Four Wheele
 
 CREATE TABLE cp_userregistration (
    registrationid int, 
-   userid text,
+   emailid text,
    vehicletype list<int>,
    location text,
    latitude text,
@@ -56,7 +56,7 @@ PRIMARY KEY(registrationid)
 CREATE TABLE cp_carpooldetails (
    id int PRIMARY KEY,
    parentid int,
-   userid text,
+   emailid text,
    vehicletype int,
    noofseats int,
    fromdate text,
@@ -79,9 +79,9 @@ CREATE TABLE cp_carpoolriderdetails (
    reason int,
    notifyme boolean,
    rewards double,
+   location text,
    createddate timestamp,
    modifieddate timestamp
-    
 );
 alter table cp_userregistration add  gender int;
 alter table cp_userregistration drop userid;

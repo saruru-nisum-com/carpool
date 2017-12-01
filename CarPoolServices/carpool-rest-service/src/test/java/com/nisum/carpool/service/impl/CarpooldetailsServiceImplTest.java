@@ -15,6 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.nisum.carpool.data.dao.api.CarpooldetailsDAO;
 import com.nisum.carpool.data.domain.Carpooldetails;
+import com.nisum.carpool.data.util.Pool_Status;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.util.CarpooldetailsServiceUtil;
@@ -32,6 +33,9 @@ public class CarpooldetailsServiceImplTest {
 	//ObjectUtils objectUtils;
 	
 	CarpooldetailsDto carpooldetailsDto = new CarpooldetailsDto();
+	Pool_Status poolStatus;
+	
+	//carpooldetails.setStatus(Pool_Status.valueOf(carpooldetailsDto.getStatus().toString()));
 	
 	@Before
 	public void setUp() throws Exception{
@@ -64,12 +68,14 @@ public class CarpooldetailsServiceImplTest {
 		ServiceStatusDto actualStatus = carpooldetailsServiceImpl.updateCarpooldetails(carpooldetailsDto);
 		assertEquals(serviceStatusDto.getMessage(), actualStatus.getMessage());
 	}
-<<<<<<< HEAD
+//Pool_Status.valueOf(carpooldetailsDto.getStatus().toString())
 	
 	@Test
 	public void cancelCarpoolTest() {
-		carpooldetailsDto.setUserid("smamidala@nisum.com");
+		carpooldetailsDto.setEmailId("smamidala@nisum.com");
 		carpooldetailsDto.setStatus(4);
+		//whenPool_Status.valueOf(carpooldetailsDto.getStatus().toString())
+		//when(carpooldetailsDto.setStatus(Pool_Status.valueOf(carpooldetailsDto.getStatus().toString())).getValue());
 		Carpooldetails convertDtoTODao = CarpooldetailsServiceUtil.convertUpdateDtoTODao(carpooldetailsDto);
 		when(carpooldetailsDAO.cancelCarpooldetails(convertDtoTODao)).thenReturn("Carpool Cancelled Successfully !!");
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
@@ -81,11 +87,6 @@ public class CarpooldetailsServiceImplTest {
 		
 	}
 	
-	
-	
-	
 
 
-=======
->>>>>>> 0f5b0d3618486105bab46109ae62b70c6e89e807
 }
