@@ -190,13 +190,11 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	    	cp.setCreateddate(carpooldetails.getCreateddate());
 	    	cp.setModifieddate(carpooldetails.getModifieddate());
 	    	cp.setNoofseats(carpooldetails.getNoofseats());
-<<<<<<< HEAD
+
 	    cp.setStatus(Pool_Status.OPEN);
-	    	cp.setUserid(carpooldetails.getUserid());
-=======
-	    cp.setStatus(1);
+
 	    	cp.setEmailId(carpooldetails.getEmailId());
->>>>>>> 0f5b0d3618486105bab46109ae62b70c6e89e807
+
 	    	cp.setVehicleType(carpooldetails.getVehicleType());
 	    	cp.setLocation(carpooldetails.getLocation());
 	    	carPoolList.add(cp);

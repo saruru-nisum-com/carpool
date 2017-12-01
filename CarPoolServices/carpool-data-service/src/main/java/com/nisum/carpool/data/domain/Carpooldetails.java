@@ -25,19 +25,12 @@ public class Carpooldetails implements Serializable{
 	private String toDate;
 	private String fromtime;
 	private String toTime;
-<<<<<<< HEAD
 	private Pool_Status status;
-=======
-	private Integer status;
 	private String location;
->>>>>>> 0f5b0d3618486105bab46109ae62b70c6e89e807
 	//private Timestamp createddate;
     //private Timestamp modifieddate;
-	
 	private LocalDateTime createddate;
 	private LocalDateTime modifieddate; 
-	
-	
 	
 	public Integer getId() {
 		return id;
