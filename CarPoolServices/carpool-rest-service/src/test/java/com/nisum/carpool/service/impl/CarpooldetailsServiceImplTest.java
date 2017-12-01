@@ -64,11 +64,10 @@ public class CarpooldetailsServiceImplTest {
 		ServiceStatusDto actualStatus = carpooldetailsServiceImpl.updateCarpooldetails(carpooldetailsDto);
 		assertEquals(serviceStatusDto.getMessage(), actualStatus.getMessage());
 	}
-<<<<<<< HEAD
 	
 	@Test
 	public void cancelCarpoolTest() {
-		carpooldetailsDto.setUserid("smamidala@nisum.com");
+		carpooldetailsDto.setEmailId("smamidala@nisum.com");
 		carpooldetailsDto.setStatus(4);
 		Carpooldetails convertDtoTODao = CarpooldetailsServiceUtil.convertUpdateDtoTODao(carpooldetailsDto);
 		when(carpooldetailsDAO.cancelCarpooldetails(convertDtoTODao)).thenReturn("Carpool Cancelled Successfully !!");
@@ -86,6 +85,4 @@ public class CarpooldetailsServiceImplTest {
 	
 
 
-=======
->>>>>>> 0f5b0d3618486105bab46109ae62b70c6e89e807
 }

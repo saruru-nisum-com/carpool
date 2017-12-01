@@ -1,6 +1,8 @@
 package com.nisum.carpool.data.dao.impl;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -145,6 +147,16 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 	return	carpooldetailsRepository.getCarPoolsByEmail(email);
 	}
 
+	@Override
+	public Integer updaterewardPointsWithId(Integer rewards,Integer status) {
+		// TODO Auto-generated method stub
+		logger.info("CarpooldetailsDAOImpl : updaterewardPointsWithId");
+		LocalDate currentDate=LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String rewardedDate = currentDate.format(formatter);
+		List<Integer> listOfIds = carpooldetailsRepository.getCarpooldetailsByFromDate(status,rewardedDate);
+		return carpooldetailsRepository.udpateRewardPoints(rewards, listOfIds);
+	}
 	
 	/**
 	 * @author Harish Kumar Gudivada

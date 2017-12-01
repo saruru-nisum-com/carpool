@@ -19,4 +19,6 @@ public interface CarpooldetailsDAO {
 	public List<Carpooldetails> getCarPoolByMailID(String email);
 	
 	public Carpooldetails  loadCarpoolDetailsById(int carpoolId)throws Exception;
+	
+	public Integer updaterewardPointsWithId(Integer rewards,Integer status);
 }
