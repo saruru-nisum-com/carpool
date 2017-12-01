@@ -18,8 +18,11 @@ import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.api.CarpooldetailsService;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
+import com.nisum.carpool.service.dto.DriverCarPoolDto;
 import com.nisum.carpool.service.dto.Errors;
+import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
+import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
 import com.nisum.carpool.util.Constants;
 
 
@@ -169,23 +172,33 @@ public class CarpooldetailsRestService {
 		logger.info("Exit from CarpooldetailsRestService :: getCarpoolDetailsById");
 		return new ResponseEntity<CarpooldetailsDto>(carpoolDto, HttpStatus.OK);
 	}
-	@RequestMapping(value = "/addRewardPoints/{rewards}/{status}", method = RequestMethod.PUT)
-	public ResponseEntity<?> addRewardPointsToDriver(@PathVariable(value="rewards") Integer rewards,@PathVariable(value="status") Integer status)
-			{
-		
-		try
-		{
-			carpooldetailsService.updaterewardPointsWithId(rewards, status);
-			
-			return new ResponseEntity<String>(Constants.ADDED_REWARDS_TO_DRIVER, HttpStatus.OK);
-			
-		}
-		catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-		
-	}
-			
 	
+	
+
+	@RequestMapping(value = "/getMySharedRides/{email:.+}", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllCarpoolsByDriver(@PathVariable("email")String email) 
+	{
+		logger.info("BEGIN: getAllCarpoolsByDriver() in the CarpooldetailsRestService");
+		try {
+	return new ResponseEntity<List<ParentCarpoolDetailsDto>>(carpooldetailsService.getCarpoolsByDriver(email),HttpStatus.OK);
+		} catch (CarpooldetailsServiceException ex) {
+			logger.error("ERROR:some thing went wrong while fetching getAllCarpoolsByDriver");
+			return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+
+	}
+	
+	@RequestMapping(value = "/getSharedRidesByParentId/{parentID}", method = RequestMethod.GET)
+	public ResponseEntity<?> getCarpoolsByParentID(@PathVariable("parentID")Integer id) 
+	{
+		logger.info("BEGIN: getAllParentCpsByDrievrID() in the CarpooldetailsRestService");
+		try {
+			return new ResponseEntity<List<DriverCarPoolDto>>(carpooldetailsService.getCarPoolsByParentId(id),HttpStatus.OK);
+		} catch (CarpooldetailsServiceException ex) {
+			logger.error("ERROR:some thing went wrong while fetching getAllCarpoolsByDriver");
+			return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+
+	}
 	
 }

@@ -1,8 +1,6 @@
 package com.nisum.carpool.data.dao.impl;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -12,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import com.nisum.carpool.data.dao.api.CarpooldetailsDAO;
+import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.repository.CarpooldetailsRepository;
 import com.nisum.carpool.data.util.Constants;
@@ -152,16 +151,6 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 	return	carpooldetailsRepository.getCarPoolsByEmail(email);
 	}
 
-	@Override
-	public Integer updaterewardPointsWithId(Integer rewards,Integer status) {
-		// TODO Auto-generated method stub
-		logger.info("CarpooldetailsDAOImpl : updaterewardPointsWithId");
-		LocalDate currentDate=LocalDate.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String rewardedDate = currentDate.format(formatter);
-		List<Integer> listOfIds = carpooldetailsRepository.getCarpooldetailsByFromDate(status,rewardedDate);
-		return carpooldetailsRepository.udpateRewardPoints(rewards, listOfIds);
-	}
 	
 	/**
 	 * @author Harish Kumar Gudivada
@@ -184,5 +173,25 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 		logger.info("Exit from CarpooldetailsDAOImpl :: loadCarpoolDetailsById");
 		return carpoolDets;
 	}
+	
+	
+	@Override
+	public List<Carpooldetails> getCarpoolsByParentId(int parentId) {
+		// TODO Auto-generated method stub
+		return carpooldetailsRepository.getCaroolsByParentId(parentId);
+	}
+
+
+
+	@Override
+	public List<Integer> getCarPoolParentIds(String email) {
+		// TODO Auto-generated method stub
+		return carpooldetailsRepository.getParentIdByEmail(email);
+	}
+
+
+
+	
+	
 
 }

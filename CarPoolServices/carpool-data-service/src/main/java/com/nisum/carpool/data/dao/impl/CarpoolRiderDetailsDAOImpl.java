@@ -54,5 +54,11 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 	  
 		return Constants.MSG_CANCEL_CARPOOL_RIDER;
 	}
+	
+	@Override
+	public List<CarpoolRiderDetails> getRidersByCpID(Integer poolid) {
+		// TODO Auto-generated method stub
+		return carpoolRiderDetailsRepository.getRidersByPoolID(poolid);
+	}
 
 }

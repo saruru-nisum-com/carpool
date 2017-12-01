@@ -13,5 +13,8 @@ public interface CarpoolRiderDetailsDAO {
 	String cancelCarpoolRiderDetails(int cpid);
 
 	public List<CarpoolRiderDetails> findCarpoolRiderDetailsByCPId(int cpid);
+	
+	
+	public List<CarpoolRiderDetails> getRidersByCpID(Integer poolid) ;
 
 }

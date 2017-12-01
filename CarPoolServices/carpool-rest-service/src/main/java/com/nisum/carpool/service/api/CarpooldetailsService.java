@@ -4,7 +4,10 @@ import java.util.List;
 
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
+import com.nisum.carpool.service.dto.DriverCarPoolDto;
+import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
+import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
 
 public interface CarpooldetailsService {
 	ServiceStatusDto updateCarpooldetails(CarpooldetailsDto carpooldetailsDto);
@@ -16,6 +19,11 @@ public interface CarpooldetailsService {
 	ServiceStatusDto cancelCarpooldetails(CarpooldetailsDto carpooldetailsDto);
 
 	CarpooldetailsDto loadCarpoolDetailsById(int carpoolId);
+	List<ParentCarpoolDetailsDto> getCarpoolsByDriver(String email) throws CarpooldetailsServiceException;
+	
+	List<DriverCarPoolDto> getCarPoolsByParentId(int parentId) throws CarpooldetailsServiceException;
+	
+	
 
-	 Integer updaterewardPointsWithId(Integer rewards,Integer status);
+
 }
