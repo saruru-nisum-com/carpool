@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.nisum.carpool.data.domain.Carpooldetails;
-import com.nisum.carpool.data.domain.RegisterDomain;
 import java.lang.Integer;
 
 
@@ -43,6 +42,9 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	Integer cancelMultipleCarpoolDetails(@Param("carpoolDetails") Carpooldetails carpoolDetails);
 	public Carpooldetails findCarpoolDetailsById(int id);
 
+	@Query("select id from cp_carpooldetails where rewards=0 and status=?0 and todate<='rewardedDate' allow filtering")
+	List<Integer> getCarpooldetailsByFromDate(int status,String rewardedDate);
 	
+	@Query("update cp_carpooldetails set rewards=:rewards where id IN (:listOfIds)")
+	Integer udpateRewardPoints(@Param("rewards") Integer rewards, @Param("listOfIds") List<Integer> listOfIds);
 }
-

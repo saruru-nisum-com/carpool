@@ -46,7 +46,7 @@ public class CarpooldetailsDAOTest {
 		carpooldetails.setNoofseats(20);
 		carpooldetails.setParentid(112);
 		carpooldetails.setFromtime("23467");
-		carpooldetails.setStatus(poolStatus.OPEN);
+		carpooldetails.setStatus(poolStatus.OPEN.getValue());
 		carpooldetails.setToDate("14356u756i7op");
 		carpooldetails.setToTime("987");
 		carpooldetails.setEmailId("wefgre@jh.com");
@@ -69,7 +69,7 @@ public class CarpooldetailsDAOTest {
 		carpooldetails.setToDate("2017-11-23");
 		carpooldetails.setFromtime("12:30");
 		carpooldetails.setToTime("13:30");
-		carpooldetails.setStatus(poolStatus.OPEN);
+		carpooldetails.setStatus(poolStatus.OPEN.getValue());
 		carpooldetails.setCreateddate(createdDate.toLocalDateTime());
 		carpooldetails.setModifieddate(modifiedDate.toLocalDateTime());
 		when(carpooldetailsRepository.countByParentid(carpooldetails.getParentid())).thenReturn(1L);
@@ -92,7 +92,7 @@ public class CarpooldetailsDAOTest {
 		carpooldetails.setToDate("2017-11-23");
 		carpooldetails.setFromtime("12:30");
 		carpooldetails.setToTime("13:30");
-		carpooldetails.setStatus(poolStatus.OPEN);
+		carpooldetails.setStatus(poolStatus.OPEN.getValue());
 		carpooldetails.setCreateddate(createdDate.toLocalDateTime());
 		carpooldetails.setModifieddate(modifiedDate.toLocalDateTime());
 		List<Integer> list= Arrays.asList(1,2);

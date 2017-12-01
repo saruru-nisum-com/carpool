@@ -68,7 +68,10 @@ public class CarpooldetailsServiceImplTest {
 		ServiceStatusDto actualStatus = carpooldetailsServiceImpl.updateCarpooldetails(carpooldetailsDto);
 		assertEquals(serviceStatusDto.getMessage(), actualStatus.getMessage());
 	}
+<<<<<<< HEAD
 //Pool_Status.valueOf(carpooldetailsDto.getStatus().toString())
+=======
+>>>>>>> e57d8a3bde7cb7ee8dd37fdd963d6fe7a8b36a9d
 	
 	@Test
 	public void cancelCarpoolTest() {

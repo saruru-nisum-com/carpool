@@ -169,6 +169,23 @@ public class CarpooldetailsRestService {
 		logger.info("Exit from CarpooldetailsRestService :: getCarpoolDetailsById");
 		return new ResponseEntity<CarpooldetailsDto>(carpoolDto, HttpStatus.OK);
 	}
+	@RequestMapping(value = "/addRewardPoints/{rewards}/{status}", method = RequestMethod.PUT)
+	public ResponseEntity<?> addRewardPointsToDriver(@PathVariable(value="rewards") Integer rewards,@PathVariable(value="status") Integer status)
+			{
+		
+		try
+		{
+			carpooldetailsService.updaterewardPointsWithId(rewards, status);
+			
+			return new ResponseEntity<String>(Constants.ADDED_REWARDS_TO_DRIVER, HttpStatus.OK);
+			
+		}
+		catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+			
 	
 	
 }

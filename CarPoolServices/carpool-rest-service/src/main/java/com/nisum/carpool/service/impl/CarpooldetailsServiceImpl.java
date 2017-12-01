@@ -327,6 +327,13 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		return customerCarpooldetailsDtoList;
 	}
 
+	@Override
+	public Integer updaterewardPointsWithId(Integer rewards,Integer status) {
+		// TODO Auto-generated method stub
+		logger.info("CarpooldetailsServiceImpl : updaterewardPointsWithId");
+		Integer noOfDriversRewarded = carpooldetailsDAO.updaterewardPointsWithId(rewards, status);
+		return noOfDriversRewarded;
+	}
 	
 	/**
 	 * @author Harish Kumar Gudivada

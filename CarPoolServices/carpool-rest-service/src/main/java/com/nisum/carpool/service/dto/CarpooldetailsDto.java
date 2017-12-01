@@ -13,6 +13,7 @@ public class CarpooldetailsDto {
 	private String startTime;
 	private String toTime;
 	private Integer status;
+	private double rewards;
 	private Timestamp createddate;
 	private Timestamp modifieddate;
 	private String location;
@@ -34,6 +35,12 @@ public class CarpooldetailsDto {
 	}
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
+	}
+	public double getRewards() {
+		return rewards;
+	}
+	public void setRewards(double rewards) {
+		this.rewards = rewards;
 	}
 	public Integer getVehicleType() {
 		return vehicleType;
@@ -100,14 +107,17 @@ public class CarpooldetailsDto {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((createddate == null) ? 0 : createddate.hashCode());
-		result = prime * result + ((toTime == null) ? 0 : toTime.hashCode());
 		result = prime * result + ((fromDate == null) ? 0 : fromDate.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((modifieddate == null) ? 0 : modifieddate.hashCode());
 		result = prime * result + ((parentid == null) ? 0 : parentid.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(rewards);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((toDate == null) ? 0 : toDate.hashCode());
+		result = prime * result + ((toTime == null) ? 0 : toTime.hashCode());
 		result = prime * result + ((totalNoOfSeats == null) ? 0 : totalNoOfSeats.hashCode());
 		result = prime * result + ((emailId == null) ? 0 : emailId.hashCode());
 		result = prime * result + ((vehicleType == null) ? 0 : vehicleType.hashCode());
@@ -127,11 +137,6 @@ public class CarpooldetailsDto {
 			if (other.createddate != null)
 				return false;
 		} else if (!createddate.equals(other.createddate))
-			return false;
-		if (toTime == null) {
-			if (other.toTime != null)
-				return false;
-		} else if (!toTime.equals(other.toTime))
 			return false;
 		if (fromDate == null) {
 			if (other.fromDate != null)
@@ -153,6 +158,8 @@ public class CarpooldetailsDto {
 				return false;
 		} else if (!parentid.equals(other.parentid))
 			return false;
+		if (Double.doubleToLongBits(rewards) != Double.doubleToLongBits(other.rewards))
+			return false;
 		if (startTime == null) {
 			if (other.startTime != null)
 				return false;
@@ -167,6 +174,11 @@ public class CarpooldetailsDto {
 			if (other.toDate != null)
 				return false;
 		} else if (!toDate.equals(other.toDate))
+			return false;
+		if (toTime == null) {
+			if (other.toTime != null)
+				return false;
+		} else if (!toTime.equals(other.toTime))
 			return false;
 		if (totalNoOfSeats == null) {
 			if (other.totalNoOfSeats != null)
