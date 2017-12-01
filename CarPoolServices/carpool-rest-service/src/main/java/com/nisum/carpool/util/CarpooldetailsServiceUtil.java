@@ -99,17 +99,22 @@ public class CarpooldetailsServiceUtil {
 	
 	public static Carpooldetails convertUpdateDtoTODao(CarpooldetailsDto carpooldetailsDto) {
 		Carpooldetails carpooldetails = new Carpooldetails();
-		carpooldetails.setId(carpooldetailsDto.getId());
-		carpooldetails.setParentid(carpooldetailsDto.getParentid());
-		carpooldetails.setEmailId(carpooldetailsDto.getEmailId());
-		carpooldetails.setVehicleType(carpooldetailsDto.getVehicleType());
-		carpooldetails.setNoofseats(carpooldetailsDto.getTotalNoOfSeats());
-		carpooldetails.setFromDate(carpooldetailsDto.getFromDate());
-		carpooldetails.setToDate(carpooldetailsDto.getToDate());
-		carpooldetails.setFromtime(carpooldetailsDto.getStartTime());
-		carpooldetails.setToTime(carpooldetailsDto.getToTime());
-		carpooldetails.setStatus(carpooldetailsDto.getStatus());
-		carpooldetails.setModifieddate(carpooldetailsDto.getModifieddate().toLocalDateTime());
+		try {
+			carpooldetails.setId(carpooldetailsDto.getId());
+			carpooldetails.setParentid(carpooldetailsDto.getParentid());
+			carpooldetails.setEmailId(carpooldetailsDto.getEmailId());
+			carpooldetails.setVehicleType(carpooldetailsDto.getVehicleType());
+			carpooldetails.setNoofseats(carpooldetailsDto.getTotalNoOfSeats());
+			carpooldetails.setFromDate(carpooldetailsDto.getFromDate());
+			carpooldetails.setToDate(carpooldetailsDto.getToDate());
+			carpooldetails.setFromtime(carpooldetailsDto.getStartTime());
+			carpooldetails.setToTime(carpooldetailsDto.getToTime());
+			carpooldetails.setStatus(carpooldetailsDto.getStatus());
+			carpooldetails.setModifieddate(carpooldetailsDto.getModifieddate().toLocalDateTime());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return carpooldetails;
 
 	}

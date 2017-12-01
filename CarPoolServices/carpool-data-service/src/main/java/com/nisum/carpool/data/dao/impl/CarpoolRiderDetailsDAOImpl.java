@@ -35,15 +35,16 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 	//cancel Rider details when Driver cancel carpool
 	@Override
 	public String cancelCarpoolRiderDetails(int cpid) {
-		
+		System.out.println("in cancelCarpool Rider daoImpl cpId=**"+cpid);
 		List<CarpoolRiderDetails> carPoolData=carpoolRiderDetailsRepository.getRiderDetailsByCpId(cpid);
-		System.out.println("in cancelCarpool Rider daoImpl**");
+		
 		System.out.println("carPoll rider cancel size=="+carPoolData.size());
 		
 		Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
 		if(carPoolData!=null) {
 			  if (CollectionUtils.isNotEmpty(carPoolData)) {
 				  carPoolData.forEach(c->{
+					  System.out.println("pool value=="+Pool_Status.CLOSED.getValue());
 						c.setStatus(Pool_Status.CLOSED.getValue());
 					  c.setModifieddate(modifiedDate.toLocalDateTime());
 					  carpoolRiderDetailsRepository.save(c);

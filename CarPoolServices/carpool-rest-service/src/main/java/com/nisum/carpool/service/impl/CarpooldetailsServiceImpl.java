@@ -65,9 +65,15 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 		
 		carpooldetailsDto.setModifieddate(modifiedDate);
 		
-		Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertUpdateDtoTODao(carpooldetailsDto);
-		String cancelCarpooldetails = carpooldetailsDAO.cancelCarpooldetails(carpooldetails);
-		logger.info("Carpooldetails after cancel  dao message::"+cancelCarpooldetails);
+		String cancelCarpooldetails=null;
+		try {
+			Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertUpdateDtoTODao(carpooldetailsDto);
+			cancelCarpooldetails = carpooldetailsDAO.cancelCarpooldetails(carpooldetails);
+			logger.info("Carpooldetails after cancel  dao message::"+cancelCarpooldetails);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
 		if(ObjectUtils.anyNotNull(cancelCarpooldetails))
 		{

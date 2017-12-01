@@ -42,27 +42,32 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 	}
 	
 	
-	
 	@Override
 	public String cancelCarpooldetails(Carpooldetails carpooldetails) {
 		// TODO Auto-generated method stub
 		logger.info("CarpooldetailsDAOImpl: cancel Carpooldetails getby Id"+carpooldetails.getId());
 		List<Integer> listOfIds =null;
 		Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
-		Long countByParentid = carpooldetailsRepository.findById(carpooldetails.getId());
-		logger.info("in daoimpl cancel by parentId"+countByParentid);
-		   if(countByParentid == 1) {
 			   logger.info("in parent cancel");
-			   carpooldetails.setModifieddate(modifiedDate.toLocalDateTime());
-			   carpooldetails.setStatus(Pool_Status.CLOSED.getValue());
-       	    carpooldetailsRepository.save(carpooldetails);
-		}
-		    listOfIds = carpooldetailsRepository.getListOfIdsByParentid(carpooldetails.getId());
-		    
-		    logger.info("listOfIds in cancel pool daoimpl:"+listOfIds.size());
+		  //update Parent record
+			   try {
+				Long countByParentid = carpooldetailsRepository.findById(carpooldetails.getId());
+				   logger.info("in daoimpl cancel by parentId"+countByParentid);
+				   if(countByParentid == 1) {
+					   carpooldetails.setModifieddate(modifiedDate.toLocalDateTime());
+					   carpooldetails.setStatus(Pool_Status.CLOSED.getValue());
+					carpooldetailsRepository.save(carpooldetails);
+				 }
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		//update child records
 		  try {
-			  logger.info("in child update.parentId.."+carpooldetails.getId());
-			  List<Carpooldetails> poolData=carpooldetailsRepository.findByParentid(carpooldetails.getId());
+			  listOfIds = carpooldetailsRepository.getListOfIdsByParentid(carpooldetails.getParentid());
+			  logger.info("in child update.parentId.."+carpooldetails.getParentid());
+			  logger.info("listOfIds ** in cancel pool daoimpl:"+listOfIds.size());
+			
+			  List<Carpooldetails> poolData=carpooldetailsRepository.findByParentid(carpooldetails.getParentid());
 			  if(poolData!=null) {
 					  if (CollectionUtils.isNotEmpty(poolData)) {
 						  poolData.forEach(c->{
