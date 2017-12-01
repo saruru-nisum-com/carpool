@@ -148,14 +148,19 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 	}
 
 	@Override
-	public Integer updaterewardPointsWithId(Integer rewards,Integer status) {
+	public String updaterewardPointsWithId(Integer rewards,Integer status) {
 		// TODO Auto-generated method stub
 		logger.info("CarpooldetailsDAOImpl : updaterewardPointsWithId");
 		LocalDate currentDate=LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String rewardedDate = currentDate.format(formatter);
 		List<Integer> listOfIds = carpooldetailsRepository.getCarpooldetailsByFromDate(status,rewardedDate);
-		return carpooldetailsRepository.udpateRewardPoints(rewards, listOfIds);
+		if(listOfIds.size()>0) {
+			carpooldetailsRepository.udpateRewardPoints(rewards, listOfIds);
+			carpooldetailsRepository.udpateRewardPoints(rewards, listOfIds);
+			return Constants.ADDED_REWARDS_TO_DRIVER;
+		}
+		return Constants.REWARDS_NOT_ADDED_DRIVER;
 	}
 	
 	/**

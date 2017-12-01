@@ -17,5 +17,5 @@ public interface CarpooldetailsService {
 
 	CarpooldetailsDto loadCarpoolDetailsById(int carpoolId);
 
-	 Integer updaterewardPointsWithId(Integer rewards,Integer status);
+	 ServiceStatusDto updaterewardPointsWithId(Integer rewards);
 }

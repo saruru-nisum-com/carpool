@@ -64,5 +64,5 @@ public class Constants {
 		public static final String VALID = "valid";
 		public static final String CARPOOLEXISTS = "Car Pool already exists";
 		public static final String MSG_UPDATE_CARPOOL_FAILED = "Updating Carpool Failed !!";
-		public static final String ADDED_REWARDS_TO_DRIVER="Reward Points added to Driver Successfully !!";
+		
 }

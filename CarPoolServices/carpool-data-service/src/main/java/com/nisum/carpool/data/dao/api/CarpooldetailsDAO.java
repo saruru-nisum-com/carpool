@@ -20,5 +20,5 @@ public interface CarpooldetailsDAO {
 	
 	public Carpooldetails  loadCarpoolDetailsById(int carpoolId)throws Exception;
 	
-	public Integer updaterewardPointsWithId(Integer rewards,Integer status);
+	public String updaterewardPointsWithId(Integer rewards,Integer status);
 }

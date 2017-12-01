@@ -328,11 +328,19 @@ if(registerDomain!=null && registerDomain.size()>0) {
 	}
 
 	@Override
-	public Integer updaterewardPointsWithId(Integer rewards,Integer status) {
+	public ServiceStatusDto updaterewardPointsWithId(Integer rewards) {
 		// TODO Auto-generated method stub
-		logger.info("CarpooldetailsServiceImpl : updaterewardPointsWithId");
-		Integer noOfDriversRewarded = carpooldetailsDAO.updaterewardPointsWithId(rewards, status);
-		return noOfDriversRewarded;
+		logger.info("CarpooldetailsServiceImpl : updaterewardPointsWithId :"+Pool_Status.CLOSED.getValue());
+		
+		String rewardStatus = carpooldetailsDAO.updaterewardPointsWithId(rewards, Pool_Status.CLOSED.getValue());
+		logger.info("CarpooldetailsServiceImpl : updaterewardPointsWithId :"+rewardStatus);
+		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
+		if(ObjectUtils.anyNotNull(rewardStatus))
+		{
+			serviceStatusDto.setStatus(true);
+			serviceStatusDto.setMessage(rewardStatus);
+		}
+		return serviceStatusDto;
 	}
 	
 	/**
