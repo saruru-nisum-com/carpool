@@ -1,4 +1,10 @@
-<div>
+<div classs = "container-fluid">
+	<div class = "col-md-2">
+		<div id = "leftHandMenu">
+			<div ng-include="'js/partials/leftSideMenu.html'"></div>
+		</div>
+	</div>
+	<div class = "col-md-8">
 	<div align="right">
 		<input type="checkbox" name="AllCarPools" data-ng-change='ngChange()'
 			data-ng-model='isCheck' />See All Pools
@@ -42,11 +48,6 @@
 			</div>
 		</div>
 	</div>
-	<div align="center" ng-if="carpoolList.length<=0">No Car pools
-		Available</div>
-	<div id = "leftHandMenu">
-		<div ng-include="'js/partials/leftSideMenu.html'">
+	<div align="center" ng-if="carpoolList.length<=0">No Car pools Available</div>
+	</div>
 </div>
-
-</div>
-

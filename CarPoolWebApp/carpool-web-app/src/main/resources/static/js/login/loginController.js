@@ -10,7 +10,7 @@ loginApp.controller('loginController', function($scope, $state,
 			} else {
 				localStorageService.set('profile', response);
 
-				$state.go("leftSideMenu");
+				$state.go("configurations");
 			}
 		}, function(response) { 
 			// console

@@ -1,13 +1,15 @@
 /**
- * 
+ * @Author: Dhiraj singh
+ * description: driverApp for angularjs implementation.
+ * date created: 11th nov. 20117
+ * date modified: 29th nov. 20117
  */
-var app = angular.module('driverApp', []);
-app.controller('driverController', function($scope){
-	$scope.register = function() {
-		alert("clicked register");
-	}
+var driverApp=angular.module('driverApp', ['ui.router'])
+.config(function($stateProvider){
+	$stateProvider.state('driver',{
+		url:'/driver',
+		templateUrl:'./js/driver/driver.html',
+		controller: 'driverController'
+	})
 	
-	$scope.update = function() {
-		alert("clicked update");
-	}
-});
+});	 
