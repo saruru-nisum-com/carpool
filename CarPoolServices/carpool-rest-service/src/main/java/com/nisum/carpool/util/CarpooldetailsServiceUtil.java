@@ -38,7 +38,7 @@ public class CarpooldetailsServiceUtil {
 				carpooldetailsDto.setToDate(c.getToDate());
 				carpooldetailsDto.setStartTime(c.getFromtime());
 				carpooldetailsDto.setToTime(c.getToTime());
-				carpooldetailsDto.setStatus(c.getStatus().getValue());
+				carpooldetailsDto.setStatus(c.getStatus());
 				carpooldetailsDto.setLocation(c.getLocation());
 				carpooldetailsDto.setCreateddate(CommonsUtil.convertLocalDateTimeToTimeStamp(c.getCreateddate()));
 				carpooldetailsDto.setModifieddate(CommonsUtil.convertLocalDateTimeToTimeStamp(c.getModifieddate()));
@@ -62,7 +62,7 @@ public class CarpooldetailsServiceUtil {
 			carpooldetailsDto.setToDate(carpooldetails.getToDate());
 			carpooldetailsDto.setStartTime(carpooldetails.getFromtime());
 			carpooldetailsDto.setToTime(carpooldetails.getToTime());
-			carpooldetailsDto.setStatus(carpooldetails.getStatus().getValue());
+			carpooldetailsDto.setStatus(carpooldetails.getStatus());
 			carpooldetailsDto.setLocation(carpooldetails.getLocation());
 			if(carpooldetails.getCreateddate()!=null)
 			carpooldetailsDto.setCreateddate(CommonsUtil.convertLocalDateTimeToTimeStamp(carpooldetails.getCreateddate()));
@@ -87,7 +87,7 @@ public class CarpooldetailsServiceUtil {
 		carpooldetails.setToDate(carpooldetailsDto.getToDate());
 		carpooldetails.setFromtime(carpooldetailsDto.getStartTime());
 		carpooldetails.setToTime(carpooldetailsDto.getToTime());
-		carpooldetails.setStatus(Pool_Status.valueOf(carpooldetailsDto.getStatus().toString()));
+		carpooldetails.setStatus(carpooldetailsDto.getStatus());
 		carpooldetails.setLocation(carpooldetailsDto.getLocation());
 		if(carpooldetailsDto.getCreateddate()!=null)
 		carpooldetails.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(carpooldetailsDto.getCreateddate()));
@@ -108,7 +108,7 @@ public class CarpooldetailsServiceUtil {
 		carpooldetails.setToDate(carpooldetailsDto.getToDate());
 		carpooldetails.setFromtime(carpooldetailsDto.getStartTime());
 		carpooldetails.setToTime(carpooldetailsDto.getToTime());
-		carpooldetails.setStatus(Pool_Status.valueOf(carpooldetailsDto.getStatus().toString()));
+		carpooldetails.setStatus(carpooldetailsDto.getStatus());
 		carpooldetails.setModifieddate(carpooldetailsDto.getModifieddate().toLocalDateTime());
 		return carpooldetails;
 

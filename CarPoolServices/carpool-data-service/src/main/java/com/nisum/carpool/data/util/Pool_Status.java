@@ -7,13 +7,13 @@ public enum Pool_Status {
 	COMPLETED(3),
 	CLOSED(4);
 	
-	int value;
+	Integer value;
 	
-	Pool_Status(int value) {
+	Pool_Status(Integer value) {
 		this.value = value;
 	}
 	
-	public int getValue() {
+	public Integer getValue() {
 		return this.value;
 	}
 	

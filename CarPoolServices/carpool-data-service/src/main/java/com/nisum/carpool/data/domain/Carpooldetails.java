@@ -25,7 +25,7 @@ public class Carpooldetails implements Serializable{
 	private String toDate;
 	private String fromtime;
 	private String toTime;
-	private Pool_Status status;
+	private Integer status;
 	private String location;
 	//private Timestamp createddate;
     //private Timestamp modifieddate;
@@ -87,10 +87,10 @@ public class Carpooldetails implements Serializable{
 		this.toTime = toTime;
 	}
 	
-	public Pool_Status getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(Pool_Status status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 	public LocalDateTime getCreateddate() {
@@ -122,7 +122,6 @@ public class Carpooldetails implements Serializable{
 		result = prime * result + ((modifieddate == null) ? 0 : modifieddate.hashCode());
 		result = prime * result + ((parentid == null) ? 0 : parentid.hashCode());
 		result = prime * result + ((fromtime == null) ? 0 : fromtime.hashCode());
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((toDate == null) ? 0 : toDate.hashCode());
 		result = prime * result + ((noofseats == null) ? 0 : noofseats.hashCode());
 		result = prime * result + ((emailId == null) ? 0 : emailId.hashCode());
@@ -173,11 +172,6 @@ public class Carpooldetails implements Serializable{
 			if (other.fromtime != null)
 				return false;
 		} else if (!fromtime.equals(other.fromtime))
-			return false;
-		if (status == null) {
-			if (other.status != null)
-				return false;
-		} else if (!status.equals(other.status))
 			return false;
 		if (toDate == null) {
 			if (other.toDate != null)

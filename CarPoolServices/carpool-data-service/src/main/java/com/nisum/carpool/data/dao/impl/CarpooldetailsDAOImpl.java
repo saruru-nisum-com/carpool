@@ -52,7 +52,7 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 		   if(countByParentid == 1) {
 			   logger.info("in parent cancel");
 			   carpooldetails.setModifieddate(modifiedDate.toLocalDateTime());
-			   carpooldetails.setStatus(Pool_Status.CLOSED);
+			   carpooldetails.setStatus(Pool_Status.CLOSED.getValue());
        	    carpooldetailsRepository.save(carpooldetails);
 		}
 		    listOfIds = carpooldetailsRepository.getListOfIdsByParentid(carpooldetails.getId());
@@ -64,7 +64,7 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 			  if(poolData!=null) {
 					  if (CollectionUtils.isNotEmpty(poolData)) {
 						  poolData.forEach(c->{
-								c.setStatus(Pool_Status.CLOSED);
+								c.setStatus(Pool_Status.CLOSED.getValue());
 							  c.setModifieddate(modifiedDate.toLocalDateTime());
 								carpooldetailsRepository.save(c);
 							});
@@ -130,7 +130,13 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 	@Override
 	public List<Carpooldetails> getAllCarPoolDetails() {
 		logger.info("PostRideDaoImpl: getAllCarPoolDetails ::");
+		try {
 			return  (List<Carpooldetails>) carpooldetailsRepository.findAll();
+		} catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+			
 
 }
 	
