@@ -12,6 +12,7 @@ import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 
 import com.nisum.carpool.data.repository.CarpoolRiderDetailsRepository;
 import com.nisum.carpool.data.util.Constants;
+import com.nisum.carpool.data.util.Pool_Status;
 
 @Configuration
 public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
@@ -43,7 +44,7 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 		if(carPoolData!=null) {
 			  if (CollectionUtils.isNotEmpty(carPoolData)) {
 				  carPoolData.forEach(c->{
-						c.setStatus(4);
+						c.setStatus(Pool_Status.CLOSED.getValue());
 					  c.setModifieddate(modifiedDate.toLocalDateTime());
 					  carpoolRiderDetailsRepository.save(c);
 					});

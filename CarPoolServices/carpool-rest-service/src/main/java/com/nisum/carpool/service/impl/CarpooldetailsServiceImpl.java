@@ -19,6 +19,7 @@ import com.nisum.carpool.data.dao.api.UserDAO;
 import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.domain.RegisterDomain;
 import com.nisum.carpool.data.domain.User;
+import com.nisum.carpool.data.util.Pool_Status;
 import com.nisum.carpool.service.api.CarpooldetailsService;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
@@ -66,11 +67,11 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 		
 		Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertUpdateDtoTODao(carpooldetailsDto);
 		String cancelCarpooldetails = carpooldetailsDAO.cancelCarpooldetails(carpooldetails);
-		System.out.println("Carpooldetails after cancel  dao message::"+cancelCarpooldetails);
+		logger.info("Carpooldetails after cancel  dao message::"+cancelCarpooldetails);
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
 		if(ObjectUtils.anyNotNull(cancelCarpooldetails))
 		{
-			logger.info("CarpooldetailsServiceImpl : cancel Carpooldetails ::"+cancelCarpooldetails);
+			logger.info("CarpooldetailsServiceImpl : cancel Carpooldetails set message::"+cancelCarpooldetails);
 			serviceStatusDto.setStatus(true);
 			serviceStatusDto.setMessage(cancelCarpooldetails);
 		}
@@ -184,7 +185,7 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	    	cp.setCreateddate(carpooldetails.getCreateddate());
 	    	cp.setModifieddate(carpooldetails.getModifieddate());
 	    	cp.setNoofseats(carpooldetails.getNoofseats());
-	    cp.setStatus(1);
+	    cp.setStatus(Pool_Status.OPEN);
 	    	cp.setUserid(carpooldetails.getUserid());
 	    	cp.setVehicleType(carpooldetails.getVehicleType());
 	    	

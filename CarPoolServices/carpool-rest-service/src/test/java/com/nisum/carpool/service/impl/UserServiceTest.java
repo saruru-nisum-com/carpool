@@ -32,7 +32,7 @@ public class UserServiceTest {
 	@Mock
 	UserDAO userDao;
 
-	User user;
+	User user=new User();
 	UserDTO userDTO =new UserDTO();
 
 	Timestamp timestamp;
@@ -85,11 +85,11 @@ public class UserServiceTest {
 	@Test
 		public void testUpdateUser() {
 			userDTO.setUserName("john");
-	//		User user = UserServiceUtil.convertUpdateUserDtoTODao(userDTO);
-	//		when(userServiceImpl.findUserById(user.getUserId())).thenReturn(user);
-	//		//when(userServiceImpl.findUserById(userDTO.getUserId())).thenReturn(user);
-			when(userDao.findUserById(userDTO.getUserId())).thenReturn(user);
-			when(userDao.updateUser(user)).thenReturn(user);
+			User updateUser = UserServiceUtil.convertUpdateUserDtoTODao(userDTO);
+			//userDTO=UserServiceUtil.convertDaoObjectToDto(user);
+			when(userServiceImpl.findUserById(updateUser.getUserId())).thenReturn(user);
+			//when(userDao.findUserById(userDTO.getUserId())).thenReturn(user);
+			when(userDao.updateUser(updateUser)).thenReturn(user);
 			UserDTO resultUserDTO=	userServiceImpl.updateUserDetails(userDTO);
 			assertEquals(userDTO.getUserName(),resultUserDTO.getUserName());
 			

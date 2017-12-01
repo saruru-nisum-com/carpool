@@ -19,6 +19,7 @@ import com.nisum.carpool.data.dao.impl.CarpooldetailsDAOImpl;
 import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.repository.CarpooldetailsRepository;
 import com.nisum.carpool.data.util.Constants;
+import com.nisum.carpool.data.util.Pool_Status;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,7 +31,7 @@ public class CarpooldetailsDAOTest {
 	CarpooldetailsRepository carpooldetailsRepository;
 	
         Carpooldetails carpooldetails;
-
+        Pool_Status poolStatus;
 	
 	List<Carpooldetails> carpooldetailsExpectedList;
 	
@@ -45,7 +46,7 @@ public class CarpooldetailsDAOTest {
 		carpooldetails.setNoofseats(20);
 		carpooldetails.setParentid(112);
 		carpooldetails.setFromtime("23467");
-		carpooldetails.setStatus(1);
+		carpooldetails.setStatus(poolStatus.OPEN);
 		carpooldetails.setToDate("14356u756i7op");
 		carpooldetails.setToTime("987");
 		carpooldetails.setUserid("wefgre@jh.com");
@@ -68,7 +69,7 @@ public class CarpooldetailsDAOTest {
 		carpooldetails.setToDate("2017-11-23");
 		carpooldetails.setFromtime("12:30");
 		carpooldetails.setToTime("13:30");
-		carpooldetails.setStatus(1);
+		carpooldetails.setStatus(poolStatus.OPEN);
 		carpooldetails.setCreateddate(createdDate.toLocalDateTime());
 		carpooldetails.setModifieddate(modifiedDate.toLocalDateTime());
 		when(carpooldetailsRepository.countByParentid(carpooldetails.getParentid())).thenReturn(1L);
@@ -91,7 +92,7 @@ public class CarpooldetailsDAOTest {
 		carpooldetails.setToDate("2017-11-23");
 		carpooldetails.setFromtime("12:30");
 		carpooldetails.setToTime("13:30");
-		carpooldetails.setStatus(1);
+		carpooldetails.setStatus(poolStatus.OPEN);
 		carpooldetails.setCreateddate(createdDate.toLocalDateTime());
 		carpooldetails.setModifieddate(modifiedDate.toLocalDateTime());
 		List<Integer> list= Arrays.asList(1,2);

@@ -14,6 +14,7 @@ import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.repository.CarpooldetailsRepository;
 import com.nisum.carpool.data.util.Constants;
 //import com.nisum.carpool.service.dto.CarpooldetailsDto;
+import com.nisum.carpool.data.util.Pool_Status;
 
 
 
@@ -43,26 +44,27 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 	@Override
 	public String cancelCarpooldetails(Carpooldetails carpooldetails) {
 		// TODO Auto-generated method stub
-		
 		logger.info("CarpooldetailsDAOImpl: cancel Carpooldetails getby Id"+carpooldetails.getId());
 		List<Integer> listOfIds =null;
+		Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
 		Long countByParentid = carpooldetailsRepository.findById(carpooldetails.getId());
-		//carpooldetailsRepository.findOne(
-		System.out.println("in daoimpl cancel by parentId"+countByParentid);
+		logger.info("in daoimpl cancel by parentId"+countByParentid);
 		   if(countByParentid == 1) {
-			   System.out.println("in parent cancel");
+			   logger.info("in parent cancel");
+			   carpooldetails.setModifieddate(modifiedDate.toLocalDateTime());
+			   carpooldetails.setStatus(Pool_Status.CLOSED);
        	    carpooldetailsRepository.save(carpooldetails);
 		}
 		    listOfIds = carpooldetailsRepository.getListOfIdsByParentid(carpooldetails.getId());
-		    Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
-		   System.out.println("listOfIds in cancel pool daoimpl:"+listOfIds.size());
+		    
+		    logger.info("listOfIds in cancel pool daoimpl:"+listOfIds.size());
 		  try {
-			  System.out.println("in child update.parentId.."+carpooldetails.getId());
+			  logger.info("in child update.parentId.."+carpooldetails.getId());
 			  List<Carpooldetails> poolData=carpooldetailsRepository.findByParentid(carpooldetails.getId());
 			  if(poolData!=null) {
 					  if (CollectionUtils.isNotEmpty(poolData)) {
 						  poolData.forEach(c->{
-								c.setStatus(4);
+								c.setStatus(Pool_Status.CLOSED);
 							  c.setModifieddate(modifiedDate.toLocalDateTime());
 								carpooldetailsRepository.save(c);
 							});
@@ -73,7 +75,7 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 //  }
+		  
 		   return Constants.MSG_CARPOOL_CANCEL;
 	}
 	

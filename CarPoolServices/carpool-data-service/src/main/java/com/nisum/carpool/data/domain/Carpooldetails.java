@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 
+import com.nisum.carpool.data.util.Pool_Status;
+
 @Table("cp_carpooldetails")
 public class Carpooldetails implements Serializable{
 	/**
@@ -23,7 +25,7 @@ public class Carpooldetails implements Serializable{
 	private String toDate;
 	private String fromtime;
 	private String toTime;
-	private Integer status;
+	private Pool_Status status;
 	//private Timestamp createddate;
     //private Timestamp modifieddate;
 	
@@ -86,13 +88,13 @@ public class Carpooldetails implements Serializable{
 	public void setToTime(String toTime) {
 		this.toTime = toTime;
 	}
-	public Integer getStatus() {
+	
+	public Pool_Status getStatus() {
 		return status;
 	}
-	public void setStatus(Integer status) {
+	public void setStatus(Pool_Status status) {
 		this.status = status;
 	}
-	
 	public LocalDateTime getCreateddate() {
 		return createddate;
 	}

@@ -43,7 +43,7 @@ public class CarpooldetailsServiceImplTest {
 		carpooldetailsDto.setVehicleType(2);
 		carpooldetailsDto.setTotalNoOfSeats(1);
 		carpooldetailsDto.setFromDate("2017-11-23");
-		carpooldetailsDto.setToDate("2017-12-23");
+		carpooldetailsDto.setToDate("2017-13-23");
 		carpooldetailsDto.setStartTime("12:30");
 		carpooldetailsDto.setToTime("13:30");
 		carpooldetailsDto.setStatus(1);
