@@ -34,21 +34,24 @@ public class VehicleTypesRestService {
 	 */
 	@RequestMapping(value="/getVehicleTypes", method=RequestMethod.GET)
 	public ResponseEntity<?> getVehicleTypes() throws VehicleTypesException {
-		logger.info("VehicleTypesRestService :: getVehicleTypes :: get all vehicle details");
+		logger.info("Enter into VehicleTypesRestService :: getVehicleTypes :: get all vehicle details");
 		Errors error = new Errors();
 		try {
 			List<VehicleTypesDTO> vehicleDetails = vehicleTypesService.getVehicleTypes();
 			if (vehicleDetails != null && vehicleDetails.size() > 0) {
+				logger.info("Exit from VehicleTypesRestService :: getVehicleTypes :: get all vehicle details");
 				return new ResponseEntity<List<VehicleTypesDTO>>(vehicleDetails, HttpStatus.OK);
 			} else {
 				error.setErrorCode("204");
 				error.setErrorMessage(Constants.NO_RECORDS_FOUND);
+				logger.info("Exit from VehicleTypesRestService :: getVehicleTypes :: get all vehicle details");
 				return new ResponseEntity<Errors>(error, HttpStatus.NO_CONTENT);
 			}
 		} catch(Exception e) {
 			logger.info("VehicleTypesRestService :: getVehicleTypes::Internal server error");
-			throw new VehicleTypesException(Constants.INTERNALSERVERERROR);
+			throw new VehicleTypesException(e);
 		}
+		
 		
 	}
 	

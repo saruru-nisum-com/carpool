@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -26,14 +27,18 @@ public class VehicleTypeRestServiceTest {
 	@InjectMocks
 	VehicleTypesRestService vehicleTypesRestService;
 	
-	@Test
-	public void getVehicleTpyes() throws VehicleTypesException {
-		List<VehicleTypesDTO> vehicleTypeDtoList = new ArrayList<VehicleTypesDTO>();
+	List<VehicleTypesDTO> vehicleTypeDtoList = new ArrayList<VehicleTypesDTO>();
+	
+	@Before
+	public void setUp() {
 		VehicleTypesDTO vehicleTypesDTO = new VehicleTypesDTO();
 		vehicleTypesDTO.setId(1);
 		vehicleTypesDTO.setNoofseats(2);
 		vehicleTypesDTO.setVehicletype("Two wheeler");
 		vehicleTypeDtoList.add(vehicleTypesDTO);
+	}
+	@Test
+	public void getVehicleTpyes() throws VehicleTypesException  {
 		ResponseEntity<List<VehicleTypesDTO>> expected = new ResponseEntity<List<VehicleTypesDTO>>(vehicleTypeDtoList,HttpStatus.OK);
 		when(vehicleTypesService.getVehicleTypes()).thenReturn(vehicleTypeDtoList);
 		ResponseEntity<?> actual = vehicleTypesRestService.getVehicleTypes();

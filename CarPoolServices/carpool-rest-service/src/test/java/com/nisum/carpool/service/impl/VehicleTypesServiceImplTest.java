@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -25,22 +26,27 @@ public class VehicleTypesServiceImplTest {
 	@InjectMocks
 	VehicleTypesServiceImpl vehicleTypesServiceImpl;
 	
-	@Test
-	public void getVehicleTypesImpl() {
-		List<VehicleTypes> vehicleTypeDaoList = new ArrayList<VehicleTypes>();
+	List<VehicleTypes> vehicleTypeDaoList = new ArrayList<VehicleTypes>();
+	List<VehicleTypesDTO> vehicleTypeDtoList = new ArrayList<VehicleTypesDTO>();
+	
+	@Before
+	public void setUp() {
 		VehicleTypes vehicleTypes = new VehicleTypes();
+		VehicleTypesDTO vehicleTypesDTO = new VehicleTypesDTO();
+		
 		vehicleTypes.setId(1);
 		vehicleTypes.setNoofseats(2);
 		vehicleTypes.setVehicletype("Two wheeler");
 		vehicleTypeDaoList.add(vehicleTypes);
 		
-		List<VehicleTypesDTO> vehicleTypeDtoList = new ArrayList<VehicleTypesDTO>();
-		VehicleTypesDTO vehicleTypesDTO = new VehicleTypesDTO();
 		vehicleTypesDTO.setId(1);
 		vehicleTypesDTO.setNoofseats(2);
 		vehicleTypesDTO.setVehicletype("Two wheeler");
 		vehicleTypeDtoList.add(vehicleTypesDTO);
-		
+	}
+	
+	@Test
+	public void getVehicleTypesImpl() {
 		when(vehicleTypesDAO.getVehicleTypes()).thenReturn(vehicleTypeDaoList);
 		List<VehicleTypesDTO> vehicleTypesDTOUtil = VehicleTypesUtil.convertDaoToDto(vehicleTypeDaoList);
 		List<VehicleTypesDTO> actual = vehicleTypesServiceImpl.getVehicleTypes();
