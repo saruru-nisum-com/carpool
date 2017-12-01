@@ -152,7 +152,7 @@ table, td {
 }
 
 .postARideTableCls button {
-	background-color: rgba(0, 178, 226, .6) !important;
+	background-color: #337ab7 !important;
 	border: none;
 	border-radius: 5px;
 	color: white;
