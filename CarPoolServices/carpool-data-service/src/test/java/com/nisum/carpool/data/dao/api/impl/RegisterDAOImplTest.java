@@ -36,7 +36,7 @@ public class RegisterDAOImplTest {
 	public void findUserRegistrationByUserId() {
 		List<RegisterDomain> registerListExpected = new ArrayList<>();
 		RegisterDomain registerDomain = new RegisterDomain();
-		registerDomain.setUserid("user1");
+		registerDomain.setEmailid("user1");
 		registerDomain.setEmailnotification(true);
 		registerDomain.setCreateddate(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
 		registerDomain.setIsrider(1);
@@ -54,7 +54,7 @@ public class RegisterDAOImplTest {
 
 		registerListExpected.add(registerDomain);
 
-		when(registerRepository.findByUserId("user1")).thenReturn(registerListExpected);
+		when(registerRepository.findByEmailId("user1")).thenReturn(registerListExpected);
 
 		List<RegisterDomain> actual = registerDAOImpl.findUserRegistrationByUserId("user1");
 

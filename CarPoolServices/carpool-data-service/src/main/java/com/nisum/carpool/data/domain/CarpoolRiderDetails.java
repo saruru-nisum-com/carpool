@@ -18,6 +18,19 @@ public class CarpoolRiderDetails {
 	 private int reason;
      private LocalDateTime  createddate;
 	 private LocalDateTime modifieddate;
+	 private String location;
+	/**
+	 * @return the location
+	 */
+	public String getLocation() {
+		return location;
+	}
+	/**
+	 * @param location the location to set
+	 */
+	public void setLocation(String location) {
+		this.location = location;
+	}
 	/**
 	 * @return the id
 	 */
@@ -137,6 +150,7 @@ public class CarpoolRiderDetails {
 		result = prime * result + ((createddate == null) ? 0 : createddate.hashCode());
 		result = prime * result + ((emailid == null) ? 0 : emailid.hashCode());
 		result = prime * result + id;
+		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		result = prime * result + ((modifieddate == null) ? 0 : modifieddate.hashCode());
 		result = prime * result + (notifyme ? 1231 : 1237);
 		result = prime * result + reason;
@@ -172,6 +186,11 @@ public class CarpoolRiderDetails {
 			return false;
 		if (id != other.id)
 			return false;
+		if (location == null) {
+			if (other.location != null)
+				return false;
+		} else if (!location.equals(other.location))
+			return false;
 		if (modifieddate == null) {
 			if (other.modifieddate != null)
 				return false;
@@ -194,7 +213,7 @@ public class CarpoolRiderDetails {
 	public String toString() {
 		return "CarpoolRiderDetails [id=" + id + ", cpid=" + cpid + ", emailid=" + emailid + ", status=" + status
 				+ ", rewards=" + rewards + ", notifyme=" + notifyme + ", reason=" + reason + ", createddate="
-				+ createddate + ", modifieddate=" + modifieddate + "]";
+				+ createddate + ", modifieddate=" + modifieddate + ", location=" + location + "]";
 	}
 
 	

@@ -30,14 +30,49 @@ public class RegisterDAOImpl implements RegisterDAO {
 	
 	/**
 	 * @author Harish Kumar Gudivada
-	 * 
-	 * This method is used to load the rider driver details by userid
+	 * Param emailId
+	 * Return registerList
+	 * This method is used to load the rider or driver or both details by emailId
 	 */
 	@Override
-	public List<RegisterDomain> findUserRegistrationByUserId(String userId) {
-		logger.info("UserRegistrationDaoImpl :: findUserRegistrationByUserId :: Finding user by userId");
-		return registerRepository.findByUserId(userId);
+	public List<RegisterDomain> findUserRegistrationByUserId(String emailId) {
+		logger.info("UserRegistrationDaoImpl :: findUserRegistrationByUserId :: Finding user by emailId");
+		List<RegisterDomain> registerList=null;
+		try {
+			registerList=registerRepository.findByEmailId(emailId);
+		}catch (Exception e) {
+			logger.error("Exception Occured in Class:UserRegistrationDaoImpl Method:findUserRegistrationByUserId Message:"+e.getMessage());
+		}
+		logger.info("Exit from UserRegistrationDaoImpl :: findUserRegistrationByUserId");
+		return registerList;
 	}
+	
+	/**
+	 * @author Harish Kumar Gudivada
+	 * Param emailId
+	 * Return location
+	 * This method is used to load the Location Of Registered User With emailId
+	 */
+	@Override
+	public String getLocationOfRegisteredUser(String emailId) {
+		logger.info("UserRegistrationDaoImpl :: getLocationOfRegisteredUser :: Finding Location by emailId");
+		String location="";
+		try {
+			List<RegisterDomain> list=registerRepository.findByEmailId(emailId);
+			if(list!=null) {
+				for(RegisterDomain registedDao:list) {
+					if(registedDao.getIsrider()==0)
+						location=registedDao.getLocation();
+				}
+			}
+		}catch (Exception e) {
+			logger.error("Exception Occured in Class:UserRegistrationDaoImpl Method :getLocationOfRegisteredUser Message:"+e.getMessage());
+		}
+		logger.info("Exit from UserRegistrationDaoImpl:: getLocationOfRegisteredUser");
+		return location;
+	}
+
+	
 
 
 }

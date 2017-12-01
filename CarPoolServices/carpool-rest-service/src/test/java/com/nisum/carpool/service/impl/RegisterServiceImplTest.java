@@ -44,7 +44,7 @@ public class RegisterServiceImplTest {
 
 		expected = new ArrayList<>();
 		RegisterDTO registerDto = new RegisterDTO();
-		registerDto.setUserId("user1");
+		registerDto.setEmailId("user1");
 		registerDto.setEmailNotification(true);
 		registerDto.setCreatedDate(mockDate);
 		registerDto.setIsRider(1);
@@ -72,7 +72,7 @@ public class RegisterServiceImplTest {
 
 		List<RegisterDomain> registerList = new ArrayList<>();
 		RegisterDomain registerDomain = new RegisterDomain();
-		registerDomain.setUserid("user1");
+		registerDomain.setEmailid("user1");
 		registerDomain.setEmailnotification(true);
 		registerDomain.setCreateddate(mockDate.toLocalDateTime());
 		registerDomain.setIsrider(1);
@@ -90,12 +90,11 @@ public class RegisterServiceImplTest {
 
 		registerList.add(registerDomain);
 
-		RegisterDTO dto = new RegisterDTO();
-		dto.setUserId("user1");
+		
 
 		when(registerDAO.findUserRegistrationByUserId("user1")).thenReturn(registerList);
 
-		List<RegisterDTO> actual = registerServiceImpl.getUserRegistrationProfile(dto);
+		List<RegisterDTO> actual = registerServiceImpl.getUserRegistrationProfile("user1");
 
 		assertThat(actual.size()).isEqualTo(expected.size());
 	}

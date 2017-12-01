@@ -39,7 +39,7 @@ public class CarpooldetailsServiceImplTest {
 		Timestamp modifiedDate = carpooldetailsServiceImpl.modifiedDate;
 		carpooldetailsDto.setId(1);
 		carpooldetailsDto.setParentid(1);
-		carpooldetailsDto.setUserid("mbheemanapalli@nisum.com");
+		carpooldetailsDto.setEmailId("mbheemanapalli@nisum.com");
 		carpooldetailsDto.setVehicleType(2);
 		carpooldetailsDto.setTotalNoOfSeats(1);
 		carpooldetailsDto.setFromDate("2017-11-23");
@@ -64,6 +64,7 @@ public class CarpooldetailsServiceImplTest {
 		ServiceStatusDto actualStatus = carpooldetailsServiceImpl.updateCarpooldetails(carpooldetailsDto);
 		assertEquals(serviceStatusDto.getMessage(), actualStatus.getMessage());
 	}
+<<<<<<< HEAD
 	
 	@Test
 	public void cancelCarpoolTest() {
@@ -85,4 +86,6 @@ public class CarpooldetailsServiceImplTest {
 	
 
 
+=======
+>>>>>>> 0f5b0d3618486105bab46109ae62b70c6e89e807
 }

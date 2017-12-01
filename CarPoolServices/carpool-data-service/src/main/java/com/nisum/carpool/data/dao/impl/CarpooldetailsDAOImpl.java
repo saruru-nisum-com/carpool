@@ -86,14 +86,20 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 		
 		logger.info("CarpooldetailsDAOImpl: createCarpooldetails");	
 		
+		try {
+			
 			for(Carpooldetails cp:carpooldetails) {
 				carpooldetailsRepository.save(cp);
 				
 			}
 			
-			logger.info("CarpooldetailsDAOImpl: createCarpooldetails");
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+			
 		
-			return carpooldetails;
+			return carpooldetailsRepository.getCarPoolsByEmail(carpooldetails.get(0).getEmailId());
 		
 	}
 	
@@ -103,7 +109,7 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 		logger.info("CarpooldetailsDAOImpl: checkValidCarpool");
 		
 		
-		String userid = carpooldetails.getUserid();
+		String userid = carpooldetails.getEmailId();
 		String fromdate = carpooldetails.getFromDate();
 		String todate = carpooldetails.getToDate();
 		
@@ -133,5 +139,27 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 	return	carpooldetailsRepository.getCarPoolsByEmail(email);
 	}
 
+	
+	/**
+	 * @author Harish Kumar Gudivada
+	 * 
+	 * This method is used to load the carpool ride details based on carpool id from Repository
+	 * 
+	 * Param carpoolId
+	 *Return carpoolDets
+	 */
+	@Override
+	public Carpooldetails loadCarpoolDetailsById(int carpoolId) throws Exception{
+		Carpooldetails carpoolDets=null;
+		logger.info("Entered into CarpooldetailsDAOImpl :: loadCarpoolDetailsById");
+		try {
+			carpoolDets=carpooldetailsRepository.findCarpoolDetailsById(carpoolId);
+		}catch (Exception e) {
+			logger.error("Exception Occured in Class:CarpooldetailsDAOImpl Method:loadCarpoolDetailsById Message:"+e.getMessage());
+			throw e;
+		}
+		logger.info("Exit from CarpooldetailsDAOImpl :: loadCarpoolDetailsById");
+		return carpoolDets;
+	}
 
 }

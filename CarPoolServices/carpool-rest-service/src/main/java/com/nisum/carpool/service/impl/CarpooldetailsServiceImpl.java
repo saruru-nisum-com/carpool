@@ -87,27 +87,32 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
         
         carpooldetailsDto.setCreateddate(new Timestamp(System.currentTimeMillis()));
         carpooldetailsDto.setModifieddate(new Timestamp(System.currentTimeMillis()));
+
+        // code added by Harish Kumar Gudivada on 30th November 2017
+        //for loading the location from user registration and saving in the carpool details
+        String location = registerDAO.getLocationOfRegisteredUser(carpooldetailsDto.getEmailId());
+        carpooldetailsDto.setLocation(location);
+        //end
         
        Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
         
        String validstatus = checkValidCarpool(carpooldetails);
         logger.info("validstatus " + validstatus);
-        
        if(validstatus.equals(Constants.CARPOOLEXISTS)) {
             
-           
            logger.info("PostRideServiceImpl: posting a ride failed ");
             return null;
-
-           
        }
         
        logger.info("valid code");
         List<Carpooldetails> carPoolList = processPostRideDomain(carpooldetails);
-        
        List<Carpooldetails> cpd = carpooldetailsDAO.addCarpoolDetails(carPoolList);
         
 
+       if(cpd == null) return null; 
+       
+       else 
+        
        return CarpooldetailsServiceUtil.convertDaoTODto(cpd);
       
     }
@@ -185,10 +190,15 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	    	cp.setCreateddate(carpooldetails.getCreateddate());
 	    	cp.setModifieddate(carpooldetails.getModifieddate());
 	    	cp.setNoofseats(carpooldetails.getNoofseats());
+<<<<<<< HEAD
 	    cp.setStatus(Pool_Status.OPEN);
 	    	cp.setUserid(carpooldetails.getUserid());
+=======
+	    cp.setStatus(1);
+	    	cp.setEmailId(carpooldetails.getEmailId());
+>>>>>>> 0f5b0d3618486105bab46109ae62b70c6e89e807
 	    	cp.setVehicleType(carpooldetails.getVehicleType());
-	    	
+	    	cp.setLocation(carpooldetails.getLocation());
 	    	carPoolList.add(cp);
 	}
 	    
@@ -278,7 +288,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		{
 	
 			
-			useridsSet.add(car.getUserid());
+			useridsSet.add(car.getEmailId());
 		}
 			
 			for(String userid:useridsSet)
@@ -318,8 +328,28 @@ if(registerDomain!=null && registerDomain.size()>0) {
 	
 		return customerCarpooldetailsDtoList;
 	}
+
 	
-	
+	/**
+	 * @author Harish Kumar Gudivada
+	 * 
+	 * Param carpoolId
+	 * Return CarpooldetailsDto
+	 * This method is to get the carpool ride details from CarpoolDetailsDAO based on carpool id and convert the Carpooldetails class CarpooldetailsDto
+	 */
+	@Override
+	public CarpooldetailsDto loadCarpoolDetailsById(int carpoolId) {
+		logger.error("Entered into CarpooldetailsServiceImpl :: loadCarpoolDetailsById"); 
+		CarpooldetailsDto carpoolDetsDto=null;
+		try {
+			Carpooldetails carpooldets= carpooldetailsDAO.loadCarpoolDetailsById(carpoolId);
+			carpoolDetsDto= CarpooldetailsServiceUtil.convertDaoToDtoInstance(carpooldets);
+		}catch (Exception e) {
+			logger.error("Exception Occured in Class:CarpooldetailsServiceImpl Method:loadCarpoolDetailsById Message:"+e.getMessage());
+		}
+		logger.error("Exit from CarpooldetailsServiceImpl :: loadCarpoolDetailsById");
+		return carpoolDetsDto;
+	}
 	
 	
 }

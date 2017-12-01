@@ -13,7 +13,7 @@ public class RegisterDTO implements Serializable {
 	
 	
 	private Integer registrationId; 
-	private String userId;
+	private String emailId;
 	private List<Integer> vehicleType;
 	private String location;
 	private String   latitude;
@@ -24,6 +24,7 @@ public class RegisterDTO implements Serializable {
 	private Integer   isRider;
 	private Timestamp   createdDate;
 	private Timestamp  modifiedDate;
+	private int gender;
 	/**
 	 * @return the registrationId
 	 */
@@ -39,14 +40,14 @@ public class RegisterDTO implements Serializable {
 	/**
 	 * @return the userId
 	 */
-	public String getUserId() {
-		return userId;
+	public String getEmailId() {
+		return emailId;
 	}
 	/**
 	 * @param userId the userId to set
 	 */
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
 	}
 	/**
 	 * @return the vehicleType
@@ -168,7 +169,12 @@ public class RegisterDTO implements Serializable {
 	public void setModifiedDate(Timestamp modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
-	
+	public int getGender() {
+		return gender;
+	}
+	public void setGender(int gender) {
+		this.gender = gender;
+	}
 	
 
 }

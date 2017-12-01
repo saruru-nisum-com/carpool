@@ -19,6 +19,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.nisum.carpool.data.dao.api.CarpooldetailsDAO;
+import com.nisum.carpool.data.dao.api.RegisterDAO;
 import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.util.Constants;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
@@ -34,6 +35,9 @@ public class CreateCarpoolTest {
 	
 	@Mock
 	CarpooldetailsDAO carpooldetailsdao;
+	
+	@Mock
+	RegisterDAO registerDAO;
 	
 	@InjectMocks
 	CarpooldetailsServiceImpl carpooldetailsserviceimpl;
@@ -67,8 +71,9 @@ public class CreateCarpoolTest {
 		dto.setStatus(1);
 		dto.setStartTime("1600");
 		dto.setToTime("2000");
-		dto.setUserid("mdak@gmail.com");
+		dto.setEmailId("mdak@gmail.com");
 		dto.setVehicleType(4);
+		dto.setLocation("hyderabad");
 		
 		cpd.setId(12345);
 		cpd.setParentid(12345);
@@ -80,8 +85,10 @@ public class CreateCarpoolTest {
 		cpd.setStatus(1);
 		cpd.setFromtime("1600");
 		cpd.setToTime("2000");
-		cpd.setUserid("mdak@gmail.com");
+		cpd.setEmailId("mdak@gmail.com");
 		cpd.setVehicleType(4);
+		cpd.setLocation("hyderabad");
+		
 		
 		PowerMockito.when(CarpooldetailsServiceUtil.convertDtoTODao(dto)).thenReturn(cpd);
 		
@@ -102,8 +109,9 @@ public class CreateCarpoolTest {
 		c1.setStatus(1);
 		c1.setFromtime("1600");
 		c1.setToTime("2000");
-		c1.setUserid("mdak@gmail.com");
+		c1.setEmailId("mdak@gmail.com");
 		c1.setVehicleType(4);
+		c1.setLocation("hyderabad");
 		
 		
 		Carpooldetails c2 = new Carpooldetails();
@@ -118,8 +126,9 @@ public class CreateCarpoolTest {
 		c2.setStatus(1);
 		c2.setFromtime("1600");
 		c2.setToTime("2000");
-		c2.setUserid("mdak@gmail.com");
+		c2.setEmailId("mdak@gmail.com");
 		c2.setVehicleType(4);
+		c2.setLocation("hyderabad");
 		
 		Carpooldetails c3 = new Carpooldetails();
 		
@@ -133,8 +142,9 @@ public class CreateCarpoolTest {
 		c3.setStatus(1);
 		c3.setFromtime("1600");
 		c3.setToTime("2000");
-		c3.setUserid("mdak@gmail.com");
+		c3.setEmailId("mdak@gmail.com");
 		c3.setVehicleType(4);
+		c3.setLocation("hyderabad");
 		
 		Carpooldetails c4 = new Carpooldetails();
 		
@@ -148,8 +158,9 @@ public class CreateCarpoolTest {
 		c4.setStatus(1);
 		c4.setFromtime("1600");
 		c4.setToTime("2000");
-		c4.setUserid("mdak@gmail.com");
+		c4.setEmailId("mdak@gmail.com");
 		c4.setVehicleType(4);
+		c4.setLocation("hyderabad");
 		
 		Carpooldetails c5 = new Carpooldetails();
 		
@@ -163,8 +174,9 @@ public class CreateCarpoolTest {
 		c5.setStatus(1);
 		c5.setFromtime("1600");
 		c5.setToTime("2000");
-		c5.setUserid("mdak@gmail.com");
+		c5.setEmailId("mdak@gmail.com");
 		c5.setVehicleType(4);
+		c5.setLocation("hyderabad");
 		
 		cplist.add(c1);
 		cplist.add(c2);
@@ -172,7 +184,11 @@ public class CreateCarpoolTest {
 		cplist.add(c4);
 		cplist.add(c5);
 		
+		String location ="hyderabad";
 		
+		when(registerDAO.getLocationOfRegisteredUser("mdak@gmail.com")).thenReturn("hyderabad");
+	
+		assertEquals(location,registerDAO.getLocationOfRegisteredUser("mdak@gmail.com"));
 		
 		PowerMockito.mockStatic(CarpooldetailsServiceImpl.class);
 		
@@ -194,8 +210,9 @@ public class CreateCarpoolTest {
 		c11.setStatus(1);
 		c11.setStartTime("1600");
 		c11.setToTime("2000");
-		c11.setUserid("mdak@gmail.com");
+		c11.setEmailId("mdak@gmail.com");
 		c11.setVehicleType(4);
+		c11.setLocation("hyderabad");
 		
 		CarpooldetailsDto c22 = new CarpooldetailsDto();
 		
@@ -205,12 +222,13 @@ public class CreateCarpoolTest {
 		c22.setToDate("05/11/2017");
 		c22.setCreateddate(t1);
 		c22.setModifieddate(t1);
-		c11.setTotalNoOfSeats(4);
+		c22.setTotalNoOfSeats(4);
 		c22.setStatus(1);
 		c22.setStartTime("1600");
 		c22.setToTime("2000");
-		c22.setUserid("mdak@gmail.com");
+		c22.setEmailId("mdak@gmail.com");
 		c22.setVehicleType(4);
+		c22.setLocation("hyderabad");
 		
 		CarpooldetailsDto c33 = new CarpooldetailsDto();
 		
@@ -220,12 +238,13 @@ public class CreateCarpoolTest {
 		c33.setToDate("05/12/2017");
 		c33.setCreateddate(t1);
 		c33.setModifieddate(t1);
-		c11.setTotalNoOfSeats(4);
+		c33.setTotalNoOfSeats(4);
 		c33.setStatus(1);
 		c33.setStartTime("1600");
 		c33.setToTime("2000");
-		c33.setUserid("mdak@gmail.com");
+		c33.setEmailId("mdak@gmail.com");
 		c33.setVehicleType(4);
+		c33.setLocation("hyderabad");
 		
 		CarpooldetailsDto c44 = new CarpooldetailsDto();
 		
@@ -235,12 +254,13 @@ public class CreateCarpoolTest {
 		c44.setToDate("05/13/2017");
 		c44.setCreateddate(t1);
 		c44.setModifieddate(t1);
-		c11.setTotalNoOfSeats(4);
+		c44.setTotalNoOfSeats(4);
 		c44.setStatus(1);
 		c44.setStartTime("1600");
 		c44.setToTime("2000");
-		c44.setUserid("mdak@gmail.com");
+		c44.setEmailId("mdak@gmail.com");
 		c44.setVehicleType(4);
+		c44.setLocation("hyderabad");
 		
 		CarpooldetailsDto c55 = new CarpooldetailsDto();
 		
@@ -250,12 +270,13 @@ public class CreateCarpoolTest {
 		c55.setToDate("05/14/2017");
 		c55.setCreateddate(t1);
 		c55.setModifieddate(t1);
-		c11.setTotalNoOfSeats(4);
+		c55.setTotalNoOfSeats(4);
 		c55.setStatus(1);
 		c55.setStartTime("1600");
 		c55.setToTime("2000");
-		c55.setUserid("mdak@gmail.com");
+		c55.setEmailId("mdak@gmail.com");
 		c55.setVehicleType(4);
+		c55.setLocation("hyderabad");
 		
 		cpdtolist.add(c11);
 		cpdtolist.add(c22);
@@ -310,7 +331,7 @@ public class CreateCarpoolTest {
 		c1.setStatus(1);
 		c1.setFromtime("1600");
 		c1.setToTime("2000");
-		c1.setUserid("mdak@gmail.com");
+		c1.setEmailId("mdak@gmail.com");
 		c1.setVehicleType(4);
 		
 		
@@ -326,7 +347,7 @@ public class CreateCarpoolTest {
 		c2.setStatus(1);
 		c2.setFromtime("1600");
 		c2.setToTime("2000");
-		c2.setUserid("mdak@gmail.com");
+		c2.setEmailId("mdak@gmail.com");
 		c2.setVehicleType(4);
 		
 		Carpooldetails c3 = new Carpooldetails();
@@ -341,7 +362,7 @@ public class CreateCarpoolTest {
 		c3.setStatus(1);
 		c3.setFromtime("1600");
 		c3.setToTime("2000");
-		c3.setUserid("mdak@gmail.com");
+		c3.setEmailId("mdak@gmail.com");
 		c3.setVehicleType(4);
 		
 		Carpooldetails c4 = new Carpooldetails();
@@ -356,7 +377,7 @@ public class CreateCarpoolTest {
 		c4.setStatus(1);
 		c4.setFromtime("1600");
 		c4.setToTime("2000");
-		c4.setUserid("mdak@gmail.com");
+		c4.setEmailId("mdak@gmail.com");
 		c4.setVehicleType(4);
 		
 		Carpooldetails c5 = new Carpooldetails();
@@ -371,7 +392,7 @@ public class CreateCarpoolTest {
 		c5.setStatus(1);
 		c5.setFromtime("1600");
 		c5.setToTime("2000");
-		c5.setUserid("mdak@gmail.com");
+		c5.setEmailId("mdak@gmail.com");
 		c5.setVehicleType(4);
 		
 		cplist.add(c1);
@@ -392,7 +413,7 @@ public class CreateCarpoolTest {
 		cpd.setStatus(1);
 		cpd.setFromtime("1600");
 		cpd.setToTime("2000");
-		cpd.setUserid("mdak@gmail.com");
+		cpd.setEmailId("mdak@gmail.com");
 		cpd.setVehicleType(4);
 		
 		assertEquals(cplist,CarpooldetailsServiceImpl.processPostRideDomain(cpd));
@@ -417,7 +438,7 @@ public class CreateCarpoolTest {
 		c1.setStatus(1);
 		c1.setFromtime("1600");
 		c1.setToTime("2000");
-		c1.setUserid("mdak@gmail.com");
+		c1.setEmailId("mdak@gmail.com");
 		c1.setVehicleType(4);
 		
 		when(carpooldetailsdao.checkValidCarpool(c1)).thenReturn(Constants.VALID);
@@ -443,7 +464,7 @@ public class CreateCarpoolTest {
 		c1.setStatus(1);
 		c1.setFromtime("1600");
 		c1.setToTime("2000");
-		c1.setUserid("mdak@gmail.com");
+		c1.setEmailId("mdak@gmail.com");
 		c1.setVehicleType(4);
 		
 		when(carpooldetailsdao.checkValidCarpool(c1)).thenReturn(Constants.CARPOOLEXISTS);

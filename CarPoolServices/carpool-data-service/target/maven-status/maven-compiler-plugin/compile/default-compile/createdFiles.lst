@@ -1,9 +1,6 @@
 com/nisum/carpool/data/dao/impl/CarpooldetailsDAOImpl.class
-com/nisum/carpool/data/dao/api/VehicleTypesDAO.class
 com/nisum/carpool/data/domain/RegisterDomain.class
-com/nisum/carpool/data/dao/impl/VehicleTypesDAOImpl.class
 com/nisum/carpool/data/repository/UserRoleRepository.class
-com/nisum/carpool/data/domain/VehicleTypes.class
 com/nisum/carpool/data/util/Pool_Status.class
 com/nisum/carpool/data/util/Constants.class
 com/nisum/carpool/data/repository/CarpoolRiderDetailsRepository.class
@@ -17,7 +14,6 @@ com/nisum/carpool/data/domain/Carpooldetails.class
 com/nisum/carpool/data/domain/User.class
 com/nisum/carpool/data/util/Ride_Status.class
 com/nisum/carpool/data/repository/UserRepository.class
-com/nisum/carpool/data/repository/VehicleTypesRepository.class
 com/nisum/carpool/data/dao/impl/CarpoolRiderDetailsDAOImpl.class
 com/nisum/carpool/data/dao/impl/UserRoleDAOImpl.class
 com/nisum/carpool/data/domain/UserRole.class

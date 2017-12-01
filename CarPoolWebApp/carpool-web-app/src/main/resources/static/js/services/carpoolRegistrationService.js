@@ -3,15 +3,13 @@ app.factory('carpoolRegistrationService', function($http, $q, localStorageServic
 
 	var ls = {};
 	ls.rideAddToGridFn = function(data) {
-		alert(JSON.stringify(data))
 		var deferred = $q.defer();
 		
-		$http.get("https://www.w3schools.com/angular/customers.php")
-    .success(function (response) {
-    	deferred.resolve(response);
-    	}).error(function(response) {
+		$http.post('v1/carpool/create', data).success(function(response) {
+			deferred.resolve(response);
+		}).error(function(response) {
 			deferred.reject(response);
-    		})
+		})
 		return deferred.promise;
 	}
 	

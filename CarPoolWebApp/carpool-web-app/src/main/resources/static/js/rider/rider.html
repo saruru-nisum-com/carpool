@@ -1,10 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<!-- rider registration tab code starts -->
+		<div id='passengerDiv'>
+		<div id = "leftHandMenu">
+			<div ng-include="'js/partials/leftSideMenu.html'"></div>
+		</div>
+			<form action="riderForm" class="riderClass" style="margin-left: 213px;margin-top: -280px;padding-bottom: 300px;">
+				<table>
+					<tr>
+						<td>Location</td>
+						<td><input type="text" gm-places-autocomplete
+							ng-model="autocomplete" placeholder="Enter location here"></td>
+					</tr>
 
-</body>
-</html>
+					<tr>
+						<td>NearBy(pickup)</td>
+						<td><input type="text" ng-model="location"></td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td><input type="checkbox">Notify me via email</td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td>
+							<button class="registerAsDriverBtn" ng-click="registerAsRider()">Register</button>
+							<button class="updateAsDriverBtn" ng-click="updateAsRider()">Update</button>
+						</td>
+					</tr>
+
+				</table>
+			</form>
+		</div>
+		<!-- rider registration tab code ends -->

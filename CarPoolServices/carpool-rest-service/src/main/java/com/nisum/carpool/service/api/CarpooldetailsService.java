@@ -8,12 +8,14 @@ import com.nisum.carpool.service.dto.ServiceStatusDto;
 
 public interface CarpooldetailsService {
 	ServiceStatusDto updateCarpooldetails(CarpooldetailsDto carpooldetailsDto);
-	
+
 	List<CarpooldetailsDto> createCarPooldetails(CarpooldetailsDto carpooldetailsDto);
-	
-	 List<CustomerCarpooldetailsDto> getCarPoolDetails(String location);
-	 
-	 
-	 ServiceStatusDto cancelCarpooldetails(CarpooldetailsDto carpooldetailsDto);
-	 
+
+	List<CustomerCarpooldetailsDto> getCarPoolDetails(String location);
+
+	ServiceStatusDto cancelCarpooldetails(CarpooldetailsDto carpooldetailsDto);
+
+	CarpooldetailsDto loadCarpoolDetailsById(int carpoolId);
+
+
 }
