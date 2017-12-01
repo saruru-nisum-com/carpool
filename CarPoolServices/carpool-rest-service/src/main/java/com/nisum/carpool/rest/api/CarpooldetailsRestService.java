@@ -18,164 +18,187 @@ import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.api.CarpooldetailsService;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
+import com.nisum.carpool.service.dto.DriverCarPoolDto;
 import com.nisum.carpool.service.dto.Errors;
+import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
+import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
 import com.nisum.carpool.util.Constants;
 
+
+
 @RestController
-@RequestMapping(value = "/v1/carpool")
+@RequestMapping(value="/v1/carpool")
 public class CarpooldetailsRestService {
+	
 
 	private static Logger logger = LoggerFactory.getLogger(CarpooldetailsRestService.class);
 	@Autowired
 	CarpooldetailsService carpooldetailsService;
-
+	
 	@Autowired
 	CarpoolRiderDetailsService carpoolRiderService;
-
-	@RequestMapping(value = "/update", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateCarpooldetails(@RequestBody CarpooldetailsDto carpooldetailsDto) {
+	
+	@RequestMapping(value="/update",method=RequestMethod.PUT)
+	public ResponseEntity<?> updateCarpooldetails(@RequestBody CarpooldetailsDto carpooldetailsDto){
 		logger.info("CarpooldetailsRestService :: updateCarpooldetails");
 		ResponseEntity<?> responseEntity = null;
 		try {
 			ServiceStatusDto statusDto = carpooldetailsService.updateCarpooldetails(carpooldetailsDto);
-			if (statusDto.isStatus()) {
+			if(statusDto.isStatus()) {
 				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
-			}
-		} catch (Exception e) {
+		}
+		}catch (Exception e) {
 			Errors error = new Errors();
 			error.setErrorCode("BAD REQUEST");
 			error.setErrorMessage(Constants.MSG_UPDATE_CARPOOL_FAILED);
-			responseEntity = new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
+			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
 		return responseEntity;
-
+		
 	}
-
-	@RequestMapping(value = "/cancel", method = RequestMethod.PUT)
-	public ResponseEntity<?> cancelCarpooldetails(@RequestBody CarpooldetailsDto carpooldetailsDto) {
+	
+	@RequestMapping(value="/cancel",method=RequestMethod.PUT)
+	public ResponseEntity<?> cancelCarpooldetails(@RequestBody CarpooldetailsDto carpooldetailsDto){
 		logger.info("CarpooldetailsRestService :: updateCarpooldetails");
 		ResponseEntity<?> responseEntity = null;
 		try {
 			ServiceStatusDto statusDto = carpooldetailsService.cancelCarpooldetails(carpooldetailsDto);
-			if (statusDto.isStatus()) {
+			if(statusDto.isStatus()) {
 				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
-			}
-		} catch (Exception e) {
+		}
+		}catch (Exception e) {
 			Errors error = new Errors();
 			error.setErrorCode("BAD REQUEST");
 			error.setErrorMessage(Constants.MSG_CANCEL_CARPOOL_FAILED);
-			responseEntity = new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
+			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
-
-		// update in Carpool rider
+		
+		//update in Carpool rider
 		try {
-			String cancelRider = carpoolRiderService.cancelCarpoolRiderDetails(carpooldetailsDto.getId());
-			logger.info("msg for Carpoll rider cancel" + cancelRider);
+			String cancelRider=	carpoolRiderService.cancelCarpoolRiderDetails(carpooldetailsDto.getId());
+			logger.info("msg for Carpoll rider cancel"+cancelRider);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
 		return responseEntity;
-
+		
 	}
-
-	@RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public ResponseEntity<?> createCarPool(@RequestBody CarpooldetailsDto carpooldetailsDto) {
-
-		logger.info("CarPoolRestService :: createCarPool :: Creating Car Pool");
-
-		List<CarpooldetailsDto> cplist = carpooldetailsService.createCarPooldetails(carpooldetailsDto);
-		try {
-
-			if (cplist == null) {
-
-				ServiceStatusDto statusDto = new ServiceStatusDto();
-				statusDto.setStatus(false);
-				statusDto.setMessage(Constants.MSG_CARPOOL_FAILED);
-				ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto,
-						HttpStatus.BAD_REQUEST);
-				return entity;
-
-			}
-
-			else {
-
-				ResponseEntity<List<CarpooldetailsDto>> entity = new ResponseEntity<List<CarpooldetailsDto>>(cplist,
-						HttpStatus.OK);
-				return entity;
-
-			}
-
-		} catch (Exception e) {
-
-			ServiceStatusDto statusDto = new ServiceStatusDto();
-			statusDto.setStatus(false);
-			statusDto.setMessage(Constants.MSG_CARPOOL_FAILED);
-			ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto,
-					HttpStatus.BAD_REQUEST);
-			return entity;
-
-		}
-
+	@RequestMapping(value="/create", method=RequestMethod.POST, consumes="application/json", produces="application/json")
+    public ResponseEntity<?>  createCarPool(@RequestBody CarpooldetailsDto carpooldetailsDto)  {
+        
+       logger.info("CarPoolRestService :: createCarPool :: Creating Car Pool");    
+       
+       List<CarpooldetailsDto> cplist = carpooldetailsService.createCarPooldetails(carpooldetailsDto);
+        try {
+            
+       
+       if(cplist == null) {
+            
+           ServiceStatusDto statusDto = new ServiceStatusDto();
+            statusDto.setStatus(false);
+            statusDto.setMessage(Constants.MSG_CARPOOL_FAILED);
+            ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.BAD_REQUEST);
+            return entity;
+            
+       }
+        
+       else {
+            
+           ResponseEntity<List<CarpooldetailsDto>> entity = new ResponseEntity<List<CarpooldetailsDto>>(cplist, HttpStatus.OK);
+            return entity;
+            
+       }
+        
+       }catch(Exception e) {
+            
+           
+           ServiceStatusDto statusDto = new ServiceStatusDto();
+            statusDto.setStatus(false);
+            statusDto.setMessage(Constants.MSG_CARPOOL_FAILED);
+            ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.BAD_REQUEST);
+            return entity;
+        
+       }
+        
 	}
-
+	
+	
 	@RequestMapping(value = "/getCarPoolDetails", method = RequestMethod.GET)
-	public ResponseEntity<?> getCarPoolDetails(@RequestParam(required = false, value = "location") String location) {
-
-		List<CustomerCarpooldetailsDto> poolList = null;
-		try {
-			poolList = carpooldetailsService.getCarPoolDetails(location);
-
-			if (poolList == null || poolList.isEmpty()) {
-				return new ResponseEntity<String>(Constants.NO_RECORDS_FOUND, HttpStatus.OK);
+	public ResponseEntity<?> getCarPoolDetails(@RequestParam(required = false, value = "location") String location)
+			{
+		
+		List<CustomerCarpooldetailsDto> poolList=null;
+		try
+		{
+			poolList=carpooldetailsService.getCarPoolDetails(location);
+			
+			if(poolList==null || poolList.isEmpty())
+			{
+				return new ResponseEntity<String>(Constants.NO_RECORDS_FOUND, HttpStatus.OK);	
 			}
 			return new ResponseEntity<List<CustomerCarpooldetailsDto>>(poolList, HttpStatus.OK);
-
-		} catch (Exception e) {
-
+			
+		}
+		catch (Exception e) {
+			
+			
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-
+		
 	}
-
+	
 	/**
 	 * @author Harish Kumar Gudivada
 	 * @param id
 	 * @return ResponseEntity
 	 */
-
-	@RequestMapping(value = "/getCarpoolRideData/{id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> getCarpoolDetailsById(@PathVariable int id) {
-		CarpooldetailsDto carpoolDto = null;
+	
+	@RequestMapping(value="/getCarpoolRideData/{id}", method = RequestMethod.GET, produces="application/json")
+	public ResponseEntity<?> getCarpoolDetailsById(@PathVariable int id){
+		CarpooldetailsDto carpoolDto=null;
 		logger.info("Entered into CarpooldetailsRestService :: getCarpoolDetailsById");
 		try {
-			carpoolDto = carpooldetailsService.loadCarpoolDetailsById(id);
-			if (carpoolDto != null && carpoolDto.getId() == 0) {
+			carpoolDto=carpooldetailsService.loadCarpoolDetailsById(id);
+			if(carpoolDto!=null && carpoolDto.getId()==0) {
 				return new ResponseEntity<String>("Data Is Not Available", HttpStatus.NO_CONTENT);
 			}
-		} catch (Exception e) {
-			logger.error("Exception Occured in Class:CarpooldetailsRestService Method:getCarpoolDetailsById Message:"
-					+ e.getMessage());
+		}catch (Exception e) {
+			logger.error("Exception Occured in Class:CarpooldetailsRestService Method:getCarpoolDetailsById Message:"+e.getMessage());
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		logger.info("Exit from CarpooldetailsRestService :: getCarpoolDetailsById");
 		return new ResponseEntity<CarpooldetailsDto>(carpoolDto, HttpStatus.OK);
 	}
+	
+	
 
-	@RequestMapping(value = "/addRewardPoints/{rewards}", method = RequestMethod.PUT)
-	public ResponseEntity<?> addRewardPointsToDriver(@PathVariable(value = "rewards") Integer rewards) {
-
+	@RequestMapping(value = "/getMySharedRides/{email:.+}", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllCarpoolsByDriver(@PathVariable("email")String email) 
+	{
+		logger.info("BEGIN: getAllCarpoolsByDriver() in the CarpooldetailsRestService");
 		try {
-			ServiceStatusDto statusDto = carpooldetailsService.updaterewardPointsWithId(rewards);
-
-			return new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
-
-		} catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	return new ResponseEntity<List<ParentCarpoolDetailsDto>>(carpooldetailsService.getCarpoolsByDriver(email),HttpStatus.OK);
+		} catch (CarpooldetailsServiceException ex) {
+			logger.error("ERROR:some thing went wrong while fetching getAllCarpoolsByDriver");
+			return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 
 	}
+	
+	@RequestMapping(value = "/getSharedRidesByParentId/{parentID}", method = RequestMethod.GET)
+	public ResponseEntity<?> getCarpoolsByParentID(@PathVariable("parentID")Integer id) 
+	{
+		logger.info("BEGIN: getAllParentCpsByDrievrID() in the CarpooldetailsRestService");
+		try {
+			return new ResponseEntity<List<DriverCarPoolDto>>(carpooldetailsService.getCarPoolsByParentId(id),HttpStatus.OK);
+		} catch (CarpooldetailsServiceException ex) {
+			logger.error("ERROR:some thing went wrong while fetching getAllCarpoolsByDriver");
+			return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 
+	}
+	
 }
