@@ -4,19 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.nisum.carpool.service.api.RegisterService;
 import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.exception.UserServiceException;
 import com.nisum.carpool.service.impl.RegisterServiceImpl;
@@ -57,12 +54,10 @@ public class RegisterRestServiceTest {
 		ResponseEntity<List<RegisterDTO>> expected = new ResponseEntity<>(regList, HttpStatus.OK);
 
 		String emailId = "user1";
-		RegisterDTO regDto = new RegisterDTO();
-		regDto.setEmailId(emailId);
+		
+		when(registerServiceImpl.getUserRegistrationProfile(emailId)).thenReturn(regList);
 
-		when(registerServiceImpl.getUserRegistrationProfile(regDto)).thenReturn(regList);
-
-		ResponseEntity<List<RegisterDTO>> actual = registerRestService.getUserProfile(emailId);
+		ResponseEntity<?> actual = registerRestService.getUserProfile(emailId);
 
 		assertEquals(expected.getStatusCode(), actual.getStatusCode());
 	}

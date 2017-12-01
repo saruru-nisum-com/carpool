@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nisum.carpool.data.util.Pool_Status;
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.api.CarpooldetailsService;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
@@ -151,20 +150,23 @@ public class CarpooldetailsRestService {
 	/**
 	 * @author Harish Kumar Gudivada
 	 * @param id
-	 * @return
+	 * @return ResponseEntity
 	 */
 	
 	@RequestMapping(value="/getCarpoolRideData/{id}", method = RequestMethod.GET, produces="application/json")
 	public ResponseEntity<?> getCarpoolDetailsById(@PathVariable int id){
 		CarpooldetailsDto carpoolDto=null;
+		logger.info("Entered into CarpooldetailsRestService :: getCarpoolDetailsById");
 		try {
 			carpoolDto=carpooldetailsService.loadCarpoolDetailsById(id);
 			if(carpoolDto!=null && carpoolDto.getId()==0) {
 				return new ResponseEntity<String>("Data Is Not Available", HttpStatus.NO_CONTENT);
 			}
 		}catch (Exception e) {
+			logger.error("Exception Occured in Class:CarpooldetailsRestService Method:getCarpoolDetailsById Message:"+e.getMessage());
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
+		logger.info("Exit from CarpooldetailsRestService :: getCarpoolDetailsById");
 		return new ResponseEntity<CarpooldetailsDto>(carpoolDto, HttpStatus.OK);
 	}
 	

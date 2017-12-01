@@ -54,7 +54,7 @@ public class RegisterDAOImplTest {
 
 		registerListExpected.add(registerDomain);
 
-		when(registerRepository.findByUserId("user1")).thenReturn(registerListExpected);
+		when(registerRepository.findByEmailId("user1")).thenReturn(registerListExpected);
 
 		List<RegisterDomain> actual = registerDAOImpl.findUserRegistrationByUserId("user1");
 

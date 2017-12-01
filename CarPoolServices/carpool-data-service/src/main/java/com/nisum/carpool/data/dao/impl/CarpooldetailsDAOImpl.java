@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.cassandra.repository.MapId;
 
 import com.nisum.carpool.data.dao.api.CarpooldetailsDAO;
 import com.nisum.carpool.data.domain.Carpooldetails;
@@ -143,16 +142,21 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 	 * @author Harish Kumar Gudivada
 	 * 
 	 * This method is used to load the carpool ride details based on carpool id from Repository
+	 * 
+	 * Param carpoolId
+	 *Return carpoolDets
 	 */
 	@Override
 	public Carpooldetails loadCarpoolDetailsById(int carpoolId) throws Exception{
 		Carpooldetails carpoolDets=null;
+		logger.info("Entered into CarpooldetailsDAOImpl :: loadCarpoolDetailsById");
 		try {
 			carpoolDets=carpooldetailsRepository.findCarpoolDetailsById(carpoolId);
 		}catch (Exception e) {
 			logger.error("Exception Occured in Class:CarpooldetailsDAOImpl Method:loadCarpoolDetailsById Message:"+e.getMessage());
 			throw e;
 		}
+		logger.info("Exit from CarpooldetailsDAOImpl :: loadCarpoolDetailsById");
 		return carpoolDets;
 	}
 

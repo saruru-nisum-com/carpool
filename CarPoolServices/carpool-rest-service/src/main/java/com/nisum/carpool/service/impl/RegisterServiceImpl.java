@@ -28,7 +28,6 @@ import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.util.Constants;
 import com.nisum.carpool.util.RegisterServiceUtil;
-import com.nisum.carpool.util.UserServiceUtil;
 @Service
 public class RegisterServiceImpl  implements RegisterService{
 
@@ -38,7 +37,7 @@ public class RegisterServiceImpl  implements RegisterService{
 	public ServiceStatusDto registerDriverorRider(RegisterDTO registerDTO) {
 		logger.info("RegisterServiceImpl: registerDriver:::");
 		
-		RegisterDomain registerDomain = RegisterServiceUtil.convertDaoObjectToDto(registerDTO);
+		RegisterDomain registerDomain = RegisterServiceUtil.convertRegisterDtoObjectToRegisterDomain(registerDTO);
 		RegisterDomain rDomain =  registerDAO.registerDriverorRider(registerDomain);
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
 		if(ObjectUtils.anyNotNull(rDomain)) {
@@ -53,17 +52,29 @@ public class RegisterServiceImpl  implements RegisterService{
 	/**
 	 * @author Harish Kumar Gudivada
 	 * 
-	 * This method is used to load the user details based on user id there may be multiple records because the user may be a rider and a driver
+	 * This method is used to load the user details based on Emailid there may be multiple records because the user may be a rider and a driver
+	 * 
+	 * Param emailId
+	 * Return listRegisterDtos 
 	 */
 	@Override
-	public List<RegisterDTO> getUserRegistrationProfile(RegisterDTO dto) {
-		List<RegisterDomain> list=registerDAO.findUserRegistrationByUserId(dto.getEmailId());
-		List<RegisterDTO> listDto=new ArrayList<>();
-		for(RegisterDomain reg:list) {
-			RegisterDTO userRegDto = RegisterServiceUtil.convertDaoObjectToDto(reg);
-			listDto.add(userRegDto);
+	public List<RegisterDTO> getUserRegistrationProfile(String emailId) {
+		List<RegisterDTO> listRegisterDtos=new ArrayList<>();
+		logger.info("Entered into RegisterServiceImpl :: getUserRegistrationProfile");
+		try {
+			List<RegisterDomain> list=registerDAO.findUserRegistrationByUserId(emailId);
+			if(list!=null) {
+				RegisterDTO userRegDto=null;
+				for(RegisterDomain reg:list) {
+					userRegDto = RegisterServiceUtil.convertRegisterDomainObjectToRegisterDto(reg);
+					listRegisterDtos.add(userRegDto);
+				}
+			}
+		}catch (Exception e) {
+			logger.error("Exception Occured in Class:RegisterServiceImpl Method:getUserRegistrationProfile Message:"+e.getMessage());
 		}
-		return listDto;
+		logger.info("Exit from RegisterServiceImpl :: getUserRegistrationProfile");
+		return listRegisterDtos;
 	}
 
 		

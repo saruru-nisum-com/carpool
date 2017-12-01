@@ -326,17 +326,21 @@ if(registerDomain!=null && registerDomain.size()>0) {
 	/**
 	 * @author Harish Kumar Gudivada
 	 * 
-	 * This method is to get the carpool ride details from dao based on carpool id and convert the dao class dto
+	 * Param carpoolId
+	 * Return CarpooldetailsDto
+	 * This method is to get the carpool ride details from CarpoolDetailsDAO based on carpool id and convert the Carpooldetails class CarpooldetailsDto
 	 */
 	@Override
 	public CarpooldetailsDto loadCarpoolDetailsById(int carpoolId) {
+		logger.error("Entered into CarpooldetailsServiceImpl :: loadCarpoolDetailsById"); 
 		CarpooldetailsDto carpoolDetsDto=null;
 		try {
-		Carpooldetails carpooldets= carpooldetailsDAO.loadCarpoolDetailsById(carpoolId);
-		carpoolDetsDto= CarpooldetailsServiceUtil.convertDaoToDtoInstance(carpooldets);
+			Carpooldetails carpooldets= carpooldetailsDAO.loadCarpoolDetailsById(carpoolId);
+			carpoolDetsDto= CarpooldetailsServiceUtil.convertDaoToDtoInstance(carpooldets);
 		}catch (Exception e) {
 			logger.error("Exception Occured in Class:CarpooldetailsServiceImpl Method:loadCarpoolDetailsById Message:"+e.getMessage());
 		}
+		logger.error("Exit from CarpooldetailsServiceImpl :: loadCarpoolDetailsById");
 		return carpoolDetsDto;
 	}
 	

@@ -90,12 +90,11 @@ public class RegisterServiceImplTest {
 
 		registerList.add(registerDomain);
 
-		RegisterDTO dto = new RegisterDTO();
-		dto.setEmailId("user1");
+		
 
 		when(registerDAO.findUserRegistrationByUserId("user1")).thenReturn(registerList);
 
-		List<RegisterDTO> actual = registerServiceImpl.getUserRegistrationProfile(dto);
+		List<RegisterDTO> actual = registerServiceImpl.getUserRegistrationProfile("user1");
 
 		assertThat(actual.size()).isEqualTo(expected.size());
 	}

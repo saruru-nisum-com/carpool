@@ -1,7 +1,6 @@
 package com.nisum.carpool.rest.api;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -21,7 +20,6 @@ import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.service.exception.RegisterServiceException;
 import com.nisum.carpool.service.exception.UserServiceException;
-import com.nisum.carpool.util.CommonsUtil;
 
 @RestController
 @RequestMapping(value = "/v1/carpool/")
@@ -105,16 +103,34 @@ public class RegisterRestService {
 		return responseEntity;
 	}
 	
-	
+	/**
+	 * @author Harish Kumar Gudivada
+	 * @param emailId
+	 * @return ResponseEntity
+	 * @throws UserServiceException
+	 */
 
 	@RequestMapping(value = "/getProfile/{emailId:.+}", method = RequestMethod.GET,  produces = "application/json")
-	public ResponseEntity<List<RegisterDTO>> getUserProfile(@PathVariable String emailId)
-			throws UserServiceException {
+	public ResponseEntity<?> getUserProfile(@PathVariable String emailId) throws UserServiceException {
 		logger.info("UserProfileRestService :: users profile::: get");
-		RegisterDTO regDto=new RegisterDTO();
-		regDto.setEmailId(emailId);
-		List<RegisterDTO> list = registerService.getUserRegistrationProfile(regDto);
+		List<RegisterDTO> list =null;
+		try {
+			list = registerService.getUserRegistrationProfile(emailId);
+			if(list==null) {
+				Errors error = new Errors();
+				error.setErrorCode(HttpStatus.NO_CONTENT+"");
+				error.setErrorMessage("Rider and Driver Details is not available for the given emailid");
+				return new ResponseEntity<Errors>(error, HttpStatus.NO_CONTENT);
+			}
+		}catch (Exception e) {
+			logger.error("Exception Occured in Class:UserProfileRestService Method:getUserProfile Message:"+e.getMessage());
+			Errors error = new Errors();
+			error.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR+"");
+			error.setErrorMessage("Something went wrong while Loading Registerd Driver Rider Details");
+			return new ResponseEntity<Errors>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 
+		}
+		logger.info("Exit from UserProfileRestService :: getUserProfile ");
 		return new ResponseEntity<List<RegisterDTO>>(list, HttpStatus.OK);
 	}
 
