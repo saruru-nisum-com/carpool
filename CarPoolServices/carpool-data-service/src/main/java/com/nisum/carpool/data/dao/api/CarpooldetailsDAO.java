@@ -24,7 +24,5 @@ public interface CarpooldetailsDAO {
 	
 	public List<Integer> getCarPoolParentIds(String email);
 
-	public List<Carpooldetails> getCarpoolDetails(String emailId);
-
 }
 
