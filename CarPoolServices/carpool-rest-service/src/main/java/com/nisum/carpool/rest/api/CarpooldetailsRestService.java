@@ -86,43 +86,20 @@ public class CarpooldetailsRestService {
 		return responseEntity;
 		
 	}
-	@RequestMapping(value="/create", method=RequestMethod.POST, consumes="application/json", produces="application/json")
-    public ResponseEntity<?>  createCarPool(@RequestBody CarpooldetailsDto carpooldetailsDto)  {
-        
-       logger.info("CarPoolRestService :: createCarPool :: Creating Car Pool");    
-       
-       List<CarpooldetailsDto> cplist = carpooldetailsService.createCarPooldetails(carpooldetailsDto);
-        try {
-            
-       
-       if(cplist == null) {
-            
-           ServiceStatusDto statusDto = new ServiceStatusDto();
-            statusDto.setStatus(false);
-            statusDto.setMessage(Constants.MSG_CARPOOL_FAILED);
-            ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.BAD_REQUEST);
-            return entity;
-            
-       }
-        
-       else {
-            
-           ResponseEntity<List<CarpooldetailsDto>> entity = new ResponseEntity<List<CarpooldetailsDto>>(cplist, HttpStatus.OK);
-            return entity;
-            
-       }
-        
-       }catch(Exception e) {
-            
-           
-           ServiceStatusDto statusDto = new ServiceStatusDto();
-            statusDto.setStatus(false);
-            statusDto.setMessage(Constants.MSG_CARPOOL_FAILED);
-            ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.BAD_REQUEST);
-            return entity;
-        
-       }
-        
+	
+	/**
+	 * @author Manohar Dhavala
+	 * 
+	 *         This method is used to for creating car pool
+	 */
+
+	@RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> createCarPool(@RequestBody CarpooldetailsDto carpooldetailsDto) {
+
+		logger.info("CarPoolRestService :: createCarPool :: Creating Car Pool");
+
+		return carpooldetailsService.createCarPooldetails(carpooldetailsDto);
+
 	}
 	
 	
