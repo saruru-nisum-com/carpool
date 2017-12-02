@@ -10,9 +10,9 @@ public interface CarpooldetailsDAO {
 
 	public String cancelCarpooldetails(Carpooldetails carpooldetails);
 
-	public List<Carpooldetails> addCarpoolDetails(List<Carpooldetails> carpooldetails);
-
-	public String checkValidCarpool(Carpooldetails carpooldetails);
+	public String addCarpoolDetails(List<Carpooldetails> carpooldetails);
+	
+	public String checkValidCarpool(String emailId, String fromDate, String toDate);
 
 	List<Carpooldetails> getAllCarPoolDetails();
 
@@ -23,4 +23,8 @@ public interface CarpooldetailsDAO {
 	List<Carpooldetails> getCarpoolsByParentId(int parentId);
 	
 	public List<Integer> getCarPoolParentIds(String email);
+
+	public List<Carpooldetails> getCarpoolDetails(String emailId);
+
 }
+
