@@ -65,4 +65,7 @@ public class Constants {
 		public static final String CARPOOLEXISTS = "Car Pool already exists";
 		public static final String MSG_UPDATE_CARPOOL_FAILED = "Updating Carpool Failed !!";
 		
+		public static final String CANCELING_RIDE_FAILED = "Canceling Car Pool failed";
+		public static final String DRIVER_IS_REGISTERED_AS_RIDER = "Driver is already registered as rider for the day";;
+		
 }
