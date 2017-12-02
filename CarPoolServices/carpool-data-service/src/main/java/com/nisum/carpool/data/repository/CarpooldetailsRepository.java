@@ -16,8 +16,11 @@ import java.lang.Integer;
 @Repository
 public interface CarpooldetailsRepository extends CassandraRepository<Carpooldetails>{
 	
-	@Query("select count(*) from cp_carpooldetails where emailid=:emailid and fromdate=:date ALLOW FILTERING")
-	public int findEntriesWithDate(@Param("emailid") String emailid, @Param("date") String date);
+	@Query("select count(*) from cp_carpooldetails where emailid=:emailid and fromdate>= :fromdate and todate<= :todate ALLOW FILTERING")
+	public int findEntriesWithDate(@Param("emailid") String emailid, @Param("fromdate") String fromdate, @Param("todate") String todate);
+
+	@Query("select count(*) from cp_carpooldetails where emailid=:emailid and fromdate>= :fromdate and todate<= :todate and status>=1 and status<4 ALLOW FILTERING")
+	public int findEntriesWithDateIfNotCancelled(@Param("emailid") String emailid,@Param("fromdate") String fromdate, @Param("todate") String todate);
 
 	@Query("select count(*) from cp_carpooldetails where parentid=?0 ALLOW FILTERING")
 	Long countByParentid(int parentid);
@@ -28,6 +31,7 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	@Query("select * from cp_carpooldetails where parentid=?0 ALLOW FILTERING")
 	List<Carpooldetails> findByParentid(Integer parentid);
 	
+	
 	@Query("select id from cp_carpooldetails where parentid=?0 allow filtering")
 	List<Integer> getListOfIdsByParentid(int parentid);
 	
@@ -37,11 +41,13 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 
 	@Query("select * from cp_carpooldetails where emailid=?0 allow filtering")
 	List<Carpooldetails> getCarPoolsByEmail(String email);
+	
 
 	@Query("update cp_carpooldetails set modifieddate=:#{#carpoolDetails.modifieddate}, status=:#{#carpoolDetails.status} where parentid=:#{#carpoolDetails.parentid}")
 	Integer cancelMultipleCarpoolDetails(@Param("carpoolDetails") Carpooldetails carpoolDetails);
+	
 	public Carpooldetails findCarpoolDetailsById(int id);
-
+	
 	@Query("select id from cp_carpooldetails where rewards=0 and status=?0 and todate<='rewardedDate' allow filtering")
 	List<Integer> getCarpooldetailsByFromDate(Integer status,String rewardedDate);
 	
@@ -52,4 +58,8 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	public List<Integer> getParentIdByEmail(@Param("email")String email);
 	@Query("select * from cp_carpooldetails where parentid=?0 allow filtering")
 	public List<Carpooldetails> getCaroolsByParentId(int poolId);
+
+	@Query("select * from cp_carpooldetails where fromdate>= :fromdate and todate<= :todate allow filtering")
+	public List<Carpooldetails> getCarPoolsByDate(@Param("fromdate") String fromdate, @Param("todate") String todate);
+
 }
