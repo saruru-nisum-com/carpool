@@ -8,39 +8,41 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.cassandra.repository.MapId;
 
 import com.nisum.carpool.data.dao.api.CarpooldetailsDAO;
-import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 import com.nisum.carpool.data.domain.Carpooldetails;
+import com.nisum.carpool.data.repository.CarpoolRiderDetailsRepository;
 import com.nisum.carpool.data.repository.CarpooldetailsRepository;
 import com.nisum.carpool.data.util.Constants;
 //import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.data.util.Pool_Status;
-
-
 
 @Configuration
 public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	private static Logger logger = LoggerFactory.getLogger(CarpooldetailsDAOImpl.class);
 	@Autowired
 	CarpooldetailsRepository carpooldetailsRepository;
+
+	@Autowired
+	CarpoolRiderDetailsRepository carpoolriderdetailsrepository;
+
 	@Override
-public String updateCarpooldetails(Carpooldetails carpooldetails) {
-		
+	public String updateCarpooldetails(Carpooldetails carpooldetails) {
+
 		logger.info("CarpooldetailsDAOImpl: updateCarpooldetails");
 		Long countByParentid = carpooldetailsRepository.countByParentid(carpooldetails.getId());
-		
-        if(countByParentid == 1) {
-        	    carpooldetailsRepository.save(carpooldetails);
+
+		if (countByParentid == 1) {
+			carpooldetailsRepository.save(carpooldetails);
 			return Constants.MSG_CARPOOL_UPDATE_SINGLE;
 		}
-         List<Integer> listOfIds = carpooldetailsRepository.getListOfIdsByParentid(carpooldetails.getId());
-         carpooldetailsRepository.udpateMultipleCarpoolDetails(carpooldetails, listOfIds);
-         return Constants.MSG_CARPOOL_UPDATE_MULTI;
-			
+		List<Integer> listOfIds = carpooldetailsRepository.getListOfIdsByParentid(carpooldetails.getId());
+		carpooldetailsRepository.udpateMultipleCarpoolDetails(carpooldetails, listOfIds);
+		return Constants.MSG_CARPOOL_UPDATE_MULTI;
+
 	}
-	
-	
+
 	@Override
 	public String cancelCarpooldetails(Carpooldetails carpooldetails) {
 		// TODO Auto-generated method stub
@@ -85,52 +87,31 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 		   return Constants.MSG_CARPOOL_CANCEL;
 	}
 	
-	
-	
-	@Override
-	public List<Carpooldetails> addCarpoolDetails(List<Carpooldetails> carpooldetails) {
-		
-		logger.info("CarpooldetailsDAOImpl: createCarpooldetails");	
-		
-		try {
-			
-			for(Carpooldetails cp:carpooldetails) {
-				carpooldetailsRepository.save(cp);
-				
-			}
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-			
-		
-			return carpooldetailsRepository.getCarPoolsByEmail(carpooldetails.get(0).getEmailId());
-		
-	}
-	
-	@Override
-	public String checkValidCarpool(Carpooldetails carpooldetails) {
-		// TODO Auto-generated method stub
-		logger.info("CarpooldetailsDAOImpl: checkValidCarpool");
-		
-		
-		String userid = carpooldetails.getEmailId();
-		String fromdate = carpooldetails.getFromDate();
-		String todate = carpooldetails.getToDate();
-		
-		int countFromdate = carpooldetailsRepository.findEntriesWithDate(userid, fromdate);
-		int countTodate = carpooldetailsRepository.findEntriesWithDate(userid, todate);
-		
-		logger.info("countFromdate " + countFromdate);
-		logger.info("countTodate " + countTodate);
-		
-		if(countFromdate !=0 || countTodate !=0) 
-			return Constants.CARPOOLEXISTS;
-			else 
-				return Constants.VALID;	
+	/**
+	 * @author Manohar Dhavala
+	 * 
+	 *         This method is used for creating carpool records in db
+	 */
 
-		
+	@Override
+	public String addCarpoolDetails(List<Carpooldetails> carpooldetails) {
+
+		logger.info("CarpooldetailsDAOImpl: createCarpooldetails");
+
+		try {
+
+			for (Carpooldetails cp : carpooldetails) {
+				carpooldetailsRepository.save(cp);
+
+			}
+
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+			return Constants.MSG_CARPOOL_FAILED;
+		}
+
+		return Constants.MSG_CARPOOL_ADD;
+
 	}
 	
 	@Override
@@ -143,7 +124,6 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 			return null;
 		}
 			
-
 }
 	
 	public List<Carpooldetails> getCarPoolByMailID(String email)
@@ -152,6 +132,77 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 	}
 
 	
+	/**
+	 * @author Manohar Dhavala
+	 * 
+	 *         This method is used to check if carpool can be created or not
+	 */
+
+	@Override
+	public String checkValidCarpool(String emailid, String fromdate, String todate) {
+		// TODO Auto-generated method stub
+		logger.info("CarpooldetailsDAOImpl: checkValidCarpool");
+
+		int count1 = 0;
+		int count2 = 0;
+		int count3 = 0;
+		boolean flag = false;
+
+		count1 = carpooldetailsRepository.findEntriesWithDate(emailid, fromdate, todate);
+
+		if (count1 != 0) {
+
+			count2 = carpooldetailsRepository.findEntriesWithDateIfNotCancelled(emailid, fromdate, todate);
+
+			if (count2 != 0)
+
+				return Constants.CARPOOLEXISTS;
+
+			else
+				return Constants.VALID;
+		}
+
+		else {
+
+			List<Carpooldetails> carpooldetails = carpooldetailsRepository.getCarPoolsByDate(fromdate, todate);
+			if (carpooldetails != null) {
+				for (Carpooldetails cpd : carpooldetails) {
+					int cpid = cpd.getId();
+
+					count3 = carpoolriderdetailsrepository.checkWhetherDriverIsRider(emailid, cpid);
+
+					if (count3 != 0)
+						flag = true;
+
+				}
+
+			}
+
+			if (flag)
+				return Constants.DRIVER_IS_REGISTERED_AS_RIDER;
+
+			else
+
+				return Constants.VALID;
+
+		}
+
+	}
+
+	@Override
+	public List<Carpooldetails> getCarpoolsByParentId(int parentId) {
+		// TODO Auto-generated method stub
+		return carpooldetailsRepository.getCaroolsByParentId(parentId);
+	}
+
+
+
+	@Override
+	public List<Integer> getCarPoolParentIds(String email) {
+		// TODO Auto-generated method stub
+		return carpooldetailsRepository.getParentIdByEmail(email);
+	}
+
 	/**
 	 * @author Harish Kumar Gudivada
 	 * 
@@ -173,25 +224,6 @@ public String updateCarpooldetails(Carpooldetails carpooldetails) {
 		logger.info("Exit from CarpooldetailsDAOImpl :: loadCarpoolDetailsById");
 		return carpoolDets;
 	}
-	
-	
-	@Override
-	public List<Carpooldetails> getCarpoolsByParentId(int parentId) {
-		// TODO Auto-generated method stub
-		return carpooldetailsRepository.getCaroolsByParentId(parentId);
-	}
-
-
-
-	@Override
-	public List<Integer> getCarPoolParentIds(String email) {
-		// TODO Auto-generated method stub
-		return carpooldetailsRepository.getParentIdByEmail(email);
-	}
-
-
-
-	
-	
 
 }
+
