@@ -1,4 +1,4 @@
-/*package com.nisum.carpool.service.impl;
+package com.nisum.carpool.service.impl;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -14,6 +14,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -26,6 +28,13 @@ import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.impl.CarpooldetailsServiceImpl;
 import com.nisum.carpool.util.CarpooldetailsServiceUtil;
 import com.nisum.carpool.util.CommonsUtil;
+
+/**
+ * @author Manohar Dhavala
+ * 
+ *         This class is used for testing all methods as part of 
+ *         Create Car Pool functionality in CarpooldetailsServiceImpl class
+ */
 
 @SpringBootTest
 @RunWith(PowerMockRunner.class)
@@ -45,11 +54,17 @@ public class CreateCarpoolTest {
 	@Before
 	public void initModelObjects() {
 		
-		
 	}
+	
+	/**
+	 * @author Manohar Dhavala
+	 * 
+	 *         This test is used for testing createCarPooldetails method 
+	 *         in CarpooldetailsServiceImpl class
+	 */
 
 	@Test
-	public void createCarPooldetailsTest() {
+	public void createCarPooldetails_CarpooldetailsServiceImpl_Test() {
 		
 		
 		Carpooldetails cpd = new Carpooldetails();
@@ -89,10 +104,9 @@ public class CreateCarpoolTest {
 		cpd.setVehicleType(4);
 		cpd.setLocation("hyderabad");
 		
-		
 		PowerMockito.when(CarpooldetailsServiceUtil.convertDtoTODao(dto)).thenReturn(cpd);
 		
-		when(carpooldetailsdao.checkValidCarpool(cpd)).thenReturn(Constants.VALID);
+		when(carpooldetailsdao.checkValidCarpool("mdak@gmail.com",cpd.getFromDate(),cpd.getToDate())).thenReturn(Constants.VALID);
 		
 		List<Carpooldetails> cplist = new ArrayList<Carpooldetails>();
 		
@@ -194,7 +208,7 @@ public class CreateCarpoolTest {
 		
 		when(CarpooldetailsServiceImpl.processPostRideDomain(cpd)).thenReturn(cplist);
 		
-		when(carpooldetailsdao.addCarpoolDetails(cplist)).thenReturn(cplist);
+		when(carpooldetailsdao.addCarpoolDetails(cplist)).thenReturn(Constants.MSG_CARPOOL_ADD);
 		
 		List<CarpooldetailsDto> cpdtolist = new ArrayList<CarpooldetailsDto>();
 	
@@ -284,17 +298,29 @@ public class CreateCarpoolTest {
 		cpdtolist.add(c44);
 		cpdtolist.add(c55);
 		
+		when(carpooldetailsdao.getCarPoolByMailID("mdak@gmail.com")).thenReturn(cplist);
 
 		PowerMockito.when(CarpooldetailsServiceUtil.convertDaoTODto(cplist)).thenReturn(cpdtolist);
 		
-		assertEquals(cpdtolist, carpooldetailsserviceimpl.createCarPooldetails(dto));
+		ResponseEntity<List<CarpooldetailsDto>> entity = new ResponseEntity<List<CarpooldetailsDto>>(cpdtolist,
+				HttpStatus.OK);
+		
+		assertEquals(entity, carpooldetailsserviceimpl.createCarPooldetails(dto));
 
 		
 	}
 	
+	/**
+	 * @author Manohar Dhavala
+	 * 
+	 *         This test is used for testing processPostRideDomain method 
+	 *         in CarpooldetailsServiceImpl class
+	 */
+
+	
 
 	@Test
-	public void processPostRideDomainTest() {
+	public void processPostRideDomain_CarpooldetailsServiceImpl_Test() {
 		
 		PowerMockito.mockStatic(CarpooldetailsServiceUtil.class);
 		
@@ -421,8 +447,16 @@ public class CreateCarpoolTest {
 		
 	}
 	
+	/**
+	 * @author Manohar Dhavala
+	 * 
+	 *         This test is used for testing success case in checkValidCarpool method 
+	 *         in CarpooldetailsServiceImpl class
+	 */
+
+	
 	@Test
-	public void testcheckValidCarpoolSuccess() {
+	public void testcheckValidCarpoolSuccess_CarpooldetailsServiceImpl_Test() {
 		
 		Timestamp t1 = new Timestamp(System.currentTimeMillis());
 		
@@ -441,14 +475,21 @@ public class CreateCarpoolTest {
 		c1.setEmailId("mdak@gmail.com");
 		c1.setVehicleType(4);
 		
-		when(carpooldetailsdao.checkValidCarpool(c1)).thenReturn(Constants.VALID);
+		when(carpooldetailsdao.checkValidCarpool("mdak@gmail.com",c1.getFromDate(),c1.getToDate())).thenReturn(Constants.VALID);
 		
 		assertEquals(Constants.VALID, carpooldetailsserviceimpl.checkValidCarpool(c1));
 		
 	}
 	
+	/**
+	 * @author Manohar Dhavala
+	 * 
+	 *         This test is used for testing invalid case in checkValidCarpool method 
+	 *         in CarpooldetailsServiceImpl class
+	 */
+	
 	@Test
-	public void testcheckValidCarpoolFail() {
+	public void testcheckValidCarpoolFail_CarpooldetailsServiceImpl_Test() {
 		
 		Timestamp t1 = new Timestamp(System.currentTimeMillis());
 		
@@ -467,7 +508,7 @@ public class CreateCarpoolTest {
 		c1.setEmailId("mdak@gmail.com");
 		c1.setVehicleType(4);
 		
-		when(carpooldetailsdao.checkValidCarpool(c1)).thenReturn(Constants.CARPOOLEXISTS);
+		when(carpooldetailsdao.checkValidCarpool("mdak@gmail.com",c1.getFromDate(),c1.getToDate())).thenReturn(Constants.CARPOOLEXISTS);
 		
 		assertEquals(Constants.CARPOOLEXISTS, carpooldetailsserviceimpl.checkValidCarpool(c1));
 		
@@ -476,4 +517,7 @@ public class CreateCarpoolTest {
 }
 
 
-*/
+
+	
+
+	
