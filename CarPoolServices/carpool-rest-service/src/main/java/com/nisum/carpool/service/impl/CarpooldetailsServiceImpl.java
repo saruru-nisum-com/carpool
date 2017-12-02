@@ -13,6 +13,8 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.nisum.carpool.data.dao.api.CarpoolRiderDetailsDAO;
@@ -33,6 +35,7 @@ import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
 import com.nisum.carpool.util.CarpooldetailsServiceUtil;
 import com.nisum.carpool.util.Constants;
+
 
 @Service
 public class CarpooldetailsServiceImpl implements CarpooldetailsService{
@@ -96,127 +99,190 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	
 	
 	@Override
-    public List<CarpooldetailsDto> createCarPooldetails(CarpooldetailsDto carpooldetailsDto) {
-        // TODO Auto-generated method stub
-        logger.info("CarpooldetailsServiceImpl:createCarPool");
-        
-        carpooldetailsDto.setCreateddate(new Timestamp(System.currentTimeMillis()));
-        carpooldetailsDto.setModifieddate(new Timestamp(System.currentTimeMillis()));
+	public ResponseEntity<?> createCarPooldetails(CarpooldetailsDto carpooldetailsDto) {
+		// to create car pool service method
+		logger.info("CarpooldetailsServiceImpl:createCarPool");
 
-        // code added by Harish Kumar Gudivada on 30th November 2017
-        //for loading the location from user registration and saving in the carpool details
-        String location = registerDAO.getLocationOfRegisteredUser(carpooldetailsDto.getEmailId());
-        carpooldetailsDto.setLocation(location);
-        //end
-        
-       Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
-        
-       String validstatus = checkValidCarpool(carpooldetails);
-        logger.info("validstatus " + validstatus);
-       if(validstatus.equals(Constants.CARPOOLEXISTS)) {
-            
-           logger.info("PostRideServiceImpl: posting a ride failed ");
-            return null;
-       }
-        
-       logger.info("valid code");
-        List<Carpooldetails> carPoolList = processPostRideDomain(carpooldetails);
-       List<Carpooldetails> cpd = carpooldetailsDAO.addCarpoolDetails(carPoolList);
-        
+		carpooldetailsDto.setCreateddate(new Timestamp(System.currentTimeMillis()));
 
-       if(cpd == null) return null; 
-       
-       else 
-        
-       return CarpooldetailsServiceUtil.convertDaoTODto(cpd);
-      
-    }
-	public String checkValidCarpool(Carpooldetails carpooldetails) {
+		// code added by Harish Kumar Gudivada for loading the location from user
+		// registration and saving in the carpool details
+		try {
+		String location = registerDAO.getLocationOfRegisteredUser(carpooldetailsDto.getEmailId());
+		carpooldetailsDto.setLocation(location);
 		
-		//to check if the carpool is already available in db for the user with the given fromdate and todate
+		} catch(Exception e) {
+			
+			logger.info("Failed to get location of user");
+			ServiceStatusDto statusDto = new ServiceStatusDto();
+			statusDto.setStatus(false);
+			statusDto.setMessage(Constants.MSG_CARPOOL_FAILED);
+			ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto,
+					HttpStatus.BAD_REQUEST);
+			return entity;
+			
+			
+		}
+		// end
+
+		Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
+
+		String validstatus = checkValidCarpool(carpooldetails);
+		logger.info("validity status of creating car pool " + validstatus);
+
+		if (validstatus.equals(Constants.CARPOOLEXISTS)) {
+
+			logger.info("CarpooldetailsServiceImpl: car pool already exists for the driver for the given date(s) ");
+
+			ServiceStatusDto statusDto = new ServiceStatusDto();
+			statusDto.setStatus(false);
+			statusDto.setMessage(Constants.CARPOOLEXISTS);
+			ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto,
+					HttpStatus.BAD_REQUEST);
+			return entity;
+		}
+
+		if (validstatus.equals(Constants.DRIVER_IS_REGISTERED_AS_RIDER)) {
+
+			logger.info("PostRideServiceImpl: driver is already registered as rider for the date(s) ");
+
+			ServiceStatusDto statusDto = new ServiceStatusDto();
+			statusDto.setStatus(false);
+			statusDto.setMessage(Constants.DRIVER_IS_REGISTERED_AS_RIDER);
+			ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto,
+					HttpStatus.BAD_REQUEST);
+			return entity;
+
+		}
+
+		logger.info("Status for creating car pool is valid");
 		
-		logger.info("CarpooldetailsServiceImpl:checkValidCarpool");
-		
-		return carpooldetailsDAO.checkValidCarpool(carpooldetails);
-		
-		
+		List<Carpooldetails> carPoolList = processPostRideDomain(carpooldetails);
+
+		String msg = carpooldetailsDAO.addCarpoolDetails(carPoolList);
+
+		if (msg == Constants.MSG_CARPOOL_ADD) {
+			logger.info("Car pool has been created succesfully");
+			List<CarpooldetailsDto> cpdtolist = CarpooldetailsServiceUtil
+					.convertDaoTODto(carpooldetailsDAO.getCarPoolByMailID(carpooldetails.getEmailId()));
+			ResponseEntity<List<CarpooldetailsDto>> entity = new ResponseEntity<List<CarpooldetailsDto>>(cpdtolist,
+					HttpStatus.OK);
+			return entity;
+		}
+
+		else {
+			
+			logger.info("Creating car pool failed");
+			ServiceStatusDto statusDto = new ServiceStatusDto();
+			statusDto.setStatus(false);
+			statusDto.setMessage(Constants.MSG_CARPOOL_FAILED);
+			ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto,
+					HttpStatus.BAD_REQUEST);
+			return entity;
+		}
+
 	}
 	
-	public static List<Carpooldetails> processPostRideDomain(Carpooldetails carpooldetails) {
-		
-		// to create a list of carpool domain objects to be sent to data access layer
-		
-		List<Carpooldetails> carPoolList = new ArrayList<Carpooldetails>();
-	    
-	    int parentid = 0;
-	    
-	    boolean start = true;
-	    boolean pdone = false;
-	    
-	    logger.info("from date " + carpooldetails.getFromDate());
-	    logger.info("to date " + carpooldetails.getToDate());
-	    
-	    int days = CarpooldetailsServiceUtil.getNo_of_days(carpooldetails.getFromDate(), carpooldetails.getToDate());
-	    days = days + 1;
-	    
-	    logger.info("Number of days " + days);
-	    for(int i=0;i<days;i++) {
-	    	
-	    	//checking if parent record is added to list, if yes then start again to add child records
-	    	
-	    	if(pdone == true) {
-	    		i = 0;
-	    		pdone = false;
-	    	}
-	    	
-	    	Carpooldetails cp = new Carpooldetails();
-	    	int id = CarpooldetailsServiceUtil.getRandomInt();
-	    	
-	    	//checking if parentid is set, else set parentid to id
-	    	
-	    	
-	    	if(parentid==0)
-	    	parentid = id;
-	    	cp.setId(id);
-	    	cp.setParentid(parentid);
-	    	
-	    	//setting original fromdate and todate for parent record in carpool db
-	    	
-	    	if(start == true) {
-	    		
-	    		cp.setFromDate(carpooldetails.getFromDate());
-	    	    cp.setToDate(carpooldetails.getToDate());
-	    		start = false;
-	    		pdone = true;
-	    			
-	    	}
-	    	
-	    	//setting individual fromdate and todate for child records in carpool db
-	    	
-	    	else {
-	    	
-	    	cp.setFromDate(CarpooldetailsServiceUtil.getAddedDate(carpooldetails.getFromDate(), i));
-	    cp.setToDate(CarpooldetailsServiceUtil.getAddedDate(carpooldetails.getFromDate(), i));
-	    
-	    	} 
-	    	
-	    	cp.setFromtime(carpooldetails.getFromtime());
-	    	cp.setToTime(carpooldetails.getToTime());
-	    	cp.setCreateddate(carpooldetails.getCreateddate());
-	    	cp.setModifieddate(carpooldetails.getModifieddate());
-	    	cp.setNoofseats(carpooldetails.getNoofseats());
+	/**
+	 * @author Manohar Dhavala
+	 * 
+	 *         This method is used to check if carpool can be created or not
+	 */
 
-	    //cp.setStatus(Pool_Status.OPEN);
+	public String checkValidCarpool(Carpooldetails carpooldetails) {
 
-	    	cp.setEmailId(carpooldetails.getEmailId());
+		// to check if carpool can be created for the driver within the given dates
 
-	    	cp.setVehicleType(carpooldetails.getVehicleType());
-	    	cp.setLocation(carpooldetails.getLocation());
-	    	carPoolList.add(cp);
+		logger.info("CarpooldetailsServiceImpl:checking if status for creating Carpool is valid");
+
+		return carpooldetailsDAO.checkValidCarpool(carpooldetails.getEmailId(), carpooldetails.getFromDate(),
+				carpooldetails.getToDate());
+
 	}
-	    
-	    return carPoolList;
-	    
+	
+	/**
+	 * @author Manohar Dhavala
+	 * 
+	 *         This method is used to for creating domain objects to be sent to data access layer
+	 */
+
+	public static List<Carpooldetails> processPostRideDomain(Carpooldetails carpooldetails) {
+
+
+		List<Carpooldetails> carPoolList = new ArrayList<Carpooldetails>();
+
+		int parentid = 0;
+
+		//start is a flag for adding from date and to date for parent record and individual dates for 
+		//child records
+		
+		//pdone is a flag to check if parent record is created, so value i can be initialized for 
+		//creating n records for n number of days
+		
+		boolean start = true;
+		boolean pdone = false;
+
+		logger.info("from date " + carpooldetails.getFromDate());
+		logger.info("to date " + carpooldetails.getToDate());
+
+		int days = CarpooldetailsServiceUtil.getNo_of_days(carpooldetails.getFromDate(), carpooldetails.getToDate());
+		days = days + 1;
+
+		logger.info("Number of days " + days);
+		for (int i = 0; i < days; i++) {
+
+			// checking if parent record is added to list, if yes then start again to add
+			// child records
+
+			if (pdone) {
+				i = 0;
+				pdone = false;
+			}
+
+			Carpooldetails cp = new Carpooldetails();
+			int id = CarpooldetailsServiceUtil.getRandomInt();
+
+			// checking if parentid is set, else set parentid to id
+
+			if (parentid == 0)
+				parentid = id;
+			cp.setId(id);
+			cp.setParentid(parentid);
+
+			// setting original fromdate and todate for parent record in carpool db
+
+			if (start) {
+
+				cp.setFromDate(carpooldetails.getFromDate());
+				cp.setToDate(carpooldetails.getToDate());
+				start = false;
+				pdone = true;
+
+			}
+
+			// setting individual fromdate and todate for child records in carpool db
+
+			else {
+
+				cp.setFromDate(CarpooldetailsServiceUtil.getAddedDate(carpooldetails.getFromDate(), i));
+				cp.setToDate(CarpooldetailsServiceUtil.getAddedDate(carpooldetails.getFromDate(), i));
+
+			}
+
+			cp.setFromtime(carpooldetails.getFromtime());
+			cp.setToTime(carpooldetails.getToTime());
+			cp.setCreateddate(carpooldetails.getCreateddate());
+			cp.setModifieddate(carpooldetails.getModifieddate());
+			cp.setNoofseats(carpooldetails.getNoofseats());
+			cp.setStatus(1);
+			cp.setEmailId(carpooldetails.getEmailId());
+			cp.setVehicleType(carpooldetails.getVehicleType());
+			cp.setLocation(carpooldetails.getLocation());
+			carPoolList.add(cp);
+		}
+
+		return carPoolList;
+
 	}
 	/*public List<CustomerCarpooldetailsDto> getCarPoolDetails(String location)
 	{
