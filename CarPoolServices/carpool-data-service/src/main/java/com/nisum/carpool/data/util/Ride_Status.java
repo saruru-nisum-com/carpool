@@ -4,7 +4,8 @@ public enum Ride_Status {
 	
 	REQUESTED(1),
 	APPROVED(2),
-	REJECTED(3);
+	REJECTED(3),
+	CANCELLED(4);
 	
 	int value;
 	
