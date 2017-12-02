@@ -22,5 +22,8 @@ public interface CarpoolRiderDetailsRepository extends CassandraRepository<Carpo
 	@Query("select * from cp_carpoolriderdetails where cpid=:poolid ALLOW FILTERING")
 	List<CarpoolRiderDetails>  getRidersByPoolID(@Param("poolid") int poolid);
 
+	@Query("select count(*) from cp_carpoolriderdetails where emailid=:emailid and cpid=:cpid ALLOW FILTERING")
+	int checkWhetherDriverIsRider(@Param("emailid")String emailid, @Param("cpid") int cpid);
+
 
 }
