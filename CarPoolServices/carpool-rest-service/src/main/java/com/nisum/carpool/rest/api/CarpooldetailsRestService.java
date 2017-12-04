@@ -113,10 +113,10 @@ public class CarpooldetailsRestService {
 		{
 			poolList=carpooldetailsService.getCarPoolDetails(location);
 			
-			if(poolList==null || poolList.isEmpty())
+			/*if(poolList==null || poolList.isEmpty())
 			{
 				return new ResponseEntity<String>(Constants.NO_RECORDS_FOUND, HttpStatus.OK);	
-			}
+			}*/
 			return new ResponseEntity<List<CustomerCarpooldetailsDto>>(poolList, HttpStatus.OK);
 			
 		}

@@ -1,0 +1,44 @@
+<div>
+
+<div class = "col-md-2">
+		<div id = "leftHandMenu">
+			<div ng-include="'js/partials/leftSideMenu.html'"></div>
+		</div>
+	</div>
+	<div class = "col-md-8">
+
+		<div align="center" style="color: #2535A9;">
+			<h3>My Shared Rides</h3>
+		</div>
+
+<div>
+		<div>
+			<ul id="nav-tabs" ng-init='getMyRides()'>
+			</ul>
+		</div>
+		
+		<div ng-if="myRidesList.length>0" ng-repeat="myRide in myRidesList"
+			style="float: left">
+
+			<table class="tStyle" frame="box" data-ng-style="{'background-color': carpool.status=='completed' ? 'red' : 'green'}">
+				<tr>
+					<td>PoolStatus: {{myRide.status}}</td>
+					<td>Location: {{myRide.location}}</td>
+				</tr>
+				<tr>
+					<td>FromDate: {{myRide.fromDate}}</td>
+					<td>ToDate: {{myRide.toDate}}</td>
+				</tr>
+				<tr>
+					<td><button class = "button" name="Details">Details</button></td>
+					<td><button class = "button" name="Cancel">Cancel</button></td>
+				</tr>
+			</table>
+
+		</div>
+	</div>
+
+	 <div align="center" ng-if="myRidesList.length<=0">No Rides Found</div>
+</div>
+</div>
+

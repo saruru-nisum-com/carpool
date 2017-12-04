@@ -467,6 +467,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		        Date currentDtae= sdf.parse(currentdate);
 				if( carpooldetails.getStatus()==3 || !fromDate.after(currentDtae))
 				{
+					//carpoolsByParentId.remove(carpooldetails);
 					continue;
 				}
 				if(carpooldetails.getId().equals(carpooldetails.getParentid()))
@@ -499,10 +500,16 @@ if(registerDomain!=null && registerDomain.size()>0) {
 					//driverCarPoolDto.setFromDate(carpooldetails.getFromDate());
 					driverCarpoolList.add(driverCarPoolDto);
 				}
-				
+				if(carpoolsByParentId==null || carpoolsByParentId.size()==0)
+				{
 			String parentSta=carPoolStatus(driverCarpoolList,carpoolsByParentId.size()-1);
+			if(parentSta!=null)
+			{
 			parentCarpoolDetailsDto.setStatus(parentSta);
+			
 			ParentCarpoolDetailsDtosList.add(parentCarpoolDetailsDto);
+			}
+				}
 			}
 
 		
@@ -632,7 +639,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			
 		
 	}
-		return "Open";
+		return null;
 	}
 	
 	
