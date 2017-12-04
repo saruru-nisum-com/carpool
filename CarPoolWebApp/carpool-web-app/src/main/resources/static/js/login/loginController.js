@@ -4,17 +4,27 @@ loginApp.controller('loginController', function($scope, $state,
 	// --google sign in methods
 	$scope.login = function() { 
 		 
-		loginLogoutService.login($scope.profile).then(function(response) {
-			if (response.errorCode === 500) {
-				$scope.message = response.errorMessage
-			} else {
-				localStorageService.set('profile', response);
+		 GoogleSignin.signIn().then(function(authResult) {
+			 var profile = authResult.getBasicProfile();
 
-				$state.go("configurations");
-			}
-		}, function(response) { 
-			// console
-		});
+			 $scope.profile = {
+			 "userName" : profile.getName(),
+			 "emailId" : profile.getEmail(),
+			 "image" : profile.getImageUrl()
+			 }
+
+			 loginLogoutService.login($scope.profile).then(function(response) {
+			 if (response.errorCode === 500) {
+			 $scope.message = response.errorMessage
+			 } else {
+			 localStorageService.set('profile', response);
+
+			 $state.go("leftSideMenu");
+			 }
+			 }, function(response) {
+			 // console
+			 });
+			 });
 
 	};
 

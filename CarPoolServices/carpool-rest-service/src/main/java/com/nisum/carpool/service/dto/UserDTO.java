@@ -27,7 +27,7 @@ public class UserDTO implements Serializable {
 	private byte[] imageIcon;
 	private String notifications;
 	private String profileName;
-
+	private String location;
 	
 	public byte[] getImageIcon() {
 		return imageIcon;
@@ -157,6 +157,14 @@ public class UserDTO implements Serializable {
 
 	public void setProfileName(String profileName) {
 		this.profileName = profileName;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 }

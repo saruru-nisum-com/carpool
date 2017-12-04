@@ -22,11 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nisum.carpool.data.domain.RegisterDomain;
 import com.nisum.carpool.data.domain.User;
 //import com.nisum.carpool.service.api.EmailAccount;
 import com.nisum.carpool.service.api.UserRoleService;
 import com.nisum.carpool.service.api.UserService;
 import com.nisum.carpool.service.dto.Errors;
+import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.service.dto.UserDTO;
 import com.nisum.carpool.service.dto.UserRoleDTO;
@@ -68,6 +70,7 @@ public class UserRestService {
 
 		UserDTO userInfo = null;
 		User 	userData=null;
+		String userLocation=null;
 		logger.info("UserRestService :: Creating Users :::");
 		logger.info("User Rest service"+userDto.getUserName()+"emailId::"+userDto.getEmailId());
 		
@@ -125,7 +128,25 @@ public class UserRestService {
 
 				//MailSender.sendEmail(emailAccount.getAdminemail(), emailAccount.getAdminpassword(), strEmail1,null,
 				//	emailAccount.getSubject(), MailSender.messageBody(userDto.getUserName()));
-			//	userRegService.getUserProfile(userRegDto, isRider);
+				
+				//Get User location from profile
+				try {
+					logger.info("get user location from userReg Service###"+userDto.getEmailId());
+					List<RegisterDTO> registerDTO=	(List<RegisterDTO>) userRegService.getUserProfile(userDto.getEmailId());
+					if(registerDTO!=null) {
+						for(RegisterDTO rg:registerDTO) {
+								userLocation=rg.getLocation();
+						}
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(userLocation!=null) {
+					logger.info("user location from profile**"+userLocation);
+					userDto.setLocation(userLocation);
+				}
+				
 				httpRequest.setAttribute("userSession", userDto);
 				userInfo = userDto;
 			}
