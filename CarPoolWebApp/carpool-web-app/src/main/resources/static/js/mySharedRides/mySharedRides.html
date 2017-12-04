@@ -1,5 +1,11 @@
 <div>
-	<div>
+
+<div class = "col-md-2">
+		<div id = "leftHandMenu">
+			<div ng-include="'js/partials/leftSideMenu.html'"></div>
+		</div>
+	</div>
+	<div class = "col-md-8">
 
 		<div align="center" style="color: #2535A9;">
 			<h3>My Shared Rides</h3>
@@ -33,10 +39,6 @@
 	</div>
 
 	 <div align="center" ng-if="myRidesList.length<=0">No Rides Found</div>
-
-<div id = "leftHandMenu">
-		<div ng-include="'js/partials/leftSideMenu.html'">
-</div>
 </div>
 </div>
 
