@@ -163,12 +163,15 @@ public class RegisterDomain implements Serializable{
 	public void setModifieddate(LocalDateTime modifieddate) {
 		this.modifieddate = modifieddate;
 	}
+	
+	
+	
 	@Override
 	public String toString() {
-		return "RegisterDomain [registrationid=" + registrationid + ", emailid=" + emailid + ", vehicletype="
+		return "RegisterDomain [registrationid=" + registrationid + ", userid=" + emailid + ", vehicletype="
 				+ vehicletype + ", location=" + location + ", latitude=" + latitude + ", longitude=" + longitude
 				+ ", nearby=" + nearby + ", mobile=" + mobile + ", emailnotification=" + emailnotification
-				+ ", isrider=" + isrider + ", createddate=" + createddate + ", modifieddate=" + modifieddate + "]";
+				+ ", isrider=" + isrider + ", createddate=" + createddate + ", Gender="+gender+", modifieddate=" + modifieddate + "]";
 	}
 		
 }
