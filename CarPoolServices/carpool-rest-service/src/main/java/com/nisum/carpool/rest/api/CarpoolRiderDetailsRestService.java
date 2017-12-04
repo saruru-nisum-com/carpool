@@ -1,7 +1,10 @@
 package com.nisum.carpool.rest.api;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
 import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
+import com.nisum.carpool.util.CPCancellationReasons;
 
 @RestController
 @RequestMapping(value = "/v1/carpool")
@@ -21,6 +25,10 @@ public class CarpoolRiderDetailsRestService {
 	@Autowired
 	CarpoolRiderDetailsService carpoolRiderDetailsService;
 
+	
+	private static Logger loggerObj = Logger.getLogger(CarpoolRiderDetailsRestService.class);
+	static Map<Integer, String> cancelReasonMapObj = new HashMap<Integer, String>();
+	
 	@RequestMapping(value = "/getRiderBookingDetails/{emailID}", method = RequestMethod.GET)
 	public ResponseEntity<List<RiderBookingDetailsDTO>> getRiderBookingDetails(
 			@PathVariable("emailID") String emailID) {
@@ -40,6 +48,23 @@ public class CarpoolRiderDetailsRestService {
 		List<CarpoolRiderDetailsDTO> poolList = carpoolRiderDetailsService.findCarpoolRiderDetailsByCPId(cpid);
 		return new ResponseEntity<List<CarpoolRiderDetailsDTO>>(poolList, HttpStatus.OK);
 
+	}
+	
+	/*
+	 * methodAuthor: @Rajesh Sekhamuri
+	 * methodName: riderStatus()
+	 * @Params 
+	 * return Map<Integer, String> reason code with name form of key and value pair
+	 */
+	
+	@RequestMapping(value = "/loadRiderStatusReasons", method = RequestMethod.GET)
+	public ResponseEntity<Map<Integer, String>> loadRiderStatusReasons() {
+		loggerObj.info("Start of loadRiderStatusReasons() method in RiderStatusRestService"); 
+		if(cancelReasonMapObj.isEmpty()) { 
+			cancelReasonMapObj = CPCancellationReasons.readRiderStatusReasonCodes();
+		}
+		loggerObj.info("End of loadRiderStatusReasons() method in RiderStatusRestService");
+		return new ResponseEntity<Map<Integer, String>>(cancelReasonMapObj, HttpStatus.OK);
 	}
 
 }
