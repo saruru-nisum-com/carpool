@@ -16,7 +16,7 @@ public class RegisterDomain implements Serializable{
 	
 	@PrimaryKey
 	private Integer registrationid;
-	private String emailid;
+	private String userid;
 	private List<Integer> vehicletype;
 	private String location;
 	private String latitude;
@@ -44,10 +44,10 @@ public class RegisterDomain implements Serializable{
 	}
 	
 	public String getEmailid() {
-		return emailid;
+		return userid;
 	}
-	public void setEmailid(String emailid) {
-		this.emailid = emailid;
+	public void setEmailid(String userid) {
+		this.userid = userid;
 	}
 	public int getGender() {
 		return gender;
@@ -168,7 +168,7 @@ public class RegisterDomain implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "RegisterDomain [registrationid=" + registrationid + ", userid=" + emailid + ", vehicletype="
+		return "RegisterDomain [registrationid=" + registrationid + ", userid=" + userid + ", vehicletype="
 				+ vehicletype + ", location=" + location + ", latitude=" + latitude + ", longitude=" + longitude
 				+ ", nearby=" + nearby + ", mobile=" + mobile + ", emailnotification=" + emailnotification
 				+ ", isrider=" + isrider + ", createddate=" + createddate + ", Gender="+gender+", modifieddate=" + modifieddate + "]";
