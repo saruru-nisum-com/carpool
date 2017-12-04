@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nisum.carpool.data.dao.api.RegisterDAO;
 import com.nisum.carpool.data.domain.RegisterDomain;
 import com.nisum.carpool.data.domain.User;
 //import com.nisum.carpool.service.api.EmailAccount;
@@ -56,6 +57,9 @@ public class UserRestService {
 	
 	@Autowired
 	HttpServletRequest httpRequest;
+	
+	@Autowired
+	RegisterDAO registerDAO;
 	
 	//private static EmailAccount emailAccount;
 
@@ -132,12 +136,8 @@ public class UserRestService {
 				//Get User location from profile
 				try {
 					logger.info("get user location from userReg Service###"+userDto.getEmailId());
-					List<RegisterDTO> registerDTO=	(List<RegisterDTO>) userRegService.getUserProfile(userDto.getEmailId());
-					if(registerDTO!=null) {
-						for(RegisterDTO rg:registerDTO) {
-								userLocation=rg.getLocation();
-						}
-					}
+					userLocation = registerDAO.getLocationOfRegisteredUser(userDto.getEmailId());
+					
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
