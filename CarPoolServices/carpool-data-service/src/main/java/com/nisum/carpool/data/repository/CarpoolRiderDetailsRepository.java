@@ -25,5 +25,11 @@ public interface CarpoolRiderDetailsRepository extends CassandraRepository<Carpo
 	@Query("select count(*) from cp_carpoolriderdetails where emailid=:emailid and cpid=:cpid ALLOW FILTERING")
 	int checkWhetherDriverIsRider(@Param("emailid")String emailid, @Param("cpid") int cpid);
 
-
+	@Query("update cp_carpoolriderdetails set status=:#{#carpoolRiderDetails.status}, reason=:#{#carpoolRiderDetails.reason} where id=:#{#carpoolRiderDetails.id}")
+	Integer udpateCarpoolRiderStatus(@Param("carpoolRiderDetails") CarpoolRiderDetails carpoolRiderDetails);
+	
+	
+	@Query("select reason, status from cp_carpoolriderdetails where id>= :id allow filtering")
+	public List<CarpoolRiderDetails> getRiderDetailsById(@Param("id") Integer id); 
+	
 }
