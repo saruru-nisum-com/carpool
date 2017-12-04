@@ -58,8 +58,7 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 	@Override
 	public List<CarpoolRiderDetails> getRidersByCpID(Integer poolid) {
 		// TODO Auto-generated method stub
-		//return carpoolRiderDetailsRepository.getRidersByPoolID(poolid);
-		return null;
+		return carpoolRiderDetailsRepository.getRidersByPoolID(poolid);
 	}
 
 }
