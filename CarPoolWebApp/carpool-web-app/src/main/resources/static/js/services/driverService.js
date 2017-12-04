@@ -39,11 +39,11 @@ driverApp.factory('driverService', function($http, $q, localStorageService,
 	ls.updateDriverData = function(data) {
 		var deferred = $q.defer()
 		//TODO: correct the encodedUrl with the valid backend service url to update
-		var encodedUrl = encodeURI("v1/carpool/"+data);
-		$http.post(encodedUrl).success(function(response) {
+		$http.put("v1/carpool/updateDriver", data).success(function(response) {
 			console.log("Driver data update SUCCESS at service");
 			deferred.resolve(response);
 		}).error(function(errResponse) {
+			alert("update is failed...")
 			console.log("Driver data update FAILED at service");
 			deferred.reject(errResponse);
 		})

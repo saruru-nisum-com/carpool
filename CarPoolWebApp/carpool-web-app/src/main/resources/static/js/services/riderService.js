@@ -36,6 +36,19 @@ riderApp.factory('riderService', function($http, $q, localStorageService,
 		return deferred.promise;
 	}
 	
+	ls.updateRiderData = function(data) {
+		var deferred = $q.defer()
+		$http.put("v1/carpool/updateDriver", data).success(function(response) {
+			console.log("Rider data update SUCCESS at service");
+			deferred.resolve(response);
+		}).error(function(errResponse) {
+			alert("update is failed...")
+			console.log("Rider data update FAILED at service");
+			deferred.reject(errResponse);
+		})
+		return deferred.promise;
+	}
+	
 	return ls;
 
 });
