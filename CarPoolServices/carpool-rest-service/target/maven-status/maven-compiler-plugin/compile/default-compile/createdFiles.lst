@@ -12,9 +12,11 @@ com/nisum/carpool/service/exception/QuestionariesServiceException.class
 com/nisum/carpool/service/exception/RegisterServiceException.class
 com/nisum/carpool/service/exception/NotificationServiceException.class
 com/nisum/carpool/service/exception/BookMeetingRoomRestServiceException.class
+com/nisum/carpool/service/dto/CPCancellRideReasons.class
 com/nisum/carpool/util/CommonsUtil.class
 com/nisum/carpool/service/api/UserService.class
 com/nisum/carpool/service/exception/MeetingRoomException.class
+com/nisum/carpool/service/dto/DriverCarPoolDto.class
 com/nisum/carpool/service/api/CarpoolRiderDetailsService.class
 com/nisum/carpool/service/api/UserProfileService.class
 com/nisum/carpool/service/exception/ExceptionControllerAdvice.class
@@ -23,9 +25,11 @@ com/nisum/carpool/service/dto/RiderBookingDetailsDTO.class
 com/nisum/carpool/rest/api/UserRestService.class
 com/nisum/carpool/util/DateUtil.class
 com/nisum/carpool/service/exception/LocationException.class
+com/nisum/carpool/util/CPCancellationReasons.class
 com/nisum/carpool/service/exception/QuestionariesRepliesServiceException.class
 com/nisum/carpool/service/dto/CustomerCarpooldetailsDto.class
 com/nisum/carpool/service/dto/Erros.class
+com/nisum/carpool/service/dto/ParentCarpoolDetailsDto.class
 com/nisum/carpool/service/dto/ServiceStatusDto.class
 com/nisum/carpool/service/dto/VehicleTypesDTO.class
 com/nisum/carpool/service/exception/BookMeetingRoomException.class
