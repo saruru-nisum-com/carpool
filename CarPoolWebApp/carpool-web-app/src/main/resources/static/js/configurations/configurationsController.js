@@ -1,17 +1,15 @@
 adminApp.controller('configurationsController',
 						function($scope, localStorageService,carpoolService,commonService,dateFilter) {
 	$scope.carpoolList=[];
-	$scope.userLocation = localStorageService.get('location');
 	$scope.userName = commonService.userName;
 	$scope.vehicleDetails=[];
-	$scope.location="hyd";
+	$scope.location=commonService.location;
 	
 	$scope.getCarpools = function() {
 			carpoolService.getCarPools($scope.location).then(function(response) {
 				if (response.errorCode) {
 					$scope.message = response.errorMessage
 				} else {
-					$scope.getVehicleDetails();
 					$scope.carpoolList=response;
 				}
 			}, function(response) {
@@ -52,5 +50,5 @@ adminApp.controller('configurationsController',
 		})
 		
 	}
-	
+	$scope.getVehicleDetails();
 });
