@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CarpoolRiderRejection>
+
+   <RejectionReason type="res1">
+      <ReasonCode>1</ReasonCode>
+      <ReasonName>I am on vacation</ReasonName>
+   </RejectionReason>
+    <RejectionReason type="res2">
+      <ReasonCode>2</ReasonCode>
+      <ReasonName>Vehicle is not available</ReasonName>
+   </RejectionReason>
+    <RejectionReason type="res3">
+      <ReasonCode>3</ReasonCode>
+      <ReasonName>Ride root has changed</ReasonName>
+   </RejectionReason>
+    <RejectionReason type="res4">
+      <ReasonCode>4</ReasonCode>
+      <ReasonName>My work timings changed</ReasonName>
+   </RejectionReason>
+    <RejectionReason type="res5">
+      <ReasonCode>5</ReasonCode>
+      <ReasonName>Seats already filled</ReasonName>
+   </RejectionReason>
+    <RejectionReason type="res6">
+      <ReasonCode>6</ReasonCode>
+      <ReasonName>Not able to share for today</ReasonName>
+   </RejectionReason>
+    <RejectionReason type="res7">
+      <ReasonCode>7</ReasonCode>
+      <ReasonName>Other reason</ReasonName>
+   </RejectionReason>
+   </CarpoolRiderRejection>
