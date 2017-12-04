@@ -14,6 +14,7 @@ riderApp.controller('riderController',
 	$scope.selectedLocation = undefined;
 	$scope.riderAutocomplete = undefined;
 	$scope.isRegisteredAsRider = false;
+	$scope.isVisible = false;
 	
 	$scope.$on('gmPlacesAutocomplete::placeChanged', function(){
 		$scope.selectedLocation = $scope.riderAutocomplete.getPlace().name;
@@ -50,9 +51,6 @@ riderApp.controller('riderController',
 	$scope.getRegisteredRiderData();
 	
 	$scope.registerAsRider = function() {
-
-		alert("registerAsRider is clicked");
-
 		var registrationId = Math.floor(Math.random() * 100000000) + 1 ;
 
 		var profileSessionData = localStorageService.get('profile');
@@ -95,14 +93,66 @@ riderApp.controller('riderController',
 				$scope.message = response.errorMessage
 			}else {
 				$scope.isRegisteredAsRider= true;
-				alert('rider registered successfully.');
+				$scope.isVisible=true;
+				$scope.actionName="Registered";
 			}
 		});
 
 	}
 
+	
+	/*
+	 * @author Dhiraj Singh
+	 * Method to update the Rider data.
+	 */
 	$scope.updateAsRider = function() {
-		alert("update is clicked");
+		console.log("Update rider data method called.");
+
+		var profileSessionData = localStorageService.get('profile');
+		var userId = profileSessionData.emailId;
+		$scope.userId = userId
+
+//		if($scope.cb2wheel==2 && $scope.cb4wheel==4){
+//			var vehicleType = [$scope.cb2wheel, $scope.cb4wheel];
+//		}else if($scope.cb2wheel==2 && $scope.cb4wheel==0){
+//			var vehicleType = [$scope.cb2wheel];
+//		}else if($scope.cb4wheel==4 && $scope.cb2wheel==0){
+//			var vehicleType = [$scope.cb4wheel];
+//		}
+
+		if($scope.notifyEmail == true){
+			var emailNotification = true;
+		}else{
+			var emailNotification = false;
+		}
+		
+		var modifiedDate = $filter('date')(new Date(), 'yyyy-MM-dd');
+		
+		var data = {
+				"userId" : userId,
+				"location" : $scope.selectedLocation,
+				"nearby" : $scope.riderNearBy,
+				//"vehicleType" :  vehicleType,
+				"isRider" : 1,
+				"emailNotification" : emailNotification,
+				"modifiedDate": modifiedDate
+		}
+		riderService.updateRiderData(data).then(function(successResponse) {
+			console.log("Rider data updated successfuly"+successResponse);
+			$scope.isVisible=true;
+			$scope.actionName="Updated";
+		}, function(errorResponse) {
+			console.log("Failed to update the rider data."+errorResponse);
+		});
+
+		var onSuccess = function (data, status, headers, config) {
+			alert('Rider data updated successfully.');
+		};
+
+		var onError = function (data, status, headers, config) {
+			alert('Error occured while updating the Rider data.');
+		};
 	}
+
 
 });
