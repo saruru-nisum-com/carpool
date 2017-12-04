@@ -61,7 +61,8 @@ public class CarpooldetailsRestService {
 	
 	@RequestMapping(value="/cancel",method=RequestMethod.PUT)
 	public ResponseEntity<?> cancelCarpooldetails(@RequestBody CarpooldetailsDto carpooldetailsDto){
-		logger.info("CarpooldetailsRestService :: cancelCarpooldetails");
+		logger.info("Enter CarpooldetailsRestService :: cancel Carpooldetails");
+		logger.info("in cancel pool Id="+carpooldetailsDto.getId()+"parentId=="+carpooldetailsDto.getParentid()+"total seats="+carpooldetailsDto.getTotalNoOfSeats());
 		ResponseEntity<?> responseEntity = null;
 		try {
 			ServiceStatusDto statusDto = carpooldetailsService.cancelCarpooldetails(carpooldetailsDto);
