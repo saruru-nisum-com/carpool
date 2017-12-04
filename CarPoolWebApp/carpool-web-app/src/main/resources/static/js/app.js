@@ -1,8 +1,8 @@
 var app = angular
 		.module(
 				'nisumApp',
-				[ 'ui.router', 'profileApp', 'loginApp', 'carpoolRegistrationApp', 'LocalStorageModule',
-						'textAngular', 'am.multiselect', 'leftSideMenuApp','google-signin','configurationsApp','mySharedRidesApp'])
+				[ 'ui.router', 'gm', 'profileApp', 'loginApp', 'carpoolRegistrationApp', 'LocalStorageModule',
+						'textAngular', 'am.multiselect', 'leftSideMenuApp','google-signin','configurationsApp','mySharedRidesApp', 'driverApp', 'riderApp'])
 
 		.config(function($stateProvider, $urlRouterProvider) {
 

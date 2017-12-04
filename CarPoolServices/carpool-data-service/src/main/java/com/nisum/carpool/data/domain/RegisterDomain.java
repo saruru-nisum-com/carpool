@@ -43,12 +43,13 @@ public class RegisterDomain implements Serializable{
 		this.registrationid = registrationid;
 	}
 	
-	public String getEmailid() {
+	public String getUserid() {
 		return userid;
 	}
-	public void setEmailid(String userid) {
+	public void setUserid(String userid) {
 		this.userid = userid;
 	}
+	
 	public int getGender() {
 		return gender;
 	}
