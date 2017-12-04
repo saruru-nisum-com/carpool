@@ -3,7 +3,7 @@ var carpoolRegApp=angular.module('carpoolRegistrationApp', ['ui.router', 'gm'])
 	$stateProvider.state('carpoolRegistration',{
 		url:'/carpoolRegistration',
 		templateUrl:'js/carpoolRegistration/carpoolRegistration.html',
-		controller: 'carpoolRegistrationController'
+		controller: 'postARideCtrl'
 	}).state('driver',{
 		url:'/driver',
 		templateUrl:'./js/driver/driver.html',
