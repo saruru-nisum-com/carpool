@@ -575,6 +575,29 @@ carpoolRegApp
 										               });
 										$('#editModal').modal('hide');
 								   }
+									$scope.confirmDelete = function(name, item) {
+										item['startTime'] = $filter('date')(new Date(item.startTime), 'h:mm a');
+										item['toTime'] = $filter('date')(new Date(item.toTime), 'h:mm a');
+										$scope.deleteitem = item;
+										$('#deleteModal').modal('show');
+									}
+									$scope.deleteItem = function() {
+										   carpoolService.cancelCarpoolDetails($scope.editteditem)
+										               .then(function(response){
+										            	       if(response.errorCode){
+										            	    	       $scope.errorMessage = response.errorMessage;
+										            	       }else{
+										            	    	       $scope.successMessage = response.message;
+										            	    	       $scope.errorMessage = '';
+										            	    	       $scope.getAvailablePools();
+										            	       }
+										            	       $('#editStatus').modal('show');
+										               },function(response){
+										            	        console.log(response);
+										            	        window.alert(response.errorMessage);
+										               });
+										$('#editModal').modal('hide');
+								   }		
 										
 				});
 
