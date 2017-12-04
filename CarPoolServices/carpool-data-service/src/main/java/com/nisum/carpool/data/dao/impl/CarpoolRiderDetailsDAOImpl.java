@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 
 import com.nisum.carpool.data.dao.api.CarpoolRiderDetailsDAO;
 import com.nisum.carpool.data.domain.CarpoolRiderDetails;
-
 import com.nisum.carpool.data.repository.CarpoolRiderDetailsRepository;
 import com.nisum.carpool.data.util.Constants;
 import com.nisum.carpool.data.util.Pool_Status;
@@ -59,6 +58,34 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 	public List<CarpoolRiderDetails> getRidersByCpID(Integer poolid) {
 		// TODO Auto-generated method stub
 		return carpoolRiderDetailsRepository.getRidersByPoolID(poolid);
+	}
+	
+	/*
+	 * MethodAuthor: @Rajesh Sekhamuri
+	 */
+	
+	public Integer updateRiderStatus(CarpoolRiderDetails carpoolRiderDetailsObj) {
+		System.out.println("Start of updateRiderStatus() method in CarpoolRiderDetailsDAOImpl");
+		Integer updateCount  = 0;
+		System.out.println("Read input data ***** "+carpoolRiderDetailsObj);
+		Integer reasonTemp = carpoolRiderDetailsObj.getReason();
+		Integer statusTemp = carpoolRiderDetailsObj.getStatus();
+		updateCount = carpoolRiderDetailsRepository.udpateCarpoolRiderStatus(carpoolRiderDetailsObj);
+		System.out.println("Is updated count "+updateCount);  
+		
+		//Cassendra not support return value when update query use.
+		List<CarpoolRiderDetails> carpoolRiderListObj = carpoolRiderDetailsRepository.getRiderDetailsById(carpoolRiderDetailsObj.getId());
+		System.out.println("return object "+carpoolRiderListObj.size());
+		for(int poolObj=0; poolObj<=carpoolRiderListObj.size()-1; poolObj++) {
+			CarpoolRiderDetails cpRiderObj = carpoolRiderListObj.get(poolObj);
+			if(cpRiderObj.getReason() == reasonTemp && cpRiderObj.getStatus() == statusTemp) {
+				updateCount = 1;
+				break;
+			} 
+		}
+		System.out.println(" now update count "+updateCount);
+		System.out.println("End of updateRiderStatus() method in CarpoolRiderDetailsDAOImpl");
+		return updateCount;
 	}
 
 }
