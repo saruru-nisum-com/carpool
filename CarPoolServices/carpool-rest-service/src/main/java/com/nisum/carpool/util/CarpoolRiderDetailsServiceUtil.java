@@ -7,8 +7,8 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 
 import com.nisum.carpool.data.domain.CarpoolRiderDetails;
-
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
+import com.nisum.carpool.service.dto.RiderStatusDTO;
 
 
 public class CarpoolRiderDetailsServiceUtil {
@@ -36,4 +36,16 @@ public class CarpoolRiderDetailsServiceUtil {
 
 	}
 
+	
+	public static CarpoolRiderDetails convertRiderStatusDtoToDao(RiderStatusDTO carpoolRideStatusrDtoObj) {
+		CarpoolRiderDetails carpoolRiderDetailsObj = new CarpoolRiderDetails();
+		carpoolRiderDetailsObj.setId(carpoolRideStatusrDtoObj.getId());
+//		carpoolRiderDetailsObj.setCpid(carpoolRideStatusrDtoObj.getCpid());
+		carpoolRiderDetailsObj.setEmailid(carpoolRideStatusrDtoObj.getRiderEmailId());
+		carpoolRiderDetailsObj.setStatus(carpoolRideStatusrDtoObj.getRiderStatus());
+		carpoolRiderDetailsObj.setReason(carpoolRideStatusrDtoObj.getReasonCode());
+		return carpoolRiderDetailsObj;
+	}
+
+	
 }

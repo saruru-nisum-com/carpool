@@ -1,10 +1,7 @@
 package com.nisum.carpool.service.impl;
 
 import java.sql.Timestamp;
-
 import java.util.ArrayList;
-import java.util.HashSet;
-
 import java.util.List;
 import java.util.Set;
 
@@ -21,8 +18,8 @@ import com.nisum.carpool.data.domain.RegisterDomain;
 import com.nisum.carpool.data.domain.User;
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
-import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
 import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
+import com.nisum.carpool.service.dto.RiderStatusDTO;
 import com.nisum.carpool.util.CarpoolRiderDetailsServiceUtil;
 
 @Service
@@ -118,4 +115,36 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 
 		return riderBookingdetailsDtoList;
 	}
+	
+	/*
+	 * MethodAuthor: @Rajesh Sekhamuri (non-Javadoc)
+	 * 
+	 * @see
+	 * com.nisum.carpool.service.api.CarpoolRiderDetailsService#updateRiderStatus(
+	 * java.util.List)
+	 */
+	@Override
+	public void updateRiderStatus(List<RiderStatusDTO> riderStatusDtoListObj) {
+		List riderStatusListObj = null;
+		try {
+			riderStatusListObj = riderStatusDtoListObj;
+			int riderObjSize = riderStatusListObj.size();
+			System.out.println("Input Rider Status object list size " + riderObjSize);
+			for (int riderVar = 0; riderVar <= riderObjSize - 1; riderVar++) { 
+				RiderStatusDTO riderStatusObj = (RiderStatusDTO)riderStatusListObj.get(riderVar); //Downcast into RiderStatusDTO
+				System.out.println("Real object "+riderStatusObj);
+				CarpoolRiderDetails carpoolRiderDaoObj = CarpoolRiderDetailsServiceUtil.convertRiderStatusDtoToDao(riderStatusObj);
+				System.out.println("DAO Object "+carpoolRiderDaoObj.getId()+" "+carpoolRiderDaoObj.getEmailid());
+				Integer riderStatusCount = carpoolRiderdetailsDAO.updateRiderStatus(carpoolRiderDaoObj);
+				if(riderStatusCount > 0) {  //If rider status record updated into db, should send mail to rider
+					//Email send code start
+					System.out.println("Email implementation **** "+riderStatusCount);    
+				}
+			}
+		} catch (Exception e) {
+
+		}
+	}
+	
+	
 }
