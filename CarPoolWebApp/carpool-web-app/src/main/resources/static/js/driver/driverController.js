@@ -15,6 +15,7 @@ driverApp.controller('driverController',
 	$scope.selectedLocation = undefined;
 	$scope.autocomplete = undefined;
 	$scope.isRegisteredAsDriver = false;
+	$scope.isVisible=false;
 	
 	$scope.$on('gmPlacesAutocomplete::placeChanged', function(){
 		$scope.selectedLocation = $scope.autocomplete.getPlace().name;
@@ -106,15 +107,14 @@ driverApp.controller('driverController',
 					$scope.message = response.errorMessage
 				}else {
 					$scope.isRegisteredAsDriver= true;
-					alert('driver registered successfully.');
-					//$scope.names = response.records;
-					//alert("***** "+$scope.userId);
+					$scope.isVisible=true;
+					$scope.actionName="Registered";
+					
 					driverService.getRegisterDriverData($scope.userId).then(function(response) {
 						if (response.errorCode === 500) {
 							$scope.message = response.errorMessage
 						}else {
-							//alert('harish service called successfully.');
-							window.alert('singh from server.............. :)'+JSON.stringify(response));
+							console.log("response from getRegisterDriverData from server...."+JSON.stringify(response));
 						}
 					}, function(response) {
 						// console
@@ -127,7 +127,6 @@ driverApp.controller('driverController',
 			});
 			var onSuccess = function (data, status, headers, config) {
 				$scope.isRegisteredAsDriver= true;
-				alert('driver registered successfully.');
 			};
 
 			var onError = function (data, status, headers, config) {
@@ -164,11 +163,14 @@ driverApp.controller('driverController',
 		var data = {
 				"userId" : userId,
 				"location" : $scope.autocomplete,
-				"nearBy" : $scope.nearBy,
+				"nearby" : $scope.nearBy,
 				"vehicleType" :  vehicleType,
+				"isRider" : 0
 		}
 		driverService.updateDriverData(data).then(function(successResponse) {
 			console.log("Driver data updated successfuly"+successResponse);
+			$scope.isVisible=true;
+			$scope.actionName="Updated";
 		}, function(errorResponse) {
 			console.log("Failed to update the driver data."+errorResponse);
 		});
