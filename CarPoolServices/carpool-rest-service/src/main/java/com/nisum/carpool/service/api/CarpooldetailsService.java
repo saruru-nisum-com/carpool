@@ -22,11 +22,12 @@ public interface CarpooldetailsService {
 	ServiceStatusDto cancelCarpooldetails(CarpooldetailsDto carpooldetailsDto);
 
 	CarpooldetailsDto loadCarpoolDetailsById(int carpoolId);
+
 	List<ParentCarpoolDetailsDto> getCarpoolsByDriver(String email) throws CarpooldetailsServiceException;
 	
 	List<DriverCarPoolDto> getCarPoolsByParentId(int parentId) throws CarpooldetailsServiceException;
 	
-	
+	List<CarpooldetailsDto> loadCarpoolDetailsByEmailId(String emaillId);
 
 
 }

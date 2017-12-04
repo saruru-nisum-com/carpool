@@ -27,20 +27,35 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	@Autowired
 	CarpoolRiderDetailsRepository carpoolriderdetailsrepository;
 
+	/*
+	 * @author Suresh valavala
+	 * @see com.nisum.carpool.data.dao.api.CarpooldetailsDAO#updateCarpooldetails(com.nisum.carpool.data.domain.Carpooldetails)
+	 * @ for updating existing carpooldetails
+	 */
+	
 	@Override
-	public String updateCarpooldetails(Carpooldetails carpooldetails) {
-
+    public String updateCarpooldetails(Carpooldetails carpooldetails) {
+		
 		logger.info("CarpooldetailsDAOImpl: updateCarpooldetails");
 		Long countByParentid = carpooldetailsRepository.countByParentid(carpooldetails.getId());
-
-		if (countByParentid == 1) {
-			carpooldetailsRepository.save(carpooldetails);
+		
+        if(countByParentid == 1) {
+        	logger.info("CarpooldetailsDAOImpl: updateCarpooldetails : Single CarpoolDetails update");
+        	    carpooldetailsRepository.save(carpooldetails);
 			return Constants.MSG_CARPOOL_UPDATE_SINGLE;
 		}
-		List<Integer> listOfIds = carpooldetailsRepository.getListOfIdsByParentid(carpooldetails.getId());
-		carpooldetailsRepository.udpateMultipleCarpoolDetails(carpooldetails, listOfIds);
-		return Constants.MSG_CARPOOL_UPDATE_MULTI;
-
+        logger.info("CarpooldetailsDAOImpl: updateCarpooldetails : Multiple CarpoolDetails update");
+         List<Carpooldetails> listOfCarpools = carpooldetailsRepository.findByParentid(carpooldetails.getId());
+         if(CollectionUtils.isNotEmpty(listOfCarpools)) {
+        	     listOfCarpools.forEach(cp->{
+        	    	       cp.setFromtime(carpooldetails.getFromtime());
+        	    	       cp.setToTime(carpooldetails.getToTime());
+        	    	       cp.setNoofseats(carpooldetails.getNoofseats());
+        	    	       carpooldetailsRepository.save(cp);
+        	     });
+         }
+         return Constants.MSG_CARPOOL_UPDATE_MULTI;
+			
 	}
 
 	@Override

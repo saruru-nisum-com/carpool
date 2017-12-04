@@ -40,7 +40,8 @@ public class CarpooldetailsServiceImplTest {
 	@Before
 	public void setUp() throws Exception{
 		Timestamp createdDate = new Timestamp(1511249628);
-		Timestamp modifiedDate = carpooldetailsServiceImpl.modifiedDate;
+		Timestamp modifiedDate = carpooldetailsServiceImpl.currentDate;
+		CarpooldetailsDto carpooldetailsDto = new CarpooldetailsDto();
 		carpooldetailsDto.setId(1);
 		carpooldetailsDto.setParentid(1);
 		carpooldetailsDto.setEmailId("mbheemanapalli@nisum.com");

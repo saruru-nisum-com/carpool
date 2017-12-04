@@ -124,11 +124,7 @@
 			<div class = "col-md-12">
 			<table class="grid">
 				<tr>
-					<th style="width: 30px;"><button
-							class="btn btn-primary btn-xs" id="gridToggleButton"
-							ng-click="showGridData()" style="width: 30px">+</button>
-						<input type="checkbox" name="mainCheckBox"
-						style="position: relative; left: 5px;" ng-model="checkedData" /></th>
+					<th style="width: 30px;"></th>
 					<th style="width: 100px;">Vehicle Type</th>
 					<th style="width: 130px;">Total No: of Seats</th>
 					<th style="width: 100px;">From Date</th>
@@ -141,31 +137,63 @@
 					<tr ng-if="value.id == value.parentid">
 						<td style="width: 30px"><button
 								class="btn btn-primary btn-xs" id="gridButton{{key}}"
-								ng-click="showData(key)" style="width: 30px">+</button>
+								ng-click="showChildData(key)" style="width: 30px">+</button>
 							<input type="checkbox" style="position: relative; left: 5px;"
-							ng-model="checkedData" /></td>
+							ng-model="selectedParent[$index]" /></td>
 						<td>{{value.vehicleType}}</td>
-						<td>{{value.totalNoOfSeats}}</td>
+						<td><span ng-switch="value.vehicleType" class="spanCls"> 
+						 <span ng-switch-when="2"> <input type="number"
+									name="input" ng-model="value.totalNoOfSeats" min="1" max="1" value='1'
+									ng-readonly="true" ng-disabled="!selectedParent[$index]"
+						             ng-class="{'txtdisabled': !selectedParent[$index]}">
+							</span> <span ng-switch-when="4"> <input type="number"
+									name="input" ng-model="value.totalNoOfSeats" min="1" max="4"
+									ng-disabled="!selectedParent[$index]"
+						            ng-class="{'txtdisabled': !selectedParent[$index]}" required>
+							</span>
+						</span></td>
 						<td>{{value.fromDate}}</td>
 						<td>{{value.toDate}}</td>
-						<td>{{value.startTime}}</td>
-						<td>{{value.toTime}}</td>
+						<td>
+						   <input type="time"  ng-model="value.startTime" ng-disabled="!selectedParent[$index]"
+						   ng-class="{'txtdisabled': !selectedParent[$index]}" required />
+						</td>
+						<td>
+						    <input type="time"  ng-model="value.toTime" ng-disabled="!selectedParent[$index]"
+						   ng-class="{'txtdisabled': !selectedParent[$index]}" required />
+						</td>
 						<td><img src="images/./view.png" style="left: -10px" title="view" ng-click="activate(checkedData)"/>
 							<img src="images/./edit.png"
-							style="width: 20px; height: 20px; left: -5px;" title="edit" ng-click="activate(checkedData)" /> <img
+							style="width: 20px; height: 20px; left: -5px;" title="edit" ng-click="!selectedParent[$index]|| confirmEdit('carpool',value);" /> <img
 							src="images/./delete2.png" style="width: 20px; height: 20px;"
 							title="delete" ng-click="activate(checkedData)" /></td>
 					</tr>
 					<tr ng-repeat="x in value.child" class="hideChild{{key}}"
 						ng-show="show{{key}}">
 						<td style="width: 40px"><input type="checkbox"
-							style="position: relative; left: 21px;" ng-model="checkedData" /></td>
+							style="position: relative; left: 21px;" ng-model="selectedchild[$index]" /></td>
 						<td>{{x.vehicleType}}</td>
-						<td>{{x.totalNoOfSeats}}</td>
+						<td><span ng-switch="x.vehicleType" class="spanCls"> 
+						 <span ng-switch-when="2"> <input type="number"
+									name="input" ng-model="x.totalNoOfSeats" min="1" max="1" value='1'
+									ng-readonly="true" ng-disabled="!selectedchild[$index]"
+						             ng-class="{'txtdisabled': !selectedchild[$index]}">
+							</span> <span ng-switch-when="4"> <input type="number"
+									name="input" ng-model="x.totalNoOfSeats" min="1" max="4"
+									ng-disabled="!selectedchild[$index]"
+						            ng-class="{'txtdisabled': !selectedchild[$index]}" required>
+							</span>
+						</span></td>
 						<td>{{x.fromDate}}</td>
 						<td>{{x.toDate}}</td>
-						<td>{{x.startTime}}</td>
-						<td>{{x.toTime}}</td>
+						<td>
+						    <input type="time"  ng-model="x.startTime" ng-disabled="!selectedchild[$index]"
+						   ng-class="{'txtdisabled': !selectedchild[$index]}" required />
+						</td>
+						<td>
+						    <input type="time"  ng-model="x.toTime" ng-disabled="!selectedchild[$index]"
+						   ng-class="{'txtdisabled': !selectedchild[$index]}" required />
+						</td>
 						<td><img src="images/./view.png" style="left: -10px" title="view" ng-click="activate(checkedData)" />
 							<img src="images/./edit.png"
 							style="width: 20px; height: 20px; left: -5px;" title="edit" ng-click="activate(checkedData)" /> <img
@@ -176,10 +204,41 @@
 			</table>
 			</div>
 			<!--  latest code end -->
+				  <div id="editModal" class="modal fade" role="dialog">
+					  <div class="modal-dialog">
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-body">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h3>Are you sure. Do you want to edit this carPool?</h3>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="custombtn btn-normal" ng-click="editItem();">Ok</button>
+									<button type="button" class="custombtn btn-cancel" data-dismiss="modal">cancel</button>
+								</div>
+							</div>
+					 </div>
+				</div>
+				<div id="editStatus" class="modal fade" role="dialog">
+					<div class="modal-dialog">
+						<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-body">
+									<div class="errStatus" ng-if="errorMessage!='';">{{errorMessage}}</div>
+							        <div class="success" ng-if="successMessage!='';">{{successMessage}}</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="custombtn btn-cancel" data-dismiss="modal">Ok</button>
+								</div>
+							</div>
+					</div>
+               </div>
 		</div>
 		<!-- Post A Ride Design end  -->
 	</div>
 	</div>
 </div>
+
+
 </body>
 </html>

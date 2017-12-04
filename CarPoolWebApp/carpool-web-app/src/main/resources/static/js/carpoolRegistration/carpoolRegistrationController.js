@@ -294,204 +294,13 @@ carpoolRegApp
 
 					// driver/rider screen code ends here
 
-					$scope.data = [ {
-						id : '0',
-						name : 'Select Vehicle Type'
-					}, {
-						id : '2',
-						name : 'TwoWheeler'
-					}, {
-						id : '4',
-						name : 'FourWheeler'
-					} ];
-					$scope.fromDate = {
-						value : new Date(),
-						currentDate : new Date()
-					};
-					$scope.toDate = {
-						value : new Date(),
-						currentDate : new Date()
-					};
-
-					$scope.startTime = {
-						value : new Date(2015, 10, 10, 09, 00, 0)
-					};
-					$scope.endTime = {
-						value : new Date(2015, 10, 10, 19, 00, 0)
-					};
-
-					// Vehicle type selection starts
-					$scope.fnVehicleType = function() {
-						$scope.seat = {
-							value : 1
-						};
-					}
-					// end
-
-					$scope.fnAddPostRide = function() {
-						var vType = $scope.vehicleSelect;
-						var vSeatCap = $scope.seat.value;
-						var fromDate = $scope.fromDate.value;
-						var toDate = $scope.toDate.value;
-						var startTime = $scope.startTime.value;
-						var endTime = $scope.endTime.value;
-						var parseFromDate = $filter('date')(new Date(fromDate),
-								'MM/dd/yyyy');
-						var parseToDate = $filter('date')(new Date(toDate),
-								'MM/dd/yyyy');
-						var parseStartTime = $filter('date')(
-								new Date(startTime), 'h:mm a');
-						var parseEndTime = $filter('date')(new Date(endTime),
-								'h:mm a');
-
-						// Start date and End date difference validation starts
-						// var d1 = new Date(parseFromDate);
-						// var d2 = new Date(parseToDate);
-						// var timeDiff = d2.getTime() - d1.getTime();
-						// var DaysDiff = timeDiff / (1000 * 3600 * 24);
-						// window.alert(DaysDiff);
-						// end
-
-						var profileData = localStorageService.get('profile');
-						var userid = profileData.emailId;
-						$scope.postRide = {
-							"vType" : vType,
-							"vSeatCap" : vSeatCap,
-							"fromDate" : parseFromDate,
-							"toDate" : parseToDate,
-							"startTime" : parseStartTime,
-							"endTime" : parseEndTime,
-							"userid" : userid
-						}
-
-						carpoolRegistrationService
-								.rideAddToGridFn($scope.postRide)
-								.then(
-										function(response) {
-
-											if (response.errorCode === 500) {
-												$scope.message = response.errorMessage
-											} else {
-												// localStorageService.set('profile',
-												// response);
-												$scope.names = response.records;
-												// $state.go("carpoolRegistration");
-
-												var vehicleList = [ {
-													"parentId" : "1",
-													"isParent" : "true",
-													"isChild" : "false",
-													"vType" : "2",
-													"vSeatCap" : "1",
-													"fromDate" : "15/11/2017",
-													"toDate" : "16/11/2017",
-													"startTime" : "08:30AM",
-													"endTime" : "07:00PM"
-												}, {
-													"childId" : "1",
-													"parentId" : "1",
-													"isParent" : "false",
-													"isChild" : "true",
-													"vType" : "2",
-													"vSeatCap" : "1",
-													"fromDate" : "15/11/2017",
-													"toDate" : "15/11/2017",
-													"startTime" : "08:30AM",
-													"endTime" : "07:00PM"
-												}, {
-													"childId" : "1",
-													"parentId" : "1",
-													"isParent" : "false",
-													"isChild" : "true",
-													"vType" : "2",
-													"vSeatCap" : "1",
-													"fromDate" : "16/11/2017",
-													"toDate" : "16/11/2017",
-													"startTime" : "08:30AM",
-													"endTime" : "07:00PM"
-												}, {
-													"parentId" : "2",
-													"isParent" : "true",
-													"isChild" : "false",
-													"vType" : "4",
-													"vSeatCap" : "3",
-													"fromDate" : "17/11/2017",
-													"toDate" : "18/11/2017",
-													"startTime" : "08:30AM",
-													"endTime" : "07:00PM"
-												}, {
-													"childId" : "2",
-													"parentId" : "2",
-													"isParent" : "false",
-													"isChild" : "true",
-													"vType" : "4",
-													"vSeatCap" : "3",
-													"fromDate" : "17/11/2017",
-													"toDate" : "17/11/2017",
-													"startTime" : "08:30AM",
-													"endTime" : "07:00PM"
-												}, {
-													"childId" : "2",
-													"parentId" : "2",
-													"isParent" : "false",
-													"isChild" : "true",
-													"vType" : "4",
-													"vSeatCap" : "3",
-													"fromDate" : "18/11/2017",
-													"toDate" : "18/11/2017",
-													"startTime" : "08:30AM",
-													"endTime" : "07:00PM"
-												} ];
-
-												var skipStep = true;
-												var sortedVehicle = {};
-												for (var i = 0; i < vehicleList.length; i++) {
-													if (!sortedVehicle[vehicleList[i].parentId]) {
-														sortedVehicle[vehicleList[i].parentId] = [];
-														sortedVehicle[vehicleList[i].parentId]
-																.push(vehicleList[i]);
-														skipStep = false;
-													}
-													if (skipStep) {
-														sortedVehicle[vehicleList[i].parentId]
-																.push(vehicleList[i]);
-													}
-													skipStep = true;
-												}
-
-												console.log('sortedImages: ',
-														sortedVehicle);
-												$scope.foo = sortedVehicle;
-
-											}
-										}, function(response) {
-											// console
-											window.alert(response)
-										});
-
-					}
-
-					// Vehicle type selection starts
-					$scope.fnVehicleType = function() {
-						$scope.seat = {
-							value : 1
-						};
-					}
-					// end
-
-					$scope.userselected = [];
-
-					$scope.display = function(childId) {
-						$("." + childId).toggle();
-					}
-
 				});
 
 carpoolRegApp
 		.controller(
 				'postARideCtrl',
 				function($scope, $state, localStorageService,
-						carpoolRegistrationService, $rootScope, $filter, check) {
+						carpoolRegistrationService, carpoolService, $rootScope, $filter, check) {
 
 					$scope.data = [ {
 						id : '0',
@@ -530,7 +339,32 @@ carpoolRegApp
 					$scope.seats = function(vType) {
 						check.checkVehicle(vType);
 					}
-
+					
+					$scope.getAvailablePools = function(){
+	                	 console.log(" into getAvailablePools ");
+	                	 carpoolService.getLoggedInUserCarpools($scope.userId)
+			              .then(function(response){
+					            	  if (response.errorCode === 500) {
+										//$scope.message = response.errorMessage
+					            		  console.log(response);
+								  }else{
+									    console.log(response);
+									    console.log(response.length+ " : response.lengths ");
+									    if(response.length > 0){
+						                	 console.log(" if condition for length ");
+										  $scope.loadTableGrid(response);
+									    }else{
+									      console.log("No Carpools Available");
+									    }
+								  }
+			              },function(response){
+			            	         console.log(response);
+			              });
+                    }
+					
+					//Loading TableGrid of Carpools on page load
+					   $scope.getAvailablePools();
+					  
 					$scope.fnAddPostRide = function() {
 						var vType = $scope.vehicleSelect;
 						var vSeatCap = $scope.seat.value;
@@ -564,6 +398,7 @@ carpoolRegApp
 							"toTime" : parseEndTime,
 							"emailId" : profileObj.emailId
 						}
+						
 						carpoolRegistrationService
 								.rideAddToGridFn($scope.postRide)
 								.then(
@@ -572,149 +407,175 @@ carpoolRegApp
 											if (response.errorCode === 500) {
 												$scope.message = response.errorMessage
 											} else {
-												//$scope.jsonData =  [{"id":35493607,"parentid":53703890,"userid":"rsekhamuri999999@nisum.com","vehicleType":2,"totalNoOfSeats":1,"fromDate":"11/24/2017","toDate":"11/24/2017","startTime":"9:00 AM","toTime":"7:00 PM","status":9,"createddate":1511568000000,"modifieddate":1511481600000},{"id":35068734,"parentid":53703890,"userid":"rsekhamuri999999@nisum.com","vehicleType":2,"totalNoOfSeats":1,"fromDate":"11/25/2017","toDate":"11/25/2017","startTime":"9:00 AM","toTime":"7:00 PM","status":9,"createddate":1511568000000,"modifieddate":1511481600000},{"id":23907766,"parentid":53703890,"userid":"rsekhamuri999999@nisum.com","vehicleType":2,"totalNoOfSeats":1,"fromDate":"11/26/2017","toDate":"11/26/2017","startTime":"9:00 AM","toTime":"7:00 PM","status":9,"createddate":1511568000000,"modifieddate":1511481600000},{"id":44044415,"parentid":53703890,"userid":"rsekhamuri999999@nisum.com","vehicleType":2,"totalNoOfSeats":1,"fromDate":"11/27/2017","toDate":"11/27/2017","startTime":"9:00 AM","toTime":"7:00 PM","status":9,"createddate":1511568000000,"modifieddate":1511481600000},{"id":53703890,"parentid":53703890,"userid":"rsekhamuri999999@nisum.com","vehicleType":2,"totalNoOfSeats":1,"fromDate":"11/24/2017","toDate":"11/30/2017","startTime":"9:00 AM","toTime":"7:00 PM","status":9,"createddate":1511568000000,"modifieddate":1511481600000},{"id":70331684,"parentid":53703890,"userid":"rsekhamuri999999@nisum.com","vehicleType":2,"totalNoOfSeats":1,"fromDate":"11/28/2017","toDate":"11/28/2017","startTime":"9:00 AM","toTime":"7:00 PM","status":9,"createddate":1511568000000,"modifieddate":1511481600000},{"id":55467488,"parentid":53703890,"userid":"rsekhamuri999999@nisum.com","vehicleType":2,"totalNoOfSeats":1,"fromDate":"11/29/2017","toDate":"11/29/2017","startTime":"9:00 AM","toTime":"7:00 PM","status":9,"createddate":1511568000000,"modifieddate":1511481600000},{"id":32160961,"parentid":53703890,"userid":"rsekhamuri999999@nisum.com","vehicleType":2,"totalNoOfSeats":1,"fromDate":"11/30/2017","toDate":"11/30/2017","startTime":"9:00 AM","toTime":"7:00 PM","status":9,"createddate":1511568000000,"modifieddate":1511481600000},{"id":53703891,"parentid":53703891,"userid":"rsekhamuri999999@nisum.com","vehicleType":2,"totalNoOfSeats":1,"fromDate":"11/24/2017","toDate":"11/30/2017","startTime":"9:00 AM","toTime":"7:00 PM","status":9,"createddate":1511568000000,"modifieddate":1511481600000},{"id":35493607,"parentid":53703891,"userid":"rsekhamuri999999@nisum.com","vehicleType":2,"totalNoOfSeats":1,"fromDate":"11/24/2017","toDate":"11/24/2017","startTime":"9:00 AM","toTime":"7:00 PM","status":9,"createddate":1511568000000,"modifieddate":1511481600000},{"id":35068734,"parentid":53703891,"userid":"rsekhamuri999999@nisum.com","vehicleType":2,"totalNoOfSeats":1,"fromDate":"11/25/2017","toDate":"11/25/2017","startTime":"9:00 AM","toTime":"7:00 PM","status":9,"createddate":1511568000000,"modifieddate":1511481600000},{"id":23907766,"parentid":53703891,"userid":"rsekhamuri999999@nisum.com","vehicleType":2,"totalNoOfSeats":1,"fromDate":"11/26/2017","toDate":"11/26/2017","startTime":"9:00 AM","toTime":"7:00 PM","status":9,"createddate":1511568000000,"modifieddate":1511481600000}];
-												$scope.jsonData = response;
-												$scope.length = $scope.jsonData.length;
-												$scope.parentIncrement = 0;
-												$scope.childIncrement = 0;
-												$scope.parentIdData = []; // Sorted
-												// Array
-												// Object
-												$scope.childIdData = [];
-												$scope.parentIdDetails = []; // storing
-												// parentIDs
-
-												$scope.jsonData
-														.forEach(function(
-																value, index) {
-
-															if (value.id == value.parentid) {
-																$scope.parentIdData[$scope.parentIncrement] = value;
-																$scope.parentIdDetails[$scope.parentIncrement] = value.parentid;
-																++$scope.parentIncrement;
-															}
-														});
-
-												for (var i = 0; i < $scope.parentIdData.length; i++) {
-
-													$scope.jsonData
-															.forEach(function(
-																	value,
-																	index) {
-
-																if (value.id != value.parentid
-																		&& value.parentid == $scope.parentIdDetails[i]) {
-																	$scope.childIdData[$scope.childIncrement] = value;
-																	++$scope.childIncrement;
-																}
-
-															});
-													$scope.parentIdData[i].child = $scope.childIdData; // adding
-													// childData
-													// to
-													// parent
-													$scope.childIncrement = 0;
-													$scope.childIdData = [];
-												}
-
-												// console.log($scope.parentIdData);
-
-												// Child Elements Toggle
-												for (var j = 0; j < $scope.parentIdDetails.length; j++) { // Dynamically
-													// creating
-													// $scope
-													// variables
-													var x = "show" + j;
-													$scope[x] = false;
-												}
-
-												console.log($scope);
-												$scope.showData = function(x) {
-
-													var x1 = "show" + x;
-													$scope[x1] = !$scope[x1];
-
-													if ($scope[x1]) {
-														$("#gridButton" + x)
-																.text("-");
-														$("#gridButton" + x)
-																.parent()
-																.parent()
-																.attr("style",
-																		"background-color:#c4e2ed");
-													} else {
-														$("#gridButton" + x)
-																.text("+");
-														$("#gridButton" + x)
-																.parent()
-																.parent()
-																.removeAttr(
-																		"style");
-													}
-
-													// console.log($scope[x1]);
-
-												}
-
-												console
-														.log($scope.parentIdData);
-
-												// Grid Data Toggle
-												$scope.showGridData = function() {
-
-													for (var z = 0; z < $scope.parentIdDetails.length; z++) {
-														var gridToggle = "show"+ z;
-														$scope[gridToggle] = !$scope[gridToggle];
-													}
-													if ($scope.show0) {
-														$("#gridToggleButton").text("-");
-
-														for (var y = 0; y < $scope.parentIdDetails.length; y++) {
-															$("#gridButton" + y)
-																	.text("-");
-															$("#gridButton" + y)
-																	.parent()
-																	.parent()
-																	.attr(
-																			"style",
-																			"background-color:#c4e2ed");
-														}
-
-													} else {
-														$("#gridToggleButton").text("+");
-
-														for (var y = 0; y < $scope.parentIdDetails.length; y++) {
-															$("#gridButton" + y)
-																	.text("+");
-															$("#gridButton" + y)
-																	.parent()
-																	.parent()
-																	.removeAttr(
-																			"style");
-														}
-													}
-
-												}
-
-												// for Checkbox toggle
-
-											    $scope.checkedData = false;
-											    
-											    $scope.activate = function(x){
-											        
-											        if(x){
-											            alert("clicked");
-											        }
-											    }
-
+												$scope.loadTableGrid(response);
 											}
 										}, function(response) {
-											// console
 											window.alert(response)
 										});
 
 					}
+					
+					
+					                 $scope.loadTableGrid = function(response){
+					                	 
+					                	    console.log("response");
+					                	    console.log(response);
+					                	        $scope.jsonData = response;
+											$scope.length = $scope.jsonData.length;
+											$scope.parentIncrement = 0;
+											$scope.childIncrement = 0;
+											$scope.parentIdData = []; // Sorted
+											// Array
+											// Object
+											$scope.childIdData = [];
+											$scope.parentIdDetails = [];    
+											
+											$scope.jsonData
+											.forEach(function(
+													value, index) {
+												value['startTime'] = $scope.timeParser(value.startTime);
+												value['toTime'] = $scope.timeParser(value.toTime);
 
+												if (value.id == value.parentid) {
+													$scope.parentIdData[$scope.parentIncrement] = value;
+													$scope.parentIdDetails[$scope.parentIncrement] = value.parentid;
+													++$scope.parentIncrement;
+												}
+											});
+											
+											for (var i = 0; i < $scope.parentIdData.length; i++) {
+												$scope.jsonData
+														.forEach(function(
+																value,
+																index) {
+
+															if (value.id != value.parentid
+																	&& value.parentid == $scope.parentIdDetails[i]) {
+																$scope.childIdData[$scope.childIncrement] = value;
+																++$scope.childIncrement;
+															}
+
+														});
+												$scope.parentIdData[i].child = $scope.childIdData; // adding
+												// childData
+												// to
+												// parent
+												$scope.childIncrement = 0;
+												$scope.childIdData = [];
+										   }
+											
+											// Child Elements Toggle
+											for (var j = 0; j < $scope.parentIdDetails.length; j++) { // Dynamically
+												// creating
+												// $scope
+												// variables
+												var x = "show" + j;
+												$scope[x] = false;
+											}
+											
+											console.log($scope.parentIdData);
+					                	 
+					                 }
+					                 
+					                 // displaying all the Child while click on (+) button on table header
+									 /*$scope.showGridData = function() {
+
+											for (var z = 0; z < $scope.parentIdDetails.length; z++) {
+												var gridToggle = "show"+ z;
+												$scope[gridToggle] = !$scope[gridToggle];
+											}
+											if ($scope.show0) {
+												$("#gridToggleButton").text("-");
+
+												for (var y = 0; y < $scope.parentIdDetails.length; y++) {
+													$("#gridButton" + y)
+															.text("-");
+													$("#gridButton" + y)
+															.parent()
+															.parent()
+															.attr(
+																	"style",
+																	"background-color:#c4e2ed");
+												}
+
+											} else {
+												$("#gridToggleButton").text("+");
+
+												for (var y = 0; y < $scope.parentIdDetails.length; y++) {
+													$("#gridButton" + y)
+															.text("+");
+													$("#gridButton" + y)
+															.parent()
+															.parent()
+															.removeAttr(
+																	"style");
+												}
+											}
+
+									}*/
+					                 
+									 // Displaying Child on click of (+) button
+					                 $scope.showChildData = function(x) {
+
+											var x1 = "show" + x;
+											$scope[x1] = !$scope[x1];
+
+											if ($scope[x1]) {
+												$("#gridButton" + x)
+														.text("-");
+												$("#gridButton" + x)
+														.parent()
+														.parent()
+														.attr("style",
+																"background-color:#c4e2ed");
+											} else {
+												$("#gridButton" + x)
+														.text("+");
+												$("#gridButton" + x)
+														.parent()
+														.parent()
+														.removeAttr(
+																"style");
+											}
+
+									}
+					                 
+				                    $scope.timeParser = function (date){
+										var time = date.split(" ")[0];
+									    var meridian = date.split(" ")[1];
+									    var hrs = time.split(':')[0];
+									    var mins = time.split(':')[1];
+									    if(meridian == 'PM' && hrs != "12"){
+									       hrs = 12 + parseInt(hrs);
+									    }
+									      return new Date(2015, 10, 10, hrs, mins, 0);
+									}
+					                 
+									$scope.confirmEdit = function(name, item) {
+										item['startTime'] = $filter('date')(new Date(item.startTime), 'h:mm a');
+										item['toTime'] = $filter('date')(new Date(item.toTime), 'h:mm a');
+										$scope.editteditem = item;
+										$('#editModal').modal('show');
+									}
+									
+									$scope.editItem = function() {
+										   carpoolService.updateCarpoolDetails($scope.editteditem)
+										               .then(function(response){
+										            	       if(response.errorCode){
+										            	    	       $scope.errorMessage = response.errorMessage;
+										            	       }else{
+										            	    	       $scope.successMessage = response.message;
+										            	    	       $scope.errorMessage = '';
+										            	    	       $scope.getAvailablePools();
+										            	       }
+										            	       $('#editStatus').modal('show');
+										               },function(response){
+										            	        console.log(response);
+										            	        window.alert(response.errorMessage);
+										               });
+										$('#editModal').modal('hide');
+								   }
+										
 				});
 
 carpoolRegApp.factory('check', function() {
@@ -731,3 +592,4 @@ carpoolRegApp.factory('check', function() {
 		}
 	};
 });
+ 

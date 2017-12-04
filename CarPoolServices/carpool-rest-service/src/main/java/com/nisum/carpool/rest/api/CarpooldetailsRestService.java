@@ -2,6 +2,7 @@ package com.nisum.carpool.rest.api;
 
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,8 @@ public class CarpooldetailsRestService {
 		}
 		}catch (Exception e) {
 			Errors error = new Errors();
-			error.setErrorCode("BAD REQUEST");
-			error.setErrorMessage(Constants.MSG_UPDATE_CARPOOL_FAILED);
+			error.setErrorCode("500");
+			error.setErrorMessage(e.getMessage());
 			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
 		return responseEntity;
@@ -149,6 +150,30 @@ public class CarpooldetailsRestService {
 		}
 		logger.info("Exit from CarpooldetailsRestService :: getCarpoolDetailsById");
 		return new ResponseEntity<CarpooldetailsDto>(carpoolDto, HttpStatus.OK);
+	}
+	
+	/**
+	 * @author suresh valavala
+	 * @param emailId
+	 * @return list of carpools
+	 */
+	
+	@RequestMapping(value="/getLoggedInUserCarpoolDetails/{emailId:.+}", method = RequestMethod.GET, produces="application/json")
+	public ResponseEntity<?> getCarpoolDetailsByEmailId(@PathVariable String emailId){
+		List<CarpooldetailsDto> carpoolDtoList=null;
+		try {
+			carpoolDtoList = carpooldetailsService.loadCarpoolDetailsByEmailId(emailId);
+			if(CollectionUtils.isEmpty(carpoolDtoList)) {
+				return new ResponseEntity<String>("Data Is Not Available", HttpStatus.NO_CONTENT);
+			}
+		}catch (Exception e) {
+			Errors error = new Errors();
+			error.setErrorCode("500");
+			error.setErrorMessage(e.getMessage());
+			return new ResponseEntity<Errors>(error, HttpStatus.BAD_REQUEST);
+		}
+		 ResponseEntity<List<CarpooldetailsDto>> entity = new ResponseEntity<List<CarpooldetailsDto>>(carpoolDtoList, HttpStatus.OK);
+		 return entity;
 	}
 	
 	

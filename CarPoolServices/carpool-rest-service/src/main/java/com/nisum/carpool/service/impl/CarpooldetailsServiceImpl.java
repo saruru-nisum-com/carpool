@@ -52,20 +52,21 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	@Autowired
 	CarpoolRiderDetailsDAO carpoolRiderDAO;
 	
-	Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
+	Timestamp currentDate = new Timestamp(System.currentTimeMillis());
 	@Override
 	public ServiceStatusDto updateCarpooldetails(CarpooldetailsDto carpooldetailsDto) {
 		// TODO Auto-generated method stub
 		logger.info("CarpooldetailsServiceImpl : updateCarpooldetails");
-		carpooldetailsDto.setModifieddate(modifiedDate);
+		carpooldetailsDto.setModifieddate(currentDate);
 		Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
 		String updateCarpooldetails = carpooldetailsDAO.updateCarpooldetails(carpooldetails);
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
-		if(ObjectUtils.anyNotNull(updateCarpooldetails))
-		{
+		if(ObjectUtils.anyNotNull(updateCarpooldetails)){
 			logger.info("CarpooldetailsServiceImpl : updateCarpooldetails ::"+updateCarpooldetails);
 			serviceStatusDto.setStatus(true);
 			serviceStatusDto.setMessage(updateCarpooldetails);
+		}else {
+			serviceStatusDto.setStatus(false);
 		}
 		return serviceStatusDto;
 	}
@@ -75,7 +76,7 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 		// TODO Auto-generated method stub
 		logger.info("CarpooldetailsServiceImpl : cancel Carpooldetails");
 		
-		carpooldetailsDto.setModifieddate(modifiedDate);
+		carpooldetailsDto.setModifieddate(currentDate);
 		
 		String cancelCarpooldetails=null;
 		try {
@@ -428,6 +429,25 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		}
 		logger.error("Exit from CarpooldetailsServiceImpl :: loadCarpoolDetailsById");
 		return carpoolDetsDto;
+	}
+	
+	/*
+	 * @author Suresh Valavala
+	 * 
+	 */
+	@Override
+	public List<CarpooldetailsDto> loadCarpoolDetailsByEmailId(String emailId) {
+		List<CarpooldetailsDto> carpooldetailsDtoList=null;
+		logger.info("CarpooldetailsServiceImpl:loadCarpoolDetailsByEmailId");
+
+		try {
+			List<Carpooldetails> carpooldetailsList = carpooldetailsDAO.getCarPoolByMailID(emailId);
+		    carpooldetailsDtoList= CarpooldetailsServiceUtil.convertDaoTODto(carpooldetailsList);
+		}catch (Exception e) {
+			logger.error("Exception Occured in Class:CarpooldetailsServiceImpl Method:loadCarpoolDetailsByEmailId Message:"+e.getMessage());
+		}
+		
+		return carpooldetailsDtoList;
 	}
 	
 	
