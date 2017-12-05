@@ -28,8 +28,10 @@ public interface CarpooldetailsDAO {
 
 	public void updateCarpoolStatusByPoolId(int poolStatus, Integer id);
 	
-
 	public void upateCarPoolStatusByIdandParentID(int pid, int status);
+	
+	public String getDriverEmailByCPId(int cpid);
+	
 
 }
 
