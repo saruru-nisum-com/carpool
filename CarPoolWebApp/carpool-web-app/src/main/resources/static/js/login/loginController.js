@@ -1,8 +1,10 @@
 loginApp.controller('loginController', function($scope, $state,
-		localStorageService, loginLogoutService, $rootScope, GoogleSignin) {
+		localStorageService, loginLogoutService, carpoolRegistrationService,$rootScope,GoogleSignin) {
 
 	// --google sign in methods
 	$scope.login = function() { 
+		
+		$scope.userStatus = [];
 		 
 		 GoogleSignin.signIn().then(function(authResult) {
 			 var profile = authResult.getBasicProfile();
@@ -18,8 +20,38 @@ loginApp.controller('loginController', function($scope, $state,
 			 $scope.message = response.errorMessage
 			 } else {
 			 localStorageService.set('profile', response);
-
-			 $state.go("leftSideMenu");
+			 $state.go("configurations");
+			 $scope.getUserData = function() {
+					var profileSessionData = localStorageService
+							.get('profile');
+					$scope.userId = profileSessionData.emailId;
+					carpoolRegistrationService
+							.getRegisterDriverData($scope.userId)
+							.then(
+									function(response) {
+										angular
+												.forEach(
+														response,
+														function(value, key) {
+															var userStatus = [];
+															if (value.isRider == 0) {// If
+																$scope.isRegisteredAsDriver = true;
+																$scope.autocomplete = value.location;
+																$scope.nearBy = value.nearby;
+																$scope.userStatus.push("D");
+																localStorage.setItem("userStatus",$scope.userStatus)
+																
+															} else if (value.isRider == 1) {// If
+																		console.log("Registered as Rider");
+																		$scope.userStatus.push("R")
+																		localStorage.setItem("userStatus",$scope.userStatus)
+																		
+															}
+														});
+									});
+				}
+			 
+			 $scope.getUserData();
 			 }
 			 }, function(response) {
 			 // console

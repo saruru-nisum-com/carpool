@@ -334,8 +334,8 @@ width: 100% !important;
 	padding-bottom:10px;
 }
 
-form{
-	padding-top:5%;
+h3{
+		margin-bottom:40px;
 }
 </style>
 <title>driver Registration</title>
@@ -351,6 +351,7 @@ form{
 		<h style="font-size: 36px; color: #00BFFF;">Driver profile</h>
 	</div>
 		<div id='driverDiv' class = "col-md-8">
+			<h3>Driver</h3>
 			<form name="driverForm" class="driverClass" novalidate>
 				<div class = "form-container">
 					<div class = "row driver-element">
@@ -402,10 +403,10 @@ form{
 					</div>
 					<div class = "row driver-element">
 						<div class = "col-md-4 col-md-offset-2">
-							<button class="registerAsDriverBtn btn btn-primary"
+							<button class="registerAsDriverBtn carpool-btn btn btn-primary"
 								ng-disabled="driverForm.cb4wheel.$error.required || driverForm.cb2wheel.$error.required || driverForm.nearBy.$error.required ||  driverForm.location.$error.required || isRegisteredAsDriver == true"
 								ng-click="registerAsDriver()">Register</button>
-							<button class="updateAsDriverBtn btn btn-primary"
+							<button class="updateAsDriverBtn carpool-btn btn btn-primary"
 								ng-disabled="isRegisteredAsDriver !== true"
 								ng-click="updateAsDriver()">Update</button>
 						</div>

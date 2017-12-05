@@ -15,28 +15,24 @@
 	.pool-element{
 		padding-bottom:10px;
 	}
-	
-	form{
-		padding-top:5%;
+	h3{
+		margin-bottom:40px;
 	}
 </style>
 <body>
-	<div class="container -fluid">
+	<div class="container-fluid">
 		<div class = "row">
 		<div id = "leftHandMenu" class="leftpane col-md-2">
 			<div ng-include="'js/partials/leftSideMenu.html'"></div>
 		</div>
-		
 		<div class="rightpane col-md-8">
+			<h3>Share a ride</h3>
 			<!--  <div class = "row">
 				<div class = "col-md-12">
 					<h3>Share A Ride</h3>
 				</div>
 			</div>-->
 			<!-- Post A Ride Design start  -->
-
-		<div class="row">
-		  	<div class = "col-md-12">
 			<form name="postRideForm">
 				<div class="form-container">
 					<div class = "row pool-element">
@@ -55,7 +51,7 @@
 						</div>
 					</div>
 					<div class = "row pool-element">
-						<div class = "col-md-3"><label>Total No: of Seats</label></div>
+						<div class = "col-md-2"><label>Total No: of Seats</label></div>
 						<div class = "col-md-4">
 							<span ng-switch="vehicleSelect" class="spanCls"
 									style="position: relative; top: 11px;"> 
@@ -140,8 +136,6 @@
 					</div>
 				</div>
 			</form>
-			</div>
-			<div class = "col-md-12">
 			<table class="grid">
 				<tr>
 					<th style="width: 30px;"></th>
@@ -222,8 +216,8 @@
 					</tr>
 				</tbody>
 			</table>
-			</div>
 			<!--  latest code end -->
+<<<<<<< Updated upstream
 				  <div id="editModal" class="modal fade" role="dialog">
 					  <div class="modal-dialog">
 							<!-- Modal content-->
@@ -270,6 +264,8 @@
 					 </div>
 				</div> -->
 		</div>
+=======
+>>>>>>> Stashed changes
 		<!-- Post A Ride Design end  -->
 	</div>
 	</div>
