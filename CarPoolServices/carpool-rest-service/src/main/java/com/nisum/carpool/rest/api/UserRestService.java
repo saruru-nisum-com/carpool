@@ -134,22 +134,22 @@ public class UserRestService {
 				//	emailAccount.getSubject(), MailSender.messageBody(userDto.getUserName()));
 				
 				//Get User location from profile
-				try {
-					logger.info("get user location from userReg Service###"+userDto.getEmailId());
-					userLocation = registerDAO.getLocationOfRegisteredUser(userDto.getEmailId());
-					
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if(userLocation!=null) {
-					logger.info("user location from profile**"+userLocation);
-					userDto.setLocation(userLocation);
-				}
-				
-				httpRequest.setAttribute("userSession", userDto);
-				userInfo = userDto;
 			}
+			try {
+				logger.info("get user location from userReg Service###"+userDto.getEmailId());
+				userLocation = registerDAO.getLocationOfRegisteredUser(userDto.getEmailId());
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(userLocation!=null) {
+				logger.info("user location from profile**"+userLocation);
+				userDto.setLocation(userLocation);
+			}
+			
+			httpRequest.setAttribute("userSession", userDto);
+			userInfo = userDto;
 
 		}
 
