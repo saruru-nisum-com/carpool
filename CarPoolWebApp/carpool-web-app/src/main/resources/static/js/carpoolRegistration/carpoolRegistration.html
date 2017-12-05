@@ -164,9 +164,9 @@
 						</td>
 						<td><img src="images/./view.png" style="left: -10px" title="view" ng-click="activate(checkedData)"/>
 							<img src="images/./edit.png"
-							style="width: 20px; height: 20px; left: -5px;" title="edit" ng-click="!selectedParent[$index]|| confirmEdit('carpool',value);" /> <img
-							src="images/./delete2.png" style="width: 20px; height: 20px;"
-							title="delete" ng-click="!selectedParent[$index]|| confirmDelete('carpool',value);/></td>
+							style="width: 20px; height: 20px; left: -5px;" title="edit" ng-click="!selectedParent[$index]|| confirmEdit('carpool',value);" /> 
+							<!-- <img src="images/./delete2.png" style="width: 20px; height: 20px;"
+							title="delete" ng-click="!selectedParent[$index]|| confirmDelete('carpool',value);/></td> -->
 					</tr>
 					<tr ng-repeat="x in value.child" class="hideChild{{key}}"
 						ng-show="show{{key}}">
@@ -234,9 +234,9 @@
 							</div>
 					</div>
                </div>
-               <div id="deleteModal" class="modal fade" role="dialog">
+              <!--  <div id="deleteModal" class="modal fade" role="dialog">
 					  <div class="modal-dialog">
-							<!-- Modal content-->
+							Modal content
 							<div class="modal-content">
 								<div class="modal-body">
 									<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -248,7 +248,7 @@
 								</div>
 							</div>
 					 </div>
-				</div>
+				</div> -->
 		</div>
 		<!-- Post A Ride Design end  -->
 	</div>
