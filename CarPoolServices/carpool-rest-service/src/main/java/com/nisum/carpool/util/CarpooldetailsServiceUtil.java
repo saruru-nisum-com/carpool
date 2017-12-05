@@ -122,10 +122,15 @@ public class CarpooldetailsServiceUtil {
 		return carpooldetails;
 
 	}
+	/**
+	 * @author Manohar Dhavala : CPL005: Create Car Pools (Post a ride)
+	 * 
+	 *         This method is used for finding the number of days between fromdate and todate
+	 */
 	public static int getNo_of_days(String fromDate, String toDate) {
 		
 		//to find number of days between two dates
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		Date dateStart = null;
 		Date dateEnd = null;
@@ -145,15 +150,26 @@ public class CarpooldetailsServiceUtil {
 		return diff;
 	}
 
+	/**
+	 * @author Manohar Dhavala : CPL005: Create Car Pools (Post a ride)
+	 * 
+	 *         This method is used for finding a random int
+	 */
+
 	public static int getRandomInt() {
 		// to find random generated int value
 		Random r = new Random();
 		return (10000000 + r.nextInt(89999999));
 	}
-
+	
+	/**
+	 * @author Manohar Dhavala : CPL005: Create Car Pools (Post a ride)
+	 * 
+	 *         This method is used to for adding n number of days to a given date
+	 */
 	public static String getAddedDate(String date, int no_of_days) {
 		// to add days to a given date
-	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		
 		Date dateStart = null;
 			
@@ -171,7 +187,7 @@ public class CarpooldetailsServiceUtil {
 		cal.add( Calendar.DATE, no_of_days );
 		
 		
-		SimpleDateFormat format1 = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 		System.out.println(cal.getTime());
 		// Output "Wed Sep 26 14:23:28 EST 2012"
 
@@ -180,5 +196,6 @@ public class CarpooldetailsServiceUtil {
 
 		return formatted;
 	}
+
 
 }
