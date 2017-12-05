@@ -341,17 +341,13 @@ carpoolRegApp
 					}
 					
 					$scope.getAvailablePools = function(){
-	                	 console.log(" into getAvailablePools ");
-	                	 carpoolService.getLoggedInUserCarpools($scope.userId)
+	                	 carpoolService.getLoggedInUserCarpools(localStorageService.get('profile').emailId)
 			              .then(function(response){
 					            	  if (response.errorCode === 500) {
 										//$scope.message = response.errorMessage
 					            		  console.log(response);
 								  }else{
-									    console.log(response);
-									    console.log(response.length+ " : response.lengths ");
 									    if(response.length > 0){
-						                	 console.log(" if condition for length ");
 										  $scope.loadTableGrid(response);
 									    }else{
 									      console.log("No Carpools Available");
@@ -418,8 +414,6 @@ carpoolRegApp
 					
 					                 $scope.loadTableGrid = function(response){
 					                	 
-					                	    console.log("response");
-					                	    console.log(response);
 					                	        $scope.jsonData = response;
 											$scope.length = $scope.jsonData.length;
 											$scope.parentIncrement = 0;
@@ -473,46 +467,7 @@ carpoolRegApp
 												$scope[x] = false;
 											}
 											
-											console.log($scope.parentIdData);
-					                	 
 					                 }
-					                 
-					                 // displaying all the Child while click on (+) button on table header
-									 /*$scope.showGridData = function() {
-
-											for (var z = 0; z < $scope.parentIdDetails.length; z++) {
-												var gridToggle = "show"+ z;
-												$scope[gridToggle] = !$scope[gridToggle];
-											}
-											if ($scope.show0) {
-												$("#gridToggleButton").text("-");
-
-												for (var y = 0; y < $scope.parentIdDetails.length; y++) {
-													$("#gridButton" + y)
-															.text("-");
-													$("#gridButton" + y)
-															.parent()
-															.parent()
-															.attr(
-																	"style",
-																	"background-color:#c4e2ed");
-												}
-
-											} else {
-												$("#gridToggleButton").text("+");
-
-												for (var y = 0; y < $scope.parentIdDetails.length; y++) {
-													$("#gridButton" + y)
-															.text("+");
-													$("#gridButton" + y)
-															.parent()
-															.parent()
-															.removeAttr(
-																	"style");
-												}
-											}
-
-									}*/
 					                 
 									 // Displaying Child on click of (+) button
 					                 $scope.showChildData = function(x) {

@@ -28,6 +28,7 @@ public interface CarpooldetailsService {
 	List<DriverCarPoolDto> getCarPoolsByParentId(int parentId) throws CarpooldetailsServiceException;
 	
 	List<CarpooldetailsDto> loadCarpoolDetailsByEmailId(String emaillId);
-
+	
+	void UpdatecarpoolStatus(Integer carpoolId) throws CarpooldetailsServiceException;
 
 }

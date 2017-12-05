@@ -23,7 +23,12 @@ public class VehicleTypesDAOImpl implements VehicleTypesDAO{
 	 */
 	public List<VehicleTypes> getVehicleTypes() {
 		logger.info("VehicleTypesDAOImpl :: getVehicleTypes :: finding all vehicle details");
-		return (List<VehicleTypes>) vehicleTypesRepository.findAll();
+		try {
+			return (List<VehicleTypes>) vehicleTypesRepository.findAll();
+		} catch(Exception e) {
+			logger.info("Entred into VehicleTypesDAOImpl Exception :: getVehicleTypes :: Exception occurred");
+			return null;
+		}
 	}
 
 }

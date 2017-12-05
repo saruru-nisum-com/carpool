@@ -452,138 +452,128 @@ if(registerDomain!=null && registerDomain.size()>0) {
 	
 	
 	public List<ParentCarpoolDetailsDto> getCarpoolsByDriver(String email) throws CarpooldetailsServiceException {
-		logger.debug("BEGIN:getCarpoolsByDriver in the" + this.getClass().getName());
+		logger.debug("BEGIN:getCarpoolsByDriver in the " + this.getClass().getName());
 		List<Carpooldetails> carpoolsList = null;
-		List<CarpoolRiderDetails> ridersList = null;
-		List<DriverCarPoolDto> driverCarpoolList = new ArrayList<>();
-		List<ParentCarpoolDetailsDto> ParentCarpoolDetailsDtosList=new ArrayList<>();
-		String location = null;
-		List<Integer> parentIdsList=new ArrayList();
-		
+		List<Integer> parentIdsList = new ArrayList();
+		List<ParentCarpoolDetailsDto> parentCarpoolDetailsDtos = new ArrayList<>();
 		try {
-			//carpoolsList = carpooldetailsDAO.getCarpoolsByDriver(email);
-			parentIdsList=carpooldetailsDAO.getCarPoolParentIds(email);
-			Set<Integer> parentIdsSet=new HashSet<>(parentIdsList);
-			
-			
-			
-			String parentStatus=null;
-			for(int p:parentIdsSet)
-			{
-				//getting CarpoolDetais By ParentID
-		List<Carpooldetails>	carpoolsByParentId=carpooldetailsDAO.getCarpoolsByParentId(p);
-		
-		if(carpoolsByParentId!=null)
-		{
-			ParentCarpoolDetailsDto parentCarpoolDetailsDto=new ParentCarpoolDetailsDto();
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			String currentdate=sdf.format(new Date());
-			
-			for (Carpooldetails carpooldetails : carpoolsByParentId) {
-				
-				
-				Date fromDate = sdf.parse(carpooldetails.getFromDate());
-		        Date currentDtae= sdf.parse(currentdate);
-				if( carpooldetails.getStatus()==3 || !fromDate.after(currentDtae))
-				{
-					//carpoolsByParentId.remove(carpooldetails);
-					continue;
-				}
-				if(carpooldetails.getId().equals(carpooldetails.getParentid()))
-				{
-					parentCarpoolDetailsDto.setFromDate(carpooldetails.getFromDate());
-					parentCarpoolDetailsDto.setToDate(carpooldetails.getToDate());
-					parentCarpoolDetailsDto.setLocation(carpooldetails.getLocation());
-					parentCarpoolDetailsDto.setParentId(carpooldetails.getParentid());
-					
-					//ParentCarpoolDetailsDtosList.add(parentCarpoolDetailsDto);
-					if(carpoolsByParentId.size()==1)
-					{
-						ridersList = carpoolRiderDAO.getRidersByCpID(carpooldetails.getId());
-						String Riderstatus=getRidersStatus(ridersList,carpooldetails);
-						parentCarpoolDetailsDto.setStatus(Riderstatus);
-						ParentCarpoolDetailsDtosList.add(parentCarpoolDetailsDto);
-						return ParentCarpoolDetailsDtosList;
+			parentIdsList = carpooldetailsDAO.getCarPoolParentIds(email);
+			Set<Integer> parentIdsSet = new HashSet<>(parentIdsList);
+			for (int p : parentIdsSet) {
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				String currentdate = sdf.format(new Date());
+
+				// getting CarpoolDetais By ParentID
+				List<Carpooldetails> carpoolsByParentId = carpooldetailsDAO.getCarpoolsByParentId(p);
+				for (Carpooldetails carpooldetails : carpoolsByParentId) {
+					if (carpooldetails.getId() == carpooldetails.getParentid()) {
+						Date fromDate = sdf.parse(carpooldetails.getFromDate());
+						Date currentDtae = sdf.parse(currentdate);
+						if (carpooldetails.getStatus() == 5 || fromDate.before(currentDtae)) {
+							break;
+						}
+
+						ParentCarpoolDetailsDto parentCarpoolDetailsDto = new ParentCarpoolDetailsDto();
+						parentCarpoolDetailsDto.setFromDate(carpooldetails.getFromDate());
+						parentCarpoolDetailsDto.setToDate(carpooldetails.getToDate());
+						parentCarpoolDetailsDto.setLocation(carpooldetails.getLocation());
+						parentCarpoolDetailsDto.setParentId(carpooldetails.getParentid());
+						parentCarpoolDetailsDto.setStatus(String.valueOf(carpooldetails.getStatus()));
+						parentCarpoolDetailsDtos.add(parentCarpoolDetailsDto);
+						break;
 					}
+
+				}
+
+			}
+			return parentCarpoolDetailsDtos;
+		} catch (Exception e) {
+			logger.error("ERROR: some thing went wrong getting getCarpoolsByDriver");
+			throw new CarpooldetailsServiceException(e.getMessage());
+		}
+
+	}
+
+	
+	public  List<DriverCarPoolDto> getCarPoolsByParentId(int parentId) throws CarpooldetailsServiceException
+	{
+		logger.debug("BEGIN: getCarPoolsByParentId in the class" + this.getClass().getName());
+		List<DriverCarPoolDto> driverCarPoolDtoList = new ArrayList();
+		try {
+			List<Carpooldetails> carpools = carpooldetailsDAO.getCarpoolsByParentId(parentId);
+
+			List<CarpoolRiderDetails> ridersList = null;
+
+			// driverCarPoolDto.setLocation(location);
+
+			for (Carpooldetails carpooldetails : carpools) {
+				if (carpooldetails.getId() == carpooldetails.getParentid()) {
 					continue;
 				}
 				DriverCarPoolDto driverCarPoolDto = new DriverCarPoolDto();
-				
-				driverCarPoolDto.setStatus("Open");
-				
 				ridersList = carpoolRiderDAO.getRidersByCpID(carpooldetails.getId());
-				
-				String status=null;
-				status=getRidersStatus(ridersList,carpooldetails);
-					driverCarPoolDto.setStatus(status);
-					//driverCarPoolDto.setFromDate(carpooldetails.getFromDate());
-					driverCarpoolList.add(driverCarPoolDto);
-				}
-				if(carpoolsByParentId==null || carpoolsByParentId.size()==0)
-				{
-			String parentSta=carPoolStatus(driverCarpoolList,carpoolsByParentId.size()-1);
-			if(parentSta!=null)
-			{
-			parentCarpoolDetailsDto.setStatus(parentSta);
-			
-			ParentCarpoolDetailsDtosList.add(parentCarpoolDetailsDto);
-			}
-				}
-			}
+				driverCarPoolDto.setFromDate(carpooldetails.getFromDate());
+				driverCarPoolDto.setToDate(carpooldetails.getToDate());
+				driverCarPoolDto.setLocation(carpooldetails.getLocation());
 
-		
-		}
+				driverCarPoolDto.setStatus(String.valueOf(carpooldetails.getStatus()));
+				driverCarPoolDtoList.add(driverCarPoolDto);
+			}
+			logger.debug("END: getCarPoolsByParentId in the class" + this.getClass().getName());
 		} catch (Exception ex) {
-			logger.error("Some thing went wrong while fetching getCarpoolsByDriver:: " + ex.getMessage());
+			logger.error("Some thing went wrong while fetching getCarpoolsByDriver::");
 			throw new CarpooldetailsServiceException(ex.getMessage());
+
 		}
-		logger.debug("END:BEGIN:getCarpoolsByDriver in the " + this.getClass().getName());
-		return ParentCarpoolDetailsDtosList;
-	}
-	
-	 public  List<DriverCarPoolDto> getCarPoolsByParentId(int parentId) throws CarpooldetailsServiceException
-	{
-		 logger.debug("BEGIN: getCarPoolsByParentId in the class"+this.getClass().getName());
-		 List<DriverCarPoolDto> driverCarPoolDtoList = new ArrayList();
-		 try
-		 {
-		List<Carpooldetails> carpools = carpooldetailsDAO.getCarpoolsByParentId(parentId);
-
-		
-		List<CarpoolRiderDetails> ridersList = null;
-
-		// driverCarPoolDto.setLocation(location);
-
-		for (Carpooldetails carpooldetails : carpools) {
-			DriverCarPoolDto driverCarPoolDto = new DriverCarPoolDto();
-			ridersList = carpoolRiderDAO.getRidersByCpID(carpooldetails.getId());
-			driverCarPoolDto.setFromDate(carpooldetails.getFromDate());
-			driverCarPoolDto.setToDate(carpooldetails.getToDate());
-			driverCarPoolDto.setLocation(carpooldetails.getLocation());
-			String status = getRidersStatus(ridersList, carpooldetails);
-			driverCarPoolDto.setStatus(status);
-			driverCarPoolDtoList.add(driverCarPoolDto);
-		}
-		logger.debug("END: getCarPoolsByParentId in the class"+this.getClass().getName());
-		 }
-		 catch(Exception ex)
-		 {
-			 logger.error("Some thing went wrong while fetching getCarpoolsByDriver::");
-				throw new CarpooldetailsServiceException(ex.getMessage());
-			 
-			 
-		 }
 		return driverCarPoolDtoList;
 	}
 	
-	private String getRidersStatus(List<CarpoolRiderDetails> ridersList,Carpooldetails carpooldetails)
+	
+	public	void UpdatecarpoolStatus(Integer carpoolId) throws CarpooldetailsServiceException
+	{
+		logger.debug("BEGIN: UpdatecarpoolStatus in the class" + this.getClass().getName());
+
+		List<CarpoolRiderDetails> carpoolRidersList = null;
+		List<Carpooldetails> carpoolDetailsList = null;
+		Carpooldetails carpooldetails = carpooldetailsDAO.getCarpoolByPoolID(carpoolId);
+		if (carpooldetails != null) {
+			int pid = 0;
+			int parentId = 0;
+
+			carpoolRidersList = carpoolRiderDAO.getRidersByCpID(carpoolId);
+
+			int poolStatus = getRidersStatus(carpoolRidersList, carpooldetails);
+			// carpooldetails.setStatus(status);
+			carpooldetailsDAO.updateCarpoolStatusByPoolId(poolStatus, carpooldetails.getId());
+			if (carpooldetails.getId() == carpooldetails.getParentid()) {
+				return;
+			} else {
+				carpoolDetailsList = carpooldetailsDAO.getCarpoolsByParentId(carpooldetails.getParentid());
+				for (Carpooldetails carpool : carpoolDetailsList) {
+					
+					if (carpool.getId() == carpool.getParentid()) {
+						pid = carpool.getId();
+						parentId = carpool.getParentid();
+						break;
+					}
+
+				}
+				if (carpoolDetailsList != null && carpoolDetailsList.size() > 0) {
+					int status = carPoolStatus(carpoolDetailsList);
+					carpooldetailsDAO.upateCarPoolStatusByIdandParentID(pid, status);
+				}
+			}
+		}
+	}
+	 
+	 
+	 private int getRidersStatus(List<CarpoolRiderDetails> ridersList,Carpooldetails carpooldetails)
 	{
 		if (ridersList != null && ridersList.size() > 0) {
 			int requestedCount = 0;
 			int approvedCount = 0;
 			int rejectedCount = 0;
-             
+
 			for (CarpoolRiderDetails rider : ridersList) {
 
 				switch (rider.getStatus()) {
@@ -601,66 +591,69 @@ if(registerDomain!=null && registerDomain.size()>0) {
 
 				}
 			}
-			String status =null;
+			int status = 0;
 			if (approvedCount == carpooldetails.getNoofseats()) {
-				status = "Closed";
+				status = 3;
 			} else if ((approvedCount + requestedCount) == carpooldetails.getNoofseats()) {
-				status = "Completed";
+				status = 3;
 			} else if ((approvedCount + requestedCount) > 0
 					&& (approvedCount + requestedCount) < carpooldetails.getNoofseats()) {
-				status = "Partially Completed";
-			} 
-			else
-			{
-				status="Open";
+				status = 2;
+			} else {
+				status = 1;
 			}
 			return status;
-	}
-		return "Open";
+		}
+		return 1;
 
-}
-	private String carPoolStatus(List<DriverCarPoolDto> driverCarpoolList,int poolCount)
+	}
+
+	 
+	 private int carPoolStatus(List<Carpooldetails> driverCarpoolList)
 	{
-		int closedCount=0;
-		int openCount=0;
-		int completedCount=0;
-		int partiallyCompletedCount=0;
-		for(DriverCarPoolDto c:driverCarpoolList)
-		{
-			switch(c.getStatus().trim().toLowerCase())
+
+		int openCount = 0;
+		int completedCount = 0;
+		int partiallyCompletedCount = 0;
+		String status = null;
+
+		if (driverCarpoolList.size() == 1) {
+			return driverCarpoolList.get(0).getStatus();
+		}
+
+		for (Carpooldetails c : driverCarpoolList) {
+			if (c.getId().equals(c.getParentid()))
+
 			{
-			case "closed":
-				++closedCount;
-				break;
-			
-			case "partiallycompleted":
+
+				continue;
+			}
+
+			switch (c.getStatus()) {
+			case 1:// open
+				return 1;
+
+			case 2:// partially Completed
 				++partiallyCompletedCount;
-			        break;
-			case "completed":
+				break;
+			case 3:// completed
 				++completedCount;
-				
+
 			}
-			if(closedCount>=poolCount)
-			{
-				return "Closed";
-			}
-			else 	if((closedCount+completedCount)==poolCount)
-			{
-				return "Completed";
-			}
-			else 	if((closedCount+completedCount)>0 && (closedCount+completedCount)<poolCount )
-			{
-				return "Partially Completed";
-			}
-			else
-			{
-				return "Open";
-			}
+
+		}
+		if (completedCount == driverCarpoolList.size() - 1) {
 			
-		
+			return 3;
+		}
+		if ((completedCount + partiallyCompletedCount) <= driverCarpoolList.size() - 1) {
+			return 2;
+		}
+		return 0;
 	}
-		return null;
-	}
-	
-	
+
+	 
 }
+	
+	
+

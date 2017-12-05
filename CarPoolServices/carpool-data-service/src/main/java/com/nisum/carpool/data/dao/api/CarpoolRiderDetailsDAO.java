@@ -17,4 +17,11 @@ public interface CarpoolRiderDetailsDAO {
 	
 	public List<CarpoolRiderDetails> getRidersByCpID(Integer poolid) ;
 
+	/*
+	 * MethodAuthor: @Rajesh Sekhamuri
+	 */
+
+
+	public Integer updateRiderStatus(CarpoolRiderDetails carpoolRiderDaoObj);
+	
 }

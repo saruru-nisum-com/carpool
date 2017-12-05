@@ -177,7 +177,11 @@ public class CarpooldetailsRestService {
 		 return entity;
 	}
 	
-	
+	/**
+	 * @author Sure Harish
+	 * @param the Email
+	 * this method will return all the carpool's shared by driver  .
+	 */
 
 	@RequestMapping(value = "/getMySharedRides/{email:.+}", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllCarpoolsByDriver(@PathVariable("email")String email) 
@@ -192,12 +196,37 @@ public class CarpooldetailsRestService {
 
 	}
 	
+	/**
+	 * @author Sure Harish
+	 * @param carpool Parent ID
+	 *  this method will return all the carpool's in the given parent ID
+	 */
 	@RequestMapping(value = "/getSharedRidesByParentId/{parentID}", method = RequestMethod.GET)
 	public ResponseEntity<?> getCarpoolsByParentID(@PathVariable("parentID")Integer id) 
 	{
 		logger.info("BEGIN: getAllParentCpsByDrievrID() in the CarpooldetailsRestService");
 		try {
 			return new ResponseEntity<List<DriverCarPoolDto>>(carpooldetailsService.getCarPoolsByParentId(id),HttpStatus.OK);
+		} catch (CarpooldetailsServiceException ex) {
+			logger.error("ERROR:some thing went wrong while fetching getAllCarpoolsByDriver");
+			return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+
+	}
+	
+	/**
+	 * @author Sure Harish
+	 * @param the carpoolID
+	 * this method updates the status of carool and parentCarpool.
+	 */
+	
+	@RequestMapping(value = "/updateCarpoolStatus/{carpoolId}", method = RequestMethod.GET)
+	public ResponseEntity<?> UpdatecarpoolStatutsByPoolID(@PathVariable("carpoolId")Integer carpoolId) 
+	{
+		logger.info("BEGIN: getAllParentCpsByDrievrID() in the CarpooldetailsRestService");
+		try {
+			carpooldetailsService.UpdatecarpoolStatus(carpoolId);
+			return new ResponseEntity<String>(HttpStatus.OK);
 		} catch (CarpooldetailsServiceException ex) {
 			logger.error("ERROR:some thing went wrong while fetching getAllCarpoolsByDriver");
 			return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
