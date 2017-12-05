@@ -37,7 +37,7 @@ public class RegisterServiceUtil {
 				if(reg.getModifieddate()!=null)
 					dto.setModifiedDate(Timestamp.valueOf(reg.getModifieddate()));
 				dto.setNearby(reg.getNearby());
-				dto.setEmailId(reg.getUserid());
+				dto.setEmailId(reg.getEmailid());
 				dto.setVehicleType(reg.getVehicletype());
 			}
 		}catch (Exception e) {
@@ -70,7 +70,7 @@ public class RegisterServiceUtil {
 			if(dto.getModifiedDate()!=null)
 			userReg.setModifieddate(dto.getModifiedDate().toLocalDateTime());
 			userReg.setNearby(dto.getNearby());
-			userReg.setUserid(dto.getEmailId());
+			userReg.setEmailid(dto.getEmailId());
 			userReg.setVehicletype(dto.getVehicleType());
 		}catch (Exception e) {
 			logger.error("Exception Occured in Class:RegisterServiceUtil Method:convertRegisterDtoObjectToRegisterDomain Message:"+e.getMessage());

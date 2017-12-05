@@ -95,7 +95,7 @@ public class RegisterServiceImpl  implements RegisterService{
 			JSONObject response = getLatLong(regDto.getLocation());
 			latitude = response.get("latitude").toString();
 			longitude = response.get("longitude").toString();
-			userRegistration.setUserid(regDto.getEmailId());
+			userRegistration.setEmailid(regDto.getEmailId());
 			userRegistration.setLocation(regDto.getLocation());
 			userRegistration.setLatitude(latitude);
 			userRegistration.setLongitude(longitude);
