@@ -18,6 +18,8 @@ public interface CarpoolRiderDetailsService {
 
 	List<RiderBookingDetailsDTO> getRiderBookingDetails(String emailId); 
 
+	List<CarpoolRiderDetailsDTO> cancelRiderBookingdetails(List<CarpoolRiderDetailsDTO> rides) throws Exception; 
+
 	/*
 	 * methodAuthor: @Rajesh Sekhamuri
 	 */
