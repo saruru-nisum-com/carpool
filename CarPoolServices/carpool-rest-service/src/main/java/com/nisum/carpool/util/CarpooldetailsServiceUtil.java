@@ -38,6 +38,8 @@ public class CarpooldetailsServiceUtil {
 				carpooldetailsDto.setToDate(c.getToDate());
 				carpooldetailsDto.setStartTime(c.getFromtime());
 				carpooldetailsDto.setToTime(c.getToTime());
+				Pool_Status pool_Status = Pool_Status.values()[(c.getStatus()-1)];
+				carpooldetailsDto.setStatusName(pool_Status.toString());
 				carpooldetailsDto.setStatus(c.getStatus());
 				carpooldetailsDto.setLocation(c.getLocation());
 				if(c.getCreateddate()!=null)
@@ -64,6 +66,8 @@ public class CarpooldetailsServiceUtil {
 			carpooldetailsDto.setToDate(carpooldetails.getToDate());
 			carpooldetailsDto.setStartTime(carpooldetails.getFromtime());
 			carpooldetailsDto.setToTime(carpooldetails.getToTime());
+			Pool_Status pool_Status = Pool_Status.values()[(carpooldetails.getStatus()-1)];
+			carpooldetailsDto.setStatusName(pool_Status.toString());
 			carpooldetailsDto.setStatus(carpooldetails.getStatus());
 			carpooldetailsDto.setLocation(carpooldetails.getLocation());
 			if(carpooldetails.getCreateddate()!=null)

@@ -9,7 +9,7 @@ public class CustomerCarpooldetailsDto {
 	private String userName;
 	private String location;
 	private String mobile;
-	List<Carpooldetails> listCarpoolDetails;
+	List<CarpooldetailsDto> listCarpoolDetails;
 	public CustomerCarpooldetailsDto()
 	{
 		listCarpoolDetails=new ArrayList<>();
@@ -39,11 +39,11 @@ public class CustomerCarpooldetailsDto {
 		this.mobile = mobile;
 	}
 
-	public List<Carpooldetails> getListCarpoolDetails() {
+	public List<CarpooldetailsDto> getListCarpoolDetails() {
 		return listCarpoolDetails;
 	}
 
-	public void setListCarpoolDetails(List<Carpooldetails> listCarpoolDetails) {
+	public void setListCarpoolDetails(List<CarpooldetailsDto> listCarpoolDetails) {
 		this.listCarpoolDetails = listCarpoolDetails;
 	}
 

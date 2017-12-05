@@ -26,8 +26,8 @@
 					<td>Location: {{myRide.location}}</td>
 				</tr>
 				<tr>
-					<td>FromDate: {{myRide.fromDate}}</td>
-					<td>ToDate: {{myRide.toDate}}</td>
+					<td>FromDate: {{myRide.fromDate | dateFilter}}</td>
+					<td>ToDate: {{myRide.toDate | dateFilter}}</td>
 				</tr>
 				<tr>
 					<td><button class = "button" name="Details">Details</button></td>

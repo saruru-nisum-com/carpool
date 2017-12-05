@@ -106,7 +106,12 @@ public class CarpooldetailsRestService {
 
 		return carpooldetailsService.createCarPooldetails(carpooldetailsDto);
 }
-	
+	/**
+	 * Modified By 
+	 * Durga Manjari narni
+	 * @param location
+	 * @return List<CustomerCarpooldetailsDto
+	 */
 	
 	@RequestMapping(value = "/getCarPoolDetails", method = RequestMethod.GET)
 	public ResponseEntity<?> getCarPoolDetails(@RequestParam(required = false, value = "location") String location)
@@ -116,11 +121,6 @@ public class CarpooldetailsRestService {
 		try
 		{
 			poolList=carpooldetailsService.getCarPoolDetails(location);
-			
-			/*if(poolList==null || poolList.isEmpty())
-			{
-				return new ResponseEntity<String>(Constants.NO_RECORDS_FOUND, HttpStatus.OK);	
-			}*/
 			return new ResponseEntity<List<CustomerCarpooldetailsDto>>(poolList, HttpStatus.OK);
 			
 		}

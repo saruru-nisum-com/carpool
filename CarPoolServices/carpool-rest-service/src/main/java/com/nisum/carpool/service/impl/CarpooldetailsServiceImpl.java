@@ -337,68 +337,73 @@ if(registerDomain!=null && registerDomain.size()>0) {
 
 	}*/
 	
-	public List<CustomerCarpooldetailsDto> getCarPoolDetails(String location)
-	{
-		List<Carpooldetails> carpoolLists = new ArrayList<>();
-		
-		List<CustomerCarpooldetailsDto> carpoolListbyLocation = new ArrayList<>();
-		List<CustomerCarpooldetailsDto> customerCarpooldetailsDtoList = new ArrayList<>();
-		
-		//List<String> useridsList=null;
-         Set<String> useridsSet=null;
-		//useridsList=	carpooldetailsDAO.getAllUserIDs();
-         carpoolLists= (List<Carpooldetails>) carpooldetailsDAO.getAllCarPoolDetails();
-         
-		if(carpoolLists!=null)
-		{
-			useridsSet=new HashSet<>();
-		for(Carpooldetails car:carpoolLists)
-		{
-	
-			
-			useridsSet.add(car.getEmailId());
+	/**
+	 * Modified By 
+	 * Durga Manjari Narni
+	 * @param location 
+	 * @return List<CustomerCarpooldetailsDto>
+	 */
+	public List<CustomerCarpooldetailsDto> getCarPoolDetails(String location) {
+		try {
+			List<Carpooldetails> carpoolLists = new ArrayList<>();
 
-		}
-			
-			for(String userid:useridsSet)
-			{
-				List<Carpooldetails> carpoolList=	carpooldetailsDAO.getCarPoolByMailID(userid);
-				User user=userDAO.findByEmailId(userid);
-				List<RegisterDomain> registerDomain=	registerDAO.findUserRegistrationByUserId(userid);
-				CustomerCarpooldetailsDto carpooldetailsDto=new CustomerCarpooldetailsDto();
-				carpooldetailsDto.setListCarpoolDetails(carpoolList);
-				if(user!=null)
-				carpooldetailsDto.setUserName(user.getUserName());
-				if(registerDomain!=null && registerDomain.size()>0) {
-				carpooldetailsDto.setLocation(registerDomain.get(0).getLocation());
-				carpooldetailsDto.setMobile(registerDomain.get(0).getMobile());
-				}
-				customerCarpooldetailsDtoList.add(carpooldetailsDto);
-				
-			
-			}
-			if(location!=null)
-			{
-				for(CustomerCarpooldetailsDto customerCarpooldetailsDto:customerCarpooldetailsDtoList)
-				{
-					if(location.equalsIgnoreCase(customerCarpooldetailsDto.getLocation()))
-							{
-						carpoolListbyLocation.add(customerCarpooldetailsDto);
+			List<CustomerCarpooldetailsDto> customerCarpooldetailsDtoList = new ArrayList<>();
+
+			Set<String> useridsSet = null;
+			carpoolLists = (List<Carpooldetails>) carpooldetailsDAO.getAllCarPoolDetails();
+
+			if (carpoolLists != null) {
+				useridsSet = new HashSet<>();
+				for (Carpooldetails car : carpoolLists) {
+
+					SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+					String StrTodayDate = sdf.format(new Date());
+
+					Date fromDate = sdf.parse(car.getFromDate());
+					Date currentDate = sdf.parse(StrTodayDate);
+					if (fromDate.after(currentDate)) {
+						if (location != null) {
+
+							if (location.equalsIgnoreCase(car.getLocation())) {
+								useridsSet.add(car.getEmailId());
 							}
+
+						} else {
+							useridsSet.add(car.getEmailId());
+						}
+					}
+
 				}
-				return carpoolListbyLocation;
-				
+
+				for (String userid : useridsSet) {
+					List<Carpooldetails> carpoolListDao = carpooldetailsDAO.getCarPoolByMailID(userid);
+					List<CarpooldetailsDto> carpoolList = CarpooldetailsServiceUtil.convertDaoTODto(carpoolListDao);
+					User user = userDAO.findByEmailId(userid);
+					List<RegisterDomain> registerDomain = registerDAO.findUserRegistrationByUserId(userid);
+					if (user != null) {
+						for (RegisterDomain userReg : registerDomain) {
+							CustomerCarpooldetailsDto carpooldetailsDto = new CustomerCarpooldetailsDto();
+							carpooldetailsDto.setUserName(user.getUserName());
+							carpooldetailsDto.setLocation(userReg.getLocation());
+							carpooldetailsDto.setMobile(userReg.getMobile());
+							carpooldetailsDto.setListCarpoolDetails(carpoolList);
+							customerCarpooldetailsDtoList.add(carpooldetailsDto);
+						}
+
+					}
+				}
 			}
+
 			return customerCarpooldetailsDtoList;
 
+		} catch (Exception e) {
+			logger.info("Entered into catch block :: Exception occurred");
+			e.printStackTrace();
+			return null;
 		}
 
-	
-	
-		return customerCarpooldetailsDtoList;
 	}
 
-	
 	/**
 	 * @author Harish Kumar Gudivada
 	 * 
