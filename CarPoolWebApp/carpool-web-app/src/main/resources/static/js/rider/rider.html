@@ -341,8 +341,12 @@ width: 100% !important;
 					<div ng-include="'js/partials/leftSideMenu.html'"></div>
 				</div>
 			</div>
+			<div id='passengerDiv' class = "col-md-8">
+				<h style="font-size: 36px; color: #00BFFF;">Rider profile</h>
+			</div>
 			<div class="col-md-8">
-			<form action="riderForm" class="riderClass">
+
+			<form name="riderForm" class="riderClass" novalidate>
 				<div class = "form-container">
 					<div class = "row rider-element">
 						<div class = "col-md-2">
@@ -380,8 +384,10 @@ width: 100% !important;
 					</div>
 					<div class = "row rider-element">
 						<div class = "col-md-4 col-md-offset-2">	
-							<button class="registerAsDriverBtn btn btn-primary" ng-click="registerAsRider()">Register</button>
-							<button class="updateAsDriverBtn btn btn-primary" ng-click="updateAsRider()">Update</button>
+							<button class="registerAsDriverBtn btn btn-primary" ng-click="registerAsRider()" 
+							ng-disabled="isRegisteredAsRider == true">Register</button>
+							<button class="updateAsDriverBtn btn btn-primary" ng-click="updateAsRider()"
+							ng-disabled="isRegisteredAsRider !== true">Update</button>
 						</div>
 					</div>
 					<div class = "row rider-element"  ng-show="isVisible==true">

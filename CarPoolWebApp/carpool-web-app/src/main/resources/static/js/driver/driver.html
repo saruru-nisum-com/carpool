@@ -347,6 +347,9 @@ form{
 					<div ng-include="'js/partials/leftSideMenu.html'"></div>
 				</div>
 			</div>
+	<div id='driverDiv' class = "col-md-8">
+		<h style="font-size: 36px; color: #00BFFF;">Driver profile</h>
+	</div>
 		<div id='driverDiv' class = "col-md-8">
 			<form name="driverForm" class="driverClass" novalidate>
 				<div class = "form-container">
@@ -366,7 +369,7 @@ form{
 							ng-model='cb4wheel' ng-true-value="4" ng-false-value="0">
 							4-wheeler <br />
 							<span ng-show="driverForm.$submitted && driverForm.$invalid"
-								style="color: red" class="help-block">check before
+								style="color: red" class="help-block">Check before
 								proceed.</span>
 						</div>
 					</div>
