@@ -34,6 +34,7 @@ public class RegisterServiceUtil {
 				dto.setLongitude(reg.getLongitude());
 				dto.setLocation(reg.getLocation());
 				dto.setMobile(reg.getMobile());
+				dto.setGender(reg.getGender());
 				if(reg.getModifieddate()!=null)
 					dto.setModifiedDate(Timestamp.valueOf(reg.getModifieddate()));
 				dto.setNearby(reg.getNearby());
@@ -72,6 +73,7 @@ public class RegisterServiceUtil {
 			userReg.setNearby(dto.getNearby());
 			userReg.setEmailid(dto.getEmailId());
 			userReg.setVehicletype(dto.getVehicleType());
+			userReg.setGender(dto.getGender());
 		}catch (Exception e) {
 			logger.error("Exception Occured in Class:RegisterServiceUtil Method:convertRegisterDtoObjectToRegisterDomain Message:"+e.getMessage());
 		}
