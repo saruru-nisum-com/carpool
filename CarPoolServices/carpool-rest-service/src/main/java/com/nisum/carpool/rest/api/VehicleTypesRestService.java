@@ -38,10 +38,13 @@ public class VehicleTypesRestService {
 		Errors error = new Errors();
 		try {
 			List<VehicleTypesDTO> vehicleDetails = vehicleTypesService.getVehicleTypes();
+			System.out.println(vehicleDetails);
 			if (vehicleDetails != null && vehicleDetails.size() > 0) {
+				System.out.println("in if");
 				logger.info("Exit from VehicleTypesRestService :: getVehicleTypes :: get all vehicle details");
 				return new ResponseEntity<List<VehicleTypesDTO>>(vehicleDetails, HttpStatus.OK);
 			} else {
+				System.out.println("in else");
 				error.setErrorCode("204");
 				error.setErrorMessage(Constants.NO_RECORDS_FOUND);
 				logger.info("Exit from VehicleTypesRestService :: getVehicleTypes :: get all vehicle details");

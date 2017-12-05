@@ -136,7 +136,7 @@ public class UserRestService {
 				//Get User location from profile
 				try {
 					logger.info("get user location from userReg Service###"+userDto.getEmailId());
-					userLocation = registerDAO.getLocationOfRegisteredUser(userDto.getEmailId());
+					userLocation = registerDAO.getLocationOfRegisteredUser(userDto.getEmailId()).getLocation();
 					
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

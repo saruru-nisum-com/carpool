@@ -294,6 +294,164 @@ carpoolRegApp
 
 					// driver/rider screen code ends here
 
+					$scope.data = [ {
+						id : '0',
+						name : 'Select Vehicle Type'
+					}, {
+						id : '2',
+						name : 'TwoWheeler'
+					}, {
+						id : '4',
+						name : 'FourWheeler'
+					} ];
+					$scope.fromDate = {
+						value : new Date(),
+						currentDate : new Date()
+					};
+					$scope.toDate = {
+						value : new Date(),
+						currentDate : new Date()
+					};
+
+					$scope.startTime = {
+						value : new Date(2015, 10, 10, 09, 00, 0)
+					};
+					$scope.endTime = {
+						value : new Date(2015, 10, 10, 19, 00, 0)
+					};
+
+					// Vehicle type selection starts
+					$scope.fnVehicleType = function() {
+						$scope.seat = {
+							value : 1
+						};
+					}
+					// end
+
+					
+					/*
+					 * @author Harish Kumar Gudivada Method to get the Carpool Details by carpoolid
+					*/ 
+					$scope.getCarpolData = function(id) {
+						$scope.id = id;
+						carpoolRegistrationService.getCarpolData($scope.id).then(function(response) {
+											angular.forEach(response,function(value, key) {
+																	$scope.autocomplete = value.location;
+																	$scope.fromDate.value = value.fromDate;
+																	$scope.seat.value = value.totalNoOfSeats;
+																	$scope.toDate.value = value.toDate;
+																	$scope.startTime.value = value.startTime;
+																	$scope.endTime.value = value.toTime;
+																	$scope.vehicleSelect= value.vehicleType;
+																	
+											});
+										});
+					}
+					
+					
+					
+					$scope.fnAddPostRide = function() {
+						var vType = $scope.vehicleSelect;
+						var vSeatCap = $scope.seat.value;
+						var fromDate = $scope.fromDate.value;
+						var toDate = $scope.toDate.value;
+						var startTime = $scope.startTime.value;
+						var endTime = $scope.endTime.value;
+						var parseFromDate = $filter('date')(new Date(fromDate),
+								'MM/dd/yyyy');
+						var parseToDate = $filter('date')(new Date(toDate),
+								'MM/dd/yyyy');
+						var parseStartTime = $filter('date')(
+								new Date(startTime), 'h:mm a');
+						var parseEndTime = $filter('date')(new Date(endTime),
+								'h:mm a');
+
+						// Start date and End date difference validation starts
+						// var d1 = new Date(parseFromDate);
+						// var d2 = new Date(parseToDate);
+						// var timeDiff = d2.getTime() - d1.getTime();
+						// var DaysDiff = timeDiff / (1000 * 3600 * 24);
+						// window.alert(DaysDiff);
+						// end
+
+						var profileData = localStorageService.get('profile');
+						var userid = profileData.emailId;
+						$scope.postRide = {
+							"vType" : vType,
+							"vSeatCap" : vSeatCap,
+							"fromDate" : parseFromDate,
+							"toDate" : parseToDate,
+							"startTime" : parseStartTime,
+							"endTime" : parseEndTime,
+							"userid" : userid
+						}
+
+						carpoolRegistrationService
+								.rideAddToGridFn($scope.postRide)
+								.then(
+										function(response) {
+
+											if (response.errorCode === 500) {
+												$scope.message = response.errorMessage
+											} else {
+												// localStorageService.set('profile',
+												// response);
+												$scope.names = response.records;
+												// $state.go("carpoolRegistration");
+
+												var vehicleList = [ {
+													"parentId" : "1",
+													"isParent" : "true",
+													"isChild" : "false",
+													"vType" : "2",
+													"vSeatCap" : "1",
+													"fromDate" : "15/11/2017",
+													"toDate" : "16/11/2017",
+													"startTime" : "08:30AM",
+													"endTime" : "07:00PM"
+												}];
+
+												var skipStep = true;
+												var sortedVehicle = {};
+												for (var i = 0; i < vehicleList.length; i++) {
+													if (!sortedVehicle[vehicleList[i].parentId]) {
+														sortedVehicle[vehicleList[i].parentId] = [];
+														sortedVehicle[vehicleList[i].parentId]
+																.push(vehicleList[i]);
+														skipStep = false;
+													}
+													if (skipStep) {
+														sortedVehicle[vehicleList[i].parentId]
+																.push(vehicleList[i]);
+													}
+													skipStep = true;
+												}
+
+												console.log('sortedImages: ',
+														sortedVehicle);
+												$scope.foo = sortedVehicle;
+
+											}
+										}, function(response) {
+											// console
+											window.alert(response)
+										});
+
+					}
+
+					// Vehicle type selection starts
+					$scope.fnVehicleType = function() {
+						$scope.seat = {
+							value : 1
+						};
+					}
+					// end
+
+					$scope.userselected = [];
+
+					$scope.display = function(childId) {
+						$("." + childId).toggle();
+					}
 				});
 
 carpoolRegApp
@@ -334,6 +492,25 @@ carpoolRegApp
 							value : 1
 						};
 					}
+					
+					$scope.lat = undefined;
+					$scope.lng = undefined;
+					$scope.selectedLocation = undefined;
+					$scope.shareARideAutocomplete = undefined;
+
+					$scope
+							.$on(
+									'gmPlacesAutocomplete::placeChanged',
+									function() {
+										$scope.selectedLocation = $scope.shareARideAutocomplete
+												.getPlace().name;
+										var location = $scope.shareARideAutocomplete
+												.getPlace().geometry.location;
+										$scope.lat = location.lat();
+										$scope.lng = location.lng();
+										$scope.$apply();
+									});					
+					
 
 					$scope.names = [ 'Two-Wheller', 'Four-Wheller' ];
 					$scope.seats = function(vType) {
@@ -372,6 +549,11 @@ carpoolRegApp
 						var toDate = $scope.toDate.value;
 						var startTime = $scope.startTime.value;
 						var endTime = $scope.endTime.value;
+						var location=$scope.selectedLocation;
+						var lat=$scope.lat;
+						var lng=$scope.lng;
+						
+						
 						var parseFromDate = $filter('date')(new Date(fromDate),
 								'MM/dd/yyyy');
 						var parseToDate = $filter('date')(new Date(toDate),
@@ -396,7 +578,10 @@ carpoolRegApp
 							"toDate" : parseToDate,
 							"startTime" : parseStartTime,
 							"toTime" : parseEndTime,
-							"emailId" : profileObj.emailId
+							"emailId" : profileObj.emailId,
+							"location" : location,
+							"latitude" : lat,
+							"longitude" : lng
 						}
 						
 						carpoolRegistrationService

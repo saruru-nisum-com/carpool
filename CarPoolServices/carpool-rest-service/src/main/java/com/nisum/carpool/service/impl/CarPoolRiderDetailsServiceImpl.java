@@ -135,7 +135,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 				System.out.println("Real object "+riderStatusObj);
 				CarpoolRiderDetails carpoolRiderDaoObj = CarpoolRiderDetailsServiceUtil.convertRiderStatusDtoToDao(riderStatusObj);
 				System.out.println("DAO Object "+carpoolRiderDaoObj.getId()+" "+carpoolRiderDaoObj.getEmailid());
-				Integer riderStatusCount = carpoolRiderdetailsDAO.updateRiderStatus(carpoolRiderDaoObj);
+				Integer riderStatusCount = 0; // carpoolRiderdetailsDAO.updateRiderStatus(carpoolRiderDaoObj);
 				if(riderStatusCount > 0) {  //If rider status record updated into db, should send mail to rider
 					//Email send code start
 					System.out.println("Email implementation **** "+riderStatusCount);    

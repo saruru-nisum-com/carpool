@@ -5,18 +5,20 @@ import java.sql.Timestamp;
 public class CarpooldetailsDto {
 	private Integer id;
 	private Integer parentid;
-	private String emailId;
+	private String emailId="";
 	private Integer vehicleType;
 	private Integer totalNoOfSeats;
-	private String fromDate;
-	private String toDate;
-	private String startTime;
-	private String toTime;
+	private String fromDate="";
+	private String toDate="";
+	private String startTime="";
+	private String toTime="";
 	private Integer status;
 	private double rewards;
 	private Timestamp createddate;
 	private Timestamp modifieddate;
-	private String location;
+	private String location="";
+	private String latitude="";
+	private String longitude="";
 	
 	public Integer getId() {
 		return id;
@@ -102,6 +104,19 @@ public class CarpooldetailsDto {
 	public void setLocation(String location) {
 		this.location = location;
 	}
+	public String getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+	public String getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -121,6 +136,8 @@ public class CarpooldetailsDto {
 		result = prime * result + ((totalNoOfSeats == null) ? 0 : totalNoOfSeats.hashCode());
 		result = prime * result + ((emailId == null) ? 0 : emailId.hashCode());
 		result = prime * result + ((vehicleType == null) ? 0 : vehicleType.hashCode());
+		result = prime * result + ((longitude == null) ? 0 : longitude.hashCode());
+		result = prime * result + ((latitude == null) ? 0 : latitude.hashCode());
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		return result;
 	}
@@ -195,6 +212,16 @@ public class CarpooldetailsDto {
 				return false;
 		} else if (!vehicleType.equals(other.vehicleType))
 			return false;
+		if (longitude == null) {
+			if (other.longitude != null)
+				return false;
+		} else if (!longitude.equals(other.longitude))
+			return false;
+		if (latitude == null) {
+			if (other.latitude != null)
+				return false;
+		} else if (!latitude.equals(other.latitude))
+			return false;
 		if (location == null) {
 			if (other.location != null)
 				return false;
@@ -207,6 +234,6 @@ public class CarpooldetailsDto {
 		return "CarpooldetailsDto [id=" + id + ", parentid=" + parentid + ", emailId=" + emailId + ", vehicleType="
 				+ vehicleType + ", totalNoOfSeats=" + totalNoOfSeats + ", fromDate=" + fromDate + ", toDate=" + toDate
 				+ ", startTime=" + startTime + ", toTime=" + toTime + ", status=" + status + ", createddate="
-				+ createddate + ", modifieddate=" + modifieddate + ",Location:"+location+"]";
+				+ createddate + ", modifieddate=" + modifieddate + ",Location:"+location+ ",Longitude:"+longitude+ ",Latitude:"+latitude+"]";
 	}
 }

@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import com.nisum.carpool.service.api.CarpooldetailsService;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.Errors;
+import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.util.Constants;
 
@@ -103,5 +104,34 @@ public class CarpooldetailsRestServiceTest {
 	}
 	
 	
+	/**
+	 * @author Harish Kumar Gudivada
+	 * 
+	 * Test case to load the details of carpool details
+	 */
+	@Test
+	public void loadCarPoolTest() {
+		
+		CarpooldetailsDto carpooldetailsDto=new CarpooldetailsDto();
+		carpooldetailsDto.setCreateddate(new Timestamp(System.currentTimeMillis()));
+		carpooldetailsDto.setFromDate("13254345");
+		carpooldetailsDto.setId(1);
+		carpooldetailsDto.setModifieddate(new Timestamp(System.currentTimeMillis()));
+		carpooldetailsDto.setTotalNoOfSeats(20);
+		carpooldetailsDto.setParentid(112);
+		carpooldetailsDto.setStartTime("23467");
+		carpooldetailsDto.setStatus(1);
+		carpooldetailsDto.setToDate("14356u756i7op");
+		carpooldetailsDto.setToTime("987");
+		carpooldetailsDto.setEmailId("wefgre@jh.com");
+		carpooldetailsDto.setVehicleType(2);
+		
+		when(carpooldetailsService.loadCarpoolDetailsById(1)).thenReturn(carpooldetailsDto);
+		
+		ResponseEntity<CarpooldetailsDto> entity = new ResponseEntity<CarpooldetailsDto>(carpooldetailsDto, HttpStatus.OK);
+		ResponseEntity<?> actual = carpooldetailsRestService.getCarpoolDetailsById(1);
+		assertEquals(entity.getBody(), actual.getBody());
+		
+	}
 	
 }

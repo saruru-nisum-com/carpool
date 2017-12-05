@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
 import java.sql.Timestamp;
-import org.apache.commons.lang3.ObjectUtils;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,7 +69,7 @@ public class CarpooldetailsServiceImplTest {
 		ServiceStatusDto actualStatus = carpooldetailsServiceImpl.updateCarpooldetails(carpooldetailsDto);
 		assertEquals(serviceStatusDto.getMessage(), actualStatus.getMessage());
 	}
-	
+
 	@Test
 	public void cancelCarpoolTest() {
 		carpooldetailsDto.setEmailId("smamidala@nisum.com");
@@ -85,6 +85,25 @@ public class CarpooldetailsServiceImplTest {
 		
 	}
 	
+	/**
+	 * @author Harish Kumar Gudivada
+	 * 
+	 * Test cases to load the carpoolDetails
+	 */
+	
+	@Test
+	public void getCarpoolDetails() {
+		try {
+			Carpooldetails expectedCarpoolDao = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
 
+			when(carpooldetailsDAO.loadCarpoolDetailsById(1)).thenReturn(expectedCarpoolDao);
+
+			Carpooldetails actualCarpoolDao1 =  CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsServiceImpl.loadCarpoolDetailsById(1));
+			
+			assertEquals(expectedCarpoolDao,actualCarpoolDao1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }

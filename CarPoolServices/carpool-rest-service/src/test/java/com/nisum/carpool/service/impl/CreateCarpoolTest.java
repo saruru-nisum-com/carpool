@@ -23,6 +23,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import com.nisum.carpool.data.dao.api.CarpooldetailsDAO;
 import com.nisum.carpool.data.dao.api.RegisterDAO;
 import com.nisum.carpool.data.domain.Carpooldetails;
+import com.nisum.carpool.data.domain.RegisterDomain;
 import com.nisum.carpool.data.util.Constants;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.impl.CarpooldetailsServiceImpl;
@@ -199,10 +200,22 @@ public class CreateCarpoolTest {
 		cplist.add(c5);
 		
 		String location ="hyderabad";
+		String longitude ="1110000";
+		String latitude ="222000";
 		
-		when(registerDAO.getLocationOfRegisteredUser("mdak@gmail.com")).thenReturn("hyderabad");
-	
-		assertEquals(location,registerDAO.getLocationOfRegisteredUser("mdak@gmail.com"));
+		RegisterDomain regDomain=new RegisterDomain();
+		regDomain.setLocation("hyderabad");
+		regDomain.setLongitude("1110000");
+		regDomain.setLatitude("222000");
+		
+		
+		when(registerDAO.getLocationOfRegisteredUser("mdak@gmail.com")).thenReturn(regDomain);
+		RegisterDomain domain = registerDAO.getLocationOfRegisteredUser("mdak@gmail.com");
+		
+		assertEquals(location,domain.getLocation());
+		assertEquals(longitude,domain.getLongitude());
+		assertEquals(latitude,domain.getLatitude());
+		
 		
 		PowerMockito.mockStatic(CarpooldetailsServiceImpl.class);
 		

@@ -13,6 +13,17 @@ app.factory('carpoolRegistrationService', function($http, $q, localStorageServic
 		return deferred.promise;
 	}
 	
+	ls.getCarpolData = function(data) {
+		var deferred = $q.defer();
+		
+		$http.post('v1/carpool/getCarpoolPoolData', data).success(function(response) {
+			deferred.resolve(response);
+		}).error(function(response) {
+			deferred.reject(response);
+		})
+		return deferred.promise;
+	}
+	
 	ls.registerAsDriver=function(data) {
 		var deferred = $q.defer();
 

@@ -25,7 +25,6 @@ import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.domain.RegisterDomain;
 import com.nisum.carpool.data.domain.User;
-import com.nisum.carpool.data.util.Pool_Status;
 import com.nisum.carpool.service.api.CarpooldetailsService;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
@@ -106,25 +105,17 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 
 		carpooldetailsDto.setCreateddate(new Timestamp(System.currentTimeMillis()));
 
-		// code added by Harish Kumar Gudivada for loading the location from user
-		// registration and saving in the carpool details
-		try {
-		String location = registerDAO.getLocationOfRegisteredUser(carpooldetailsDto.getEmailId());
-		carpooldetailsDto.setLocation(location);
-		
-		} catch(Exception e) {
-			
-			logger.info("Failed to get location of user");
-			ServiceStatusDto statusDto = new ServiceStatusDto();
-			statusDto.setStatus(false);
-			statusDto.setMessage(Constants.MSG_CARPOOL_FAILED);
-			ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto,
-					HttpStatus.BAD_REQUEST);
-			return entity;
-			
-			
+		// code added by Harish Kumar Gudivada on 30th November 2017
+		//for loading the location from user registration and saving in the carpool details
+		if(carpooldetailsDto.getLocation()!=null && carpooldetailsDto.getLocation().equals("")) {
+			RegisterDomain regDomain = registerDAO.getLocationOfRegisteredUser(carpooldetailsDto.getEmailId());
+			if(regDomain!=null) {
+				carpooldetailsDto.setLocation(regDomain.getLocation());
+				carpooldetailsDto.setLongitude(regDomain.getLongitude());
+				carpooldetailsDto.setLatitude(regDomain.getLatitude());
+			}
 		}
-		// end
+		//end
 
 		Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
 
@@ -159,7 +150,7 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 		logger.info("Status for creating car pool is valid");
 		
 		List<Carpooldetails> carPoolList = processPostRideDomain(carpooldetails);
-
+System.out.println(carPoolList);
 		String msg = carpooldetailsDAO.addCarpoolDetails(carPoolList);
 
 		if (msg == Constants.MSG_CARPOOL_ADD) {
@@ -571,8 +562,6 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		 {
 			 logger.error("Some thing went wrong while fetching getCarpoolsByDriver::");
 				throw new CarpooldetailsServiceException(ex.getMessage());
-			 
-			 
 		 }
 		return driverCarPoolDtoList;
 	}
@@ -661,6 +650,25 @@ if(registerDomain!=null && registerDomain.size()>0) {
 	}
 		return null;
 	}
+	
+	/**
+	 * @author Harish Kumar Gudivada
+	 * @param emailId
+	 * @return location
+	 */
+	public String getLocationByEmailId(String emailId)throws CarpooldetailsServiceException {
+		logger.info("Entered into CarpooldetailsServiceImpl Method:getLocationByEmailId");
+		String location="";
+		try {
+			location=registerDAO.getLocationOfRegisteredUser(emailId).getLocation();
+		}catch (Exception ex) {
+			logger.error("Exception Occured in Class:CarpooldetailsServiceImpl Method:getLocationByEmailId Message:"+ex.getMessage());
+			throw new CarpooldetailsServiceException(ex.getMessage());
+		}
+		logger.info("Exit from CarpooldetailsServiceImpl Method:getLocationByEmailId");
+		return location;
+	}
+	
 	
 	
 }

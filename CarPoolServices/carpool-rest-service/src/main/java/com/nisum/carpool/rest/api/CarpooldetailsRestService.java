@@ -101,8 +101,7 @@ public class CarpooldetailsRestService {
 		logger.info("CarPoolRestService :: createCarPool :: Creating Car Pool");
 
 		return carpooldetailsService.createCarPooldetails(carpooldetailsDto);
-
-	}
+}
 	
 	
 	@RequestMapping(value = "/getCarPoolDetails", method = RequestMethod.GET)
@@ -135,14 +134,14 @@ public class CarpooldetailsRestService {
 	 * @return ResponseEntity
 	 */
 	
-	@RequestMapping(value="/getCarpoolRideData/{id}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value="/getCarpoolPoolData/{id}", method = RequestMethod.GET, produces="application/json")
 	public ResponseEntity<?> getCarpoolDetailsById(@PathVariable int id){
 		CarpooldetailsDto carpoolDto=null;
 		logger.info("Entered into CarpooldetailsRestService :: getCarpoolDetailsById");
 		try {
 			carpoolDto=carpooldetailsService.loadCarpoolDetailsById(id);
 			if(carpoolDto!=null && carpoolDto.getId()==0) {
-				return new ResponseEntity<String>("Data Is Not Available", HttpStatus.NO_CONTENT);
+				return new ResponseEntity<String>("CarpoolDetails Is Not Available", HttpStatus.NO_CONTENT);
 			}
 		}catch (Exception e) {
 			logger.error("Exception Occured in Class:CarpooldetailsRestService Method:getCarpoolDetailsById Message:"+e.getMessage());
@@ -203,5 +202,23 @@ public class CarpooldetailsRestService {
 		}
 
 	}
+	
+	/**
+	 * @author Harish Kumar Gudivada
+	 * @param emailId
+	 * @return
+	 */
+	@RequestMapping(value = "/getUserLocation/{emailId:.+}", method = RequestMethod.GET)
+	public ResponseEntity<?> getUserLocationByEmailId(@PathVariable("emailId")String emailId) 
+	{
+		logger.info("Entered into Class: CarpooldetailsRestService Method: getUserLocationByEmailId");
+		try {
+			return new ResponseEntity<String>(carpooldetailsService.getLocationByEmailId(emailId),HttpStatus.OK);
+		} catch (CarpooldetailsServiceException ex) {
+			logger.error("Exception Occured in Class:CarpooldetailsRestService Method:getUserLocationByEmailId Message:"+ex.getMessage());
+			return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	
 }

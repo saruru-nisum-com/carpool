@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @SpringBootApplication
@@ -14,6 +15,7 @@ import org.springframework.data.cassandra.repository.config.EnableCassandraRepos
 @EnableAutoConfiguration
 @EnableCaching
 @EnableCassandraRepositories(basePackages="com.nisum.carpool.data.repository")
+@EnableScheduling
 @Configuration
 public class PortalLauncher {
 	
