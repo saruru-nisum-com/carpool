@@ -135,6 +135,7 @@ public class UserRestService {
 				
 				//Get User location from profile
 <<<<<<< HEAD
+<<<<<<< HEAD
 				try {
 					logger.info("get user location from userReg Service###"+userDto.getEmailId());
 					userLocation = registerDAO.getLocationOfRegisteredUser(userDto.getEmailId()).getLocation();
@@ -148,10 +149,15 @@ public class UserRestService {
 					userDto.setLocation(userLocation);
 				}
 =======
+=======
+>>>>>>> 642b6a7f4c9b0d72f69a0e26331070ae70947dde
 			}
 			try {
 				logger.info("get user location from userReg Service###"+userDto.getEmailId());
 				userLocation = registerDAO.getLocationOfRegisteredUser(userDto.getEmailId());
+<<<<<<< HEAD
+>>>>>>> 642b6a7f4c9b0d72f69a0e26331070ae70947dde
+=======
 >>>>>>> 642b6a7f4c9b0d72f69a0e26331070ae70947dde
 				
 			} catch (Exception e) {
