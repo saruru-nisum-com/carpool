@@ -23,13 +23,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nisum.carpool.data.dao.api.RegisterDAO;
-import com.nisum.carpool.data.domain.RegisterDomain;
 import com.nisum.carpool.data.domain.User;
 //import com.nisum.carpool.service.api.EmailAccount;
 import com.nisum.carpool.service.api.UserRoleService;
 import com.nisum.carpool.service.api.UserService;
 import com.nisum.carpool.service.dto.Errors;
-import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.service.dto.UserDTO;
 import com.nisum.carpool.service.dto.UserRoleDTO;
@@ -37,8 +35,6 @@ import com.nisum.carpool.service.exception.QuestionariesServiceException;
 import com.nisum.carpool.service.exception.UserServiceException;
 import com.nisum.carpool.util.CommonsUtil;
 import com.nisum.carpool.util.Constants;
-//import com.nisum.carpool.util.MailSender;
-import com.nisum.carpool.util.UserServiceUtil;
 
 @RestController
 @RequestMapping(value = "/v1/user")
@@ -134,8 +130,6 @@ public class UserRestService {
 				//	emailAccount.getSubject(), MailSender.messageBody(userDto.getUserName()));
 				
 				//Get User location from profile
-<<<<<<< HEAD
-<<<<<<< HEAD
 				try {
 					logger.info("get user location from userReg Service###"+userDto.getEmailId());
 					userLocation = registerDAO.getLocationOfRegisteredUser(userDto.getEmailId()).getLocation();
@@ -148,29 +142,10 @@ public class UserRestService {
 					logger.info("user location from profile**"+userLocation);
 					userDto.setLocation(userLocation);
 				}
-=======
-=======
->>>>>>> 642b6a7f4c9b0d72f69a0e26331070ae70947dde
-			}
-			try {
-				logger.info("get user location from userReg Service###"+userDto.getEmailId());
-				userLocation = registerDAO.getLocationOfRegisteredUser(userDto.getEmailId());
-<<<<<<< HEAD
->>>>>>> 642b6a7f4c9b0d72f69a0e26331070ae70947dde
-=======
->>>>>>> 642b6a7f4c9b0d72f69a0e26331070ae70947dde
 				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				httpRequest.setAttribute("userSession", userDto);
+				userInfo = userDto;
 			}
-			if(userLocation!=null) {
-				logger.info("user location from profile**"+userLocation);
-				userDto.setLocation(userLocation);
-			}
-			
-			httpRequest.setAttribute("userSession", userDto);
-			userInfo = userDto;
 
 		}
 
