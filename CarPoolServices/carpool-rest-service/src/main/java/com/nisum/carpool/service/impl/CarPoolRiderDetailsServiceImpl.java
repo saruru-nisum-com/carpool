@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import com.nisum.carpool.data.dao.api.CarpooldetailsDAO;
 import com.nisum.carpool.data.dao.api.RegisterDAO;
 import com.nisum.carpool.data.dao.api.UserDAO;
 import com.nisum.carpool.data.domain.CarpoolRiderDetails;
+import com.nisum.carpool.data.domain.CarpoolRiderNotifications;
 import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.domain.RegisterDomain;
 import com.nisum.carpool.data.domain.User;
@@ -22,9 +25,14 @@ import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
 import com.nisum.carpool.service.dto.RiderStatusDTO;
 import com.nisum.carpool.util.CarpoolRiderDetailsServiceUtil;
 
+
+
 @Service
 public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsService {
 
+	private static Logger logger = LoggerFactory.getLogger(CarPoolRiderDetailsServiceImpl.class);
+
+	
 	@Autowired
 	UserDAO userDAO;
 	@Autowired
@@ -146,5 +154,64 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 		}
 	}
 	
+	/**
+	 * @author Manohar Dhavala
+	 * 
+	 *         This method is used for cancelling a ride by rider
+	 */
+
+	@Override
+	public List<CarpoolRiderDetailsDTO> cancelRiderBookingdetails(List<CarpoolRiderDetailsDTO> rides) throws Exception {
+		logger.info("carpoolriderdetailsserviceimpl:cancelling a ride");
+
+		List<CarpoolRiderDetails> carpoolriderdetailslist = CarpoolRiderDetailsServiceUtil.convertDtoTODao(rides);
+
+		List<CarpoolRiderDetails> cpriderlist = carpoolRiderdetailsDAO
+				.cancelRiderBookingdetails(carpoolriderdetailslist);
+
+		if (cpriderlist == null)
+			return null;
+
+		else
+
+		{
+			logger.info("carpoolriderdetailsserviceimpl: carpool list is not null");
+			for (CarpoolRiderDetails cprider : carpoolriderdetailslist) {
+
+				List<CarpoolRiderNotifications> cpridernotifications = carpoolRiderdetailsDAO
+						.findRidersToNotifyByCPId(cprider.getCpid());
+				logger.info("cpid " + cprider.getCpid());
+				for (CarpoolRiderNotifications cpridernotify : cpridernotifications) {
+					logger.info("cpridernotifications not null");
+					if (!cpridernotify.isNotified()) {
+						String riderEmail = cpridernotify.getEmailid();
+						/*
+						 
+						 
+						 
+						 
+						 */
+						 
+						// logic to send mail to rider(s)
+						
+						//setting notify status to true so the rider wont recieve notification 
+						//again when another rider cancels a ride
+						cpridernotify.setNotified(true);
+						carpoolRiderdetailsDAO.updatecpridernotifications(cpridernotify);
+					}
+				}
+
+			}
+			
+			logger.info("cpid " + carpoolriderdetailslist.get(0).getCpid());
+
+			String driverEmail = carpooldetailsDAO.getDriverEmailByCPId(carpoolriderdetailslist.get(0).getCpid());
+
+			logger.info("logic to send mail to driver");
+
+			return CarpoolRiderDetailsServiceUtil.convertDaoTODto(cpriderlist);
+
+		}
+}
 	
 }
