@@ -35,6 +35,30 @@ public class CarpoolRiderDetailsServiceUtil {
 		return carpooldetailsDtos;
 
 	}
+	
+	public static List<CarpoolRiderDetails> convertDtoTODao(List<CarpoolRiderDetailsDTO> carpoolRiderdetailsDtoList) {
+		List<CarpoolRiderDetails> carpooldetailslist = new ArrayList<>();
+		
+		if (CollectionUtils.isNotEmpty(carpoolRiderdetailsDtoList)) {
+			carpoolRiderdetailsDtoList.forEach(c->{
+				CarpoolRiderDetails carpoolRiderdetails = new CarpoolRiderDetails();
+				carpoolRiderdetails.setId(c.getId());
+				carpoolRiderdetails.setCpid(c.getCpid());
+				carpoolRiderdetails.setEmailid(c.getEmailid());
+				carpoolRiderdetails.setStatus(c.getStatus());
+				carpoolRiderdetails.setReason(c.getReason());
+				carpoolRiderdetails.setRewards(c.getRewards());
+				if(c.getModifieddate()!=null)
+				carpoolRiderdetails.setModifieddate(c.getModifieddate().toLocalDateTime());
+				if(c.getCreateddate()!=null)
+				carpoolRiderdetails.setCreateddate(c.getCreateddate().toLocalDateTime());
+				
+				carpooldetailslist.add(carpoolRiderdetails);
+			});
+		}
+		return carpooldetailslist;
+
+	}
 
 	
 	public static CarpoolRiderDetails convertRiderStatusDtoToDao(RiderStatusDTO carpoolRideStatusrDtoObj) {
