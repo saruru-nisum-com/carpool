@@ -105,13 +105,14 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 
 		return Constants.MSG_CARPOOL_CANCEL;
 	}
-
+	
 	/**
-	 * @author Manohar Dhavala
+	 * @author Manohar Dhavala : CPL005: Create Car Pools (Post a ride)
 	 * 
 	 *         This method is used for creating carpool records in db
+	 *         @param carpooldetails
+	 *         @return String
 	 */
-
 	@Override
 	public String addCarpoolDetails(List<Carpooldetails> carpooldetails) {
 
@@ -148,59 +149,51 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	public List<Carpooldetails> getCarPoolByMailID(String email) {
 		return carpooldetailsRepository.getCarPoolsByEmail(email);
 	}
-
 	/**
-	 * @author Manohar Dhavala
+	 * @author Manohar Dhavala : CPL005: Create Car Pools (Post a ride)
 	 * 
 	 *         This method is used to check if carpool can be created or not
+	 *         @param emailid, fromdate, todate
+	 *         @return String
 	 */
-
 	@Override
 	public String checkValidCarpool(String emailid, String fromdate, String todate) {
-		// TODO Auto-generated method stub
+
 		logger.info("CarpooldetailsDAOImpl: checkValidCarpool");
 
 		int count1 = 0;
 		int count2 = 0;
-		int count3 = 0;
-		boolean flag = false;
 
-		count1 = carpooldetailsRepository.findEntriesWithDate(emailid, fromdate, todate);
+		
+		//to check if there are entries in db with the given email and dates
 
-		if (count1 != 0) {
-
-			count2 = carpooldetailsRepository.findEntriesWithDateIfNotCancelled(emailid, fromdate, todate);
-
-			if (count2 != 0)
-
+		count1 = carpooldetailsRepository.findEntriesWithDateIfNotCancelled(emailid, fromdate, todate);
+			
+			if (count1 != 0)
+ 
 				return Constants.CARPOOLEXISTS;
 
 			else
-				return Constants.VALID;
-		}
+			{
 
-		else {
+			//to get all car pools within the given dates
 
-			List<Carpooldetails> carpooldetails = carpooldetailsRepository.getCarPoolsByDate(fromdate, todate);
+			List<Carpooldetails> carpooldetails = carpooldetailsRepository.getCarPoolsByDateNotCancelled(fromdate, todate);
 			if (carpooldetails != null) {
 				for (Carpooldetails cpd : carpooldetails) {
 					int cpid = cpd.getId();
+					
+					//to check if the driver is also a rider for any pool within the given dates
+					count2 = carpoolriderdetailsrepository.checkWhetherDriverIsRiderWithStatus(emailid, cpid);
 
-					count3 = carpoolriderdetailsrepository.checkWhetherDriverIsRider(emailid, cpid);
-
-					if (count3 != 0)
-						flag = true;
+					if (count2 !=0)
+						return Constants.DRIVER_IS_REGISTERED_AS_RIDER;
 
 				}
 
 			}
 
-			if (flag)
-				return Constants.DRIVER_IS_REGISTERED_AS_RIDER;
-
-			else
-
-				return Constants.VALID;
+				return Constants.CARPOOL_VALID;
 
 		}
 
@@ -253,6 +246,20 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 
 	public void upateCarPoolStatusByIdandParentID(int pid, int status) {
 		carpooldetailsRepository.updateCarpoolStatusByPoolId(pid, status);
+	}
+	
+	/**
+	 * @author Manohar Dhavala : CPL005: Create Car Pools (Post a ride)
+	 * 
+	 *         This method is used to find the driver email with the given car pool id
+	 *         @param cpid
+	 *         @return String
+	 */
+
+	@Override
+	public String getDriverEmailByCPId(int cpid) {
+		// to find the driver email with the given car pool id
+		return carpooldetailsRepository.getDriverEmailByCPId(cpid);
 	}
 
 }
