@@ -16,7 +16,7 @@ driverApp.controller('driverController',
 	$scope.autocomplete = undefined;
 	$scope.isRegisteredAsDriver = false;
 	$scope.isVisible=false;
-	
+
 	$scope.$on('gmPlacesAutocomplete::placeChanged', function(){
 		$scope.selectedLocation = $scope.autocomplete.getPlace().name;
 		var location = $scope.autocomplete.getPlace().geometry.location;
@@ -40,6 +40,8 @@ driverApp.controller('driverController',
 					$scope.isRegisteredAsDriver = true;
 					$scope.autocomplete = value.location;
 					$scope.nearBy = value.nearby;
+					$scope.mobile = value.mobile;
+					$scope.gender = value.gender;
 					angular.forEach(value.vehicleType, function(value) {
 						if(value == 2) 
 							$scope.cb2wheel = 2;
@@ -81,12 +83,13 @@ driverApp.controller('driverController',
 			var latitude = $scope.lat;
 			var longitude = $scope.lng;
 			var nearby = $scope.nearBy;
-			var mobile = "9000000000";//static for now, need to change
+			var mobile = $scope.mobile;//static for now, need to change
 			var emailNotification = true;//static for now, need to change
 			var isRider = 0;//driver==>0 || rider==>1
 			var createdDate = $filter('date')(new Date(), 'yyyy-MM-dd');
 			var modifiedDate = $filter('date')(new Date(), 'yyyy-MM-dd');
-
+			var gender = $scope.gender;
+			
 			$scope.registerDriverJson = {
 					"registrationId" : registrationId,
 					"emailId" : userId,
@@ -96,10 +99,10 @@ driverApp.controller('driverController',
 					"longitude" : longitude,
 					"nearby" : nearby,
 					"mobile" : mobile,
-					"emailNotification" : emailNotification,
 					"isRider" : isRider,
 					"createdDate" : createdDate,
-					"modifiedDate": modifiedDate
+					"modifiedDate": modifiedDate,
+					"gender" : gender
 			}
 			//window.alert("what am i sending to the server::: "+JSON.stringify($scope.registerDriverJson));
 			driverService.registerAsDriver($scope.registerDriverJson).then(function(response) {
@@ -151,21 +154,23 @@ driverApp.controller('driverController',
 		var profileSessionData = localStorageService.get('profile');
 		var userId = profileSessionData.emailId;
 		$scope.userId = userId
-
+		var vehicleType = [];
 		if($scope.cb2wheel==2 && $scope.cb4wheel==4){
-			var vehicleType = [$scope.cb2wheel, $scope.cb4wheel];
+			vehicleType = [$scope.cb2wheel, $scope.cb4wheel];
 		}else if($scope.cb2wheel==2 && $scope.cb4wheel==0){
-			var vehicleType = [$scope.cb2wheel];
+			vehicleType = [$scope.cb2wheel];
 		}else if($scope.cb4wheel==4 && $scope.cb2wheel==0){
-			var vehicleType = [$scope.cb4wheel];
+			vehicleType = [$scope.cb4wheel];
 		}
 
 		var data = {
 				"emailId" : userId,
 				"location" : $scope.autocomplete,
 				"nearby" : $scope.nearBy,
-				"vehicleType" :  vehicleType,
-				"isRider" : 0
+				"vehicleType" : vehicleType,
+				"isRider" : 0,
+				"mobile" : $scope.mobile,
+				"gender" : $scope.gender
 		}
 		driverService.updateDriverData(data).then(function(successResponse) {
 			console.log("Driver data updated successfuly"+successResponse);

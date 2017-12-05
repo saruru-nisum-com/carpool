@@ -64,18 +64,126 @@ table, td {
 /* driver and rider css @author: Dhiraj singh*/
 /*.registerAsDriverBtn {
 	background-color: #3498db; /* blue */
-	border: none;
-	color: white;
-	padding: 10px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 14px;
-	margin: 4px 2px;
-	cursor: pointer;
-	border-radius: 5px;
-}
+border
 
+
+:
+
+ 
+
+none
+
+
+;
+color
+
+
+:
+
+ 
+
+white
+
+
+;
+padding
+
+
+:
+
+ 
+
+10
+px
+
+
+;
+text-align
+
+
+:
+
+ 
+
+center
+
+
+;
+text-decoration
+
+
+:
+
+ 
+
+none
+
+
+;
+display
+
+
+:
+
+ 
+
+inline-block
+
+
+;
+font-size
+
+
+:
+
+ 
+
+14
+px
+
+
+;
+margin
+
+
+:
+
+ 
+
+4
+px
+
+ 
+
+2
+px
+
+
+;
+cursor
+
+
+:
+
+ 
+
+pointer
+
+
+;
+border-radius
+
+
+:
+
+ 
+
+5
+px
+
+
+;
+}
 .registerAsDriverBtn[disabled] {
 	background-color: #b2b2b2
 }
@@ -330,96 +438,132 @@ width: 100% !important;
 	color: SteelBlue;
 }
 
-.driver-element{
-	padding-bottom:10px;
+.driver-element {
+	padding-bottom: 10px;
 }
 
-h3{
-		margin-bottom:40px;
+form {
+	padding-top: 5%;
 }
 </style>
-<title>driver Registration</title>
+<title>Driver Registration</title>
 <body>
 	<div class="container-fluid">
-		<div class = "row">
-			<div class = "col-md-2">
-				<div id = "leftHandMenu">
+		<div class="row">
+			<div class="col-md-2">
+				<div id="leftHandMenu">
 					<div ng-include="'js/partials/leftSideMenu.html'"></div>
 				</div>
 			</div>
-	<div id='driverDiv' class = "col-md-8">
-		<h style="font-size: 36px; color: #00BFFF;">Driver profile</h>
-	</div>
-		<div id='driverDiv' class = "col-md-8">
-			<form name="driverForm" class="driverClass" novalidate>
-				<div class = "form-container">
-					<div class = "row driver-element">
-						<div class = "col-md-2">
-							<label>Vehicle Type</label>
-						</div>
-						<div class = "col-md-4">
-							<input type="checkbox" name="cb2wheel"
-							ng-model='cb2wheel' ng-true-value="2" ng-false-value="0">
-							2-wheeler
-						</div>
-					</div>
-					<div class = "row driver-element">
-						<div class = "col-md-4 col-md-offset-2">
-							<input type="checkbox" name="cb4wheel"
-							ng-model='cb4wheel' ng-true-value="4" ng-false-value="0">
-							4-wheeler <br />
-							<span ng-show="driverForm.$submitted && driverForm.$invalid"
-								style="color: red" class="help-block">Check before
-								proceed.</span>
-						</div>
-					</div>
-					<div class = "row driver-element">
-						<div class = "col-md-2">
-							<label>Location</label>
-						</div>
-						<div class = "col-md-4">
-							<input type="text" gm-places-autocomplete
-							name="driverLocation" ng-model="autocomplete"
-							placeholder="Enter location here">
-							<div
-								ng-show="driverForm.$submitted || driverForm.location.$touched">
-								<span ng-show="driverForm.location.$error.required "
-									style="color: red">Tell us your location.</span>
-							</div>
-						</div>
-					</div>
-					<div class = "row driver-element">
-						<div class = "col-md-2">
-							<label>NearBy(pickup)</label>
-						</div>
-						<div class = "col-md-4">
-							<input type="text" name="nearBy" ng-model="nearBy"
-							required=""> <br />
-							<div ng-show ="driverForm.$submitted || driverForm.nearBy.$touched">
-								<span ng-show="driverForm.nearBy.$error.required " style="color: red">Tell us your pickup point.</span>
-							</div>
-						</div>
-					</div>
-					<div class = "row driver-element">
-						<div class = "col-md-4 col-md-offset-2">
-							<button class="registerAsDriverBtn carpool-btn btn btn-primary"
-								ng-disabled="driverForm.cb4wheel.$error.required || driverForm.cb2wheel.$error.required || driverForm.nearBy.$error.required ||  driverForm.location.$error.required || isRegisteredAsDriver == true"
-								ng-click="registerAsDriver()">Register</button>
-							<button class="updateAsDriverBtn carpool-btn btn btn-primary"
-								ng-disabled="isRegisteredAsDriver !== true"
-								ng-click="updateAsDriver()">Update</button>
-						</div>
-					</div>
-					<div class = "row driver-element" ng-show="isVisible==true">
-						<div class = "col-md-4 col-md-offset-2">
-							<p style="font-size: 36px; color: green;">You have
-								{{actionName}} successfully</p>
-						</div>
-					</div>
+			<br>
+			<div id='driverHeader' class="col-md-8 thumbnail">
+				<div align="center" class="header">
+					<h3 style="color: #00BFFF;">Driver profile</h3>
+					<p style="color: red;">(Fields marked with (*) are mandatory)</p>
 				</div>
-			</form>
+				<div class="alert alert-success" role="alert"
+					ng-if="isVisible==true">
+					<button type="button" class="close" data-dismiss="alert"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<a href="#" class="alert-link">You have {{actionName}}
+						successfully</a>
+				</div>
+				<form name="driverForm" class="form-horizontal" novalidate>
+					<div class="form-group">
+						<div class="form-group required">
+							<div class="col-sm-2 control-label">
+								<label>Vehicle Type</label>
+							</div>
+							<div class="col-md-4">
+								<input type="checkbox" name="cb2wheel" ng-model='cb2wheel'
+									ng-true-value="2" ng-false-value="0"> 2-wheeler <br>
+								<input type="checkbox" name="cb4wheel" ng-model='cb4wheel'
+									ng-true-value="4" ng-false-value="0"> 4-wheeler <span
+									ng-show="driverForm.$submitted && driverForm.$invalid"
+									style="color: red" class="help-block">Check before
+									proceed.</span>
+							</div>
+						</div>
+						<!-- <div class="row">
+							<div class="col-sm-4 col-md-offset-2">
+								<input type="checkbox" name="cb4wheel" ng-model='cb4wheel'
+									ng-true-value="4" ng-false-value="0"> 4-wheeler
+								<span ng-show="driverForm.$submitted && driverForm.$invalid"
+									style="color: red" class="help-block">Check before
+									proceed.</span>
+							</div>
+						</div> -->
+						<div class="form-group required">
+							<div class="col-sm-2 control-label">
+								<label>Location</label>
+							</div>
+							<div class="col-md-4">
+								<input class="form-control" type="text" gm-places-autocomplete
+									name="location" ng-model="autocomplete" ng-required="true"
+									placeholder="Enter your location here">
+								<div
+									ng-show="driverForm.$submitted || driverForm.location.$touched">
+									<span ng-show="driverForm.location.$error.required"
+										style="color: red">Tell us your location.</span>
+								</div>
+							</div>
+						</div>
+						<div class="form-group required">
+							<div class="col-sm-2 control-label">
+								<label>NearBy(pickup)</label>
+							</div>
+							<div class="col-md-4">
+								<input class="form-control" type="text" name="nearBy"
+									ng-model="nearBy" ng-required="true">
+								<div
+									ng-show="driverForm.$submitted || driverForm.nearBy.$touched">
+									<span ng-show="driverForm.nearBy.$error.required "
+										style="color: red">Tell us your pickup point.</span>
+								</div>
+							</div>
+						</div>
+						<div class="form-group required">
+							<div class="col-sm-2 control-label">
+								<label>Mobile</label>
+							</div>
+							<div class="col-md-4">
+								<input class="form-control" type="text" name="mobileNumber"
+									ng-model="mobile" ng-required="true" autocomplete="off">
+								<div
+									ng-show="driverForm.$submitted || driverForm.mobileNumber.$touched">
+									<span ng-show="driverForm.mobileNumber.$error.required "
+										style="color: red">Please enter your mobile number.</span>
+								</div>
+							</div>
+						</div>
+						<div class="form-group required">
+							<div class="col-sm-2 control-label">
+								<label>Gender</label>
+							</div>
+							<div class="col-md-4">
+								<label class="radio-inline"> <input type="radio"
+									ng-model="gender" name="genderMale" id="male" value="0">Male
+								</label> <label class="radio-inline"> <input type="radio"
+									ng-model="gender" name="genderFemale" id="female" value="1">Female
+								</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4 col-md-offset-2">
+								<button class="registerAsDriverBtn btn btn-primary"
+									ng-disabled="driverForm.cb4wheel.$error.required || driverForm.cb2wheel.$error.required || driverForm.nearBy.$error.required ||  driverForm.location.$error.required || isRegisteredAsDriver == true"
+									ng-click="registerAsDriver()">Register</button>
+								<button class="updateAsDriverBtn btn btn-primary"
+									ng-disabled="isRegisteredAsDriver !== true"
+									ng-click="updateAsDriver()">Update</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
 		</div>
-	   </div>
 	</div>
 </body>
 </html>

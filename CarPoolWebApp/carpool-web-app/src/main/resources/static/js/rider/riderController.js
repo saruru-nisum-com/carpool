@@ -39,6 +39,9 @@ riderApp.controller('riderController',
 					$scope.isRegisteredAsRider = true;
 					$scope.riderAutocomplete = value.location;
 					$scope.riderNearBy = value.nearby;
+					$scope.emailNotification = value.emailNotification;
+					$scope.mobile = value.mobile;
+					$scope.gender = value.gender;
 				}
 			});
 		});
@@ -62,7 +65,8 @@ riderApp.controller('riderController',
 		var latitude = $scope.lat;
 		var longitude = $scope.lng;
 		var nearby = $scope.riderNearBy;
-		var mobile = "9000000000";//static for now, need to change
+		var mobile = $scope.mobile;//static for now, need to change
+		var gender = $scope.gender;
 
 		if($scope.notifyEmail == true){
 			var emailNotification = true;
@@ -77,7 +81,7 @@ riderApp.controller('riderController',
 
 		$scope.registerRiderJson = {
 				"registrationId" : registrationId,
-				"userId" : userId,
+				"emailId" : userId,
 				"location" :location,
 				"latitude" : latitude,
 				"longitude" : longitude,
@@ -86,7 +90,8 @@ riderApp.controller('riderController',
 				"emailNotification" : emailNotification,
 				"isRider" : isRider,
 				"createdDate" : createdDate,
-				"modifiedDate": modifiedDate
+				"modifiedDate": modifiedDate,
+				"gender" : gender
 		}
 		riderService.registerAsRider($scope.registerRiderJson).then(function(response) {
 			if (response.errorCode === 500) {
@@ -135,7 +140,9 @@ riderApp.controller('riderController',
 				//"vehicleType" :  vehicleType,
 				"isRider" : 1,
 				"emailNotification" : emailNotification,
-				"modifiedDate": modifiedDate
+				"modifiedDate": modifiedDate,
+				"mobile" : $scope.mobile,
+				"gender" : $scope.gender
 		}
 		riderService.updateRiderData(data).then(function(successResponse) {
 			console.log("Rider data updated successfuly"+successResponse);
