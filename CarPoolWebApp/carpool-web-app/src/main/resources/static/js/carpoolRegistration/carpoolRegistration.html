@@ -176,11 +176,13 @@
 						    <input type="time"  ng-model="value.toTime" ng-disabled="!selectedParent[$index]"
 						   ng-class="{'txtdisabled': !selectedParent[$index]}" required />
 						</td>
-						<td><img src="images/./view.png" style="left: -10px" title="view" ng-click="activate(checkedData)"/>
+						<td ng-class="{'disabled':!selectedParent[$index]}">
+						     <!-- <img src="images/./view.png" style="left: -10px" title="view" ng-click="activate(checkedData)"/> -->
 							<img src="images/./edit.png"
-							style="width: 20px; height: 20px; left: -5px;" title="edit" ng-click="!selectedParent[$index]|| confirmEdit('carpool',value);" /> 
-							<!-- <img src="images/./delete2.png" style="width: 20px; height: 20px;"
-							title="delete" ng-click="!selectedParent[$index]|| confirmDelete('carpool',value);/></td> -->
+							style="width: 20px; height: 20px; left: -5px;" title="edit" ng-click="!selectedParent[$index]|| confirmEdit('carpool',value);" /> <img
+							src="images/./delete2.png" style="width: 20px; height: 20px;"
+							title="delete" ng-click="!selectedParent[$index]|| confirmDelete('carpool',value);"/>
+						</td>
 					</tr>
 					<tr ng-repeat="x in value.child" class="hideChild{{key}}"
 						ng-show="show{{key}}">
@@ -208,11 +210,13 @@
 						    <input type="time"  ng-model="x.toTime" ng-disabled="!selectedchild[$index]"
 						   ng-class="{'txtdisabled': !selectedchild[$index]}" required />
 						</td>
-						<td><img src="images/./view.png" style="left: -10px" title="view" ng-click="activate(checkedData)" />
+						<td ng-class="{'disabled':!selectedchild[$index]}">
+						    <!-- <img src="images/./view.png" style="left: -10px" title="view" ng-click="activate(checkedData)" />-->
 							<img src="images/./edit.png"
-							style="width: 20px; height: 20px; left: -5px;" title="edit" ng-click="activate(checkedData)" /> <img
+							style="width: 20px; height: 20px; left: -5px;" title="edit" ng-click="!selectedchild[$index]|| confirmEdit('carpool',value);" /> <img
 							src="images/./delete2.png" style="width: 20px; height: 20px;"
-							title="delete" ng-click="activate(checkedData)"/></td>
+							title="delete" ng-click="activate(checkedData)"/>
+						</td>
 					</tr>
 				</tbody>
 			</table>
