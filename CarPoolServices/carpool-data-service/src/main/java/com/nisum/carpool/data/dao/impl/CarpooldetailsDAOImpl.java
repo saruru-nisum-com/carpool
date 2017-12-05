@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.cassandra.repository.MapId;
 
 import com.nisum.carpool.data.dao.api.CarpooldetailsDAO;
 import com.nisum.carpool.data.domain.Carpooldetails;
@@ -164,6 +163,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		int count1 = 0;
 		int count2 = 0;
 
+
 		
 		//to check if there are entries in db with the given email and dates
 
@@ -246,7 +246,10 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 
 	public void upateCarPoolStatusByIdandParentID(int pid, int status) {
 		carpooldetailsRepository.updateCarpoolStatusByPoolId(pid, status);
+
 	}
+
+
 	
 	/**
 	 * @author Manohar Dhavala : CPL005: Create Car Pools (Post a ride)
@@ -261,5 +264,12 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		// to find the driver email with the given car pool id
 		return carpooldetailsRepository.getDriverEmailByCPId(cpid);
 	}
+
+	@Override
+	public List<Carpooldetails> getCarPoolByCpIDandDate(int cpId, String date) {
+		logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolByCpIDandDate");
+		return carpooldetailsRepository.getCarPoolsByCpIdandDate(cpId, date);
+	}
+
 
 }

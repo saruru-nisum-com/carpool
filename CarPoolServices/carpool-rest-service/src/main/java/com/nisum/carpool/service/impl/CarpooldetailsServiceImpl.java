@@ -357,6 +357,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 	
 			
 			useridsSet.add(car.getEmailId());
+
 		}
 			
 			for(String userid:useridsSet)

@@ -55,6 +55,7 @@ public class CarpooldetailsRestService {
 			error.setErrorMessage(e.getMessage());
 			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
+		
 		return responseEntity;
 		
 	}

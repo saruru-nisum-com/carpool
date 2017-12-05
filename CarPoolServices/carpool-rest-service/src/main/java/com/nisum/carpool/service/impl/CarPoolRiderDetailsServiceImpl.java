@@ -1,12 +1,14 @@
 package com.nisum.carpool.service.impl;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,26 +31,27 @@ import com.nisum.carpool.util.CarpoolRiderDetailsServiceUtil;
 
 @Service
 public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsService {
-
+	
 	private static Logger logger = LoggerFactory.getLogger(CarPoolRiderDetailsServiceImpl.class);
+
 
 	
 	@Autowired
 	UserDAO userDAO;
+	
 	@Autowired
 	RegisterDAO registerDAO;
+	
 	@Autowired
 	CarpooldetailsDAO carpooldetailsDAO;
+	
 	@Autowired
-	CarpoolRiderDetailsDAO carpoolRiderdetailsDAO;
-
-
-
+	CarpoolRiderDetailsDAO carpoolRiderDetailsDAO;
 
 	@Override
 	public List<CarpoolRiderDetailsDTO> findCarpoolRiderDetailsByCPId(int cpid) {
 
-		List<CarpoolRiderDetails> cpList = carpoolRiderdetailsDAO.findCarpoolRiderDetailsByCPId(cpid);
+		List<CarpoolRiderDetails> cpList = carpoolRiderDetailsDAO.findCarpoolRiderDetailsByCPId(cpid);
 		return CarpoolRiderDetailsServiceUtil.convertDaoTODto(cpList);
 	}
 
@@ -56,7 +59,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 	public String cancelCarpoolRiderDetails(int cpid) {
 		// TODO Auto-generated method stub
 		
-	String cancelRiderStatus=	carpoolRiderdetailsDAO.cancelCarpoolRiderDetails(cpid);
+	String cancelRiderStatus=	carpoolRiderDetailsDAO.cancelCarpoolRiderDetails(cpid);
 		
 		return cancelRiderStatus;
 	}
@@ -67,62 +70,96 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 	 * author Radhika pujari
 	 */
 	
+	/**
+	 * getRiderBookingdetails() for  service layer 
+	 * Parameter: emailID
+	 * This method is used to load the future opt a ride details based on emailId for rider see the future rides 
+	 * returntype:List<RiderBookingDetailsDTO>
+	 */
+
+	
 	@Override
 	public List<RiderBookingDetailsDTO> getRiderBookingDetails(String emailId) {
-		// TODO Auto-generated method stub
-		List<CarpoolRiderDetails> carpoolRiderLists = new ArrayList<>();
-
-
-		// List<RiderBookingDetailsDTO> carpoolListbyLocation = new ArrayList<>();
-		List<RiderBookingDetailsDTO> riderBookingdetailsDtoList = new ArrayList<>();
-
-		// List<String> useridsList=null;
-		Set<Integer> cpids = null;
-		// useridsList= carpooldetailsDAO.getAllUserIDs();
-		carpoolRiderLists = (List<CarpoolRiderDetails>) carpoolRiderdetailsDAO.getRiderBookingDetails(emailId);
-
-		if (carpoolRiderLists != null) {
+		  String emailid=null;
+		  logger.info("CarPoolRiderDetailsServiceImpl::getRiderBookingDetails::start");
+		  List<RiderBookingDetailsDTO> riderBookingdetailsDtoList = new ArrayList<>();
+		  
+		  
+		  try {
+		  
+		Date date1 = new Date();
+		
+		SimpleDateFormat sd=new SimpleDateFormat("MM/dd/yyyy");
+		String date = sd.format(date1);
+		
+	   System.out.println("Date"+date);
+		
+         List<CarpoolRiderDetails> carpoolRiderLists = (List<CarpoolRiderDetails>) carpoolRiderDetailsDAO.getRiderBookingDetails(emailId);
+		
+	     logger.info(""+carpoolRiderLists);
+		   if (carpoolRiderLists != null) {
 			for (CarpoolRiderDetails car : carpoolRiderLists) {
 
-				RiderBookingDetailsDTO carpoolRiderdetailsDto = new RiderBookingDetailsDTO();
+				
 				int cpid = car.getCpid();
-				Carpooldetails carpool;
-				String email="";
-				try {
-					carpool = carpooldetailsDAO.loadCarpoolDetailsById(cpid);
-					email = carpool.getEmailId();
-				} catch (Exception e) {
-					e.printStackTrace();
+
+				logger.info("cpid"+cpid+"date : "+date);
+				
+		         List<Carpooldetails> carpoolList = carpooldetailsDAO.getCarPoolByCpIDandDate(cpid,date);
+		              	
+		        for( Carpooldetails carPool:carpoolList) {
+		        	
+		       
+		        	RiderBookingDetailsDTO carpoolRiderdetailsDto = new RiderBookingDetailsDTO();
+		        	emailid = carPool.getEmailId();
+				 System.out.println(emailid);
+				 carpoolRiderdetailsDto.setEmail(emailid);
+				carPool.getFromDate();
+				
+				carpoolRiderdetailsDto.setFromDate(carPool.getFromDate());
+				carpoolRiderdetailsDto.setEmail(emailid);
+				
+			
+		         List<RegisterDomain> registerDomain = registerDAO.findUserRegistrationByUserId(emailid);
+			 if (registerDomain != null && registerDomain.size() > 0 ) {
+				for(RegisterDomain registerDomain2:registerDomain)
+				{
+					if(registerDomain2.getIsrider()==0)
+					{
+						
+					carpoolRiderdetailsDto.setMobile(registerDomain2.getMobile());
+					break;
+					}
+					
 				}
-				User user = userDAO.findByEmailId(email);
-				List<RegisterDomain> registerDomain = registerDAO.findUserRegistrationByUserId(email);
-				carpoolRiderdetailsDto.setEmail(email);
-				if (user != null && registerDomain.get(0).getIsrider() == 0) {
+			}
+			 User user = userDAO.findByEmailId(emailid);
+				if (user != null ) {
 					carpoolRiderdetailsDto.setUserName(user.getUserName());
 				}
-
-				if (registerDomain != null && registerDomain.size() > 0) {
-
-					carpoolRiderdetailsDto.setMobile(registerDomain.get(0).getMobile());
-				}
-				// riderBookingdetailsDtoList.add(carpoolRiderdetailsDto);
-				carpoolRiderdetailsDto.setCreateddate(Timestamp.valueOf(car.getCreateddate()));
+				
+				
+				
+				
 				carpoolRiderdetailsDto.setReason(car.getReason());
 				carpoolRiderdetailsDto.setStatus(car.getStatus());
 				carpoolRiderdetailsDto.setLocation(car.getLocation());
 				riderBookingdetailsDtoList.add(carpoolRiderdetailsDto);
+				
 			}
 			
-			
 		}
-
-		// List<CarpoolRiderDetails> cpList =
-		// carpoolRiderdetailsDAO.getRiderBookingDetails(emailId);
-
-		// return CarpoolRiderDetailsServiceUtil.convertDaoTODto(cpList)
-
+			
+		   }
+		   
+	   }catch(Exception e) {
+		   e.printStackTrace();
+	   }
+		  logger.info("CarPoolRiderDetailsServiceImpl::getRiderBookingDetail::end");
 		return riderBookingdetailsDtoList;
 	}
+	
+
 	
 	/*
 	 * MethodAuthor: @Rajesh Sekhamuri (non-Javadoc)
@@ -166,7 +203,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 
 		List<CarpoolRiderDetails> carpoolriderdetailslist = CarpoolRiderDetailsServiceUtil.convertDtoTODao(rides);
 
-		List<CarpoolRiderDetails> cpriderlist = carpoolRiderdetailsDAO
+		List<CarpoolRiderDetails> cpriderlist = carpoolRiderDetailsDAO
 				.cancelRiderBookingdetails(carpoolriderdetailslist);
 
 		if (cpriderlist == null)
@@ -178,7 +215,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 			logger.info("carpoolriderdetailsserviceimpl: carpool list is not null");
 			for (CarpoolRiderDetails cprider : carpoolriderdetailslist) {
 
-				List<CarpoolRiderNotifications> cpridernotifications = carpoolRiderdetailsDAO
+				List<CarpoolRiderNotifications> cpridernotifications = carpoolRiderDetailsDAO
 						.findRidersToNotifyByCPId(cprider.getCpid());
 				logger.info("cpid " + cprider.getCpid());
 				for (CarpoolRiderNotifications cpridernotify : cpridernotifications) {
@@ -197,7 +234,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 						//setting notify status to true so the rider wont recieve notification 
 						//again when another rider cancels a ride
 						cpridernotify.setNotified(true);
-						carpoolRiderdetailsDAO.updatecpridernotifications(cpridernotify);
+						carpoolRiderDetailsDAO.updatecpridernotifications(cpridernotify);
 					}
 				}
 
@@ -212,6 +249,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 			return CarpoolRiderDetailsServiceUtil.convertDaoTODto(cpriderlist);
 
 		}
-}
-	
+
+
+	}
 }

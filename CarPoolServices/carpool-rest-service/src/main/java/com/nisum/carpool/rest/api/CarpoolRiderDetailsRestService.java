@@ -1,10 +1,11 @@
-package com.nisum.carpool.rest.api;
+package com.nisum.carpool.rest.api; 
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,36 +15,60 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nisum.carpool.data.util.Constants;
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
+import com.nisum.carpool.service.dto.Errors;
 import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.util.CPCancellationReasons;
-import com.nisum.carpool.util.Constants;
+
+import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
 
 
 @RestController
 @RequestMapping(value = "/v1/carpool")
 public class CarpoolRiderDetailsRestService {
+	
+	private static Logger logger = LoggerFactory.getLogger(CarpoolRiderDetailsRestService.class);
+	static Map<Integer, String> cancelReasonMapObj = new HashMap<Integer, String>();
 
 	@Autowired
 	CarpoolRiderDetailsService carpoolRiderDetailsService;
-
 	
-	private static Logger loggerObj = Logger.getLogger(CarpoolRiderDetailsRestService.class);
-	static Map<Integer, String> cancelReasonMapObj = new HashMap<Integer, String>();
+	/**
+	 * author Radhika pujari
+	 */
 	
-	@RequestMapping(value = "/getRiderBookingDetails/{emailID}", method = RequestMethod.GET)
-	public ResponseEntity<List<RiderBookingDetailsDTO>> getRiderBookingDetails(
-			@PathVariable("emailID") String emailID) {
+	/**
+	 * getRiderBookingdetails() for  RestService 
+	 * Parameter: emailID
+	 * This method is used to load the future opt a ride details based on emailId for rider see the future rides 
+	 * returntype:Rsponse entity
+	 * @throws CarpooldetailsServiceException 
+	 */
 
-		String emailId = emailID + ".com";
 
-		System.out.println("emailId==" + emailId);
+	@RequestMapping(value = "/getRiderBookingDetails/{emailId:.+}", method = RequestMethod.GET)
+	public ResponseEntity<?> getRiderBookingDetails(@PathVariable("emailId") String emailId) throws CarpooldetailsServiceException 
+		 {
+		logger.info("CarpoolRiderDetailsRestService::getRiderBookingDetails::start");
+		Errors error = new Errors();
+		try {
+		
+	    List<RiderBookingDetailsDTO> poolList = carpoolRiderDetailsService.getRiderBookingDetails(emailId);
+	    if(poolList.isEmpty()) {
+	      	error.setErrorCode("204");
+			error.setErrorMessage(Constants.ERROR_MESSAGE);
+			return new ResponseEntity<Errors>(error, HttpStatus.NO_CONTENT);
+	    }else
+	    
 
-		List<RiderBookingDetailsDTO> poolList = carpoolRiderDetailsService.getRiderBookingDetails(emailId);
 		return new ResponseEntity<List<RiderBookingDetailsDTO>>(poolList, HttpStatus.OK);
-
+		
+		}catch(Exception e) {
+			throw new CarpooldetailsServiceException("Error-Message");
+		}
 	}
 
 	@RequestMapping(value = "/findCarpoolRiderDetailsByCPId/{cpid}", method = RequestMethod.GET)
@@ -63,11 +88,11 @@ public class CarpoolRiderDetailsRestService {
 	
 	@RequestMapping(value = "/loadRiderStatusReasons", method = RequestMethod.GET)
 	public ResponseEntity<Map<Integer, String>> loadRiderStatusReasons() {
-		loggerObj.info("Start of loadRiderStatusReasons() method in RiderStatusRestService"); 
+		logger.info("Start of loadRiderStatusReasons() method in RiderStatusRestService"); 
 		if(cancelReasonMapObj.isEmpty()) { 
 			cancelReasonMapObj = CPCancellationReasons.readRiderStatusReasonCodes();
 		}
-		loggerObj.info("End of loadRiderStatusReasons() method in RiderStatusRestService");
+		logger.info("End of loadRiderStatusReasons() method in RiderStatusRestService");
 		return new ResponseEntity<Map<Integer, String>>(cancelReasonMapObj, HttpStatus.OK);
 	}
 	
@@ -79,14 +104,14 @@ public class CarpoolRiderDetailsRestService {
 
 	@RequestMapping(value = "/cancelRiderBookingDetails", method = RequestMethod.POST)
 	public ResponseEntity<?> cancelRiderBookingDetails(@RequestBody List<CarpoolRiderDetailsDTO> rides) {
-		loggerObj.info("cancelling a ride");
+		logger.info("cancelling a ride");
 		try {
 
 			List<CarpoolRiderDetailsDTO> cprdto = carpoolRiderDetailsService.cancelRiderBookingdetails(rides);
 
 			if (cprdto == null) {
 
-				loggerObj.info("carpoolriderdetailsrestservice:Canceling ride failed");
+				logger.info("carpoolriderdetailsrestservice:Canceling ride failed");
 				ServiceStatusDto statusDto = new ServiceStatusDto();
 				statusDto.setStatus(false);
 				statusDto.setMessage(Constants.CANCELING_RIDE_FAILED);
@@ -96,7 +121,7 @@ public class CarpoolRiderDetailsRestService {
 			}
 
 			else {
-				loggerObj.info("carpoolriderdetailsrestservice:Successfully cancelled a ride");
+				logger.info("carpoolriderdetailsrestservice:Successfully cancelled a ride");
 				ResponseEntity<List<CarpoolRiderDetailsDTO>> entity = new ResponseEntity<List<CarpoolRiderDetailsDTO>>(
 						cprdto, HttpStatus.OK);
 				return entity;
@@ -105,7 +130,7 @@ public class CarpoolRiderDetailsRestService {
 
 		} catch (Exception e) {
 
-			loggerObj.info(e.getMessage());
+			logger.info(e.getMessage());
 			ServiceStatusDto statusDto = new ServiceStatusDto();
 			statusDto.setStatus(false);
 			statusDto.setMessage(Constants.CANCELING_RIDE_FAILED);

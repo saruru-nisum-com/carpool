@@ -1,11 +1,13 @@
 package com.nisum.carpool.data.dao.impl;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,6 +19,7 @@ import com.nisum.carpool.data.repository.CarpoolRiderNotificationsRepository;
 import com.nisum.carpool.data.util.Constants;
 import com.nisum.carpool.data.util.Pool_Status;
 import com.nisum.carpool.data.util.Ride_Status;
+
 
 @Configuration
 public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
@@ -30,10 +33,18 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 	CarpoolRiderNotificationsRepository carpoolridernotificationsrepository;
 
 
+
+	/**
+	 * getRiderBookingDetails  for Dao Layer
+	 * parameter: emailId
+	 * This method used for load the data from repository
+	 * returntype:List<CarpoolRiderDetails>
+	 */
+	
 	@Override
 	public List<CarpoolRiderDetails> getRiderBookingDetails(String emailId) {
-
-		return (List<CarpoolRiderDetails>) carpoolRiderDetailsRepository.getRiderBookingDetails(emailId);
+		logger.info("CarpoolRiderDetailsDAOImpl::getRiderBookingDetails::emailId");
+      return (List<CarpoolRiderDetails>) carpoolRiderDetailsRepository.getRiderBookingDetails(emailId);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.nisum.carpool.data.repository;
 
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.cassandra.repository.CassandraRepository;
@@ -18,7 +19,6 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	
 	@Query("select count(*) from cp_carpooldetails where emailid=:emailid and fromdate>= :fromdate and todate<= :todate and status>=1 and status<4 ALLOW FILTERING")
 	public int findEntriesWithDateIfNotCancelled(@Param("emailid") String emailid,@Param("fromdate") String fromdate, @Param("todate") String todate);
-
 	@Query("select count(*) from cp_carpooldetails where parentid=?0 ALLOW FILTERING")
 	Long countByParentid(int parentid);
 	
@@ -42,7 +42,7 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 
 	@Query("update cp_carpooldetails set modifieddate=:#{#carpoolDetails.modifieddate}, status=:#{#carpoolDetails.status} where parentid=:#{#carpoolDetails.parentid}")
 	Integer cancelMultipleCarpoolDetails(@Param("carpoolDetails") Carpooldetails carpoolDetails);
-	
+
 	public Carpooldetails findCarpoolDetailsById(int id);
 	
 	@Query("select id from cp_carpooldetails where rewards=0 and status=?0 and todate<='rewardedDate' allow filtering")
@@ -70,4 +70,8 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 
 	@Query("select emailid from cp_carpooldetails where parentid=:cpid allow filtering")
 	public String getDriverEmailByCPId(@Param("cpid") int cpid);
+	
+	@Query("select * from cp_carpooldetails where parentid=:cpId and fromdate>:date allow filtering")
+	List<Carpooldetails>  getCarPoolsByCpIdandDate(@Param("cpId")int cpId,@Param("date") String date);
+	
 }

@@ -14,7 +14,7 @@ import com.nisum.carpool.data.domain.RegisterDomain;
 
 	@Query("select * from cp_userregistration where emailid= ?0 allow filtering")
 	List<RegisterDomain> findByEmailId(String emailId);
-	
+
 	
 	@Query("select * from cp_userregistration where location=?0  ALLOW FILTERING")
 	public List<RegisterDomain> findByLocation(@Param("location")String location);

@@ -68,6 +68,7 @@ public class CarpooldetailsRestServiceTest {
 		carpooldetailsDto.setToDate("14356u756i7op");
 		carpooldetailsDto.setToTime("987");
 		carpooldetailsDto.setEmailId("wefgre@jh.com");
+
 		carpooldetailsDto.setVehicleType(2);
 		
 		carpooldetailsDtoList.add(carpooldetailsDto);

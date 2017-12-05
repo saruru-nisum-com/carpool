@@ -12,6 +12,9 @@ public class RiderBookingDetailsDTO {
 	 private int	status;
 	 private int reason;
 	 private String location;
+	 private String  fromDate;
+
+	 
     /**
 	 * @return the location
 	 */
@@ -24,7 +27,7 @@ public class RiderBookingDetailsDTO {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	private Timestamp  createddate;
+	
 	/**
 	 * @return the userName
 	 */
@@ -91,14 +94,14 @@ public class RiderBookingDetailsDTO {
 	/**
 	 * @return the createddate
 	 */
-	public Timestamp getCreateddate() {
-		return createddate;
+	public String getFromDate() {
+		return fromDate;
 	}
 	/**
 	 * @param createddate the createddate to set
 	 */
-	public void setCreateddate(Timestamp createddate) {
-		this.createddate = createddate;
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
 	}
 	
 	/* (non-Javadoc)
@@ -108,7 +111,7 @@ public class RiderBookingDetailsDTO {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((createddate == null) ? 0 : createddate.hashCode());
+		result = prime * result + ((fromDate == null) ? 0 : fromDate.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
@@ -129,10 +132,10 @@ public class RiderBookingDetailsDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		RiderBookingDetailsDTO other = (RiderBookingDetailsDTO) obj;
-		if (createddate == null) {
-			if (other.createddate != null)
+		if (fromDate == null) {
+			if (other.fromDate != null)
 				return false;
-		} else if (!createddate.equals(other.createddate))
+		} else if (!fromDate.equals(other.fromDate))
 			return false;
 		if (email == null) {
 			if (other.email != null)
@@ -166,7 +169,7 @@ public class RiderBookingDetailsDTO {
 	@Override
 	public String toString() {
 		return "RiderBookingDetailsDTO [userName=" + userName + ", mobile=" + mobile + ", email=" + email + ", status="
-				+ status + ", reason=" + reason + ", location=" + location + ", createddate=" + createddate + "]";
+				+ status + ", reason=" + reason + ", location=" + location + ", fromDate=" + fromDate + "]";
 	}
 	
 	 
