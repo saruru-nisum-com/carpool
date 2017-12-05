@@ -551,9 +551,9 @@ carpoolRegApp
 						
 						
 						var parseFromDate = $filter('date')(new Date(fromDate),
-								'MM/dd/yyyy');
+								'yyyy-MM-dd');
 						var parseToDate = $filter('date')(new Date(toDate),
-								'MM/dd/yyyy');
+								'yyyy-MM-dd');
 						var parseStartTime = $filter('date')(
 								new Date(startTime), 'h:mm a');
 						var parseEndTime = $filter('date')(new Date(endTime),
