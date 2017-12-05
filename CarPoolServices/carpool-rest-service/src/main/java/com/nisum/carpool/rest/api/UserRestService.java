@@ -134,6 +134,7 @@ public class UserRestService {
 				//	emailAccount.getSubject(), MailSender.messageBody(userDto.getUserName()));
 				
 				//Get User location from profile
+<<<<<<< HEAD
 				try {
 					logger.info("get user location from userReg Service###"+userDto.getEmailId());
 					userLocation = registerDAO.getLocationOfRegisteredUser(userDto.getEmailId()).getLocation();
@@ -146,10 +147,24 @@ public class UserRestService {
 					logger.info("user location from profile**"+userLocation);
 					userDto.setLocation(userLocation);
 				}
-				
-				httpRequest.setAttribute("userSession", userDto);
-				userInfo = userDto;
+=======
 			}
+			try {
+				logger.info("get user location from userReg Service###"+userDto.getEmailId());
+				userLocation = registerDAO.getLocationOfRegisteredUser(userDto.getEmailId());
+>>>>>>> 642b6a7f4c9b0d72f69a0e26331070ae70947dde
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(userLocation!=null) {
+				logger.info("user location from profile**"+userLocation);
+				userDto.setLocation(userLocation);
+			}
+			
+			httpRequest.setAttribute("userSession", userDto);
+			userInfo = userDto;
 
 		}
 
