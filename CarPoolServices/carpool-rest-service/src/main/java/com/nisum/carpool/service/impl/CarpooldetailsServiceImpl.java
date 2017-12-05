@@ -176,9 +176,11 @@ System.out.println(carPoolList);
 	}
 	
 	/**
-	 * @author Manohar Dhavala
+	 * @author Manohar Dhavala : CPL005: Create Car Pools (Post a ride)
 	 * 
 	 *         This method is used to check if carpool can be created or not
+	 *         @param carpooldetails
+	 *         @return String
 	 */
 
 	public String checkValidCarpool(Carpooldetails carpooldetails) {
@@ -193,7 +195,7 @@ System.out.println(carPoolList);
 	}
 	
 	/**
-	 * @author Manohar Dhavala
+	 * @author Manohar Dhavala : CPL005: Create Car Pools (Post a ride)
 	 * 
 	 *         This method is used to for creating domain objects to be sent to data access layer
 	 */
@@ -234,17 +236,10 @@ System.out.println(carPoolList);
 			Carpooldetails cp = new Carpooldetails();
 			int id = CarpooldetailsServiceUtil.getRandomInt();
 
-			// checking if parentid is set, else set parentid to id
-
-			if (parentid == 0)
-				parentid = id;
-			cp.setId(id);
-			cp.setParentid(parentid);
-
-			// setting original fromdate and todate for parent record in carpool db
+			// setting original fromdate and todate for parent record and parentid to id in carpool db
 
 			if (start) {
-
+				parentid = id;
 				cp.setFromDate(carpooldetails.getFromDate());
 				cp.setToDate(carpooldetails.getToDate());
 				start = false;
@@ -261,6 +256,8 @@ System.out.println(carPoolList);
 
 			}
 
+			cp.setId(id);
+			cp.setParentid(parentid);
 			cp.setFromtime(carpooldetails.getFromtime());
 			cp.setToTime(carpooldetails.getToTime());
 			cp.setCreateddate(carpooldetails.getCreateddate());
