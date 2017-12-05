@@ -5,7 +5,8 @@ public enum Pool_Status {
 	OPEN(1),
 	PARTIALLY_COMPLETED(2),
 	COMPLETED(3),
-	CLOSED(4);
+	CLOSED(4),
+	CANCELLED(5);
 	
 	Integer value;
 	
