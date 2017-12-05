@@ -75,7 +75,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 			logger.info("in daoimpl cancel by parentId" + countByParentid);
 			if (countByParentid == 1) {
 				carpooldetails.setModifieddate(modifiedDate.toLocalDateTime());
-				carpooldetails.setStatus(Pool_Status.CLOSED.getValue());
+				carpooldetails.setStatus(Pool_Status.CANCELLED.getValue());
 				carpooldetailsRepository.save(carpooldetails);
 			}
 		} catch (Exception e1) {
@@ -91,7 +91,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 			if (poolData != null) {
 				if (CollectionUtils.isNotEmpty(poolData)) {
 					poolData.forEach(c -> {
-						c.setStatus(Pool_Status.CLOSED.getValue());
+						c.setStatus(Pool_Status.CANCELLED.getValue());
 						c.setModifieddate(modifiedDate.toLocalDateTime());
 						carpooldetailsRepository.save(c);
 					});

@@ -44,7 +44,7 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 			  if (CollectionUtils.isNotEmpty(carPoolData)) {
 				  carPoolData.forEach(c->{
 					  System.out.println("pool value=="+Pool_Status.CLOSED.getValue());
-						c.setStatus(Pool_Status.CLOSED.getValue());
+						c.setStatus(Pool_Status.CANCELLED.getValue());
 					  c.setModifieddate(modifiedDate.toLocalDateTime());
 					  carpoolRiderDetailsRepository.save(c);
 					});
