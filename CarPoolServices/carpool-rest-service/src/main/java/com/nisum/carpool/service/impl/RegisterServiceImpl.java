@@ -44,6 +44,26 @@ public class RegisterServiceImpl  implements RegisterService{
 		logger.info("RegisterServiceImpl: registerDriver:::");
 		
 		RegisterDomain registerDomain = RegisterServiceUtil.convertRegisterDtoObjectToRegisterDomain(registerDTO);
+		
+		// code is added by Harish Kumar Gudivada on 5th December 2017
+		//code is added to check the whether the user is registerd or not 
+		if(registerDomain!=null) {
+			List<RegisterDomain> registerdUsersList= registerDAO.findUserRegistrationByUserId(registerDomain.getEmailid());
+			if(registerdUsersList!=null) {
+				ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
+				for(RegisterDomain registedDao:registerdUsersList) {
+					if(registedDao.getIsrider()==registerDomain.getIsrider() &&registerDomain.getIsrider()==0) {
+						serviceStatusDto.setStatus(false);
+						serviceStatusDto.setMessage("Driver is Already Registered");
+						return serviceStatusDto;
+					}else if(registedDao.getIsrider()==registerDomain.getIsrider() && registerDomain.getIsrider()==1) {
+						serviceStatusDto.setStatus(false);
+						serviceStatusDto.setMessage("Rider is Already Registered");
+						return serviceStatusDto;
+					}
+				}
+			}
+		}
 		RegisterDomain rDomain =  registerDAO.registerDriverorRider(registerDomain);
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
 		if(ObjectUtils.anyNotNull(rDomain)) {

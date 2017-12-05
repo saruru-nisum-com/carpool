@@ -41,6 +41,11 @@ public class RegisterRestService {
 			ServiceStatusDto statusDto = registerService.registerDriverorRider(registerDTO);
 			if(statusDto.isStatus()) {
 				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
+			}else {
+				Errors error = new Errors();
+				error.setErrorCode("Errors-DriverRegister");
+				error.setErrorMessage(statusDto.getMessage());
+				responseEntity=new ResponseEntity<Errors>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}catch (Exception e) {
 			Errors error = new Errors();
