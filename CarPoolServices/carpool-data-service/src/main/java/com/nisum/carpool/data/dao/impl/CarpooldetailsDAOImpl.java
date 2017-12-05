@@ -82,9 +82,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		}
 		// update child records
 		try {
-			listOfIds = carpooldetailsRepository.getListOfIdsByParentid(carpooldetails.getParentid());
 			logger.info("in child update.parentId.." + carpooldetails.getParentid());
-			logger.info("listOfIds ** in cancel pool daoimpl:" + listOfIds.size());
 
 			List<Carpooldetails> poolData = carpooldetailsRepository.findByParentid(carpooldetails.getParentid());
 			if (poolData != null) {
