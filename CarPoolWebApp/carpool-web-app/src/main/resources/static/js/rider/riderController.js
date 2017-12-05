@@ -129,7 +129,7 @@ riderApp.controller('riderController',
 		var modifiedDate = $filter('date')(new Date(), 'yyyy-MM-dd');
 		
 		var data = {
-				"userId" : userId,
+				"emailId" : userId,
 				"location" : $scope.selectedLocation,
 				"nearby" : $scope.riderNearBy,
 				//"vehicleType" :  vehicleType,

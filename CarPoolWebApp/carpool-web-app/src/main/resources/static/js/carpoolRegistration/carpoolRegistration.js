@@ -4,15 +4,8 @@ var carpoolRegApp=angular.module('carpoolRegistrationApp', ['ui.router', 'gm'])
 		url:'/carpoolRegistration',
 		templateUrl:'js/carpoolRegistration/carpoolRegistration.html',
 		controller: 'postARideCtrl'
-	}).state('driver',{
-		url:'/driver',
-		templateUrl:'./js/driver/driver.html',
-		controller: 'carpoolRegistrationController'
-	}).state('rider',{
-		url:'/rider',
-		templateUrl:'./js/rider/rider.html',
-		controller: 'carpoolRegistrationController'
-	}).state('sharedRides',{
+	})
+	.state('sharedRides',{
 		url:'/sharedRides',
 		templateUrl:'./js/history/sharedRides.html',
 		controller: 'carpoolRegistrationController'

@@ -138,7 +138,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 				Integer riderStatusCount = 0; // carpoolRiderdetailsDAO.updateRiderStatus(carpoolRiderDaoObj);
 				if(riderStatusCount > 0) {  //If rider status record updated into db, should send mail to rider
 					//Email send code start
-					System.out.println("Email implementation **** "+riderStatusCount);    
+					System.out.println("Email implementation **** "+riderStatusCount);     
 				}
 			}
 		} catch (Exception e) {

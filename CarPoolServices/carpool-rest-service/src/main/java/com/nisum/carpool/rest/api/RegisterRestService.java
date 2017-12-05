@@ -38,22 +38,6 @@ public class RegisterRestService {
 		ResponseEntity<?> responseEntity = null;
 		try {
 			// Duplicate Check need to add it on later point of time 
-			
-			// Hard Coded Data
-			//List<Integer> list = new ArrayList<>();
-			//list.add(4);
-			
-//			registerDTO.setRegistrationId(76763);
-//			registerDTO.setIsRider(0);
-//			registerDTO.setLatitude("23322323");
-//			registerDTO.setLocation("dsdnmn");
-//			registerDTO.setMobile("8943434434");
-//			registerDTO.setUserId("test@tes.com");
-//			registerDTO.setVehicleType(list);
-//			registerDTO.setNearby("NELO");
-//			registerDTO.setCreatedDate(CommonsUtil.getCurrentDateTime());
-//			registerDTO.setModifiedDate(CommonsUtil.getCurrentDateTime());
-//			registerDTO.setEmailNotification(false);
 			ServiceStatusDto statusDto = registerService.registerDriverorRider(registerDTO);
 			if(statusDto.isStatus()) {
 				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
@@ -75,21 +59,6 @@ public class RegisterRestService {
 		try {
 			// Duplicate Check need to add it on later point of time 
 			
-			// Hard Coded Data
-			//List<Integer> list = new ArrayList<>();
-			//list.add(4);
-			
-//			registerDTO.setRegistrationId(76763);
-//			registerDTO.setIsRider(0);
-//			registerDTO.setLatitude("23322323");
-//			registerDTO.setLocation("dsdnmn");
-//			registerDTO.setMobile("8943434434");
-//			registerDTO.setUserId("test@tes.com");
-//			registerDTO.setVehicleType(list);
-//			registerDTO.setNearby("NELO");
-//			registerDTO.setCreatedDate(CommonsUtil.getCurrentDateTime());
-//			registerDTO.setModifiedDate(CommonsUtil.getCurrentDateTime());
-//			registerDTO.setEmailNotification(false);
 			ServiceStatusDto statusDto = registerService.registerDriverorRider(registerDTO);
 			if(statusDto.isStatus()) {
 				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
@@ -102,6 +71,32 @@ public class RegisterRestService {
 		}
 		return responseEntity;
 	}
+	
+	/*
+	 * @Author: Dhiraj Singh
+	 * Description: update driver/rider functionality
+	 */
+	@RequestMapping(value="/updateDriver", method = RequestMethod.PUT,  consumes = "application/json", produces="application/json")
+	public ResponseEntity<RegisterDTO> updateDriver(@RequestBody RegisterDTO registerDTO) throws RegisterServiceException{
+		
+		logger.info("Entering into " + getClass() + " updateDriver():::");
+		
+		ResponseEntity<RegisterDTO> responseEntity = null;
+
+		try {
+			RegisterDTO updatedRegisterDTO = registerService.updateDriverRiderData(registerDTO);
+			responseEntity = new ResponseEntity<RegisterDTO>(updatedRegisterDTO, HttpStatus.OK);
+		}catch (Exception e) {
+			Errors error = new Errors();
+			error.setErrorCode("Errors-RiderDriverUpdate");
+			error.setErrorMessage("Something went wrong while Driver/rider updating");
+			responseEntity = new ResponseEntity<RegisterDTO>(HttpStatus.NOT_MODIFIED);
+		}
+		
+		return responseEntity;
+		
+	}
+	
 	
 	/**
 	 * @author Harish Kumar Gudivada

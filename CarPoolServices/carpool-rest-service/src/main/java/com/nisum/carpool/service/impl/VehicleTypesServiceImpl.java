@@ -27,7 +27,13 @@ public class VehicleTypesServiceImpl implements VehicleTypesService{
 	@Override
 	public List<VehicleTypesDTO> getVehicleTypes() {
 		logger.info("Enter into VehicleTypesServiceImpl :: getVehicleTypes :: get all vehicle details");
-		List<VehicleTypes> vehiclesTypesDao = vehicleTypesDAO.getVehicleTypes();
+		List<VehicleTypes> vehiclesTypesDao = null;
+		try {
+			vehiclesTypesDao = vehicleTypesDAO.getVehicleTypes();
+		} catch(Exception e) {
+			logger.info("Entered  into VehicleTypesServiceImpl Exception :: getVehicleTypes :: Error occurred");
+			e.printStackTrace();
+		}
 		logger.info("Exit from VehicleTypesServiceImpl :: getVehicleTypes :: get all vehicle details");
 		return VehicleTypesUtil.convertDaoToDto(vehiclesTypesDao);
 	}

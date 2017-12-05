@@ -65,7 +65,7 @@ driverApp.controller('driverController',
 
 			var profileSessionData = localStorageService.get('profile');
 
-			var userId = profileSessionData.emailId;//"dsingh@nisum.com"//profileSessionData.emailId;
+			var userId = profileSessionData.emailId;// "dsingh@nisum.com"//profileSessionData.emailId;
 			//alert("hi user id : "+userId);
 			$scope.userId = userId
 			if($scope.cb2wheel==2 && $scope.cb4wheel==4){
@@ -89,7 +89,7 @@ driverApp.controller('driverController',
 
 			$scope.registerDriverJson = {
 					"registrationId" : registrationId,
-					"userId" : userId,
+					"emailId" : userId,
 					"vehicleType" :  vehicleType,
 					"location" :location,
 					"latitude" : latitude,
@@ -161,7 +161,7 @@ driverApp.controller('driverController',
 		}
 
 		var data = {
-				"userId" : userId,
+				"emailId" : userId,
 				"location" : $scope.autocomplete,
 				"nearby" : $scope.nearBy,
 				"vehicleType" :  vehicleType,

@@ -40,7 +40,9 @@ public class CarpooldetailsServiceUtil {
 				carpooldetailsDto.setToTime(c.getToTime());
 				carpooldetailsDto.setStatus(c.getStatus());
 				carpooldetailsDto.setLocation(c.getLocation());
+				if(c.getCreateddate()!=null)
 				carpooldetailsDto.setCreateddate(CommonsUtil.convertLocalDateTimeToTimeStamp(c.getCreateddate()));
+				if(c.getModifieddate()!=null)
 				carpooldetailsDto.setModifieddate(CommonsUtil.convertLocalDateTimeToTimeStamp(c.getModifieddate()));
 				carpooldetailsDtos.add(carpooldetailsDto);
 			});
@@ -100,6 +102,7 @@ public class CarpooldetailsServiceUtil {
 	public static Carpooldetails convertUpdateDtoTODao(CarpooldetailsDto carpooldetailsDto) {
 		Carpooldetails carpooldetails = new Carpooldetails();
 		try {
+			
 			carpooldetails.setId(carpooldetailsDto.getId());
 			carpooldetails.setParentid(carpooldetailsDto.getParentid());
 			carpooldetails.setEmailId(carpooldetailsDto.getEmailId());
@@ -110,6 +113,7 @@ public class CarpooldetailsServiceUtil {
 			carpooldetails.setFromtime(carpooldetailsDto.getStartTime());
 			carpooldetails.setToTime(carpooldetailsDto.getToTime());
 			carpooldetails.setStatus(carpooldetailsDto.getStatus());
+			if(carpooldetailsDto.getModifieddate()!=null)
 			carpooldetails.setModifieddate(carpooldetailsDto.getModifieddate().toLocalDateTime());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

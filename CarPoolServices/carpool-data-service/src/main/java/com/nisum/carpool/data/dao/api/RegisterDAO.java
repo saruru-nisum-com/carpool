@@ -11,4 +11,6 @@ public interface RegisterDAO {
 	List<RegisterDomain> findUserRegistrationByUserId(String emailId);
 
 	public RegisterDomain getLocationOfRegisteredUser(String emailId);
+	
+	public RegisterDomain updateDriverOrRider(RegisterDomain regDomain);
 }

@@ -29,5 +29,8 @@ public interface CarpooldetailsService {
 	
 	List<CarpooldetailsDto> loadCarpoolDetailsByEmailId(String emaillId);
 
-    String getLocationByEmailId(String emailId)throws CarpooldetailsServiceException ;
+	String getLocationByEmailId(String emailId)throws CarpooldetailsServiceException ;
+	
+	void UpdatecarpoolStatus(Integer carpoolId) throws CarpooldetailsServiceException;
+
 }

@@ -29,6 +29,25 @@ public class RegisterDAOImpl implements RegisterDAO {
 	}
 	
 	/**
+	 * @author: Dhiraj singh
+	 * Description: To update the driver/rider data based on userid
+	 * 
+	 */
+	@Override
+	public RegisterDomain updateDriverOrRider(RegisterDomain updatedRegisterDomainObj) {
+//		RegisterDomain rd = registerRepository.findByUserid(oldRegisterDomain.getUserid(), oldRegisterDomain.getIsrider());
+
+		try {
+			logger.info("updateDriverOrRider");
+			registerRepository.save(updatedRegisterDomainObj);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return updatedRegisterDomainObj;
+	}
+
+	
+	/**
 	 * @author Harish Kumar Gudivada
 	 * Param emailId
 	 * Return registerList

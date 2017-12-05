@@ -12,4 +12,5 @@ public interface RegisterService {
 	public String searchLocation(RegisterDTO regDto)throws Exception;
 
 
+	public RegisterDTO updateDriverRiderData(RegisterDTO registerDTO);
 }

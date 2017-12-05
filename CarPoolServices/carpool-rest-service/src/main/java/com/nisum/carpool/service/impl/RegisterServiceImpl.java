@@ -23,6 +23,7 @@ import org.w3c.dom.Document;
 
 import com.nisum.carpool.data.dao.api.RegisterDAO;
 import com.nisum.carpool.data.domain.RegisterDomain;
+import com.nisum.carpool.data.repository.RegisterRepository;
 import com.nisum.carpool.service.api.RegisterService;
 import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
@@ -32,8 +33,13 @@ import com.nisum.carpool.util.RegisterServiceUtil;
 public class RegisterServiceImpl  implements RegisterService{
 
 	private static Logger logger = LoggerFactory.getLogger(RegisterServiceImpl.class);
+	
 	@Autowired
 	private RegisterDAO registerDAO;
+
+	@Autowired
+	RegisterRepository registerRepository;
+	
 	public ServiceStatusDto registerDriverorRider(RegisterDTO registerDTO) {
 		logger.info("RegisterServiceImpl: registerDriver:::");
 		
@@ -139,6 +145,45 @@ public class RegisterServiceImpl  implements RegisterService{
 		return res;
 
 	}
+	
+	/**
+	 * @author : Dhiraj Singh
+	 * Description: 
+	 */
+	public RegisterDTO updateDriverRiderData(RegisterDTO registerDTO) {
+		try {
+			if(registerDTO != null) {
+				final String userId = registerDTO.getEmailId();
+				final Integer isRider = registerDTO.getIsRider(); 
+				RegisterDomain registerDomain  = registerRepository.findByUserid(userId, isRider);
+				RegisterDomain updatedRegDomainObj = buildUpdatedDriverRriderData(registerDTO, registerDomain);
+				
+				registerDAO.updateDriverOrRider(registerDomain);
+			}
+			return registerDTO;
+		} catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	/**
+	 * @author : Dhiraj Singh
+	 * Description: 
+	 */
+	private RegisterDomain buildUpdatedDriverRriderData(RegisterDTO registerDTO, RegisterDomain registerDomain) {
+		registerDomain.setLocation(registerDTO.getLocation());
+		registerDomain.setVehicletype(registerDTO.getVehicleType());
+		registerDomain.setMobile(registerDTO.getMobile());
+		registerDomain.setNearby(registerDTO.getNearby());
+//		registerDomain.setGender(registerDTO.);
+		
+		return registerDomain;
+		
+	}
+
+	
 
 	
 }

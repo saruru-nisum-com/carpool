@@ -43,6 +43,14 @@ public class RegisterDomain implements Serializable{
 		this.registrationid = registrationid;
 	}
 	
+	
+//	public String getUserid() {
+//		return userid;
+//	}
+//	public void setUserid(String userid) {
+//		this.userid = userid;
+//	}
+	
 	public String getEmailid() {
 		return emailid;
 	}
@@ -168,7 +176,7 @@ public class RegisterDomain implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "RegisterDomain [registrationid=" + registrationid + ", userid=" + emailid + ", vehicletype="
+		return "RegisterDomain [registrationid=" + registrationid + ", emailid=" + emailid + ", vehicletype="
 				+ vehicletype + ", location=" + location + ", latitude=" + latitude + ", longitude=" + longitude
 				+ ", nearby=" + nearby + ", mobile=" + mobile + ", emailnotification=" + emailnotification
 				+ ", isrider=" + isrider + ", createddate=" + createddate + ", Gender="+gender+", modifieddate=" + modifieddate + "]";

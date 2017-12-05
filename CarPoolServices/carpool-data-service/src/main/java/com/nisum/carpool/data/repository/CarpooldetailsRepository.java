@@ -61,5 +61,13 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 
 	@Query("select * from cp_carpooldetails where fromdate>= :fromdate and todate<= :todate allow filtering")
 	public List<Carpooldetails> getCarPoolsByDate(@Param("fromdate") String fromdate, @Param("todate") String todate);
+	   @Query("select * from cp_carpooldetails where id=?0 allow filtering")
+	   public Carpooldetails getCarpoolByPoolID(Integer carpoolId);
+	   
+		@Query("update cp_carpooldetails set status=:poolStatus where id=:id ")
+		public void updateCarpoolStatusByPoolId(@Param("poolStatus")int poolStatus,@Param("id") Integer id);
+		
+		@Query("update cp_carpooldetails set status=:status where id=:pid ")
+		public void updateCarpoolStatusByPoolId(@Param("pid")int pid, @Param("status")int status);
 
 }
