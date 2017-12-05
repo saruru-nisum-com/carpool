@@ -16,9 +16,6 @@ import java.lang.Integer;
 @Repository
 public interface CarpooldetailsRepository extends CassandraRepository<Carpooldetails>{
 	
-	@Query("select count(*) from cp_carpooldetails where emailid=:emailid and fromdate>= :fromdate and todate<= :todate ALLOW FILTERING")
-	public int findEntriesWithDate(@Param("emailid") String emailid, @Param("fromdate") String fromdate, @Param("todate") String todate);
-
 	@Query("select count(*) from cp_carpooldetails where emailid=:emailid and fromdate>= :fromdate and todate<= :todate and status>=1 and status<4 ALLOW FILTERING")
 	public int findEntriesWithDateIfNotCancelled(@Param("emailid") String emailid,@Param("fromdate") String fromdate, @Param("todate") String todate);
 
@@ -59,15 +56,18 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	@Query("select * from cp_carpooldetails where parentid=?0 allow filtering")
 	public List<Carpooldetails> getCaroolsByParentId(int poolId);
 
-	@Query("select * from cp_carpooldetails where fromdate>= :fromdate and todate<= :todate allow filtering")
-	public List<Carpooldetails> getCarPoolsByDate(@Param("fromdate") String fromdate, @Param("todate") String todate);
-	   @Query("select * from cp_carpooldetails where id=?0 allow filtering")
-	   public Carpooldetails getCarpoolByPoolID(Integer carpoolId);
+	@Query("select * from cp_carpooldetails where fromdate>= :fromdate and todate<= :todate and status>=1 and status<4 allow filtering")
+	public List<Carpooldetails> getCarPoolsByDateNotCancelled(@Param("fromdate") String fromdate, @Param("todate") String todate);
+	
+	@Query("select * from cp_carpooldetails where id=?0 allow filtering")
+	public Carpooldetails getCarpoolByPoolID(Integer carpoolId);
 	   
-		@Query("update cp_carpooldetails set status=:poolStatus where id=:id ")
-		public void updateCarpoolStatusByPoolId(@Param("poolStatus")int poolStatus,@Param("id") Integer id);
+	@Query("update cp_carpooldetails set status=:poolStatus where id=:id ")
+	public void updateCarpoolStatusByPoolId(@Param("poolStatus")int poolStatus,@Param("id") Integer id);
 		
-		@Query("update cp_carpooldetails set status=:status where id=:pid ")
-		public void updateCarpoolStatusByPoolId(@Param("pid")int pid, @Param("status")int status);
+	@Query("update cp_carpooldetails set status=:status where id=:pid ")
+	public void updateCarpoolStatusByPoolId(@Param("pid")int pid, @Param("status")int status);
 
+	@Query("select emailid from cp_carpooldetails where parentid=:cpid allow filtering")
+	public String getDriverEmailByCPId(@Param("cpid") int cpid);
 }
