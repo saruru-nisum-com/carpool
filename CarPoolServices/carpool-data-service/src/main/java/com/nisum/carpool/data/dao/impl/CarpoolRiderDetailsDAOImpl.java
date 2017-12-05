@@ -4,20 +4,31 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import com.nisum.carpool.data.dao.api.CarpoolRiderDetailsDAO;
 import com.nisum.carpool.data.domain.CarpoolRiderDetails;
+import com.nisum.carpool.data.domain.CarpoolRiderNotifications;
 import com.nisum.carpool.data.repository.CarpoolRiderDetailsRepository;
+import com.nisum.carpool.data.repository.CarpoolRiderNotificationsRepository;
 import com.nisum.carpool.data.util.Constants;
 import com.nisum.carpool.data.util.Pool_Status;
+import com.nisum.carpool.data.util.Ride_Status;
 
 @Configuration
 public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
+	
+	private static Logger logger = LoggerFactory.getLogger(CarpoolRiderDetailsDAOImpl.class);
 
 	@Autowired
 	CarpoolRiderDetailsRepository carpoolRiderDetailsRepository;
+	
+	@Autowired
+	CarpoolRiderNotificationsRepository carpoolridernotificationsrepository;
+
 
 	@Override
 	public List<CarpoolRiderDetails> getRiderBookingDetails(String emailId) {
@@ -86,6 +97,64 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 		System.out.println(" now update count "+updateCount);
 		System.out.println("End of updateRiderStatus() method in CarpoolRiderDetailsDAOImpl");
 		return updateCount;
+	}
+	
+	/**
+	 * @author Manohar Dhavala
+	 * 
+	 *         This method is used for updating reason id and status as cancelled in 
+	 *         cp_carpoolriderdetails db when rider cancels a ride
+	 */
+	@Override
+	public List<CarpoolRiderDetails> cancelRiderBookingdetails(List<CarpoolRiderDetails> carpoolriderdetailslist) {
+		logger.info("carpoolriderdetailsdaoimpl:cancelling a ride");
+		
+		try {
+			
+		for(CarpoolRiderDetails cprider: carpoolriderdetailslist) {
+			cprider.setStatus(Ride_Status.CANCELLED.getValue());
+			carpoolRiderDetailsRepository.save(cprider);
+			
+		}
+		
+		} catch(Exception e) {
+			e.printStackTrace();
+			logger.info("Canceling ride(s) failed");
+			return null;
+		}
+		
+		//returning the list of all booked rides by the rider
+		return getRiderBookingDetails(carpoolriderdetailslist.get(0).getEmailid());
+	}
+	
+	/**
+	 * @author Manohar Dhavala
+	 * 
+	 *         This method is used for finding all riders who want to be notified
+	 *         when pool is reopen because of a rider cancelling a ride
+	 */
+
+	@Override
+	public List<CarpoolRiderNotifications> findRidersToNotifyByCPId(int cpid) {
+		logger.info("carpoolriderdetailsdaoimpl: findRidersToNotifyByCPId");
+		return carpoolridernotificationsrepository.getNotifiedRidersByCPId(cpid);
+		
+	}
+	
+	/**
+	 * @author Manohar Dhavala
+	 * 
+	 *         This method is used for updating notify field in carpoolridernotifications table 
+	 *         so another rider wont send notification when he cancels a ride
+	 *		   
+	 */
+
+	@Override
+	public void updatecpridernotifications(CarpoolRiderNotifications cpridernotify) {
+		//updating notify field in carpoolridernotifications table so another rider wont send notification 
+		//when he cancels a ride
+		carpoolridernotificationsrepository.save(cpridernotify);
+		
 	}
 
 }
