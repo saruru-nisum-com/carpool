@@ -27,6 +27,7 @@ public interface CarpooldetailsDAO {
 	public Carpooldetails getCarpoolByPoolID(Integer carpoolId);
 
 	public void updateCarpoolStatusByPoolId(int poolStatus, Integer id);
+	
 
 	public void upateCarPoolStatusByIdandParentID(int pid, int status);
 

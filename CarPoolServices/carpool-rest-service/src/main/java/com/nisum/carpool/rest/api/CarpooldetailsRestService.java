@@ -177,7 +177,11 @@ public class CarpooldetailsRestService {
 		 return entity;
 	}
 	
-	
+	/**
+	 * @author Sure Harish
+	 * @param the Email
+	 * this method will return all the carpool's shared by driver  .
+	 */
 
 	@RequestMapping(value = "/getMySharedRides/{email:.+}", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllCarpoolsByDriver(@PathVariable("email")String email) 
@@ -192,6 +196,11 @@ public class CarpooldetailsRestService {
 
 	}
 	
+	/**
+	 * @author Sure Harish
+	 * @param carpool Parent ID
+	 *  this method will return all the carpool's in the given parent ID
+	 */
 	@RequestMapping(value = "/getSharedRidesByParentId/{parentID}", method = RequestMethod.GET)
 	public ResponseEntity<?> getCarpoolsByParentID(@PathVariable("parentID")Integer id) 
 	{
