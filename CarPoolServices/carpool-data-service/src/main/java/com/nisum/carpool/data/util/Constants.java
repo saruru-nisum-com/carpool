@@ -72,6 +72,9 @@ public class Constants {
 		public static final String REWARDS_NOT_ADDED_DRIVER="Reward Points are not added to Driver !!";
 		public static final String DRIVER_IS_REGISTERED_AS_RIDER = "Driver is already registered as rider for the day";
 		public static final String CARPOOL_VALID = "Status of creating car pool is valid";
-		
+		public static final String ADDED_REWARDS_TO_RIDER="Reward Points added to Rider Successfully !!";
+		public static final String REWARDS_NOT_ADDED_RIDER="Reward Points are not added to Rider !!";
+		public static final String NO_RIDES_WITH_RESPECTIVE_CARPOOL="There is No Rides With respective same carpool Id's !!";
+		public static final String NO_CARPOOLS_TO_UPDATE="There is no Carpools to update !!";
 }
 

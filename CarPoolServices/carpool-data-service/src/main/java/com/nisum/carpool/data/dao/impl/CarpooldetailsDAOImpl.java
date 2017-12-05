@@ -1,6 +1,8 @@
 package com.nisum.carpool.data.dao.impl;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -194,7 +196,30 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 				return Constants.CARPOOL_VALID;
 
 		}
+	}
+	/**
+	* author Mahesh Bheemanapalli
+	*/
 
+	/**
+	* addRewards() for  dao layer 
+	* Parameter: rewards (reading the reward points from "application.properties").
+	* This method is used to update the reward points to driver when the carpool status is "Closed" 
+	* returntype:String statement from com.nisum.carpool.data.util.Constants;   
+	*/
+	@Override
+	public String addRewards(double rewards) {
+		// TODO Auto-generated method stub
+		logger.info("CarpooldetailsDAOImpl : addRewards : To Driver");
+		LocalDate currentDate = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String rewardedDate = currentDate.format(formatter);
+		List<Integer> listOfIds = carpooldetailsRepository.getCarpooldetailsByFromDate(Pool_Status.CLOSED.getValue(), rewardedDate);
+		if (listOfIds.size() > 0) {
+			carpooldetailsRepository.udpateRewardPoints(rewards, listOfIds);
+			return Constants.ADDED_REWARDS_TO_DRIVER;
+		}
+		return Constants.REWARDS_NOT_ADDED_DRIVER;
 	}
 
 	@Override

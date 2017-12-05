@@ -26,6 +26,7 @@ import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.domain.RegisterDomain;
 import com.nisum.carpool.data.domain.User;
 import com.nisum.carpool.service.api.CarpooldetailsService;
+import com.nisum.carpool.service.api.RewardPoints;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
 import com.nisum.carpool.service.dto.DriverCarPoolDto;
@@ -645,7 +646,24 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		}
 		return 0;
 	}
-
+	 /**
+		 * @author Mahesh Bheemanapalli
+		 * addRewards() for service Layer
+		 * @param rewards
+		 * @return ServiceStatusDto class with status and message
+		 */
+	@Override
+	public ServiceStatusDto addRewards(double rewards) {
+			// TODO Auto-generated method stub
+			logger.info("CarpooldetailsServiceImpl : addRewards : To Driver");
+			ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
+			String updaterewardPointsWithId = carpooldetailsDAO.addRewards(rewards);
+			if(ObjectUtils.anyNotNull(updaterewardPointsWithId)) {
+				serviceStatusDto.setStatus(true);
+				serviceStatusDto.setMessage(updaterewardPointsWithId);
+			}
+			return serviceStatusDto;
+	}
 	
 	 /**
 		 * @author Harish Kumar Gudivada

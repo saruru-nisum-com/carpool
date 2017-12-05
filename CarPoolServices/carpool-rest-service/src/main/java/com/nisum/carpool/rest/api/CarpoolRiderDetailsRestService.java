@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nisum.carpool.data.util.Constants;
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
+import com.nisum.carpool.service.api.RewardPoints;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
 import com.nisum.carpool.service.dto.Errors;
 import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
@@ -31,11 +33,13 @@ import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
 public class CarpoolRiderDetailsRestService {
 	
 	private static Logger logger = LoggerFactory.getLogger(CarpoolRiderDetailsRestService.class);
-	static Map<Integer, String> cancelReasonMapObj = new HashMap<Integer, String>();
-
+	
 	@Autowired
 	CarpoolRiderDetailsService carpoolRiderDetailsService;
 	
+	static Map<Integer, String> cancelReasonMapObj = new HashMap<Integer, String>();
+	
+	private static RewardPoints rewardPoints;
 	/**
 	 * author Radhika pujari
 	 */
@@ -47,7 +51,6 @@ public class CarpoolRiderDetailsRestService {
 	 * returntype:Rsponse entity
 	 * @throws CarpooldetailsServiceException 
 	 */
-
 
 	@RequestMapping(value = "/getRiderBookingDetails/{emailId:.+}", method = RequestMethod.GET)
 	public ResponseEntity<?> getRiderBookingDetails(@PathVariable("emailId") String emailId) throws CarpooldetailsServiceException 
@@ -73,19 +76,19 @@ public class CarpoolRiderDetailsRestService {
 
 	@RequestMapping(value = "/findCarpoolRiderDetailsByCPId/{cpid}", method = RequestMethod.GET)
 	public ResponseEntity<List<CarpoolRiderDetailsDTO>> findCarpoolRiderDetailsByCPId(@PathVariable("cpid") int cpid) {
-		
+
 		List<CarpoolRiderDetailsDTO> poolList = carpoolRiderDetailsService.findCarpoolRiderDetailsByCPId(cpid);
 		return new ResponseEntity<List<CarpoolRiderDetailsDTO>>(poolList, HttpStatus.OK);
 
 	}
-	
+
 	/*
-	 * methodAuthor: @Rajesh Sekhamuri
-	 * methodName: riderStatus()
-	 * @Params 
-	 * return Map<Integer, String> reason code with name form of key and value pair
+	 * methodAuthor: @Rajesh Sekhamuri methodName: riderStatus()
+	 * 
+	 * @Params return Map<Integer, String> reason code with name form of key and
+	 * value pair
 	 */
-	
+
 	@RequestMapping(value = "/loadRiderStatusReasons", method = RequestMethod.GET)
 	public ResponseEntity<Map<Integer, String>> loadRiderStatusReasons() {
 		logger.info("Start of loadRiderStatusReasons() method in RiderStatusRestService"); 
@@ -141,5 +144,33 @@ public class CarpoolRiderDetailsRestService {
 		}
 
 	}
+	/**
+	 * @author Mahesh Bheemanapalli
+	 */
+	@Scheduled(cron = "0 53 23 * * ?")
+	@RequestMapping(value = "/addRiderRewardPoints", method = RequestMethod.GET)
+	public ResponseEntity<?> addRewardPointsToRider() {
+		logger.info("CarpoolRiderDetailsRestService : addRewardPointsToRider");
+		try {
+			String riderRewardPoints = rewardPoints.getRiderRewardPoints();
+			double rewards = Double.parseDouble(riderRewardPoints);
+			ServiceStatusDto statusDto = carpoolRiderDetailsService.addRewards(rewards);
 
+			return new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
+
+		} catch (Exception e) {
+			logger.error("CarpoolRiderDetailsRestService : addRewardPointsToRider : Inside Catch Block"+e.getMessage());
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+
+	}
+	/**
+	 * @author Mahesh Bheemanapalli
+	 * @param rewardPoints
+	 * @return 
+	 */
+	@Autowired
+	public void setEmailAccount(RewardPoints rewardPoints) {
+		CarpoolRiderDetailsRestService.rewardPoints = rewardPoints;
+	}
 }

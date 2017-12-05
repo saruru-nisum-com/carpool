@@ -24,6 +24,8 @@ public interface CarpooldetailsDAO {
 	List<Carpooldetails> getCarpoolsByParentId(int parentId);
 
 	public List<Integer> getCarPoolParentIds(String email);
+	
+	public String addRewards(double rewards);
 
 	public Carpooldetails getCarpoolByPoolID(Integer carpoolId);
 

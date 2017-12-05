@@ -25,6 +25,7 @@ public interface CarpoolRiderDetailsDAO {
 	
 	public void updatecpridernotifications(CarpoolRiderNotifications cpridernotify);
 	
+	public String addRewards(double rewards);
 
 	/*
 	 * MethodAuthor: @Rajesh Sekhamuri

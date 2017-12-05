@@ -2,12 +2,18 @@ package com.nisum.carpool.data.dao.impl;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +22,7 @@ import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 import com.nisum.carpool.data.domain.CarpoolRiderNotifications;
 import com.nisum.carpool.data.repository.CarpoolRiderDetailsRepository;
 import com.nisum.carpool.data.repository.CarpoolRiderNotificationsRepository;
+import com.nisum.carpool.data.repository.CarpooldetailsRepository;
 import com.nisum.carpool.data.util.Constants;
 import com.nisum.carpool.data.util.Pool_Status;
 import com.nisum.carpool.data.util.Ride_Status;
@@ -25,6 +32,8 @@ import com.nisum.carpool.data.util.Ride_Status;
 public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 	
 	private static Logger logger = LoggerFactory.getLogger(CarpoolRiderDetailsDAOImpl.class);
+	@Autowired
+	CarpooldetailsRepository carpooldetailsRepository;
 
 	@Autowired
 	CarpoolRiderDetailsRepository carpoolRiderDetailsRepository;
@@ -53,14 +62,14 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 		return carpoolRiderDetailsRepository.findCarpoolRiderDetailsByCPId(cpid);
 	}
 
-	//cancel Rider details when Driver cancel carpool
+	// cancel Rider details when Driver cancel carpool
 	@Override
 	public String cancelCarpoolRiderDetails(int cpid) {
-		System.out.println("in cancelCarpool Rider daoImpl cpId=**"+cpid);
-		List<CarpoolRiderDetails> carPoolData=carpoolRiderDetailsRepository.getRiderDetailsByCpId(cpid);
-		
-		System.out.println("carPoll rider cancel size=="+carPoolData.size());
-		
+		System.out.println("in cancelCarpool Rider daoImpl cpId=**" + cpid);
+		List<CarpoolRiderDetails> carPoolData = carpoolRiderDetailsRepository.getRiderDetailsByCpId(cpid);
+
+		System.out.println("carPoll rider cancel size==" + carPoolData.size());
+
 		Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
 		if(carPoolData!=null) {
 			  if (CollectionUtils.isNotEmpty(carPoolData)) {
@@ -75,7 +84,7 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 	  
 		return Constants.MSG_CANCEL_CARPOOL_RIDER;
 	}
-	
+
 	@Override
 	public List<CarpoolRiderDetails> getRidersByCpID(Integer poolid) {
 		// TODO Auto-generated method stub
@@ -167,5 +176,55 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 		carpoolridernotificationsrepository.save(cpridernotify);
 		
 	}
+	/**
+	* author Mahesh Bheemanapalli
+	*/
 
+	/**
+	* addRewards() for  dao layer 
+	* Parameter: rewards (reading the reward points from "application.properties")
+	* This method is used to update the reward points to rider when the carpool status is "Closed" and carpoolrider is "Approved" 
+	* returntype:String statement from com.nisum.carpool.data.util.Constants;   
+	*/
+	@Override
+	public String addRewards(double rewards) {
+		// TODO Auto-generated method stub
+		logger.info("CarpoolRiderDetailsDAOImpl : updaterewardPointsWithId : To Rider");
+		Set<Integer> riders = this.getSetOfCarpoolRiders();
+		if (riders.size() > 0) {
+			carpoolRiderDetailsRepository.udpateRiderRewardPoints(rewards, riders);
+			return Constants.ADDED_REWARDS_TO_RIDER;
+		}
+		return Constants.REWARDS_NOT_ADDED_RIDER;
+	}
+	/**
+	* author Mahesh Bheemanapalli
+	*/
+
+	/**
+	 * getListOfCarpoolRiders() for dao layer This method is used to get Set of
+	 * Rider id's where rewards are "0", carpool status is "Closed", carpoolRider
+	 * Status is "Approved" and Date less than current date. 
+	 * returntype:Set<Integer> i.e carpoolrider id's;
+	 */
+	public Set<Integer> getSetOfCarpoolRiders() {
+		logger.info("CarpoolRiderDetailsDAOImpl : getSetOfCarpoolRiders");
+		Set<Integer> SetOfClosedRiders = new HashSet<>();
+		LocalDate currentDate = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String rewardedDate = currentDate.format(formatter);
+		List<Integer> carpoolClosedCpids = carpooldetailsRepository
+				.getCarpooldetailsByFromDate(Pool_Status.CLOSED.getValue(), rewardedDate);
+		if (carpoolClosedCpids.size() > 0) {
+			for (int i = 0; i < carpoolClosedCpids.size(); i++) {
+				Integer ridersId = carpoolRiderDetailsRepository.getListOfClosedRiders(Ride_Status.APPROVED.getValue(),
+						carpoolClosedCpids.get(i));
+				if (ObjectUtils.anyNotNull(ridersId)&&ridersId>0) {
+					SetOfClosedRiders.add(ridersId);
+					logger.info("CarpoolRiderDetailsDAOImpl : getListOfCarpoolRiders"+ridersId);
+				}
+			}
+		}
+		return SetOfClosedRiders;
+	}
 }

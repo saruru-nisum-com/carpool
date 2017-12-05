@@ -5,6 +5,7 @@ import java.util.List;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
 import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
 import com.nisum.carpool.service.dto.RiderStatusDTO;
+import com.nisum.carpool.service.dto.ServiceStatusDto;
 
 public interface CarpoolRiderDetailsService {
 
@@ -24,7 +25,6 @@ public interface CarpoolRiderDetailsService {
 	 * methodAuthor: @Rajesh Sekhamuri
 	 */
 	public void updateRiderStatus(List<RiderStatusDTO> riderStatusDtoListObj);
-	
 
-
+	ServiceStatusDto addRewards(double rewards);
 }

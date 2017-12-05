@@ -1,6 +1,7 @@
 package com.nisum.carpool.data.repository;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.data.cassandra.repository.Query;
@@ -33,6 +34,10 @@ public interface CarpoolRiderDetailsRepository extends CassandraRepository<Carpo
 
 	@Query("select count(*) from cp_carpoolriderdetails where emailid=:emailid and cpid=:cpid and status<=2 ALLOW FILTERING")
 	int checkWhetherDriverIsRiderWithStatus(@Param("emailid")String emailid, @Param("cpid") int cpid);
+	
+	@Query("select id from cp_carpoolriderdetails where status=:status and rewards=0 and cpid=:cpid allow filtering;")
+	Integer getListOfClosedRiders(@Param("status") int status,@Param("cpid") int cpid);
 
-
+	@Query("update cp_carpoolriderdetails set rewards=:rewards where id IN (:listOfIds)")
+	Integer udpateRiderRewardPoints(@Param("rewards") double rewards, @Param("listOfIds") Set<Integer> listOfIds);
 }

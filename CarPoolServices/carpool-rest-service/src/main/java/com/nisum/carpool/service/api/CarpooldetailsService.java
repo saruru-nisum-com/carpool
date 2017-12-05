@@ -28,6 +28,8 @@ public interface CarpooldetailsService {
 	List<DriverCarPoolDto> getCarPoolsByParentId(int parentId) throws CarpooldetailsServiceException;
 	
 	List<CarpooldetailsDto> loadCarpoolDetailsByEmailId(String emaillId);
+	
+	ServiceStatusDto addRewards(double rewards);
 
 	String getLocationByEmailId(String emailId)throws CarpooldetailsServiceException ;
 	

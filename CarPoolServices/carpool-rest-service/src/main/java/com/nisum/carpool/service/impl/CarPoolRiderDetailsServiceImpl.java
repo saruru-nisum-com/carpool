@@ -1,6 +1,5 @@
 package com.nisum.carpool.service.impl;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,6 +8,7 @@ import java.util.List;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +25,7 @@ import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
 import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
 import com.nisum.carpool.service.dto.RiderStatusDTO;
+import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.util.CarpoolRiderDetailsServiceUtil;
 
 
@@ -34,8 +35,6 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 	
 	private static Logger logger = LoggerFactory.getLogger(CarPoolRiderDetailsServiceImpl.class);
 
-
-	
 	@Autowired
 	UserDAO userDAO;
 	
@@ -47,7 +46,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 	
 	@Autowired
 	CarpoolRiderDetailsDAO carpoolRiderDetailsDAO;
-
+	
 	@Override
 	public List<CarpoolRiderDetailsDTO> findCarpoolRiderDetailsByCPId(int cpid) {
 
@@ -63,8 +62,6 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 		
 		return cancelRiderStatus;
 	}
-
-	
 
 	/**
 	 * author Radhika pujari
@@ -147,7 +144,6 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 				riderBookingdetailsDtoList.add(carpoolRiderdetailsDto);
 				
 			}
-			
 		}
 			
 		   }
@@ -249,7 +245,22 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 			return CarpoolRiderDetailsServiceUtil.convertDaoTODto(cpriderlist);
 
 		}
-
-
+	}
+	/**
+	 * @author Mahesh Bheemanapalli
+	 * @param rewards
+	 * @return ServiceStatusDto class with status and message
+	 */
+	@Override
+	public ServiceStatusDto addRewards(double rewards) {
+		// TODO Auto-generated method stub
+		logger.info("CarPoolRiderDetailsServiceImpl : addRewards : To Rider");
+		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
+		String updaterewardPointsWithId = carpoolRiderDetailsDAO.addRewards(rewards);
+		if (ObjectUtils.anyNotNull(updaterewardPointsWithId)) {
+			serviceStatusDto.setStatus(true);
+			serviceStatusDto.setMessage(updaterewardPointsWithId);
+		}
+		return serviceStatusDto;
 	}
 }
