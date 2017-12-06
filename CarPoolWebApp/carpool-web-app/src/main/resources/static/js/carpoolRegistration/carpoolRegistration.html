@@ -76,7 +76,7 @@
 
 					<div class = "row pool-element">
 						<div class = "col-md-2"><label>Location:</label></div>
-						<div class = "col-md-4" data-ng-init="getUserLocation();"><input type="text" gm-places-autocomplete 
+						<div class = "col-md-4"  data-ng-init="getUserLocation();"><input type="text" id="locId" gm-places-autocomplete 
 							name="location" ng-model="shareARideAutocomplete" placeholder="Please Enter location here"> <br />
 							
 							<div ng-show="postRideForm.$submitted || postRideForm.location.$touched">
