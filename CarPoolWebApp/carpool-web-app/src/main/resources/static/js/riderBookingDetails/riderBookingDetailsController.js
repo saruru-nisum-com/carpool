@@ -6,7 +6,7 @@ riderDetailsApp.controller('riderBookingDetailsController',
 	console.log('in riderBookingDetailsController');
 	
 	$scope.getRiderBookingDetails = function() {
-		riderBookingDetailsService.rider("radha@gmail.com").then(function(response) {
+		riderBookingDetailsService.rider($scope.emailId).then(function(response) {
 				if (response.errorCode) {
 					$scope.message = response.errorMessage
 				} else {
