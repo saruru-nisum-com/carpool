@@ -67,26 +67,15 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	public String cancelCarpooldetails(Carpooldetails carpooldetails) {
 		// TODO Auto-generated method stub
 		logger.info("CarpooldetailsDAOImpl: cancel Carpooldetails getby Id" + carpooldetails.getId());
-		List<Integer> listOfIds = null;
 		Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
 		logger.info("in parent cancel");
 		// update Parent record
 		try {
-			Long countByParentid = carpooldetailsRepository.findById(carpooldetails.getId());
-			logger.info("in daoimpl cancel by parentId" + countByParentid);
-			if (countByParentid == 1) {
-				carpooldetails.setModifieddate(modifiedDate.toLocalDateTime());
-				carpooldetails.setStatus(Pool_Status.CANCELLED.getValue());
-				carpooldetailsRepository.save(carpooldetails);
-			}
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		// update child records
-		try {
-			logger.info("in child update.parentId.." + carpooldetails.getParentid());
+			logger.info("in Parent update.parent Id.." + carpooldetails.getId());
 
-			List<Carpooldetails> poolData = carpooldetailsRepository.findByParentid(carpooldetails.getParentid());
+			List<Carpooldetails> poolData = carpooldetailsRepository.findByParentid(carpooldetails.getId());
+			logger.info("poolData size for parent=="+poolData.size());
+			if(poolData.size()>1) {
 			if (poolData != null) {
 				if (CollectionUtils.isNotEmpty(poolData)) {
 					poolData.forEach(c -> {
@@ -95,16 +84,32 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 						carpooldetailsRepository.save(c);
 					});
 				}
+				
 			}
-
+			return Constants.MSG_CARPOOL_CANCEL_MULTI;
+		}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		//child update
+		try {
+			Long countByParentid = carpooldetailsRepository.findById(carpooldetails.getId());
+			logger.info("in daoimpl cancel by getby Id" + countByParentid);
+			if (countByParentid ==1) {
+				logger.info("in child cancel");
+				carpooldetails.setModifieddate(modifiedDate.toLocalDateTime());
+				carpooldetails.setStatus(Pool_Status.CANCELLED.getValue());
+				carpooldetailsRepository.save(carpooldetails);
+				return Constants.MSG_CARPOOL_CANCEL;
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
 		return Constants.MSG_CARPOOL_CANCEL;
+		
 	}
-	
 	/**
 	 * @author Manohar Dhavala : CPL005: Create Car Pools (Post a ride)
 	 * 
