@@ -75,4 +75,11 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	@Query("select * from cp_carpooldetails where parentid=:cpId and fromdate>:date allow filtering")
 	List<Carpooldetails>  getCarPoolsByCpIdandDate(@Param("cpId")int cpId,@Param("date") String date);
 	
+	
+	@Query("select  *  from cp_carpooldetails where fromdate=:fromdate and emailid=:emailid allow filtering")
+	public Carpooldetails getCarpoolByDateAndEmail(@Param("fromdate")String fromdate, @Param("emailid")String emailid);
+	
+	@Query("select id from cp_carpooldetails where fromdate=?0  allow filtering")
+	public List<Integer> getCarpoolByDate(String date);
+	
 }

@@ -23,23 +23,23 @@ public interface CarpooldetailsDAO {
 	List<Carpooldetails> getCarpoolsByParentId(int parentId);
 
 	public List<Integer> getCarPoolParentIds(String email);
-	
+
 	public String addRewards(double rewards);
 
 	public Carpooldetails getCarpoolByPoolID(Integer carpoolId);
 
 	public void updateCarpoolStatusByPoolId(int poolStatus, Integer id);
-	
+
 	public void upateCarPoolStatusByIdandParentID(int pid, int status);
-	
+
 	public String getDriverEmailByCPId(int cpid);
-	
 
+	Carpooldetails getCarpoolByDateAndEmail(String date, String email);
 
-
-	public List<Carpooldetails> getCarPoolByCpIDandDate(int cpId,String date);
+	public List<Integer> getCarpoolByDate(String date);
 
 	List<Carpooldetails> findCarpoolDetailsByParentId(int parentid);
 
-}
+	public List<Carpooldetails> getCarPoolByCpIDandDate(int cpid, String date);
 
+}

@@ -1,25 +1,23 @@
 package com.nisum.carpool.data.dao.impl;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
-
 import org.apache.commons.lang3.ObjectUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import com.nisum.carpool.data.dao.api.CarpoolRiderDetailsDAO;
 import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 import com.nisum.carpool.data.domain.CarpoolRiderNotifications;
+import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.repository.CarpoolRiderDetailsRepository;
 import com.nisum.carpool.data.repository.CarpoolRiderNotificationsRepository;
 import com.nisum.carpool.data.repository.CarpooldetailsRepository;
@@ -227,6 +225,32 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 		}
 		return SetOfClosedRiders;
 	}
+
 	
+	@Override
+	public Carpooldetails getCarpoolByDateAndEmail(String date, String email) {
+		// TODO Auto-generated method stub
+		return  carpooldetailsRepository.getCarpoolByDateAndEmail(date, email);
+	}
+@Override
+	public List<Integer> getCarpoolByDate(String date) {
+		// TODO Auto-generated method stub
+		return carpooldetailsRepository.getCarpoolByDate(date);
+	}
+
+public CarpoolRiderDetails getRidesByMailandAllCarpoolIds(String email, List<Integer> allCarpoolIds){
+	CarpoolRiderDetails carpoolRiderDetails=null;
 	
+	for(int i=0;i<allCarpoolIds.size();i++)
+	{
+		carpoolRiderDetails= carpoolRiderDetailsRepository.getRidesByMailandAllCarpoolIds(email,allCarpoolIds.get(i));
+		if(carpoolRiderDetails!=null)
+		{
+		return	carpoolRiderDetails;
+			
+		}
+	}
+	return carpoolRiderDetails;
+}
+		
 }

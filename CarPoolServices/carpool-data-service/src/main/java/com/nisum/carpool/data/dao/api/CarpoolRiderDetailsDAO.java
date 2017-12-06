@@ -1,10 +1,10 @@
 package com.nisum.carpool.data.dao.api;
 
-import java.util.Date;
 import java.util.List;
 
 import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 import com.nisum.carpool.data.domain.CarpoolRiderNotifications;
+import com.nisum.carpool.data.domain.Carpooldetails;
 
 
 public interface CarpoolRiderDetailsDAO {
@@ -33,5 +33,14 @@ public interface CarpoolRiderDetailsDAO {
 
 
 	public Integer updateRiderStatus(CarpoolRiderDetails carpoolRiderDaoObj);
+	
+Carpooldetails getCarpoolByDateAndEmail(String date, String email);
+	
+	public List<Integer> getCarpoolByDate(String date);
+	public CarpoolRiderDetails getRidesByMailandAllCarpoolIds(String email, List<Integer> allCarpoolIds);
+	
+
+	
+	
 	
 }
