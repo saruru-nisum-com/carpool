@@ -22,6 +22,8 @@ import com.nisum.carpool.data.domain.CarpoolRiderNotifications;
 import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.domain.RegisterDomain;
 import com.nisum.carpool.data.domain.User;
+import com.nisum.carpool.data.util.Pool_Status;
+import com.nisum.carpool.data.util.Ride_Status;
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
 import com.nisum.carpool.service.dto.CarpoolRiderOptedDetailsDto;
@@ -107,7 +109,8 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 						emailid = carPool.getEmailId();
 						System.out.println(emailid);
 						carpoolRiderdetailsDto.setEmail(emailid);
-						carPool.getFromDate();
+						
+						carpoolRiderdetailsDto.setLocation(carPool.getLocation());
 
 						carpoolRiderdetailsDto.setFromDate(carPool.getFromDate());
 						carpoolRiderdetailsDto.setEmail(emailid);
@@ -129,8 +132,16 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 						}
 
 						carpoolRiderdetailsDto.setReason(car.getReason());
-						carpoolRiderdetailsDto.setStatus(car.getStatus());
-						carpoolRiderdetailsDto.setLocation(car.getLocation());
+						
+						Ride_Status ride_Status = Ride_Status.values()[(car.getStatus()-1)];
+						
+						
+						carpoolRiderdetailsDto.setStatusName(ride_Status.toString());
+						System.out.println(ride_Status.toString());
+						
+
+						//carpoolRiderdetailsDto.setStatus(car.getStatus());
+						//carpoolRiderdetailsDto.setLocation(car.getLocation());
 						riderBookingdetailsDtoList.add(carpoolRiderdetailsDto);
 
 					}

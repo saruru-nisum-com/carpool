@@ -94,7 +94,9 @@ public class CarpoolRiderDetailsRestService {
 		logger.info("Start of loadRiderStatusReasons() method in RiderStatusRestService"); 
 		if(cancelReasonMapObj.isEmpty()) { 
 			cancelReasonMapObj = CPCancellationReasons.readRiderStatusReasonCodes();
+			System.out.println("res status "+cancelReasonMapObj);
 		}
+		System.out.println("ABC ******** "+cancelReasonMapObj.size());
 		logger.info("End of loadRiderStatusReasons() method in RiderStatusRestService");
 		return new ResponseEntity<Map<Integer, String>>(cancelReasonMapObj, HttpStatus.OK);
 	}

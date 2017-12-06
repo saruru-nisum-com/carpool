@@ -10,6 +10,19 @@ app.factory('riderBookingDetailsService', function($http, $q) {
 		})
 		return deferred.promise;
 	}
+	
+	ls.getReason=function() {
+		var deferred = $q.defer();
+
+		$http.get('v1/carpool/loadRiderStatusReasons').success(function(response) {
+			deferred.resolve(response);
+		}).error(function(response) {
+			deferred.reject(response);
+		})
+		return deferred.promise;
+	}
+	
+	
 	return ls;
 
 });

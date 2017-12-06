@@ -1,41 +1,45 @@
+<link rel="stylesheet" href="css/./carpool.css">
 <div class="tab-pane active" id="1">
-			<div align="center" style="color: #2535A9;">
-				<h3>List of Opt Rides</h3>
-			</div>
-			<div class="row">
-				<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-xl-12">
-					<table class="table table-hover table-striped table-bordered" border="2x">
-						<thead class="thead-inverse" align="center">
-							<tr>
-								<th><input type='checkbox'></th>
-								
-                                 <th>Date</th>
-								<th>Driver</th>
-								<th>Email</th>
-								<th>Mobile No</th>
-								<th>Status</th>
-								<th>Location</th>
-								<th>Reason</th>
-								
-							</tr>
-							 <tr ng-repeat="riderDetails in riderBookingList">
-							  <td><input type='checkbox' ng-hide="riderDetails.status!=1"></td>
-							 <td>{{riderDetails.fromDate}}</td>
-							 <td>{{riderDetails.userName}}</td>
-							 <td>{{riderDetails.email}}</td>
-							 <td>{{riderDetails.mobile}}</td>
-							  <td>{{riderDetails.status}}</td>
-							  <td>{{riderDetails.location}}</td>
-							  <td><select>
-                   <option value="volvo">Volvo</option>
-  <option value="saab">Saab</option>
-  <option value="opel">Opel</option>
-  <option value="audi">Audi</option>
-                                  </select> </td>
-							 </tr>
-							
-						</thead>
-						<!-- <tbody>
+	<div align="center" style="color: #2535A9;">
+		<h3>List of Opt Rides</h3>
+	</div>
+	<div class="row">
+		<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-xl-12">
+			<table class="grid" border="2x">
+				<thead class="thead-inverse" align="center">
+					<tr>
+						<th><input type='checkbox'></th>
+
+						<th>Date</th>
+						<th>Driver</th>
+						<th>Email</th>
+						<th>Mobile No</th>
+						<th>Location</th>
+						<th>Status</th>
+						<th>Reason</th>
+
+					</tr>
+					<tr ng-repeat="riderDetails in riderBookingList">
+						<td><input type='checkbox' ng-hide="riderDetails.statusName!='APPROVED'" ng-model="selectedRiderDetails[$index]"></td>
+						<td>{{riderDetails.fromDate}}</td>
+						<td>{{riderDetails.userName}}</td>
+						<td>{{riderDetails.email}}</td>
+						<td>{{riderDetails.mobile}}</td>
+						<td>{{riderDetails.location}}</td>
+						<td>{{riderDetails.statusName}}</td>
+						
+<!-- 						<td data-ng-include='tempId'></td> -->
+						 <td><select  ng-if="riderDetails.statusName=='APPROVED'" 
+						         ng-disabled="!selectedRiderDetails[$index]" ng-class="{'txtdisabled': !selectedRiderDetails[$index]}">
+						      <option value="0">Select</option>						    
+                       <option ng-repeat="(key,value) in reasons">{{value}}</option>
+					  </select>
+					    <input ng-if="riderDetails.statusName!='APPROVED'" type='text' ng-model="reasons[riderDetails.reason]"/>
+						</td> 
+					</tr>
+
+				</thead>
+				<!-- <tbody>
 							<tr ng-repeat="user in usersList.users track by $index">
 								<td><input type="checkbox" value=""
 									ng-model="userselected[$index]"
@@ -62,9 +66,8 @@
 							</tr>
 
 						</tbody> -->
-					</table>
-				</div>
-
-
-			</div>
+			</table>
 		</div>
+
+
+	

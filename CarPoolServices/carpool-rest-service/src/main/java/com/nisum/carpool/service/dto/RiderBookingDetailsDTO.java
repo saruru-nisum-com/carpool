@@ -13,9 +13,22 @@ public class RiderBookingDetailsDTO {
 	 private int reason;
 	 private String location;
 	 private String  fromDate;
+	 private String statusName;
 
 	 
     /**
+	 * @return the statusName
+	 */
+	public String getStatusName() {
+		return statusName;
+	}
+	/**
+	 * @param statusName the statusName to set
+	 */
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+	/**
 	 * @return the location
 	 */
 	public String getLocation() {
@@ -111,12 +124,13 @@ public class RiderBookingDetailsDTO {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((fromDate == null) ? 0 : fromDate.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((fromDate == null) ? 0 : fromDate.hashCode());
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
 		result = prime * result + reason;
 		result = prime * result + status;
+		result = prime * result + ((statusName == null) ? 0 : statusName.hashCode());
 		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		return result;
 	}
@@ -132,15 +146,15 @@ public class RiderBookingDetailsDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		RiderBookingDetailsDTO other = (RiderBookingDetailsDTO) obj;
-		if (fromDate == null) {
-			if (other.fromDate != null)
-				return false;
-		} else if (!fromDate.equals(other.fromDate))
-			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
+			return false;
+		if (fromDate == null) {
+			if (other.fromDate != null)
+				return false;
+		} else if (!fromDate.equals(other.fromDate))
 			return false;
 		if (location == null) {
 			if (other.location != null)
@@ -156,6 +170,11 @@ public class RiderBookingDetailsDTO {
 			return false;
 		if (status != other.status)
 			return false;
+		if (statusName == null) {
+			if (other.statusName != null)
+				return false;
+		} else if (!statusName.equals(other.statusName))
+			return false;
 		if (userName == null) {
 			if (other.userName != null)
 				return false;
@@ -169,7 +188,8 @@ public class RiderBookingDetailsDTO {
 	@Override
 	public String toString() {
 		return "RiderBookingDetailsDTO [userName=" + userName + ", mobile=" + mobile + ", email=" + email + ", status="
-				+ status + ", reason=" + reason + ", location=" + location + ", fromDate=" + fromDate + "]";
+				+ status + ", reason=" + reason + ", location=" + location + ", fromDate=" + fromDate + ", statusName="
+				+ statusName + "]";
 	}
 	
 	 
