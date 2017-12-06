@@ -541,8 +541,79 @@ carpoolRegApp
 					
 					//Loading TableGrid of Carpools on page load
 					   $scope.getAvailablePools();
+					   
+					   $scope.validateShareARideFromDetails = function() {
+						   /*
+						    * Share a ride validation part don't disturb this code
+						    */
+						   var vType = $scope.vehicleSelect;
+							if(vType == 0){
+								$("#alertMsg").text("Invalid vehicle type.");
+								$('#postARideFormModal').modal('show');
+								return false;
+							}
+							var shareLoc = $("#locId").val();
+							if(shareLoc == undefined || shareLoc == "") {
+								$("#alertMsg").text("Please enter location.");
+								$('#postARideFormModal').modal('show');
+								return false;
+							}
+							var fromDate = $scope.fromDate.value;
+							var toDate = $scope.toDate.value;
+							var startTime = $scope.startTime.value;
+							var endTime = $scope.endTime.value;
+							var parseFromDate = $filter('date')(new Date(fromDate),
+									'MM/dd/yyyy');
+							var parseToDate = $filter('date')(new Date(toDate),
+									'MM/dd/yyyy');
+							
+							var d1 = new Date(parseFromDate);
+							var d2 = new Date(parseToDate);
+							var timeDiff = d2.getTime() - d1.getTime();
+							var DaysDiff = timeDiff / (1000 * 3600 * 24);
+							if(DaysDiff < 0) {
+								$("#alertMsg").text("From date is more than to date.");
+								$('#postARideFormModal').modal('show');
+								return false;
+							}
+							
+							
+							var parseStartTime = $filter('date')(
+									new Date(startTime), 'h:mm a');
+							var parseEndTime = $filter('date')(new Date(endTime),
+									'h:mm a');
+							
+							var timeStart = new Date("01/01/2007 " + parseStartTime);
+							var timeEnd = new Date("01/01/2007 " + parseEndTime);
+
+							var diff = (timeEnd - timeStart) / 60000; //dividing by seconds and milliseconds
+
+							var minutes = diff % 60;
+							var hours = (diff - minutes) / 60;
+							if(hours < 0) {
+								$("#alertMsg").text("Return time is more than start time.");
+								$('#postARideFormModal').modal('show');
+								return false;
+							}
+							if(minutes < 0) {
+								$("#alertMsg").text("Return time is more than start time.");
+								$('#postARideFormModal').modal('show');
+								return false;
+							}
+							
+							if(hours == 0 && minutes == 0) {
+								$("#alertMsg").text("Start time and return time both are same.");
+								$('#postARideFormModal').modal('show');
+								return false;
+							}
+							return true;
+						}
+					   
 					  
 					$scope.fnAddPostRide = function() {
+						if(!($scope.validateShareARideFromDetails())) {
+							return;
+						}
 						var vType = $scope.vehicleSelect;
 						var vSeatCap = $scope.seat.value;
 						var fromDate = $scope.fromDate.value;
@@ -567,9 +638,9 @@ carpoolRegApp
 						console.log(JSON.stringify(profileObj))
 						$scope.postRide = {
 
-							"parentid" : 9999,
-							"id" : 9999,
-							"status" : 1,
+							"parentid" : 9999, //optional
+							"id" : 9999,  //optional
+							"status" : 1,  //optional
 							"createddate" : "2017-11-25",
 							"modifieddate" : "2017-11-24",
 							"vehicleType" : parseInt(vType),
@@ -592,10 +663,16 @@ carpoolRegApp
 											if (response.errorCode === 500) {
 												$scope.message = response.errorMessage
 											} else {
+												setTimeout(function(){
+													$("#alertMsg").text("Share a ride successfully.");
+													$('#postARideFormModal').modal('hide');
+												}, 10000);
 												$scope.loadTableGrid(response);
 											}
 										}, function(response) {
-											window.alert(response)
+											$("#alertMsg").text(response.message);
+											$('#postARideFormModal').modal('show');
+											return false;
 										});
 
 					}
@@ -726,14 +803,17 @@ carpoolRegApp
 									}
 					                 
 				                    $scope.timeParser = function (date){
-										var time = date.split(" ")[0];
-									    var meridian = date.split(" ")[1];
-									    var hrs = time.split(':')[0];
-									    var mins = time.split(':')[1];
-									    if(meridian == 'PM' && hrs != "12"){
-									       hrs = 12 + parseInt(hrs);
-									    }
-									      return new Date(2015, 10, 10, hrs, mins, 0);
+				                    	try{
+				                    		var time = date.split(" ")[0];
+										    var meridian = date.split(" ")[1];
+										    var hrs = time.split(':')[0];
+										    var mins = time.split(':')[1];
+										    if(meridian == 'PM' && hrs != "12"){
+										       hrs = 12 + parseInt(hrs);
+										    }
+										      return new Date(2015, 10, 10, hrs, mins, 0);
+				                    	} catch(e) { console.log(e)}
+										
 									}
 					                 
 									$scope.confirmEdit = function(name, item) {
@@ -760,6 +840,11 @@ carpoolRegApp
 										               });
 										$('#editModal').modal('hide');
 								   }
+									
+									$scope.cancelModelPopUp = function() {
+										$('#postARideFormModal').modal('hide');
+									}
+									
 									$scope.confirmDelete = function(name, item) {
 										item['startTime'] = $filter('date')(new Date(item.startTime), 'h:mm a');
 										item['toTime'] = $filter('date')(new Date(item.toTime), 'h:mm a');
