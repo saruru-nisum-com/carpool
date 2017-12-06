@@ -300,6 +300,12 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		return carpooldetailsRepository.getCarpoolByDate(date);
 	}
 
+@Override
+public List<Carpooldetails> getCarPoolByCpIDandDate(int cpid, String date) {
+	// TODO Auto-generated method stub
+	return carpooldetailsRepository.getCarPoolsByCpIdandDate(cpid, date);
+}
+
 		
 
 	@Override

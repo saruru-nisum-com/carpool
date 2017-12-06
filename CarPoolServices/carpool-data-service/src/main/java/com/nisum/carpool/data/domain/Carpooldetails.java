@@ -29,7 +29,7 @@ public class Carpooldetails implements Serializable{
 	private String toTime;
 	private Integer status;
 	private String location;
-	private double rewards;
+	private Double rewards;
 	//private Timestamp createddate;
     //private Timestamp modifieddate;
 	private LocalDateTime createddate;
@@ -54,13 +54,7 @@ public class Carpooldetails implements Serializable{
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
-	public double getRewards() {
-		return rewards;
-	}
-	public void setRewards(double rewards) {
-		this.rewards = rewards;
-
-	}
+	
 	public Integer getVehicleType() {
 		return vehicleType;
 	}
@@ -119,35 +113,47 @@ public class Carpooldetails implements Serializable{
 	public String getLocation() {
 		return location;
 	}
+	/**
+	 * @return the rewards
+	 */
+	public Double getRewards() {
+		return rewards;
+	}
+	/**
+	 * @param rewards the rewards to set
+	 */
+	public void setRewards(Double rewards) {
+		this.rewards = rewards;
+	}
 	public void setLocation(String location) {
 		this.location = location;
 	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((createddate == null) ? 0 : createddate.hashCode());
+		result = prime * result + ((emailId == null) ? 0 : emailId.hashCode());
 		result = prime * result + ((fromDate == null) ? 0 : fromDate.hashCode());
 		result = prime * result + ((fromtime == null) ? 0 : fromtime.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		result = prime * result + ((modifieddate == null) ? 0 : modifieddate.hashCode());
 		result = prime * result + ((noofseats == null) ? 0 : noofseats.hashCode());
 		result = prime * result + ((parentid == null) ? 0 : parentid.hashCode());
-		result = prime * result + ((fromtime == null) ? 0 : fromtime.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(rewards);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((rewards == null) ? 0 : rewards.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((toDate == null) ? 0 : toDate.hashCode());
-		result = prime * result + ((noofseats == null) ? 0 : noofseats.hashCode());
-
-		result = prime * result + ((emailId == null) ? 0 : emailId.hashCode());
 		result = prime * result + ((toTime == null) ? 0 : toTime.hashCode());
-
 		result = prime * result + ((vehicleType == null) ? 0 : vehicleType.hashCode());
-		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		return result;
 	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -161,6 +167,11 @@ public class Carpooldetails implements Serializable{
 			if (other.createddate != null)
 				return false;
 		} else if (!createddate.equals(other.createddate))
+			return false;
+		if (emailId == null) {
+			if (other.emailId != null)
+				return false;
+		} else if (!emailId.equals(other.emailId))
 			return false;
 		if (fromDate == null) {
 			if (other.fromDate != null)
@@ -177,6 +188,11 @@ public class Carpooldetails implements Serializable{
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (location == null) {
+			if (other.location != null)
+				return false;
+		} else if (!location.equals(other.location))
+			return false;
 		if (modifieddate == null) {
 			if (other.modifieddate != null)
 				return false;
@@ -192,47 +208,41 @@ public class Carpooldetails implements Serializable{
 				return false;
 		} else if (!parentid.equals(other.parentid))
 			return false;
-		if (Double.doubleToLongBits(rewards) != Double.doubleToLongBits(other.rewards))
+		if (rewards == null) {
+			if (other.rewards != null)
+				return false;
+		} else if (!rewards.equals(other.rewards))
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
 			return false;
 		if (toDate == null) {
 			if (other.toDate != null)
 				return false;
 		} else if (!toDate.equals(other.toDate))
 			return false;
-		if (noofseats == null) {
-			if (other.noofseats != null)
-				return false;
-		} else if (!noofseats.equals(other.noofseats))
-			return false;
-		if (emailId == null) {
-			if (other.emailId != null)
-				return false;
-		} else if (!emailId.equals(other.emailId))
 		if (toTime == null) {
 			if (other.toTime != null)
 				return false;
 		} else if (!toTime.equals(other.toTime))
-
 			return false;
 		if (vehicleType == null) {
 			if (other.vehicleType != null)
 				return false;
 		} else if (!vehicleType.equals(other.vehicleType))
 			return false;
-		if (location == null) {
-			if (other.location != null)
-				return false;
-		} else if (!location.equals(other.location))
-			return false;
-		
 		return true;
 	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "Carpooldetails [id=" + id + ", parentid=" + parentid + ", emailId=" + emailId + ", vehicleType="
-
 				+ vehicleType + ", noofseats=" + noofseats + ", fromDate=" + fromDate + ", toDate=" + toDate
-				+ ", fromtime=" + fromtime + ", toTime=" + toTime + ", status=" + status + ", createddate="
-				+ createddate + ", modifieddate=" + modifieddate + ", Location:"+location+"]";
+				+ ", fromtime=" + fromtime + ", toTime=" + toTime + ", status=" + status + ", location=" + location
+				+ ", rewards=" + rewards + ", createddate=" + createddate + ", modifieddate=" + modifieddate + "]";
 	}
 }

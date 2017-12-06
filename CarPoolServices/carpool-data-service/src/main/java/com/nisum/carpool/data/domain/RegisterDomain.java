@@ -24,12 +24,110 @@ public class RegisterDomain implements Serializable{
 	private String nearby;
 	private String mobile;
 	private boolean emailnotification;
-	private int isrider;
+	private Integer isrider;
 	private LocalDateTime createddate;
 	private LocalDateTime modifieddate;
-	private int gender;
+	private Integer gender;
 	
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((createddate == null) ? 0 : createddate.hashCode());
+		result = prime * result + ((emailid == null) ? 0 : emailid.hashCode());
+		result = prime * result + (emailnotification ? 1231 : 1237);
+		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+		result = prime * result + ((isrider == null) ? 0 : isrider.hashCode());
+		result = prime * result + ((latitude == null) ? 0 : latitude.hashCode());
+		result = prime * result + ((location == null) ? 0 : location.hashCode());
+		result = prime * result + ((longitude == null) ? 0 : longitude.hashCode());
+		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
+		result = prime * result + ((modifieddate == null) ? 0 : modifieddate.hashCode());
+		result = prime * result + ((nearby == null) ? 0 : nearby.hashCode());
+		result = prime * result + ((registrationid == null) ? 0 : registrationid.hashCode());
+		result = prime * result + ((vehicletype == null) ? 0 : vehicletype.hashCode());
+		return result;
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RegisterDomain other = (RegisterDomain) obj;
+		if (createddate == null) {
+			if (other.createddate != null)
+				return false;
+		} else if (!createddate.equals(other.createddate))
+			return false;
+		if (emailid == null) {
+			if (other.emailid != null)
+				return false;
+		} else if (!emailid.equals(other.emailid))
+			return false;
+		if (emailnotification != other.emailnotification)
+			return false;
+		if (gender == null) {
+			if (other.gender != null)
+				return false;
+		} else if (!gender.equals(other.gender))
+			return false;
+		if (isrider == null) {
+			if (other.isrider != null)
+				return false;
+		} else if (!isrider.equals(other.isrider))
+			return false;
+		if (latitude == null) {
+			if (other.latitude != null)
+				return false;
+		} else if (!latitude.equals(other.latitude))
+			return false;
+		if (location == null) {
+			if (other.location != null)
+				return false;
+		} else if (!location.equals(other.location))
+			return false;
+		if (longitude == null) {
+			if (other.longitude != null)
+				return false;
+		} else if (!longitude.equals(other.longitude))
+			return false;
+		if (mobile == null) {
+			if (other.mobile != null)
+				return false;
+		} else if (!mobile.equals(other.mobile))
+			return false;
+		if (modifieddate == null) {
+			if (other.modifieddate != null)
+				return false;
+		} else if (!modifieddate.equals(other.modifieddate))
+			return false;
+		if (nearby == null) {
+			if (other.nearby != null)
+				return false;
+		} else if (!nearby.equals(other.nearby))
+			return false;
+		if (registrationid == null) {
+			if (other.registrationid != null)
+				return false;
+		} else if (!registrationid.equals(other.registrationid))
+			return false;
+		if (vehicletype == null) {
+			if (other.vehicletype != null)
+				return false;
+		} else if (!vehicletype.equals(other.vehicletype))
+			return false;
+		return true;
+	}
 	/**
 	 * @return the registrationid
 	 */
@@ -57,12 +155,7 @@ public class RegisterDomain implements Serializable{
 	public void setEmailid(String emailid) {
 		this.emailid = emailid;
 	}
-	public int getGender() {
-		return gender;
-	}
-	public void setGender(int gender) {
-		this.gender = gender;
-	}
+	
 	/**
 	 * @return the vehicletype
 	 */
@@ -150,15 +243,7 @@ public class RegisterDomain implements Serializable{
 	/**
 	 * @return the isrider
 	 */
-	public int getIsrider() {
-		return isrider;
-	}
-	/**
-	 * @param isrider the isrider to set
-	 */
-	public void setIsrider(int isrider) {
-		this.isrider = isrider;
-	}
+	
 	public LocalDateTime getCreateddate() {
 		return createddate;
 	}
@@ -174,12 +259,40 @@ public class RegisterDomain implements Serializable{
 	
 	
 	
+	/**
+	 * @return the isrider
+	 */
+	public Integer getIsrider() {
+		return isrider;
+	}
+	/**
+	 * @param isrider the isrider to set
+	 */
+	public void setIsrider(Integer isrider) {
+		this.isrider = isrider;
+	}
+	/**
+	 * @return the gender
+	 */
+	public Integer getGender() {
+		return gender;
+	}
+	/**
+	 * @param gender the gender to set
+	 */
+	public void setGender(Integer gender) {
+		this.gender = gender;
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "RegisterDomain [registrationid=" + registrationid + ", emailid=" + emailid + ", vehicletype="
 				+ vehicletype + ", location=" + location + ", latitude=" + latitude + ", longitude=" + longitude
 				+ ", nearby=" + nearby + ", mobile=" + mobile + ", emailnotification=" + emailnotification
-				+ ", isrider=" + isrider + ", createddate=" + createddate + ", Gender="+gender+", modifieddate=" + modifieddate + "]";
+				+ ", isrider=" + isrider + ", createddate=" + createddate + ", modifieddate=" + modifieddate
+				+ ", gender=" + gender + "]";
 	}
 		
 }
