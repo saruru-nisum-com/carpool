@@ -17,11 +17,13 @@ riderApp.controller('riderController',
 	$scope.isVisible = false;
 	
 	$scope.$on('gmPlacesAutocomplete::placeChanged', function(){
-		$scope.selectedLocation = $scope.riderAutocomplete.getPlace().name;
-		var location = $scope.riderAutocomplete.getPlace().geometry.location;
-		$scope.lat = location.lat();
-		$scope.lng = location.lng();
-		$scope.$apply();
+		if($scope.riderAutocomplete != undefined) {
+			$scope.selectedLocation = $scope.riderAutocomplete.getPlace().name;
+			var location = $scope.riderAutocomplete.getPlace().geometry.location;
+			$scope.lat = location.lat();
+			$scope.lng = location.lng();
+			$scope.$apply();
+		}
 	});
 	
 	/*
