@@ -121,12 +121,13 @@ public class CarpooldetailsRestService {
 	 */
 	
 	@RequestMapping(value = "/getCarPoolDetails", method = RequestMethod.GET)
-	public ResponseEntity<?> getCarPoolDetails(@RequestParam(required = false, value = "location") String location)
+	public ResponseEntity<?> getCarPoolDetails(@RequestParam(required = false, value = "location") String location,
+			@RequestParam(required = true, value = "emailId") String emailId)
 			{
 		
 		List<CustomerCarpooldetailsDto> poolList=null;
 		try {
-			poolList=carpooldetailsService.getCarPoolDetails(location);
+			poolList=carpooldetailsService.getCarPoolDetails(location, emailId);
 			return new ResponseEntity<List<CustomerCarpooldetailsDto>>(poolList, HttpStatus.OK);
 
 		} catch (Exception e) {

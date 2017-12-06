@@ -360,7 +360,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 	 * @param location 
 	 * @return List<CustomerCarpooldetailsDto>
 	 */
-	public List<CustomerCarpooldetailsDto> getCarPoolDetails(String location) {
+	public List<CustomerCarpooldetailsDto> getCarPoolDetails(String location, String emailId) {
 		try {
 			List<Carpooldetails> carpoolLists = new ArrayList<>();
 
@@ -385,7 +385,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 
 						Date fromDate = sdf.parse(car.getFromDate());
 						Date currentDate = sdf.parse(StrTodayDate);
-						if (fromDate.before(currentDate)) {
+						if (fromDate.before(currentDate) && emailId.equals(car.getEmailId())) {
 							break;
 						} else {
 							User user = userDAO.findByEmailId(car.getEmailId());

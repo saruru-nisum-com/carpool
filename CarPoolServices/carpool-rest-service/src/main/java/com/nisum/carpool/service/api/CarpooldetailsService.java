@@ -19,7 +19,7 @@ public interface CarpooldetailsService {
 
 	ResponseEntity<?> createCarPooldetails(CarpooldetailsDto carpooldetailsDto);
 
-	List<CustomerCarpooldetailsDto> getCarPoolDetails(String location);
+	List<CustomerCarpooldetailsDto> getCarPoolDetails(String location, String emailId);
 
 	ServiceStatusDto cancelCarpooldetails(CarpooldetailsDto carpooldetailsDto);
 
