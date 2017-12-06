@@ -99,6 +99,35 @@ public class CarpooldetailsRestService {
 
 	}
 
+	@RequestMapping(value="/cancelByParentId",method=RequestMethod.PUT)
+	public ResponseEntity<?> cancelCarpooldetailsByParentId(@RequestBody CarpooldetailsDto carpooldetailsDto){
+		logger.info("Enter CarpooldetailsRestService :: cancel Carpooldetails");
+		logger.info("parentId=="+carpooldetailsDto.getParentid());
+		ResponseEntity<?> responseEntity = null;
+		try {
+			ServiceStatusDto statusDto = carpooldetailsService.cancelCarpooldetailsByParentId(carpooldetailsDto);
+			if (statusDto.isStatus()) {
+				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			Errors error = new Errors();
+			error.setErrorCode("BAD REQUEST");
+			error.setErrorMessage(Constants.MSG_CANCEL_CARPOOL_FAILED);
+			responseEntity = new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
+		}
+
+		// update in Carpool rider
+		try {
+			String cancelRider = carpoolRiderService.cancelCarpoolRiderDetails(carpooldetailsDto.getParentid());
+			logger.info("msg for Carpoll rider cancel" + cancelRider);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return responseEntity;
+
+	}
 	/**
 	 * @author Manohar Dhavala
 	 * 

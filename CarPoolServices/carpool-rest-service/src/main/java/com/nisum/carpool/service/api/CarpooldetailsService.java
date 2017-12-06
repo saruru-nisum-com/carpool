@@ -23,7 +23,9 @@ public interface CarpooldetailsService {
 	List<CustomerCarpooldetailsDto> getCarPoolDetails(String location, String emailId);
 
 	ServiceStatusDto cancelCarpooldetails(CarpooldetailsDto carpooldetailsDto);
-
+	
+	ServiceStatusDto cancelCarpooldetailsByParentId(CarpooldetailsDto carpooldetailsDto);
+	
 	CarpooldetailsDto loadCarpoolDetailsById(int carpoolId);
 
 	List<ParentCarpoolDetailsDto> getCarpoolsByDriver(String email) throws CarpooldetailsServiceException;

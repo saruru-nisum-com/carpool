@@ -43,5 +43,7 @@ public interface CarpooldetailsDAO {
 	List<Carpooldetails> findCarpoolDetailsByParentId(int parentid);
 
 	public List<Carpooldetails> getCarPoolByCpIDandDate(int cpid, String date);
+	
+	public String cancelCarpooldetailsByParentId(Carpooldetails carpooldetails);
 
 }

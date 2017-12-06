@@ -1,8 +1,6 @@
 package com.nisum.carpool.data.dao.impl;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -110,8 +108,9 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		return Constants.MSG_CARPOOL_CANCEL;
 		
 	}
+	
 	/**
-	 * @author Radhika Pujari : CPL005: Create Car Pools (Post a ride)
+	 * @author Manohar Dhavala : CPL005: Create Car Pools (Post a ride)
 	 * 
 	 *         This method is used for creating carpool records in db
 	 *         @param carpooldetails
@@ -201,30 +200,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 				return Constants.CARPOOL_VALID;
 
 		}
-	}
-	/**
-	* author Mahesh Bheemanapalli
-	*/
 
-	/**
-	* addRewards() for  dao layer 
-	* Parameter: rewards (reading the reward points from "application.properties").
-	* This method is used to update the reward points to driver when the carpool status is "Closed" 
-	* returntype:String statement from com.nisum.carpool.data.util.Constants;   
-	*/
-	@Override
-	public String addRewards(double rewards) {
-		// TODO Auto-generated method stub
-		logger.info("CarpooldetailsDAOImpl : addRewards : To Driver");
-		LocalDate currentDate = LocalDate.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String rewardedDate = currentDate.format(formatter);
-		List<Integer> listOfIds = carpooldetailsRepository.getCarpooldetailsByFromDate(Pool_Status.CLOSED.getValue(), rewardedDate);
-		if (listOfIds.size() > 0) {
-			carpooldetailsRepository.udpateRewardPoints(rewards, listOfIds);
-			return Constants.ADDED_REWARDS_TO_DRIVER;
-		}
-		return Constants.REWARDS_NOT_ADDED_DRIVER;
 	}
 
 	@Override
@@ -293,47 +269,72 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		return carpooldetailsRepository.getDriverEmailByCPId(cpid);
 	}
 
+	@Override
+	public List<Carpooldetails> getCarPoolByCpIDandDate(int cpId, String date) {
+		logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolByCpIDandDate");
+		return carpooldetailsRepository.getCarPoolsByCpIdandDate(cpId, date);
+	}
+
+	@Override
+	public String addRewards(double rewards) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Carpooldetails> getCarPoolsByLocation(String location) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public Carpooldetails getCarpoolByDateAndEmail(String date, String email) {
 		// TODO Auto-generated method stub
-		return  carpooldetailsRepository.getCarpoolByDateAndEmail(date, email);
+		return null;
 	}
-@Override
+
+	@Override
 	public List<Integer> getCarpoolByDate(String date) {
 		// TODO Auto-generated method stub
-		return carpooldetailsRepository.getCarpoolByDate(date);
-	}
-
-@Override
-public List<Carpooldetails> getCarPoolByCpIDandDate(int cpid, String date) {
-	// TODO Auto-generated method stub
-	return carpooldetailsRepository.getCarPoolsByCpIdandDate(cpid, date);
-}
-
-		
-	/**
-	 * @author Durga Manjari narni
-	 * Used to get carpools by location
-	 * @param location
-	 * @return List<Carpooldetails>
-	 */
-	@Override
-	public List<Carpooldetails> getCarPoolsByLocation(String location) {
-		logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolsByLocation"); 
-		try {
-			return carpooldetailsRepository.getCarpoolsByLocation(location);
-		} catch(Exception e) {
-			logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolsByLocation:: Exception occurred"); 
-			e.printStackTrace();
-			return null;
-		}
-		
+		return null;
 	}
 
 	@Override
 	public List<Carpooldetails> findCarpoolDetailsByParentId(int parentid) {
-		
-		return carpooldetailsRepository.findByParentid(parentid);
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+	@Override
+	public String cancelCarpooldetailsByParentId(Carpooldetails carpooldetails) {
+		// TODO Auto-generated method stub
+		Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
+		logger.info("in parent cancel");
+		// update Parent record
+		try {
+			logger.info("in Parent update.parent Id.." + carpooldetails.getParentid());
+
+			List<Carpooldetails> poolData = carpooldetailsRepository.findByParentid(carpooldetails.getParentid());
+			logger.info("poolData size for parent=="+poolData.size());
+			if(poolData.size()>1) {
+			if (poolData != null) {
+				if (CollectionUtils.isNotEmpty(poolData)) {
+					poolData.forEach(c -> {
+						c.setStatus(Pool_Status.CANCELLED.getValue());
+						c.setModifieddate(modifiedDate.toLocalDateTime());
+						carpooldetailsRepository.save(c);
+					});
+				}
+				
+			}
+			return Constants.MSG_CARPOOL_CANCEL;
+		}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		return Constants.MSG_CARPOOL_CANCEL_MULTI;
+	
+}
 }

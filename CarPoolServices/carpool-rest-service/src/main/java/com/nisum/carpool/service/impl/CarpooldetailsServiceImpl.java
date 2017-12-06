@@ -784,6 +784,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			}
 			return driverCarPoolDto;
 		}
+<<<<<<< Updated upstream
 		
 		
 		public List<OptRideDto> getCarpoolsDataNotOptedOrOptedByMe(int parentId, String emilId, Boolean OptedData)
@@ -855,4 +856,36 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			return CarPoolDetailsOptedList.size();
 		}
 	 
+=======
+
+		@Override
+		public ServiceStatusDto cancelCarpooldetailsByParentId(CarpooldetailsDto carpooldetailsDto) {
+			// TODO Auto-generated method stub
+			logger.info("CarpooldetailsServiceImpl : cancel Carpooldetails");
+			
+			//carpooldetailsDto.setModifieddate(currentDate);
+			
+			String cancelCarpooldetails=null;
+			try {
+				
+				//Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertSharedUpdateDtoTODao(carpooldetailsDto);
+				Carpooldetails carpooldetails = new  Carpooldetails();
+				carpooldetails.setParentid(carpooldetailsDto.getParentid());
+				cancelCarpooldetails = carpooldetailsDAO.cancelCarpooldetailsByParentId(carpooldetails);
+				logger.info("Carpooldetails after cancel  dao message::"+cancelCarpooldetails);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
+			if(ObjectUtils.anyNotNull(cancelCarpooldetails))
+			{
+				logger.info("CarpooldetailsServiceImpl : cancel Carpooldetails set message::"+cancelCarpooldetails);
+				serviceStatusDto.setStatus(true);
+				serviceStatusDto.setMessage(cancelCarpooldetails);
+			}
+			
+			return serviceStatusDto;
+
+}
 }
