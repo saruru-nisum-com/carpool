@@ -17,7 +17,7 @@ driverApp.controller('driverController',
 	$scope.isRegisteredAsDriver = false;
 	$scope.isVisible=false;
 	$scope.disableGender = false;
-	$scope.vehicleTypes = [2,4];
+	$scope.vehicleTypes = [{id:2,type:"2-wheeler"},{id:4,type:"4-wheeler"}];
 	$scope.selectedVehicleTypes = [];
 
 	$scope.$on('gmPlacesAutocomplete::placeChanged', function(){

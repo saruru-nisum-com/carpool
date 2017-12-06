@@ -479,7 +479,7 @@ form {
 							<div class="col-md-4">
 							
 								<select class="form-control" ng-model="selectedVehicleTypes" multiple="multiple" 
-									ng-options="vehicle as vehicle for vehicle in vehicleTypes" ng-required="true"
+									ng-options="vehicle.id as vehicle.type for vehicle in vehicleTypes" ng-required="true"
 									size="2"></select>
 								<div
 									ng-show="driverForm.$submitted || driverForm.vehicleType.$touched">
