@@ -21,31 +21,27 @@
 
 		<div ng-if="carpoolList.length>0" ng-repeat="carpool in carpoolList">
 
-			<div ng-if="details.id==details.parentid"
-				ng-repeat="details in carpool.listCarpoolDetails"
-				style="float: left">
 				<div ng-repeat="vehicle in vehicleDetails"
-					ng-if="vehicle.id==details.vehicleType">
+					ng-if="vehicle.id==carpool.carpoolDetails.vehicleType">
 
 					<a href="#/configurations">
-						<table class="tStyle" frame="box"
-							data-ng-style="{'background-color': carpool.status=='completed' ? 'red' : 'green'}">
+						<table class="tStyle" frame="box" style="background-color:green">
 							<tr>
 								<td>ProvidedBy: {{carpool.userName}} &nbsp;</td>
 								<td>VehicleType: {{vehicle.vehicletype}}</td>
+								</div>
 							</tr>
 							<tr>
-								<td>FromDate: {{details.fromDate | dateFilter}}</td>
-								<td>ToDate: {{details.toDate | dateFilter}}</td>
+								<td>FromDate: {{carpool.carpoolDetails.fromDate | dateFilter}}</td>
+								<td>ToDate: {{carpool.carpoolDetails.toDate | dateFilter}}</td>
 							</tr>
 							<tr>
 								<td>Location: {{carpool.location}} &nbsp;</td>
-								<td>PoolStatus: {{details.status}}</td>
+								<td>PoolStatus: {{carpool.carpoolDetails.statusName}}</td>
 							</tr>
 						</table>
 					</a>
-				</div>
-			</div>
+					</div>
 		</div>
 	</div>
 	<div align="center" ng-if="carpoolList.length<=0">No Car pools Available</div>

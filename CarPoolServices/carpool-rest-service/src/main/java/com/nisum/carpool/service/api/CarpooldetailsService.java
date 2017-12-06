@@ -8,6 +8,7 @@ import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
 import com.nisum.carpool.service.dto.DriverCarPoolDto;
 import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
+import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.service.dto.TodayRiderDetailsDTO;
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
@@ -32,7 +33,7 @@ public interface CarpooldetailsService {
 	
 	ServiceStatusDto addRewards(double rewards);
 
-	String getLocationByEmailId(String emailId)throws CarpooldetailsServiceException ;
+	RegisterDTO getDriverLocationByEmailId(String emailId)throws CarpooldetailsServiceException ;
 	
 	void UpdatecarpoolStatus(Integer carpoolId) throws CarpooldetailsServiceException;
 	

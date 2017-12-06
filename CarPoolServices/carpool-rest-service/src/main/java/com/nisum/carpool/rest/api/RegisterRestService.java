@@ -87,7 +87,7 @@ public class RegisterRestService {
 		logger.info("Entering into " + getClass() + " updateDriver():::");
 		
 		ResponseEntity<RegisterDTO> responseEntity = null;
-
+		
 		try {
 			RegisterDTO updatedRegisterDTO = registerService.updateDriverRiderData(registerDTO);
 			responseEntity = new ResponseEntity<RegisterDTO>(updatedRegisterDTO, HttpStatus.OK);
@@ -136,7 +136,6 @@ public class RegisterRestService {
 
 	@RequestMapping(value = "/locations", method = RequestMethod.POST)
 	public String getLocation(@RequestBody RegisterDTO regDto) throws Exception {
-		System.out.println("coming to rest.......");
 		return registerService.searchLocation(regDto);
 
 	}

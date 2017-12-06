@@ -8,11 +8,23 @@ import com.nisum.carpool.data.domain.Carpooldetails;
 public class CustomerCarpooldetailsDto {
 	private String userName;
 	private String location;
-	private String mobile;
-	List<CarpooldetailsDto> listCarpoolDetails;
+	CarpooldetailsDto carpoolDetails;
+	/**
+	 * @return the carpoolDetails
+	 */
+	public CarpooldetailsDto getCarpoolDetails() {
+		return carpoolDetails;
+	}
+
+	/**
+	 * @param carpoolDetails the carpoolDetails to set
+	 */
+	public void setCarpoolDetails(CarpooldetailsDto carpoolDetails) {
+		this.carpoolDetails = carpoolDetails;
+	}
+
 	public CustomerCarpooldetailsDto()
 	{
-		listCarpoolDetails=new ArrayList<>();
 	}
 
 	public String getUserName() {
@@ -31,33 +43,25 @@ public class CustomerCarpooldetailsDto {
 		this.location = location;
 	}
 
-	public String getMobile() {
-		return mobile;
-	}
+	
+	
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
-	public List<CarpooldetailsDto> getListCarpoolDetails() {
-		return listCarpoolDetails;
-	}
-
-	public void setListCarpoolDetails(List<CarpooldetailsDto> listCarpoolDetails) {
-		this.listCarpoolDetails = listCarpoolDetails;
-	}
-
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((listCarpoolDetails == null) ? 0 : listCarpoolDetails.hashCode());
+		result = prime * result + ((carpoolDetails == null) ? 0 : carpoolDetails.hashCode());
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
-		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
 		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -67,20 +71,15 @@ public class CustomerCarpooldetailsDto {
 		if (getClass() != obj.getClass())
 			return false;
 		CustomerCarpooldetailsDto other = (CustomerCarpooldetailsDto) obj;
-		if (listCarpoolDetails == null) {
-			if (other.listCarpoolDetails != null)
+		if (carpoolDetails == null) {
+			if (other.carpoolDetails != null)
 				return false;
-		} else if (!listCarpoolDetails.equals(other.listCarpoolDetails))
+		} else if (!carpoolDetails.equals(other.carpoolDetails))
 			return false;
 		if (location == null) {
 			if (other.location != null)
 				return false;
 		} else if (!location.equals(other.location))
-			return false;
-		if (mobile == null) {
-			if (other.mobile != null)
-				return false;
-		} else if (!mobile.equals(other.mobile))
 			return false;
 		if (userName == null) {
 			if (other.userName != null)
@@ -90,10 +89,13 @@ public class CustomerCarpooldetailsDto {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "CustomerCarpooldetailsDto [userName=" + userName + ", location=" + location + ", mobile=" + mobile
-				+ ", listCarpoolDetails=" + listCarpoolDetails + "]";
+		return "CustomerCarpooldetailsDto [userName=" + userName + ", location=" + location + ", carpoolDetails="
+				+ carpoolDetails + "]";
 	}
 
 }

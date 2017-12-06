@@ -24,6 +24,7 @@ import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
 import com.nisum.carpool.service.dto.DriverCarPoolDto;
 import com.nisum.carpool.service.dto.Errors;
 import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
+import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.service.dto.TodayRiderDetailsDTO;
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
@@ -120,13 +121,11 @@ public class CarpooldetailsRestService {
 			{
 		
 		List<CustomerCarpooldetailsDto> poolList=null;
-		try
-		{
+		try {
 			poolList=carpooldetailsService.getCarPoolDetails(location);
 			return new ResponseEntity<List<CustomerCarpooldetailsDto>>(poolList, HttpStatus.OK);
 
 		} catch (Exception e) {
-
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 
@@ -234,7 +233,6 @@ public class CarpooldetailsRestService {
 			logger.error("ERROR:some thing went wrong while fetching getAllCarpoolsByDriver");
 			return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-
 	}
 
 	
@@ -247,8 +245,10 @@ public class CarpooldetailsRestService {
 	public ResponseEntity<?> getUserLocationByEmailId(@PathVariable("emailId")String emailId) 
 	{
 		logger.info("Entered into Class: CarpooldetailsRestService Method: getUserLocationByEmailId");
+		
 		try {
-			return new ResponseEntity<String>(carpooldetailsService.getLocationByEmailId(emailId),HttpStatus.OK);
+			RegisterDTO regDto=carpooldetailsService.getDriverLocationByEmailId(emailId);
+			return new ResponseEntity<RegisterDTO>(regDto,HttpStatus.OK);
 		} catch (CarpooldetailsServiceException ex) {
 			logger.error("Exception Occured in Class:CarpooldetailsRestService Method:getUserLocationByEmailId Message:"+ex.getMessage());
 			return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);

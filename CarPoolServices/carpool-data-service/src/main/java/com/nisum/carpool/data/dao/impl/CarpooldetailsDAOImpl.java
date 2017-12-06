@@ -111,7 +111,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		
 	}
 	/**
-	 * @author Manohar Dhavala : CPL005: Create Car Pools (Post a ride)
+	 * @author Radhika Pujari : CPL005: Create Car Pools (Post a ride)
 	 * 
 	 *         This method is used for creating carpool records in db
 	 *         @param carpooldetails
@@ -312,6 +312,24 @@ public List<Carpooldetails> getCarPoolByCpIDandDate(int cpid, String date) {
 }
 
 		
+	/**
+	 * @author Durga Manjari narni
+	 * Used to get carpools by location
+	 * @param location
+	 * @return List<Carpooldetails>
+	 */
+	@Override
+	public List<Carpooldetails> getCarPoolsByLocation(String location) {
+		logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolsByLocation"); 
+		try {
+			return carpooldetailsRepository.getCarpoolsByLocation(location);
+		} catch(Exception e) {
+			logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolsByLocation:: Exception occurred"); 
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
 
 	@Override
 	public List<Carpooldetails> findCarpoolDetailsByParentId(int parentid) {
