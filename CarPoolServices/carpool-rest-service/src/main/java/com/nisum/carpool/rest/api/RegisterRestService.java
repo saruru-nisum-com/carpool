@@ -43,7 +43,7 @@ public class RegisterRestService {
 		try {
 			//added By Harish Kumar Gudivada on 6th December 2017
 			//code added to check whether the emailid is valid or not by checkin in the user table
-			if(commonService.checkValidUserEmailId(registerDTO.getEmailId())) {
+			if(!commonService.checkValidUserEmailId(registerDTO.getEmailId())) {
 				responseEntity = new ResponseEntity<String>("Register With Valid EmailId", HttpStatus.BAD_REQUEST);
 			}
 			//end
@@ -126,7 +126,7 @@ public class RegisterRestService {
 		List<RegisterDTO> list =null;
 		try {
 			
-			if(commonService.checkValidUserEmailId(emailId)) {
+			if(!commonService.checkValidUserEmailId(emailId)) {
 				return new ResponseEntity<String>("Register With Valid EmailId", HttpStatus.BAD_REQUEST);
 			}
 			
