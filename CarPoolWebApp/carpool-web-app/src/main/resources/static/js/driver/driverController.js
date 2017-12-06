@@ -17,6 +17,8 @@ driverApp.controller('driverController',
 	$scope.isRegisteredAsDriver = false;
 	$scope.isVisible=false;
 	$scope.disableGender = false;
+	$scope.vehicleTypes = [2,4];
+	$scope.selectedVehicleTypes = [];
 
 	$scope.$on('gmPlacesAutocomplete::placeChanged', function(){
 		if($scope.autocomplete != undefined) {
@@ -48,13 +50,9 @@ driverApp.controller('driverController',
 				if(value.isRider == 0) {//If isRider value is '0' then he is registered as Driver.
 					$scope.isRegisteredAsDriver = true;
 					$scope.autocomplete = value.location;
+					$scope.selectedLocation
 					$scope.nearBy = value.nearby;
-					angular.forEach(value.vehicleType, function(value) {
-						if(value == 2) 
-							$scope.cb2wheel = 2;
-						else
-							$scope.cb4wheel = 4;
-					})
+					$scope.selectedVehicleTypes = value.vehicleType;
 				} 
 			});
 		});
@@ -67,87 +65,76 @@ driverApp.controller('driverController',
 
 	$scope.registerAsDriver = function() {
 		console.log('checkbox values '+$scope.cb2wheel +'and '+$scope.cb4wheel);
-		if ($scope.cb2wheel==false && $scope.cb4wheel==false) {
-			alert('Please select the vehicle type.');
-		}else {
-			var registrationId = Math.floor(Math.random() * 100000000) + 1 ;//static for now, need to change
+		
+		var registrationId = Math.floor(Math.random() * 100000000) + 1 ;//static for now, need to change
 
-			var profileSessionData = localStorageService.get('profile');
+		var profileSessionData = localStorageService.get('profile');
 
-			var userId = profileSessionData.emailId;// "dsingh@nisum.com"//profileSessionData.emailId;
-			//alert("hi user id : "+userId);
-			$scope.userId = userId
-			if($scope.cb2wheel==2 && $scope.cb4wheel==4){
-				var vehicleType = [$scope.cb2wheel, $scope.cb4wheel];
-			}else if($scope.cb2wheel==2 && $scope.cb4wheel==0){
-				var vehicleType = [$scope.cb2wheel];
-
-			}else if($scope.cb4wheel==4 && $scope.cb2wheel==0){
-				var vehicleType = [$scope.cb4wheel];
-
-			}
-			var location = $scope.selectedLocation;
-			var latitude = $scope.lat;
-			var longitude = $scope.lng;
-			var nearby = $scope.nearBy;
-			var mobile = $scope.mobile;//static for now, need to change
-			var emailNotification = true;//static for now, need to change
-			var isRider = 0;//driver==>0 || rider==>1
-			var createdDate = $filter('date')(new Date(), 'yyyy-MM-dd');
-			var modifiedDate = $filter('date')(new Date(), 'yyyy-MM-dd');
-			var gender = $scope.gender;
-			
-			$scope.registerDriverJson = {
-					"registrationId" : registrationId,
-					"emailId" : userId,
-					"vehicleType" :  vehicleType,
-					"location" :location,
-					"latitude" : latitude,
-					"longitude" : longitude,
-					"nearby" : nearby,
-					"mobile" : mobile,
-					"isRider" : isRider,
-					"createdDate" : createdDate,
-					"modifiedDate": modifiedDate,
-					"gender" : gender
-			}
-			//window.alert("what am i sending to the server::: "+JSON.stringify($scope.registerDriverJson));
-			driverService.registerAsDriver($scope.registerDriverJson).then(function(response) {
-				if (response.errorCode === 500) {
-					$scope.message = response.errorMessage
-				}else {
-					$scope.isRegisteredAsDriver= true;
-					$scope.isVisible=true;
-					$scope.actionName="Registered";
-					
-					driverService.getRegisterDriverData($scope.userId).then(function(response) {
-						if (response.errorCode === 500) {
-							$scope.message = response.errorMessage
-						}else {
-							console.log("response from getRegisterDriverData from server...."+JSON.stringify(response));
-						}
-					}, function(response) {
-						// console
-						//window.alert("dks-- "+response)
-					});
-				}
-			}, function(response) {
-				// console
-				//window.alert("dks-- "+response)
-			});
-			var onSuccess = function (data, status, headers, config) {
+		var userId = profileSessionData.emailId;// "dsingh@nisum.com"//profileSessionData.emailId;
+		//alert("hi user id : "+userId);
+		$scope.userId = userId
+	
+		var vehicleType = $scope.selectedVehicleTypes;
+		var location = $scope.selectedLocation;
+		var latitude = $scope.lat;
+		var longitude = $scope.lng;
+		var nearby = $scope.nearBy;
+		var mobile = $scope.mobile;//static for now, need to change
+		var emailNotification = true;//static for now, need to change
+		var isRider = 0;//driver==>0 || rider==>1
+		var createdDate = $filter('date')(new Date(), 'yyyy-MM-dd');
+		var modifiedDate = $filter('date')(new Date(), 'yyyy-MM-dd');
+		var gender = $scope.gender;
+		
+		$scope.registerDriverJson = {
+				"registrationId" : registrationId,
+				"emailId" : userId,
+				"vehicleType" : vehicleType,
+				"location" : location,
+				"latitude" : latitude,
+				"longitude" : longitude,
+				"nearby" : nearby,
+				"mobile" : mobile,
+				"isRider" : isRider,
+				"createdDate" : createdDate,
+				"modifiedDate": modifiedDate,
+				"gender" : gender
+		}
+		//window.alert("what am i sending to the server::: "+JSON.stringify($scope.registerDriverJson));
+		driverService.registerAsDriver($scope.registerDriverJson).then(function(response) {
+			if (response.errorCode === 500) {
+				$scope.message = response.errorMessage
+			}else {
 				$scope.isRegisteredAsDriver= true;
-			};
+				$scope.isVisible=true;
+				$scope.actionName="Registered";
+				
+				driverService.getRegisterDriverData($scope.userId).then(function(response) {
+					if (response.errorCode === 500) {
+						$scope.message = response.errorMessage
+					}else {
+						console.log("response from getRegisterDriverData from server...."+JSON.stringify(response));
+					}
+				}, function(response) {
+					// console
+					//window.alert("dks-- "+response)
+				});
+			}
+		}, function(response) {
+			// console
+			//window.alert("dks-- "+response)
+		});
+		var onSuccess = function (data, status, headers, config) {
+			$scope.isRegisteredAsDriver= true;
+		};
 
-			var onError = function (data, status, headers, config) {
-				alert('Error occured.');
-			};
+		var onError = function (data, status, headers, config) {
+			alert('Error occured.');
+		};
 
 //			$http.post('/student/submitData', { student:$scope.student })
 //			.success(onSuccess)
 //			.error(onError);
-
-		}
 
 	}
 
@@ -161,20 +148,13 @@ driverApp.controller('driverController',
 		var profileSessionData = localStorageService.get('profile');
 		var userId = profileSessionData.emailId;
 		$scope.userId = userId
-		var vehicleType = [];
-		if($scope.cb2wheel==2 && $scope.cb4wheel==4){
-			vehicleType = [$scope.cb2wheel, $scope.cb4wheel];
-		}else if($scope.cb2wheel==2 && $scope.cb4wheel==0){
-			vehicleType = [$scope.cb2wheel];
-		}else if($scope.cb4wheel==4 && $scope.cb2wheel==0){
-			vehicleType = [$scope.cb4wheel];
-		}
+//		var vehicleType = $scope.selectedVehicleType;
 
 		var data = {
 				"emailId" : userId,
 				"location" : $scope.selectedLocation,
 				"nearby" : $scope.nearBy,
-				"vehicleType" : vehicleType,
+				"vehicleType" : $scope.selectedVehicleTypes,
 				"isRider" : 0,
 				"mobile" : $scope.mobile,
 				"gender" : $scope.gender
@@ -194,6 +174,10 @@ driverApp.controller('driverController',
 		var onError = function (data, status, headers, config) {
 			alert('Error occured while updating the driver data.');
 		};
+	}
+	
+	$scope.resetMsgVisibility = function() {
+		$scope.isVisible = false;
 	}
 
 	

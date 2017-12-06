@@ -169,6 +169,10 @@ riderApp.controller('riderController',
 			alert('Error occured while updating the Rider data.');
 		};
 	}
+	
+	$scope.resetMsgVisibility = function() {
+		$scope.isVisible = false;
+	}
 
 
 });
