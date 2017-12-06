@@ -5,10 +5,10 @@
 <title>Carppol Registration</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/./carpool.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script> -->
 
 </head>
 <style>
@@ -54,7 +54,7 @@
 						<div class = "col-md-2"><label>Total No: of Seats</label></div>
 						<div class = "col-md-4">
 							<span ng-switch="vehicleSelect" class="spanCls"
-									style="position: relative; top: 11px;"> 
+									style="top: 11px;"> 
 								<span
 									ng-switch-when="0"> <input type="number" name="input"
 									ng-model="seat.value" min="0" max="0" class='vsCls'
@@ -74,10 +74,10 @@
 
 
 
-					<div class = "row pool-element">
-						<div class = "col-md-2"><label>Location:</label></div>
+					<div class = "row pool-element" style="margin-top:-10px;">
+						<div class = "col-md-2"><label>Location</label></div>
 						<div class = "col-md-4"><input type="text" gm-places-autocomplete
-							name="location" ng-model="shareARideAutocomplete" placeholder="Please Enter location here"> <br />
+							name="location" id="locId" ng-model="shareARideAutocomplete" placeholder="Please Enter location here"> <br />
 							
 							<div ng-show="postRideForm.$submitted || postRideForm.location.$touched">
 								<div ng-show="postRideForm.location.$error.required "
@@ -117,16 +117,14 @@
 						<div class = "col-md-2"><label>Start Time</label></div>
 						<div class='prTabTd col-md-4'>
 							<input type="time" id="exampleInput"
-							name="startTime" ng-model="startTime.value"
-							placeholder="HH:mm:ss" min="00:00:00" max="23:00:00" required />
+							name="startTime" ng-model="startTime.value" required />
 						</div>
 					</div>
 					<div class = "row pool-element">
 						<div class = "col-md-2"><label>Return Time</label></div>
 						<div class='prTabTd col-md-4'>
 							<input type="time" id="exampleInput"
-							name="endTime" ng-model="endTime.value" ng-bind="endTime"
-							placeholder="HH:mm:ss" min="00:00:00" max="23:00:00" required />
+							name="endTime" ng-model="endTime.value" required />
 						</div>
 					</div>
 					<div class = "row pool-element">
@@ -265,6 +263,24 @@
 							</div>
 					 </div>
 				</div> 
+				<!-- share a ride validation model start -->
+				<div id="postARideFormModal" class="modal fade" role="dialog">
+					  <div class="modal-dialog">
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-body">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h3 style="color:#f0ad4e;">Warning</h3>
+									<h4 id="alertMsg"></h4>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-info" ng-click="cancelModelPopUp();">Ok</button>
+									<button type="button" class="btn btn-default"  data-dismiss="modal">cancel</button>
+								</div>
+							</div>
+					 </div>
+				</div>
+				<!-- share a ride validation model end -->
 		</div>
 		<!-- Post A Ride Design end  -->
 	</div>
