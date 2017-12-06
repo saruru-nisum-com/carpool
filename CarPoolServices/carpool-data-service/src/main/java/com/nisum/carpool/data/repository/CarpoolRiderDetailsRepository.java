@@ -40,4 +40,8 @@ public interface CarpoolRiderDetailsRepository extends CassandraRepository<Carpo
 
 	@Query("update cp_carpoolriderdetails set rewards=:rewards where id IN (:listOfIds)")
 	Integer udpateRiderRewardPoints(@Param("rewards") double rewards, @Param("listOfIds") Set<Integer> listOfIds);
+	
+	@Query("select * from cp_carpoolriderdetails where emailid=?0 and cpid=?1 ALLOW FILTERING")
+	CarpoolRiderDetails getRidesByMailandAllCarpoolIds(String email, int allCarpoolIds);
+
 }

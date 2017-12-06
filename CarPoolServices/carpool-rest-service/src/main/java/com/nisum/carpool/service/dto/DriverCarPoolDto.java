@@ -7,6 +7,8 @@ public class DriverCarPoolDto {
 	private String fromDate;
 	private String toDate;
 	private String status;
+	private String mobile;
+	private String name;
 
 	public String getLocation() {
 		return location;
@@ -14,14 +16,6 @@ public class DriverCarPoolDto {
 
 	public void setLocation(String location) {
 		this.location = location;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	public String getFromDate() {
@@ -40,12 +34,38 @@ public class DriverCarPoolDto {
 		this.toDate = toDate;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((fromDate == null) ? 0 : fromDate.hashCode());
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
+		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((toDate == null) ? 0 : toDate.hashCode());
 		return result;
@@ -70,6 +90,16 @@ public class DriverCarPoolDto {
 				return false;
 		} else if (!location.equals(other.location))
 			return false;
+		if (mobile == null) {
+			if (other.mobile != null)
+				return false;
+		} else if (!mobile.equals(other.mobile))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
 		if (status == null) {
 			if (other.status != null)
 				return false;
@@ -86,7 +116,7 @@ public class DriverCarPoolDto {
 	@Override
 	public String toString() {
 		return "DriverCarPoolDto [location=" + location + ", fromDate=" + fromDate + ", toDate=" + toDate + ", status="
-				+ status + "]";
+				+ status + ", mobile=" + mobile + ", name=" + name + "]";
 	}
 
 }

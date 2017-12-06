@@ -25,6 +25,7 @@ import com.nisum.carpool.service.dto.DriverCarPoolDto;
 import com.nisum.carpool.service.dto.Errors;
 import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
+import com.nisum.carpool.service.dto.TodayRiderDetailsDTO;
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
 import com.nisum.carpool.util.Constants;
 
@@ -286,4 +287,50 @@ public class CarpooldetailsRestService {
 	public void setEmailAccount(RewardPoints rewardPoints) {
 		CarpooldetailsRestService.rewardPoints = rewardPoints;
 	}
+	
+	/**
+	 * @author chandra sekhar gapti
+	 * @param emailid,UserType:we need to pass type as d=driver,r=rider or b=both for today drive
+	 * get Today Rider details.
+	 * @return TodayRiderDetailsDTO,DriverCarPoolDto
+	 */
+	
+	
+	@RequestMapping(value = "/getMySharedRides/{email:.+}/{userType}", method = RequestMethod.GET)
+	public ResponseEntity<?> getTodayRides(@PathVariable("email")String email,@PathVariable("userType")String userType) 
+	{
+		logger.info("BEGIN: getTodayRides() in the CarpooldetailsRestService");
+		
+			try {
+				if("D".equalsIgnoreCase(userType) || "B".equalsIgnoreCase(userType))
+				{
+					
+				List<TodayRiderDetailsDTO> ridersList =	carpooldetailsService.getRidesForDrivers(email, userType);
+			if(ridersList!=null && ridersList.size()>0 )
+			{
+				return new ResponseEntity<List<TodayRiderDetailsDTO>>(ridersList,HttpStatus.OK);
+			}
+				
+				}
+				
+				if("r".equalsIgnoreCase(userType) || "B".equalsIgnoreCase(userType))
+				{
+					DriverCarPoolDto driverCarPoolDto=carpooldetailsService.getDriversByRider(email, userType);
+					if(driverCarPoolDto!=null)
+					return new ResponseEntity<DriverCarPoolDto>(driverCarPoolDto,HttpStatus.OK);
+					
+					
+				}
+				else
+				{
+					return new ResponseEntity<String>("No rides found.",HttpStatus.OK);
+				}
+				
+			} catch (Exception ex) {
+				logger.error("Exception Occured in Class:CarpooldetailsRestService getTodayRides Message:"+ex.getMessage());
+				ex.printStackTrace();
+			}
+			return null;
+		}
+	
 }

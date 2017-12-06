@@ -20,12 +20,12 @@ import com.nisum.carpool.data.util.Constants;
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.api.RewardPoints;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
+import com.nisum.carpool.service.dto.CarpoolRiderOptedDetailsDto;
 import com.nisum.carpool.service.dto.Errors;
 import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
-import com.nisum.carpool.util.CPCancellationReasons;
-
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
+import com.nisum.carpool.util.CPCancellationReasons;
 
 
 @RestController
@@ -172,5 +172,12 @@ public class CarpoolRiderDetailsRestService {
 	@Autowired
 	public void setEmailAccount(RewardPoints rewardPoints) {
 		CarpoolRiderDetailsRestService.rewardPoints = rewardPoints;
+	}
+	
+	@RequestMapping(value = "/parent/{parentid}", method = RequestMethod.GET)
+	public Map<String, List<CarpoolRiderOptedDetailsDto>> findCarpoolRiderDetailsByParentId(@PathVariable("parentid") int parentid) {
+		
+		return carpoolRiderDetailsService.findCarpoolRiderDetailsByParentId(parentid);
+
 	}
 }

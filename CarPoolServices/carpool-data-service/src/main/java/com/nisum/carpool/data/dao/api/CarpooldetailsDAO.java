@@ -1,6 +1,5 @@
 package com.nisum.carpool.data.dao.api;
 
-import java.util.Date;
 import java.util.List;
 
 import com.nisum.carpool.data.domain.Carpooldetails;
@@ -24,21 +23,23 @@ public interface CarpooldetailsDAO {
 	List<Carpooldetails> getCarpoolsByParentId(int parentId);
 
 	public List<Integer> getCarPoolParentIds(String email);
-	
+
 	public String addRewards(double rewards);
 
 	public Carpooldetails getCarpoolByPoolID(Integer carpoolId);
 
 	public void updateCarpoolStatusByPoolId(int poolStatus, Integer id);
-	
+
 	public void upateCarPoolStatusByIdandParentID(int pid, int status);
-	
+
 	public String getDriverEmailByCPId(int cpid);
-	
 
+	Carpooldetails getCarpoolByDateAndEmail(String date, String email);
 
+	public List<Integer> getCarpoolByDate(String date);
 
-	public List<Carpooldetails> getCarPoolByCpIDandDate(int cpId,String date);
+	List<Carpooldetails> findCarpoolDetailsByParentId(int parentid);
+
+	public List<Carpooldetails> getCarPoolByCpIDandDate(int cpid, String date);
 
 }
-

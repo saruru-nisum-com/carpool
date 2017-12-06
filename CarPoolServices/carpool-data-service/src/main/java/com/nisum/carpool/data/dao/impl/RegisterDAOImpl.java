@@ -75,7 +75,6 @@ public class RegisterDAOImpl implements RegisterDAO {
 	@Override
 	public RegisterDomain getLocationOfRegisteredUser(String emailId) {
 		logger.info("UserRegistrationDaoImpl :: getLocationOfRegisteredUser :: Finding Location by emailId");
-		String location="";
 		RegisterDomain domain=null;
 		try {
 			List<RegisterDomain> list=registerRepository.findByEmailId(emailId);
@@ -90,6 +89,30 @@ public class RegisterDAOImpl implements RegisterDAO {
 		}
 		logger.info("Exit from UserRegistrationDaoImpl:: getLocationOfRegisteredUser");
 		return domain;
+	}
+
+	@Override
+	public RegisterDomain findByemailId(String emailId) {
+		return registerRepository.getDomainByEmailId(emailId);
+	}
+		
+	public String getMobileNumberByEmail(String emailId) {
+		logger.info("UserRegistrationDaoImpl :: getMobileNumberByEmail ");
+		String location="";
+		try {
+			List<RegisterDomain> list=registerRepository.findByEmailId(emailId);
+			if(list!=null) {
+				for(RegisterDomain registedDao:list) {
+					
+					return registedDao.getMobile();
+					
+				}
+			}
+		}catch (Exception e) {
+			logger.error("Exception Occured in Class:UserRegistrationDaoImpl Method :getLocationOfRegisteredUser Message:"+e.getMessage());
+		}
+		logger.info("Exit from UserRegistrationDaoImpl:: getLocationOfRegisteredUser");
+		return location;
 	}
 
 	
