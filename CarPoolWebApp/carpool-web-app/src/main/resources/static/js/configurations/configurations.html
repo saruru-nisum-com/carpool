@@ -5,10 +5,7 @@
 		</div>
 	</div>
 	<div class = "col-md-8">
-	<div align="right">
-		<input type="checkbox" name="AllCarPools" data-ng-change='ngChange()'
-			data-ng-model='isCheck' />See All Pools
-	</div>
+	
 	<div>
 		<div>
 			<ul id="nav-tabs" ng-init='getCarpools()'>
@@ -17,9 +14,11 @@
 
 		<div align="center" style="color: #2535A9;">
 			<h3>Available car pools</h3>
+		<input type="checkbox" name="AllCarPools" data-ng-change='ngChange()'
+			data-ng-model='isCheck' /> See All Pools
 		</div>
 
-		<div ng-if="carpoolList.length>0" ng-repeat="carpool in carpoolList">
+		<div ng-if="carpoolList.length>0" ng-repeat="carpool in carpoolList" class = "poolList">
 
 				<div ng-repeat="vehicle in vehicleDetails"
 					ng-if="vehicle.id==carpool.carpoolDetails.vehicleType">
