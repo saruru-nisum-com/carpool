@@ -481,6 +481,7 @@ form {
 								<select class="form-control" ng-model="selectedVehicleTypes" multiple="multiple" 
 									ng-options="vehicle.id as vehicle.type for vehicle in vehicleTypes" ng-required="true"
 									size="2"></select>
+									<span>(Hold Ctrl to select multiple vehicles)</span>
 								<div
 									ng-show="driverForm.$submitted || driverForm.vehicleType.$touched">
 									<span ng-show="driverForm.vehicleType.$error.required"
