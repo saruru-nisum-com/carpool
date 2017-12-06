@@ -125,6 +125,11 @@ public class RegisterRestService {
 		logger.info("UserProfileRestService :: users profile::: get");
 		List<RegisterDTO> list =null;
 		try {
+			
+			if(commonService.checkValidUserEmailId(emailId)) {
+				return new ResponseEntity<String>("Register With Valid EmailId", HttpStatus.BAD_REQUEST);
+			}
+			
 			list = registerService.getUserRegistrationProfile(emailId);
 			if(list==null) {
 				Errors error = new Errors();
