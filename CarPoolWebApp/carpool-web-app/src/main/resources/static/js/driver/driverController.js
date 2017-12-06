@@ -18,11 +18,13 @@ driverApp.controller('driverController',
 	$scope.isVisible=false;
 
 	$scope.$on('gmPlacesAutocomplete::placeChanged', function(){
-		$scope.selectedLocation = $scope.autocomplete.getPlace().name;
-		var location = $scope.autocomplete.getPlace().geometry.location;
-		$scope.lat = location.lat();
-		$scope.lng = location.lng();
-		$scope.$apply();
+		if($scope.autocomplete != undefined) {
+			$scope.selectedLocation = $scope.autocomplete.getPlace().name;
+			var location = $scope.autocomplete.getPlace().geometry.location;
+			$scope.lat = location.lat();
+			$scope.lng = location.lng();
+			$scope.$apply();
+		}
 	});
 
 	/*
@@ -165,7 +167,7 @@ driverApp.controller('driverController',
 
 		var data = {
 				"emailId" : userId,
-				"location" : $scope.autocomplete,
+				"location" : $scope.selectedLocation,
 				"nearby" : $scope.nearBy,
 				"vehicleType" : vehicleType,
 				"isRider" : 0,
