@@ -147,7 +147,7 @@ public class CarpoolRiderDetailsRestService {
 	/**
 	 * @author Mahesh Bheemanapalli
 	 */
-	@Scheduled(cron = "0 53 23 * * ?")
+	@Scheduled(cron = "0 30 23 * * ?")
 	@RequestMapping(value = "/addRiderRewardPoints", method = RequestMethod.GET)
 	public ResponseEntity<?> addRewardPointsToRider() {
 		logger.info("CarpoolRiderDetailsRestService : addRewardPointsToRider");

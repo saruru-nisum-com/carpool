@@ -298,7 +298,7 @@ public class CarpooldetailsRestService {
 		
 
 	//seconds minutes hours dayofthemonth month dayoftheweek
-	@Scheduled(cron = "30 53 23 * * ?")
+	@Scheduled(cron = "0 0 0 * * ?")
 	@RequestMapping(value = "/addDriverRewardPoints", method = RequestMethod.GET)
 	public ResponseEntity<?> addRewardsToDriver() {
 		logger.info("CarpooldetailsRestService : addRewardsToDriver");
@@ -387,4 +387,24 @@ public class CarpooldetailsRestService {
 	}
 
 	
+	/**
+	 * @author Mahesh Bheemanapalli
+	 * @param Change Status to "Close", if status other than "Cancel" & "Close"
+	 * @return 
+	 */
+	@Scheduled(cron = "0 0 23 * * ?")
+	@RequestMapping(value = "/updateCarpoolStatusToClosed", method = RequestMethod.GET)
+	public ResponseEntity<?> updateCarpoolStatus() {
+		logger.info("CarpooldetailsRestService : updateCarpoolStatus");
+		try {
+			ServiceStatusDto statusDto = carpooldetailsService.updateCarpoolStatus();
+			logger.info("CarpooldetailsRestService : updateCarpoolStatus : "+statusDto.getMessage());
+			return new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
+
+		} catch (Exception e) {
+			logger.error("CarpooldetailsRestService : updateCarpoolStatus : Inside Catch Block" +e.getMessage());
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+
+	}
 }

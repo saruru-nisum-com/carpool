@@ -1,8 +1,8 @@
 package com.nisum.carpool.data.repository;
 
 
-import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.data.cassandra.repository.Query;
@@ -75,7 +75,6 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	@Query("select * from cp_carpooldetails where parentid=:cpId and fromdate>:date allow filtering")
 	List<Carpooldetails>  getCarPoolsByCpIdandDate(@Param("cpId")int cpId,@Param("date") String date);
 	
-	
 	@Query("select  *  from cp_carpooldetails where fromdate=:fromdate and emailid=:emailid allow filtering")
 	public Carpooldetails getCarpoolByDateAndEmail(@Param("fromdate")String fromdate, @Param("emailid")String emailid);
 	
@@ -84,4 +83,12 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	@Query("select * from cp_carpooldetails where location=:location allow filtering") 
 	List<Carpooldetails> getCarpoolsByLocation(@Param("location") String location);
 	
+	@Query("select * from cp_carpooldetails where todate<= :todate allow filtering")
+	List<Carpooldetails> getCarpoolsByToDate(@Param("todate") String todate);
+	
+	@Query("update cp_carpooldetails set status=:poolStatus where id IN (:cpids)")
+	Integer updateCarpoolStatusBySetOfPoolIds(@Param("poolStatus") int poolStatus,@Param("cpids") Set<Integer> cpids);
+	
+	@Query("select count(*) from cp_carpooldetails where status=:poolStatus allow filtering")
+	Integer checkUpdateCarpoolStatusClosedCount(@Param("poolStatus") int poolStatus);
 }

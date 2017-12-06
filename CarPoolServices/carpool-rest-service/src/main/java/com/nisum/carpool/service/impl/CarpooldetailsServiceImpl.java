@@ -854,6 +854,34 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			}
 			return CarPoolDetailsOptedList.size();
 		}
+		/**
+		 * @author Mahesh Bheemanapalli : CPL049: Functionality to update car pool
+		 *         status using scheduler
+		 * 
+		 *         This method is used update the carpool status as "Closed" except
+		 *         "Cancelled" where todate is Less than or equal to Current Date.
+		 * @return ServiceStatusDto
+		 */
+	@Override
+	public ServiceStatusDto updateCarpoolStatus() {
+		// TODO Auto-generated method stub
+		logger.info("CarpooldetailsServiceImpl:updateCarpoolStatus");
+		ServiceStatusDto statusDto = new ServiceStatusDto(); 
+		try {
+			String statusToClosed = carpooldetailsDAO.updateCarpoolStatusToClosed();
+			logger.info("CarpooldetailsServiceImpl : updateCarpoolStatus :"+statusToClosed);
+			if(ObjectUtils.anyNotNull(statusToClosed)) {
+				statusDto.setStatus(true);
+				statusDto.setMessage(statusToClosed);
+			}
+		}
+		catch(Exception e) {
+			logger.debug("CarpooldetailsServiceImpl : updateCarpoolStatus"+e.getMessage());
+			statusDto.setStatus(false);
+			statusDto.setMessage(e.getMessage());
+		}
+		return statusDto;
+	}
 	 
 
 

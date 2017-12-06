@@ -39,6 +39,7 @@ public interface CarpooldetailsService {
 	void UpdatecarpoolStatus(Integer carpoolId) throws CarpooldetailsServiceException;
 	
 	public List<TodayRiderDetailsDTO> getRidesForDrivers(String email,String userType) throws Exception;
+	
 	public DriverCarPoolDto getDriversByRider(String email,String userType) throws Exception;
 	
 	List<OptRideDto> getCarpoolsDataNotOptedOrOptedByMe(int parentId, String emilId, Boolean optedOrNot)
@@ -46,4 +47,5 @@ public interface CarpooldetailsService {
 	
 	ServiceStatusDto cancelCarpooldetailsByParentId(CarpooldetailsDto carpooldetailsDto);
 
+	ServiceStatusDto updateCarpoolStatus();
 }
