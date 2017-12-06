@@ -111,7 +111,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		
 	}
 	/**
-	 * @author Manohar Dhavala : CPL005: Create Car Pools (Post a ride)
+	 * @author Radhika Pujari : CPL005: Create Car Pools (Post a ride)
 	 * 
 	 *         This method is used for creating carpool records in db
 	 *         @param carpooldetails
