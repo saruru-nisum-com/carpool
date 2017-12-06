@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.api.CarpooldetailsService;
+import com.nisum.carpool.service.api.CommonServices;
 import com.nisum.carpool.service.api.RewardPoints;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
@@ -41,6 +42,9 @@ public class CarpooldetailsRestService {
 	@Autowired
 	CarpoolRiderDetailsService carpoolRiderService;
 
+	@Autowired
+	CommonServices commonService;
+	
 	@RequestMapping(value = "/update", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateCarpooldetails(@RequestBody CarpooldetailsDto carpooldetailsDto) {
 		logger.info("CarpooldetailsRestService :: updateCarpooldetails");
@@ -242,10 +246,12 @@ public class CarpooldetailsRestService {
 	 * @return
 	 */
 	@RequestMapping(value = "/getUserLocation/{emailId:.+}", method = RequestMethod.GET)
-	public ResponseEntity<?> getUserLocationByEmailId(@PathVariable("emailId")String emailId) 
-	{
+	public ResponseEntity<?> getUserLocationByEmailId(@PathVariable("emailId")String emailId) {
 		logger.info("Entered into Class: CarpooldetailsRestService Method: getUserLocationByEmailId");
 		
+		if(!commonService.checkValidUserEmailId(emailId)) {
+			return new ResponseEntity<String>("Not a valid mailid", HttpStatus.BAD_REQUEST);
+		}
 		try {
 			RegisterDTO regDto=carpooldetailsService.getDriverLocationByEmailId(emailId);
 			return new ResponseEntity<RegisterDTO>(regDto,HttpStatus.OK);

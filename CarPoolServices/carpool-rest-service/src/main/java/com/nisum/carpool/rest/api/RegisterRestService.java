@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nisum.carpool.service.api.CommonServices;
 import com.nisum.carpool.service.api.RegisterService;
 import com.nisum.carpool.service.dto.Errors;
 import com.nisum.carpool.service.dto.RegisterDTO;
@@ -31,22 +32,31 @@ public class RegisterRestService {
 	@Autowired
 	private RegisterService registerService;
 	
+	@Autowired
+	private CommonServices commonService;
+	
 	@RequestMapping(value = "/registerdriver", method = RequestMethod.POST,  consumes = "application/json", produces = "application/json")
 	public ResponseEntity<?> registerDriver(@RequestBody RegisterDTO registerDTO ) throws RegisterServiceException {
 		
 		logger.debug("Entering into " + getClass() + " registerDriver():::");
 		ResponseEntity<?> responseEntity = null;
 		try {
-			// Duplicate Check need to add it on later point of time 
+			//added By Harish Kumar Gudivada on 6th December 2017
+			//code added to check whether the emailid is valid or not by checkin in the user table
+			if(commonService.checkValidUserEmailId(registerDTO.getEmailId())) {
+				responseEntity = new ResponseEntity<String>("Register With Valid EmailId", HttpStatus.BAD_REQUEST);
+			}
+			//end
+			
 			ServiceStatusDto statusDto = registerService.registerDriverorRider(registerDTO);
 			if(statusDto.isStatus()) {
 				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
-			}else {
+			}else {// added By Harish Kumar Gudivada on 5th December 2017 for validating the user is already registerd as driver/rider or both
 				Errors error = new Errors();
 				error.setErrorCode("Errors-DriverRegister");
 				error.setErrorMessage(statusDto.getMessage());
 				responseEntity=new ResponseEntity<Errors>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-			}
+			}//end
 		}catch (Exception e) {
 			Errors error = new Errors();
 			error.setErrorCode("Errors-DriverRegister");

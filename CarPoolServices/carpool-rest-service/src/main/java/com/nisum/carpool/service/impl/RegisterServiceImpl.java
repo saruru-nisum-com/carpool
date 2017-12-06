@@ -64,6 +64,7 @@ public class RegisterServiceImpl  implements RegisterService{
 				}
 			}
 		}
+		//end
 		RegisterDomain rDomain =  registerDAO.registerDriverorRider(registerDomain);
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
 		if(ObjectUtils.anyNotNull(rDomain)) {
