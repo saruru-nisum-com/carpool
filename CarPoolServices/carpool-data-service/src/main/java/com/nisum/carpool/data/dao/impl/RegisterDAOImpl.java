@@ -92,6 +92,25 @@ public class RegisterDAOImpl implements RegisterDAO {
 		return domain;
 	}
 
+	public String getMobileNumberByEmail(String emailId) {
+		logger.info("UserRegistrationDaoImpl :: getMobileNumberByEmail ");
+		String location="";
+		try {
+			List<RegisterDomain> list=registerRepository.findByEmailId(emailId);
+			if(list!=null) {
+				for(RegisterDomain registedDao:list) {
+					
+					return registedDao.getMobile();
+					
+				}
+			}
+		}catch (Exception e) {
+			logger.error("Exception Occured in Class:UserRegistrationDaoImpl Method :getLocationOfRegisteredUser Message:"+e.getMessage());
+		}
+		logger.info("Exit from UserRegistrationDaoImpl:: getLocationOfRegisteredUser");
+		return location;
+	}
+
 	
 
 

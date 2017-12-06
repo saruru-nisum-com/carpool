@@ -38,7 +38,11 @@ public interface CarpooldetailsDAO {
 
 
 
-	public List<Carpooldetails> getCarPoolByCpIDandDate(int cpId,String date);
+	
+	
+Carpooldetails getCarpoolByDateAndEmail(String date, String email);
+	
+	public List<Integer> getCarpoolByDate(String date);
 
 }
 

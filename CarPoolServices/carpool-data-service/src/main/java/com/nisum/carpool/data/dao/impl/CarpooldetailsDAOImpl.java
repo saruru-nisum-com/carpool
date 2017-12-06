@@ -288,11 +288,19 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		return carpooldetailsRepository.getDriverEmailByCPId(cpid);
 	}
 
+
 	@Override
-	public List<Carpooldetails> getCarPoolByCpIDandDate(int cpId, String date) {
-		logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolByCpIDandDate");
-		return carpooldetailsRepository.getCarPoolsByCpIdandDate(cpId, date);
+	public Carpooldetails getCarpoolByDateAndEmail(String date, String email) {
+		// TODO Auto-generated method stub
+		return  carpooldetailsRepository.getCarpoolByDateAndEmail(date, email);
 	}
+@Override
+	public List<Integer> getCarpoolByDate(String date) {
+		// TODO Auto-generated method stub
+		return carpooldetailsRepository.getCarpoolByDate(date);
+	}
+
+		
 
 
 }

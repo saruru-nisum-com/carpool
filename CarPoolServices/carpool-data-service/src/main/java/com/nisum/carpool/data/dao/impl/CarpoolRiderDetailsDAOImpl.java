@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
 import com.nisum.carpool.data.dao.api.CarpoolRiderDetailsDAO;
 import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 import com.nisum.carpool.data.domain.CarpoolRiderNotifications;
+import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.repository.CarpoolRiderDetailsRepository;
 import com.nisum.carpool.data.repository.CarpoolRiderNotificationsRepository;
 import com.nisum.carpool.data.repository.CarpooldetailsRepository;
@@ -227,4 +228,33 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 		}
 		return SetOfClosedRiders;
 	}
+
+	
+	@Override
+	public Carpooldetails getCarpoolByDateAndEmail(String date, String email) {
+		// TODO Auto-generated method stub
+		return  carpooldetailsRepository.getCarpoolByDateAndEmail(date, email);
+	}
+@Override
+	public List<Integer> getCarpoolByDate(String date) {
+		// TODO Auto-generated method stub
+		return carpooldetailsRepository.getCarpoolByDate(date);
+	}
+
+public CarpoolRiderDetails getRidesByMailandAllCarpoolIds(String email, List<Integer> allCarpoolIds)
+{
+	CarpoolRiderDetails carpoolRiderDetails=null;
+	
+	for(int i=0;i<allCarpoolIds.size();i++)
+	{
+		carpoolRiderDetails= carpoolRiderDetailsRepository.getRidesByMailandAllCarpoolIds(email,allCarpoolIds.get(i));
+		if(carpoolRiderDetails!=null)
+		{
+		return	carpoolRiderDetails;
+			
+		}
+	}
+	return carpoolRiderDetails;
+}
+		
 }

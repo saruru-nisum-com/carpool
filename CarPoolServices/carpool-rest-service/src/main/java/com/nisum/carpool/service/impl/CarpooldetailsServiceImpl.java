@@ -26,12 +26,12 @@ import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.domain.RegisterDomain;
 import com.nisum.carpool.data.domain.User;
 import com.nisum.carpool.service.api.CarpooldetailsService;
-import com.nisum.carpool.service.api.RewardPoints;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
 import com.nisum.carpool.service.dto.DriverCarPoolDto;
 import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
+import com.nisum.carpool.service.dto.TodayRiderDetailsDTO;
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
 import com.nisum.carpool.util.CarpooldetailsServiceUtil;
 import com.nisum.carpool.util.Constants;
@@ -681,6 +681,86 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			}
 			logger.info("Exit from CarpooldetailsServiceImpl Method:getLocationByEmailId");
 			return location;
+		}
+		
+		 /**
+		 * @author Chandra Sekhar Gapti
+		 * @param emailId,
+		 * @param UserType we need to pass the param as d=driver,r=rider,B=Both 
+		 * to get the today list
+		 * 
+		 * @return TodayRiderDetailsDTO
+		 */
+		
+		public List<TodayRiderDetailsDTO> getRidesForDrivers(String email,String userType) throws Exception
+		 {
+			
+			logger.info("Entered into CarpooldetailsServiceImpl Method:getRidesForDrivers");
+			 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				String currentdate=sdf.format(new Date());
+			 Carpooldetails carpooldetails= carpooldetailsDAO.getCarpoolByDateAndEmail("11/03/2018",email);
+			
+			
+				 List<TodayRiderDetailsDTO> riderDetails=new ArrayList<>();
+				 if(carpooldetails!=null)
+				 {
+					 List<CarpoolRiderDetails> ridersList=	 carpoolRiderDAO.getRidersByCpID(carpooldetails.getId());
+					 for(CarpoolRiderDetails carpoolRiderDetails:ridersList)
+					 {
+						User user= userDAO.findByEmailId(carpoolRiderDetails.getEmailid());
+						String mobile=  registerDAO.getMobileNumberByEmail(carpoolRiderDetails.getEmailid());         
+						
+						TodayRiderDetailsDTO carpoolRiderDetailsDTO=new TodayRiderDetailsDTO();
+						 
+						 carpoolRiderDetailsDTO.setCpid(carpoolRiderDetails.getCpid());
+						 carpoolRiderDetailsDTO.setId(carpoolRiderDetails.getId());
+						 carpoolRiderDetailsDTO.setEmailid(carpoolRiderDetails.getEmailid());
+						 carpoolRiderDetailsDTO.setStatus(carpoolRiderDetails.getStatus());
+						 carpoolRiderDetailsDTO.setRewards(carpoolRiderDetails.getRewards());
+						 carpoolRiderDetailsDTO.setReason(carpoolRiderDetails.getReason());
+						 carpoolRiderDetailsDTO.setMoblie(mobile);
+						 if(user!=null)
+						 carpoolRiderDetailsDTO.setName(user.getUserName());
+						
+						 riderDetails.add(carpoolRiderDetailsDTO);
+			 
+					 }
+				
+				  }
+				 return	 riderDetails;
+				 
+				 
+			 }
+		public DriverCarPoolDto getDriversByRider(String email,String userType) throws Exception
+		{
+			
+			logger.info("Entered into CarpooldetailsServiceImpl Method:getRidesForDrivers");
+			List<Carpooldetails> caList = new ArrayList<>();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			String currentdate = sdf.format(new Date());
+			List<Integer> allCarpoolIds = carpooldetailsDAO.getCarpoolByDate("11/03/2018");
+			CarpoolRiderDetails carpoolRiderDetails = carpoolRiderDAO.getRidesByMailandAllCarpoolIds(email, allCarpoolIds);
+			DriverCarPoolDto driverCarPoolDto = new DriverCarPoolDto();
+			if (carpoolRiderDetails != null) {
+
+				Carpooldetails carpooldetails = carpooldetailsDAO.loadCarpoolDetailsById(carpoolRiderDetails.getCpid());
+				
+				if (carpooldetails != null) {
+
+					driverCarPoolDto.setFromDate(carpooldetails.getFromDate());
+					driverCarPoolDto.setLocation(carpooldetails.getLocation());
+					driverCarPoolDto.setStatus(String.valueOf(carpooldetails.getStatus()));
+					driverCarPoolDto.setToDate(carpooldetails.getToDate());
+					User user = userDAO.findByEmailId(carpoolRiderDetails.getEmailid());
+					String mobile = registerDAO.getMobileNumberByEmail(carpoolRiderDetails.getEmailid());
+					if (user != null)
+						driverCarPoolDto.setName(user.getUserName());
+					driverCarPoolDto.setMobile(mobile);
+
+				}
+
+			}
+			return driverCarPoolDto;
 		}
 	 
 }

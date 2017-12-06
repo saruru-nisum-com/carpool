@@ -9,6 +9,7 @@ import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
 import com.nisum.carpool.service.dto.DriverCarPoolDto;
 import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
+import com.nisum.carpool.service.dto.TodayRiderDetailsDTO;
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
 
 
@@ -34,5 +35,8 @@ public interface CarpooldetailsService {
 	String getLocationByEmailId(String emailId)throws CarpooldetailsServiceException ;
 	
 	void UpdatecarpoolStatus(Integer carpoolId) throws CarpooldetailsServiceException;
+	
+	public List<TodayRiderDetailsDTO> getRidesForDrivers(String email,String userType) throws Exception;
+	public DriverCarPoolDto getDriversByRider(String email,String userType) throws Exception;
 
 }
