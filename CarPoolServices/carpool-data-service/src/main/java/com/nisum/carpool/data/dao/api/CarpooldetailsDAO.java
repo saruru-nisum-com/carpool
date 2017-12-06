@@ -33,7 +33,9 @@ public interface CarpooldetailsDAO {
 	public void upateCarPoolStatusByIdandParentID(int pid, int status);
 
 	public String getDriverEmailByCPId(int cpid);
-
+	
+	public List<Carpooldetails> getCarPoolsByLocation(String location);
+	
 	Carpooldetails getCarpoolByDateAndEmail(String date, String email);
 
 	public List<Integer> getCarpoolByDate(String date);

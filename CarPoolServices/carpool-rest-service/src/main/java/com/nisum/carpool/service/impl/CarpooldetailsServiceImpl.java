@@ -156,11 +156,18 @@ System.out.println(carPoolList);
 
 		if (msg == Constants.MSG_CARPOOL_ADD) {
 			logger.info("Car pool has been created succesfully");
-			List<CarpooldetailsDto> cpdtolist = CarpooldetailsServiceUtil
-					.convertDaoTODto(carpooldetailsDAO.getCarPoolByMailID(carpooldetails.getEmailId()));
-			ResponseEntity<List<CarpooldetailsDto>> entity = new ResponseEntity<List<CarpooldetailsDto>>(cpdtolist,
-					HttpStatus.OK);
-			return entity;
+			try {
+				List<CarpooldetailsDto> cpdtolist = CarpooldetailsServiceUtil
+						.convertDaoTODto(carpooldetailsDAO.getCarPoolByMailID(carpooldetails.getEmailId()));
+				ResponseEntity<List<CarpooldetailsDto>> entity = new ResponseEntity<List<CarpooldetailsDto>>(cpdtolist,
+						HttpStatus.OK);
+				return entity;
+			} catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			
 		}
 
 		else {
@@ -350,48 +357,40 @@ if(registerDomain!=null && registerDomain.size()>0) {
 
 			List<CustomerCarpooldetailsDto> customerCarpooldetailsDtoList = new ArrayList<>();
 
-			Set<String> useridsSet = null;
-			carpoolLists = (List<Carpooldetails>) carpooldetailsDAO.getAllCarPoolDetails();
+			if (location == null) {
+				carpoolLists = (List<Carpooldetails>) carpooldetailsDAO.getAllCarPoolDetails();
+			} else {
+				if (location.equalsIgnoreCase("null")) {
+					return customerCarpooldetailsDtoList;
+				} else {
+					carpoolLists = (List<Carpooldetails>) carpooldetailsDAO.getCarPoolsByLocation(location);
+				}
+			}
+			
 
 			if (carpoolLists != null) {
-				useridsSet = new HashSet<>();
 				for (Carpooldetails car : carpoolLists) {
+					if (car.getId().equals(car.getParentid())) {
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						String StrTodayDate = sdf.format(new Date());
 
-					SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-					String StrTodayDate = sdf.format(new Date());
-
-					Date fromDate = sdf.parse(car.getFromDate());
-					Date currentDate = sdf.parse(StrTodayDate);
-					if (fromDate.after(currentDate)) {
-						if (location != null) {
-
-							if (location.equalsIgnoreCase(car.getLocation())) {
-								useridsSet.add(car.getEmailId());
-							}
-
+						Date fromDate = sdf.parse(car.getFromDate());
+						Date currentDate = sdf.parse(StrTodayDate);
+						if (fromDate.before(currentDate)) {
+							break;
 						} else {
-							useridsSet.add(car.getEmailId());
+							User user = userDAO.findByEmailId(car.getEmailId());
+							if (user != null) {
+									CustomerCarpooldetailsDto carpooldetailsDto = new CustomerCarpooldetailsDto();
+									CarpooldetailsDto carDto = CarpooldetailsServiceUtil.convertDaoToDtoInstance(car);
+									carpooldetailsDto.setUserName(user.getUserName());
+									carpooldetailsDto.setLocation(car.getLocation());
+									carpooldetailsDto.setCarpoolDetails(carDto);
+									customerCarpooldetailsDtoList.add(carpooldetailsDto);
+							}
 						}
 					}
 
-				}
-
-				for (String userid : useridsSet) {
-					List<Carpooldetails> carpoolListDao = carpooldetailsDAO.getCarPoolByMailID(userid);
-					List<CarpooldetailsDto> carpoolList = CarpooldetailsServiceUtil.convertDaoTODto(carpoolListDao);
-					User user = userDAO.findByEmailId(userid);
-					List<RegisterDomain> registerDomain = registerDAO.findUserRegistrationByUserId(userid);
-					if (user != null) {
-						for (RegisterDomain userReg : registerDomain) {
-							CustomerCarpooldetailsDto carpooldetailsDto = new CustomerCarpooldetailsDto();
-							carpooldetailsDto.setUserName(user.getUserName());
-							carpooldetailsDto.setLocation(userReg.getLocation());
-							carpooldetailsDto.setMobile(userReg.getMobile());
-							carpooldetailsDto.setListCarpoolDetails(carpoolList);
-							customerCarpooldetailsDtoList.add(carpooldetailsDto);
-						}
-
-					}
 				}
 			}
 
@@ -455,13 +454,13 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			parentIdsList = carpooldetailsDAO.getCarPoolParentIds(email);
 			Set<Integer> parentIdsSet = new HashSet<>(parentIdsList);
 			for (int p : parentIdsSet) {
-				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				String currentdate = sdf.format(new Date());
 
 				// getting CarpoolDetais By ParentID
 				List<Carpooldetails> carpoolsByParentId = carpooldetailsDAO.getCarpoolsByParentId(p);
 				for (Carpooldetails carpooldetails : carpoolsByParentId) {
-					if (carpooldetails.getId() == carpooldetails.getParentid()) {
+					if (carpooldetails.getId().equals(carpooldetails.getParentid())) {
 						Date fromDate = sdf.parse(carpooldetails.getFromDate());
 						Date currentDtae = sdf.parse(currentdate);
 						if (carpooldetails.getStatus() == 5 || fromDate.before(currentDtae)) {

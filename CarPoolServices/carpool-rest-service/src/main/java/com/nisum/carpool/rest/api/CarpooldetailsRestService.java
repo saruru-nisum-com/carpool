@@ -120,13 +120,11 @@ public class CarpooldetailsRestService {
 			{
 		
 		List<CustomerCarpooldetailsDto> poolList=null;
-		try
-		{
+		try {
 			poolList=carpooldetailsService.getCarPoolDetails(location);
 			return new ResponseEntity<List<CustomerCarpooldetailsDto>>(poolList, HttpStatus.OK);
 
 		} catch (Exception e) {
-
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 

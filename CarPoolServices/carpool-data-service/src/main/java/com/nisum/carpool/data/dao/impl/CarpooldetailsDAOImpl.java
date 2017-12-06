@@ -312,6 +312,24 @@ public List<Carpooldetails> getCarPoolByCpIDandDate(int cpid, String date) {
 }
 
 		
+	/**
+	 * @author Durga Manjari narni
+	 * Used to get carpools by location
+	 * @param location
+	 * @return List<Carpooldetails>
+	 */
+	@Override
+	public List<Carpooldetails> getCarPoolsByLocation(String location) {
+		logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolsByLocation"); 
+		try {
+			return carpooldetailsRepository.getCarpoolsByLocation(location);
+		} catch(Exception e) {
+			logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolsByLocation:: Exception occurred"); 
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
 
 	@Override
 	public List<Carpooldetails> findCarpoolDetailsByParentId(int parentid) {

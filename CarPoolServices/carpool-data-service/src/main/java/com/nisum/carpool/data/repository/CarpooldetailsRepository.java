@@ -81,5 +81,7 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	
 	@Query("select id from cp_carpooldetails where fromdate=?0  allow filtering")
 	public List<Integer> getCarpoolByDate(String date);
+	@Query("select * from cp_carpooldetails where location=:location allow filtering") 
+	List<Carpooldetails> getCarpoolsByLocation(@Param("location") String location);
 	
 }
