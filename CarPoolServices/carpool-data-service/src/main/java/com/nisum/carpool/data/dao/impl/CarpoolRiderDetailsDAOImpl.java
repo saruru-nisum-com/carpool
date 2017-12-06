@@ -39,7 +39,9 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 	@Autowired
 	CarpoolRiderNotificationsRepository carpoolridernotificationsrepository;
 
-
+	/*
+	 * MethodAuthor: @Radhika Pujari
+	 */
 
 	/**
 	 * getRiderBookingDetails  for Dao Layer
@@ -51,7 +53,14 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 	@Override
 	public List<CarpoolRiderDetails> getRiderBookingDetails(String emailId) {
 		logger.info("CarpoolRiderDetailsDAOImpl::getRiderBookingDetails::emailId");
+		try {
+		
       return (List<CarpoolRiderDetails>) carpoolRiderDetailsRepository.getRiderBookingDetails(emailId);
+		}catch(Exception e) {
+			logger.info("CarpoolRiderDetailsDAOImpl::getRiderBookingDetails::error");
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override

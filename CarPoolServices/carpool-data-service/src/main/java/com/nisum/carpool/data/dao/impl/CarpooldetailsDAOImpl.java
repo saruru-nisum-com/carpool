@@ -290,11 +290,19 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		// to find the driver email with the given car pool id
 		return carpooldetailsRepository.getDriverEmailByCPId(cpid);
 	}
-
+     /**
+      * Author:Radhika Pujari
+      */
 	@Override
 	public List<Carpooldetails> getCarPoolByCpIDandDate(int cpId, String date) {
 		logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolByCpIDandDate");
+		try {
 		return carpooldetailsRepository.getCarPoolsByCpIdandDate(cpId, date);
+	}catch (Exception e) {
+		logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolByCpIDandDate :: error");
+		e.printStackTrace();
+		return null;
+	}
 	}
 
 	@Override
