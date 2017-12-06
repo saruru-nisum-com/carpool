@@ -16,6 +16,7 @@ driverApp.controller('driverController',
 	$scope.autocomplete = undefined;
 	$scope.isRegisteredAsDriver = false;
 	$scope.isVisible=false;
+	$scope.disableGender = false;
 
 	$scope.$on('gmPlacesAutocomplete::placeChanged', function(){
 		if($scope.autocomplete != undefined) {
@@ -37,13 +38,17 @@ driverApp.controller('driverController',
 		var profileSessionData = localStorageService.get('profile');
 		$scope.userId = profileSessionData.emailId;
 		driverService.getRegisterDriverData($scope.userId).then (function(response){
-			angular.forEach(response, function(value, key) {
+			var responseData = response;
+			if(responseData.length > 0) {
+				$scope.mobile = responseData[0].mobile;
+				$scope.gender = responseData[0].gender;
+				$scope.disableGender = true;
+			}
+			angular.forEach(responseData, function(value, key) {
 				if(value.isRider == 0) {//If isRider value is '0' then he is registered as Driver.
 					$scope.isRegisteredAsDriver = true;
 					$scope.autocomplete = value.location;
 					$scope.nearBy = value.nearby;
-					$scope.mobile = value.mobile;
-					$scope.gender = value.gender;
 					angular.forEach(value.vehicleType, function(value) {
 						if(value == 2) 
 							$scope.cb2wheel = 2;
