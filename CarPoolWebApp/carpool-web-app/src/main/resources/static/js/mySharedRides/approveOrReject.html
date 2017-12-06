@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="/static/js/mySharedRides/style.css">
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="controller.js"></script>
+</head>
+	<div id="approveRequest">
+		<button class="btn btn-primary btn-md" style="width: 150px; height: 40px; border-radius: 19px; position: relative; top: 5px; left: 550px; font-family: 'Raleway', sans-serif; font-size: 15px;">Reject</button>
+		<button class="btn btn-primary btn-md" style="width: 150px; height: 40px; border-radius: 19px; position: relative; top: 5px; left: 550px; font-family: 'Raleway', sans-serif; font-size: 15px;">Approve</button>
+		<table class="approveGrid">
+			<tr>
+				<th></th>
+				<th>Name</th>
+				<th>Mobile No</th>
+				<th>Email Id</th>
+				<th>Status</th>
+				<th>Reason</th>
+			</tr>
+			<tbody  ng-repeat="(key,value) in jsonData[0] track by $index">
+				<tr>
+					<td colspan="6" style="position: relative;left: -350px;">{{parentNames[$index]}}</td>	
+				</tr>
+			
+			     <tr ng-repeat="x in value">
+			     	<td></td>
+			     	<td>{{x.name}}</td>
+			     	<td>{{x.mobile}}</td>
+			     	<td>{{x.emailId}}</td>
+			     	<td>{{x.status}}</td>
+			     	<td>{{x.reason}}</td>
+			     </tr>
+			</tbody>
+			</div>
+		</table>
+	</div>
+</html>

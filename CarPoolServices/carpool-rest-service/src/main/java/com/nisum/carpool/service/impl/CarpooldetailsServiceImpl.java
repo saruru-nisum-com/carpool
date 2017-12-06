@@ -483,7 +483,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 						parentCarpoolDetailsDto.setFromDate(carpooldetails.getFromDate());
 						parentCarpoolDetailsDto.setToDate(carpooldetails.getToDate());
 						parentCarpoolDetailsDto.setLocation(carpooldetails.getLocation());
-						parentCarpoolDetailsDto.setParentId(carpooldetails.getParentid());
+						parentCarpoolDetailsDto.setParentid(carpooldetails.getParentid());
 						parentCarpoolDetailsDto.setStatus(String.valueOf(carpooldetails.getStatus()));
 						parentCarpoolDetailsDtos.add(parentCarpoolDetailsDto);
 						break;

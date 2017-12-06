@@ -3,18 +3,18 @@ package com.nisum.carpool.service.dto;
 import java.io.Serializable;
 
 public class ParentCarpoolDetailsDto implements Serializable {
-	private int parentId;
+	private int parentid;
 	private String location;
 	private String fromDate;
 	private String toDate;
 	private String status;
 
-	public int getParentId() {
-		return parentId;
+	public int getParentid() {
+		return parentid;
 	}
 
-	public void setParentId(int parentId) {
-		this.parentId = parentId;
+	public void setParentid(int parentid) {
+		this.parentid = parentid;
 	}
 
 	public String getLocation() {
@@ -55,7 +55,7 @@ public class ParentCarpoolDetailsDto implements Serializable {
 		int result = 1;
 		result = prime * result + ((fromDate == null) ? 0 : fromDate.hashCode());
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
-		result = prime * result + parentId;
+		result = prime * result + parentid;
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((toDate == null) ? 0 : toDate.hashCode());
 		return result;
@@ -80,7 +80,7 @@ public class ParentCarpoolDetailsDto implements Serializable {
 				return false;
 		} else if (!location.equals(other.location))
 			return false;
-		if (parentId != other.parentId)
+		if (parentid != other.parentid)
 			return false;
 		if (status == null) {
 			if (other.status != null)
@@ -97,7 +97,7 @@ public class ParentCarpoolDetailsDto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ParentCarpoolDetailsDto [parentId=" + parentId + ", location=" + location + ", fromDate=" + fromDate
+		return "ParentCarpoolDetailsDto [parentId=" + parentid + ", location=" + location + ", fromDate=" + fromDate
 				+ ", toDate=" + toDate + ", status=" + status + "]";
 	}
 

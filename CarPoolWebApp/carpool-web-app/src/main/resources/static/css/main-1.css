@@ -5330,3 +5330,51 @@ body.admin-bar .q-filter-waypoints {
 	height: 100px;
     width: 319px;
 }
+
+#approveRequest{
+    /*border: 1px solid black;*/
+    width: 900px;
+    height: 600px;
+    position: relative;
+    left: 300px;
+    top: 50px;
+}
+
+button{
+    background-color: #337ab7;
+}
+
+.approveGrid{
+    font-family: 'Raleway', sans-serif;
+    border-collapse: collapse;
+    width: 850px;
+    top:20px;
+    position: relative;
+    margin: 5px;   
+}
+
+.approveGrid td, .approveGrid th {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 5px;
+}
+
+.approveGrid th {
+    background-color: SteelBlue;
+    color: white;
+}
+
+.grid img{
+    position: relative;
+    width: 25px;
+    height: 25px;
+}
+
+.approveGrid input{
+    cursor: pointer;
+}
+
+.approveGrid tr:hover{
+    background-color: #ebf5f9;
+    color: #00B3E3;
+}
