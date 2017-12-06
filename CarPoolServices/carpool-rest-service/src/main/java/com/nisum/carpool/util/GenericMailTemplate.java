@@ -194,7 +194,7 @@ public class GenericMailTemplate {
 	 * method that builds mail template when rider cancels the ride
 	 * 
 	 * @param genericEmailDto
-	 * @return message that to be set for body of email
+	 * @return message that to be set for body of email whne rider cancels the ride
 	 */
 	public String riderCancelMessageBodyTemplate(GenericEmailDto genericEmailDto) {
 
@@ -221,9 +221,14 @@ public class GenericMailTemplate {
 		sb.append("<b style='font-size:14px;font-family:Trebuchet MS;padding:10px'>"
 				+ genericEmailDto.getRiderUserName() + " has cancelled his ride on " + genericEmailDto.getDate()
 				+ " from " + genericEmailDto.getLocation() + " to Nisum at " + genericEmailDto.getStartTime()
-				+ " and from Nisum to " + genericEmailDto.getLocation() + " at  " + genericEmailDto.getReturnTime()
-				+ ".</b>");
-		sb.append("<br><br><br>");
+				+ " and from Nisum to " + genericEmailDto.getLocation() + " at  " + genericEmailDto.getReturnTime()+"."
+				+ "</b>");
+		if (genericEmailDto.getRemarks() != null) {
+			sb.append("<br><br>");
+			sb.append("<i style='font-size:16px;font-family:Trebuchet MS;padding:10px;colorRed'>Remarks: "
+					+ genericEmailDto.getRemarks() + "</b>");
+		}
+		sb.append("<br><br>");
 		sb.append("<i>Thanks & Regards,</i>");
 		sb.append("<br>");
 		sb.append("<font color=red><i>Carpool Application.</i></font><hr/></html>");
@@ -233,6 +238,11 @@ public class GenericMailTemplate {
 		return sb.toString();
 	}
 
+	/**
+	 * method that builds mail template when pool is reopened
+	 * @param genericEmailDto
+	 * @return message that to be set for body of email when pool is reopened
+	 */
 	public String notifyMeMessageBodyTemplate(GenericEmailDto genericEmailDto) {
 
 		StringBuilder sb = new StringBuilder();
