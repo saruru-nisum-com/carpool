@@ -212,13 +212,24 @@ public class CreateCarpoolTest {
 		regDomain.setLongitude("1110000");
 		regDomain.setLatitude("222000");
 		
+		List<RegisterDomain> userList=new ArrayList<>();
+		userList.add(regDomain);
 		
-		when(registerDAO.getLocationOfRegisteredUser("mdak@gmail.com")).thenReturn(regDomain);
-		RegisterDomain domain = registerDAO.getLocationOfRegisteredUser("mdak@gmail.com");
 		
-		assertEquals(location,domain.getLocation());
-		assertEquals(longitude,domain.getLongitude());
-		assertEquals(latitude,domain.getLatitude());
+		when(registerDAO.getLocationOfRegisteredUser("mdak@gmail.com")).thenReturn(userList);
+		List<RegisterDomain> domain = registerDAO.getLocationOfRegisteredUser("mdak@gmail.com");
+		
+		RegisterDomain regUser=null;
+		if(userList!=null) {
+			for(RegisterDomain registedDao:userList) {
+				if(registedDao.getIsrider()==0)
+					regUser=registedDao;
+			}
+		}
+		
+		assertEquals(location,regUser.getLocation());
+		assertEquals(longitude,regUser.getLongitude());
+		assertEquals(latitude,regUser.getLatitude());
 		
 		
 		PowerMockito.mockStatic(CarpooldetailsServiceImpl.class);

@@ -252,5 +252,24 @@ public CarpoolRiderDetails getRidesByMailandAllCarpoolIds(String email, List<Int
 	}
 	return carpoolRiderDetails;
 }
-		
+
+@Override
+public List<CarpoolRiderDetails> getNotOptedRiderDeatils(int cpid) {
+	// TODO Auto-generated method stub
+	return carpoolRiderDetailsRepository.getNotOptedRiderDetails(cpid);
+}
+
+@Override
+public CarpoolRiderDetails getOptedRiderDeatils(int id, String email) {
+	// TODO Auto-generated method stub
+	return carpoolRiderDetailsRepository.getOptedRiderDetails(id, email);
+}
+
+@Override
+public List<CarpoolRiderDetails> getOptedRiderDeatils(int id) {
+	// TODO Auto-generated method stub
+	return carpoolRiderDetailsRepository.getOptedRiderDetails(id);
+}
+
+
 }

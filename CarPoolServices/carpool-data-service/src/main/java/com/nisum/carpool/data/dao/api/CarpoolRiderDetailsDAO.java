@@ -38,9 +38,17 @@ Carpooldetails getCarpoolByDateAndEmail(String date, String email);
 	
 	public List<Integer> getCarpoolByDate(String date);
 	public CarpoolRiderDetails getRidesByMailandAllCarpoolIds(String email, List<Integer> allCarpoolIds);
+		
+	public List<CarpoolRiderDetails> getNotOptedRiderDeatils(int cpid);
+	public CarpoolRiderDetails getOptedRiderDeatils(int id, String email);
+
+	public List<CarpoolRiderDetails> getOptedRiderDeatils(int id);
+	
+	}
+
 	
 
 	
 	
 	
-}
+

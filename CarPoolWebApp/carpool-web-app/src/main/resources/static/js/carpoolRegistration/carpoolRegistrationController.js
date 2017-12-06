@@ -103,6 +103,10 @@ carpoolRegApp
 					 * On load method call to get the registered user data.
 					 */
 					$scope.getRegisteredDriverData();
+					
+					
+					
+					
 
 					$scope.registerAsDriver = function() {
 						console.log('checkbox values ' + $scope.cb2wheel
@@ -260,6 +264,8 @@ carpoolRegApp
 							"nearBy" : $scope.nearBy,
 							"vehicleType" : vehicleType,
 						}
+						
+						
 						carpoolRegistrationService
 								.updateDriverData(data)
 								.then(
@@ -330,24 +336,26 @@ carpoolRegApp
 
 					
 					/*
-					 * @author Harish Kumar Gudivada Method to get the Carpool Details by carpoolid
-					*/ 
-					$scope.getCarpolData = function(id) {
-						$scope.id = id;
-						carpoolRegistrationService.getCarpolData($scope.id).then(function(response) {
-											angular.forEach(response,function(value, key) {
-																	$scope.autocomplete = value.location;
-																	$scope.fromDate.value = value.fromDate;
-																	$scope.seat.value = value.totalNoOfSeats;
-																	$scope.toDate.value = value.toDate;
-																	$scope.startTime.value = value.startTime;
-																	$scope.endTime.value = value.toTime;
-																	$scope.vehicleSelect= value.vehicleType;
-																	
-											});
-										});
-					}
+					 * @author Harish Kumar Gudivada Method to get the Carpool
+					 * Details by carpoolid
+					 */ 
+// $scope.getCarpolData = function(id) {
+// $scope.id = id;
+// carpoolRegistrationService.getCarpolData($scope.id).then(function(response) {
+// angular.forEach(response,function(value, key) {
+// $scope.autocomplete = value.location;
+// $scope.fromDate.value = value.fromDate;
+// $scope.seat.value = value.totalNoOfSeats;
+// $scope.toDate.value = value.toDate;
+// $scope.startTime.value = value.startTime;
+// $scope.endTime.value = value.toTime;
+// $scope.vehicleSelect= value.vehicleType;
+//																	
+// });
+// });
+// }
 					
+
 					
 					
 					$scope.fnAddPostRide = function() {
@@ -493,6 +501,20 @@ carpoolRegApp
 						};
 					}
 					
+					/*
+					 * On load method call to get the registered user data.
+					 */
+					// $scope.getUserLocation();
+					
+					$scope.getUserLocation = function() {
+						 $scope.userId = localStorageService.get('profile').emailId;
+						 carpoolRegistrationService.getUserLocation($scope.userId).then(function(response) {
+							 $scope.shareARideAutocomplete = response.location;
+							});
+					}
+					
+					
+					
 					$scope.lat = undefined;
 					$scope.lng = undefined;
 					$scope.selectedLocation = undefined;
@@ -522,7 +544,8 @@ carpoolRegApp
 	                	 carpoolService.getLoggedInUserCarpools(localStorageService.get('profile').emailId)
 			              .then(function(response){
 					            	  if (response.errorCode === 500) {
-										//$scope.message = response.errorMessage
+										// $scope.message =
+										// response.errorMessage
 					            		  console.log(response);
 								  }else{
 									    console.log(response);
@@ -539,13 +562,14 @@ carpoolRegApp
 			              });
                     }
 					
-					//Loading TableGrid of Carpools on page load
+					// Loading TableGrid of Carpools on page load
 					   $scope.getAvailablePools();
 					   
 					   $scope.validateShareARideFromDetails = function() {
 						   /*
-						    * Share a ride validation part don't disturb this code
-						    */
+							 * Share a ride validation part don't disturb this
+							 * code
+							 */
 						   var vType = $scope.vehicleSelect;
 							if(vType == 0){
 								$("#alertMsg").text("Invalid vehicle type.");
@@ -577,7 +601,18 @@ carpoolRegApp
 								return false;
 							}
 							
-							
+							if(startTime == undefined){
+								$("#alertMsg").text("Invalid start time.");
+								$('#postARideFormModal').modal('show');
+								return false;
+								}
+							if(endTime == undefined){
+								$("#alertMsg").text("Invalid return time.");
+								$('#postARideFormModal').modal('show');
+								return false;
+								}
+								
+								
 							var parseStartTime = $filter('date')(
 									new Date(startTime), 'h:mm a');
 							var parseEndTime = $filter('date')(new Date(endTime),
@@ -586,7 +621,11 @@ carpoolRegApp
 							var timeStart = new Date("01/01/2007 " + parseStartTime);
 							var timeEnd = new Date("01/01/2007 " + parseEndTime);
 
-							var diff = (timeEnd - timeStart) / 60000; //dividing by seconds and milliseconds
+							var diff = (timeEnd - timeStart) / 60000; // dividing
+																		// by
+																		// seconds
+																		// and
+																		// milliseconds
 
 							var minutes = diff % 60;
 							var hours = (diff - minutes) / 60;
@@ -638,9 +677,9 @@ carpoolRegApp
 						console.log(JSON.stringify(profileObj))
 						$scope.postRide = {
 
-							"parentid" : 9999, //optional
-							"id" : 9999,  //optional
-							"status" : 1,  //optional
+							"parentid" : 9999, // optional
+							"id" : 9999,  // optional
+							"status" : 1,  // optional
 							"createddate" : "2017-11-25",
 							"modifieddate" : "2017-11-24",
 							"vehicleType" : parseInt(vType),
@@ -663,10 +702,10 @@ carpoolRegApp
 											if (response.errorCode === 500) {
 												$scope.message = response.errorMessage
 											} else {
-												setTimeout(function(){
-													$("#alertMsg").text("Share a ride successfully.");
-													$('#postARideFormModal').modal('hide');
-												}, 10000);
+												setTimeout(function(){ $('#postARideFormModal').modal('hide');
+												}, 1000);
+												$("#alertMsg").text("Share a ride successfully.");
+												$('#postARideFormModal').modal('show'); 
 												$scope.loadTableGrid(response);
 											}
 										}, function(response) {
@@ -739,44 +778,36 @@ carpoolRegApp
 					                	 
 					                 }
 					                 
-					                 // displaying all the Child while click on (+) button on table header
-									 /*$scope.showGridData = function() {
-
-											for (var z = 0; z < $scope.parentIdDetails.length; z++) {
-												var gridToggle = "show"+ z;
-												$scope[gridToggle] = !$scope[gridToggle];
-											}
-											if ($scope.show0) {
-												$("#gridToggleButton").text("-");
-
-												for (var y = 0; y < $scope.parentIdDetails.length; y++) {
-													$("#gridButton" + y)
-															.text("-");
-													$("#gridButton" + y)
-															.parent()
-															.parent()
-															.attr(
-																	"style",
-																	"background-color:#c4e2ed");
-												}
-
-											} else {
-												$("#gridToggleButton").text("+");
-
-												for (var y = 0; y < $scope.parentIdDetails.length; y++) {
-													$("#gridButton" + y)
-															.text("+");
-													$("#gridButton" + y)
-															.parent()
-															.parent()
-															.removeAttr(
-																	"style");
-												}
-											}
-
-									}*/
+					                 // displaying all the Child while click
+										// on (+) button on table header
+									 /*
+										 * $scope.showGridData = function() {
+										 * 
+										 * for (var z = 0; z <
+										 * $scope.parentIdDetails.length; z++) {
+										 * var gridToggle = "show"+ z;
+										 * $scope[gridToggle] =
+										 * !$scope[gridToggle]; } if
+										 * ($scope.show0) {
+										 * $("#gridToggleButton").text("-");
+										 * 
+										 * for (var y = 0; y <
+										 * $scope.parentIdDetails.length; y++) {
+										 * $("#gridButton" + y) .text("-");
+										 * $("#gridButton" + y) .parent()
+										 * .parent() .attr( "style",
+										 * "background-color:#c4e2ed"); } } else {
+										 * $("#gridToggleButton").text("+");
+										 * 
+										 * for (var y = 0; y <
+										 * $scope.parentIdDetails.length; y++) {
+										 * $("#gridButton" + y) .text("+");
+										 * $("#gridButton" + y) .parent()
+										 * .parent() .removeAttr( "style"); } } }
+										 */
 					                 
-									 // Displaying Child on click of (+) button
+									 // Displaying Child on click of (+)
+										// button
 					                 $scope.showChildData = function(x) {
 
 											var x1 = "show" + x;

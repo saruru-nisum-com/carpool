@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -29,12 +30,16 @@ import com.nisum.carpool.service.api.CarpooldetailsService;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
 import com.nisum.carpool.service.dto.DriverCarPoolDto;
+import com.nisum.carpool.service.dto.OptRideDto;
 import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
+import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.service.dto.TodayRiderDetailsDTO;
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
 import com.nisum.carpool.util.CarpooldetailsServiceUtil;
 import com.nisum.carpool.util.Constants;
+import com.nisum.carpool.util.OptARideServiceUtil;
+import com.nisum.carpool.util.RegisterServiceUtil;
 
 
 @Service
@@ -108,8 +113,15 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 
 		// code added by Harish Kumar Gudivada on 30th November 2017
 		//for loading the location from user registration and saving in the carpool details
-		if(carpooldetailsDto.getLocation()!=null && carpooldetailsDto.getLocation().equals("")) {
-			RegisterDomain regDomain = registerDAO.getLocationOfRegisteredUser(carpooldetailsDto.getEmailId());
+		if("".equals(carpooldetailsDto.getLocation())){
+			RegisterDomain regDomain=null;
+			List<RegisterDomain> userList = registerDAO.getLocationOfRegisteredUser(carpooldetailsDto.getEmailId());
+			if(userList!=null) {
+				for(RegisterDomain registedDao:userList) {
+					if(registedDao.getIsrider()==0)
+						regDomain=registedDao;
+				}
+			}
 			if(regDomain!=null) {
 				carpooldetailsDto.setLocation(regDomain.getLocation());
 				carpooldetailsDto.setLongitude(regDomain.getLongitude());
@@ -156,11 +168,18 @@ System.out.println(carPoolList);
 
 		if (msg == Constants.MSG_CARPOOL_ADD) {
 			logger.info("Car pool has been created succesfully");
-			List<CarpooldetailsDto> cpdtolist = CarpooldetailsServiceUtil
-					.convertDaoTODto(carpooldetailsDAO.getCarPoolByMailID(carpooldetails.getEmailId()));
-			ResponseEntity<List<CarpooldetailsDto>> entity = new ResponseEntity<List<CarpooldetailsDto>>(cpdtolist,
-					HttpStatus.OK);
-			return entity;
+			try {
+				List<CarpooldetailsDto> cpdtolist = CarpooldetailsServiceUtil
+						.convertDaoTODto(carpooldetailsDAO.getCarPoolByMailID(carpooldetails.getEmailId()));
+				ResponseEntity<List<CarpooldetailsDto>> entity = new ResponseEntity<List<CarpooldetailsDto>>(cpdtolist,
+						HttpStatus.OK);
+				return entity;
+			} catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			
 		}
 
 		else {
@@ -344,54 +363,46 @@ if(registerDomain!=null && registerDomain.size()>0) {
 	 * @param location 
 	 * @return List<CustomerCarpooldetailsDto>
 	 */
-	public List<CustomerCarpooldetailsDto> getCarPoolDetails(String location) {
+	public List<CustomerCarpooldetailsDto> getCarPoolDetails(String location, String emailId) {
 		try {
 			List<Carpooldetails> carpoolLists = new ArrayList<>();
 
 			List<CustomerCarpooldetailsDto> customerCarpooldetailsDtoList = new ArrayList<>();
 
-			Set<String> useridsSet = null;
-			carpoolLists = (List<Carpooldetails>) carpooldetailsDAO.getAllCarPoolDetails();
+			if (location == null) {
+				carpoolLists = (List<Carpooldetails>) carpooldetailsDAO.getAllCarPoolDetails();
+			} else {
+				if (location.equalsIgnoreCase("null")) {
+					return customerCarpooldetailsDtoList;
+				} else {
+					carpoolLists = (List<Carpooldetails>) carpooldetailsDAO.getCarPoolsByLocation(location);
+				}
+			}
+			
 
 			if (carpoolLists != null) {
-				useridsSet = new HashSet<>();
 				for (Carpooldetails car : carpoolLists) {
+					if (car.getId().equals(car.getParentid())) {
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						String StrTodayDate = sdf.format(new Date());
 
-					SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-					String StrTodayDate = sdf.format(new Date());
-
-					Date fromDate = sdf.parse(car.getFromDate());
-					Date currentDate = sdf.parse(StrTodayDate);
-					if (fromDate.after(currentDate)) {
-						if (location != null) {
-
-							if (location.equalsIgnoreCase(car.getLocation())) {
-								useridsSet.add(car.getEmailId());
-							}
-
+						Date fromDate = sdf.parse(car.getFromDate());
+						Date currentDate = sdf.parse(StrTodayDate);
+						if (fromDate.before(currentDate) || emailId.equals(car.getEmailId())) {
+							break;
 						} else {
-							useridsSet.add(car.getEmailId());
+							User user = userDAO.findByEmailId(car.getEmailId());
+							if (user != null) {
+									CustomerCarpooldetailsDto carpooldetailsDto = new CustomerCarpooldetailsDto();
+									CarpooldetailsDto carDto = CarpooldetailsServiceUtil.convertDaoToDtoInstance(car);
+									carpooldetailsDto.setUserName(user.getUserName());
+									carpooldetailsDto.setLocation(car.getLocation());
+									carpooldetailsDto.setCarpoolDetails(carDto);
+									customerCarpooldetailsDtoList.add(carpooldetailsDto);
+							}
 						}
 					}
 
-				}
-
-				for (String userid : useridsSet) {
-					List<Carpooldetails> carpoolListDao = carpooldetailsDAO.getCarPoolByMailID(userid);
-					List<CarpooldetailsDto> carpoolList = CarpooldetailsServiceUtil.convertDaoTODto(carpoolListDao);
-					User user = userDAO.findByEmailId(userid);
-					List<RegisterDomain> registerDomain = registerDAO.findUserRegistrationByUserId(userid);
-					if (user != null) {
-						for (RegisterDomain userReg : registerDomain) {
-							CustomerCarpooldetailsDto carpooldetailsDto = new CustomerCarpooldetailsDto();
-							carpooldetailsDto.setUserName(user.getUserName());
-							carpooldetailsDto.setLocation(userReg.getLocation());
-							carpooldetailsDto.setMobile(userReg.getMobile());
-							carpooldetailsDto.setListCarpoolDetails(carpoolList);
-							customerCarpooldetailsDtoList.add(carpooldetailsDto);
-						}
-
-					}
 				}
 			}
 
@@ -455,13 +466,13 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			parentIdsList = carpooldetailsDAO.getCarPoolParentIds(email);
 			Set<Integer> parentIdsSet = new HashSet<>(parentIdsList);
 			for (int p : parentIdsSet) {
-				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				String currentdate = sdf.format(new Date());
 
 				// getting CarpoolDetais By ParentID
 				List<Carpooldetails> carpoolsByParentId = carpooldetailsDAO.getCarpoolsByParentId(p);
 				for (Carpooldetails carpooldetails : carpoolsByParentId) {
-					if (carpooldetails.getId() == carpooldetails.getParentid()) {
+					if (carpooldetails.getId().equals(carpooldetails.getParentid())) {
 						Date fromDate = sdf.parse(carpooldetails.getFromDate());
 						Date currentDtae = sdf.parse(currentdate);
 						if (carpooldetails.getStatus() == 5 || fromDate.before(currentDtae)) {
@@ -670,17 +681,28 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		 * @param emailId
 		 * @return location
 		 */
-		public String getLocationByEmailId(String emailId)throws CarpooldetailsServiceException {
+		public RegisterDTO getDriverLocationByEmailId(String emailId)throws CarpooldetailsServiceException {
 			logger.info("Entered into CarpooldetailsServiceImpl Method:getLocationByEmailId");
 			String location="";
+			RegisterDomain domain=null;
+			RegisterDTO regDto=null;
 			try {
-				location=registerDAO.getLocationOfRegisteredUser(emailId).getLocation();
+				List<RegisterDomain>  userList=registerDAO.getLocationOfRegisteredUser(emailId);
+				if(userList!=null) {
+					for(RegisterDomain registedDao:userList) {
+						if(registedDao.getIsrider()==0)
+							location=registedDao.getLocation();
+						domain=registedDao;
+					}
+				}
+				regDto= RegisterServiceUtil.convertRegisterDomainObjectToRegisterDto(domain);
 			}catch (Exception ex) {
 				logger.error("Exception Occured in Class:CarpooldetailsServiceImpl Method:getLocationByEmailId Message:"+ex.getMessage());
 				throw new CarpooldetailsServiceException(ex.getMessage());
 			}
 			logger.info("Exit from CarpooldetailsServiceImpl Method:getLocationByEmailId");
-			return location;
+		//	return location;
+			return regDto;
 		}
 		
 		 /**
@@ -762,5 +784,135 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			}
 			return driverCarPoolDto;
 		}
+		
+		
+		public List<OptRideDto> getCarpoolsDataNotOptedOrOptedByMe(int parentId, String emilId, Boolean OptedData)
+				throws CarpooldetailsServiceException {
+			logger.debug("BEGIN: getCarpoolsDataNotOptedOrOptedByMe in the class" + this.getClass().getName());
+			List<OptRideDto> optRideDataList = new ArrayList<OptRideDto>();
+			try {
+				List<Carpooldetails> carPoolDataList = carpooldetailsDAO.getCarpoolsByParentId(parentId);
+				carPoolDataList = OptARideServiceUtil.removeParentIdFromCarPoolList(carPoolDataList, parentId);
+				if (OptedData) {
+					optRideDataList = constructListOfOptRides(emilId, carPoolDataList);
+				} else {
+					optRideDataList = constructListOfNotOptRides(emilId, carPoolDataList);
+				}
+				logger.debug("END: getCarpoolsDataNotOptedOrOptedByMe in the class" + this.getClass().getName());
+			} catch (Exception ex) {
+				logger.error("Some thing went wrong while fetching getCarpoolsDataNotOptedOrOptedByMe::");
+				throw new CarpooldetailsServiceException(ex.getMessage());
+			}
+			return optRideDataList;
+		}
+
+		private List<OptRideDto> constructListOfNotOptRides(String emailId, List<Carpooldetails> carPoolDataList) {
+			List<CarpoolRiderDetails> carPoolRiderDetailsList = new ArrayList<CarpoolRiderDetails>();
+			List<OptRideDto> optRideDtoList = new ArrayList<OptRideDto>();
+			for (Carpooldetails carppol : carPoolDataList) {
+				carPoolRiderDetailsList = carpoolRiderDAO.getNotOptedRiderDeatils(carppol.getId());
+				if (carPoolRiderDetailsList.size() != 0) {
+					Boolean isFind = OptARideServiceUtil.findCpIdRiderEmailId(emailId, carPoolRiderDetailsList);
+					if (!isFind) {
+						List<CarpoolRiderDetails> carPoolRiderDetailsAfterFilter = OptARideServiceUtil
+								.filterAcceptStatus(carPoolRiderDetailsList);
+						int optedCount = carPoolRiderDetailsAfterFilter.size();
+						OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDto(carppol, optedCount);
+						optRideDtoList.add(optRideDto);
+					}
+				}
+			}
+			return optRideDtoList;
+		}
+
+		private List<OptRideDto> constructListOfOptRides(String emailId, List<Carpooldetails> carPoolDataList) throws Exception {
+			CarpoolRiderDetails carPoolRiderDetails;
+			List<OptRideDto> optRideDtoList = new ArrayList<OptRideDto>();
+			for (Carpooldetails carppol : carPoolDataList) {
+				carPoolRiderDetails = carpoolRiderDAO.getOptedRiderDeatils(carppol.getId(), emailId);
+				if (carPoolRiderDetails != null) {
+					carPoolRiderDetails = OptARideServiceUtil.acceptStatusList(carPoolRiderDetails);
+				}
+				int optedCount = 0;
+				if (carPoolRiderDetails != null) {
+					optedCount = calculateOptedCount(carppol);
+					OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDto(carppol, optedCount);
+					optRideDtoList.add(optRideDto);
+				}
+			}
+			return optRideDtoList;
+		}
+
+		private int calculateOptedCount(Carpooldetails carppol) {
+			List<CarpoolRiderDetails> CarPoolDetailsList = carpoolRiderDAO.getOptedRiderDeatils(carppol.getId());
+			List<CarpoolRiderDetails> CarPoolDetailsOptedList = new ArrayList<CarpoolRiderDetails>();
+			CarpoolRiderDetails carPoolRiderDetails = null;
+			Iterator<CarpoolRiderDetails> itr = CarPoolDetailsList.iterator();
+			while (itr.hasNext()) {
+				carPoolRiderDetails = OptARideServiceUtil.acceptStatusList(itr.next());
+				CarPoolDetailsOptedList.add(carPoolRiderDetails);
+			}
+			return CarPoolDetailsOptedList.size();
+		}
+		/**
+		 * @author Mahesh Bheemanapalli : CPL049: Functionality to update car pool
+		 *         status using scheduler
+		 * 
+		 *         This method is used update the carpool status as "Closed" except
+		 *         "Cancelled" where todate is Less than or equal to Current Date.
+		 * @return ServiceStatusDto
+		 */
+	@Override
+	public ServiceStatusDto updateCarpoolStatus() {
+		// TODO Auto-generated method stub
+		logger.info("CarpooldetailsServiceImpl:updateCarpoolStatus");
+		ServiceStatusDto statusDto = new ServiceStatusDto(); 
+		try {
+			String statusToClosed = carpooldetailsDAO.updateCarpoolStatusToClosed();
+			logger.info("CarpooldetailsServiceImpl : updateCarpoolStatus :"+statusToClosed);
+			if(ObjectUtils.anyNotNull(statusToClosed)) {
+				statusDto.setStatus(true);
+				statusDto.setMessage(statusToClosed);
+			}
+		}
+		catch(Exception e) {
+			logger.debug("CarpooldetailsServiceImpl : updateCarpoolStatus"+e.getMessage());
+			statusDto.setStatus(false);
+			statusDto.setMessage(e.getMessage());
+		}
+		return statusDto;
+	}
 	 
+
+
+		@Override
+		public ServiceStatusDto cancelCarpooldetailsByParentId(CarpooldetailsDto carpooldetailsDto) {
+			// TODO Auto-generated method stub
+			logger.info("CarpooldetailsServiceImpl ***:: : cancel Carpooldetails");
+			
+			//carpooldetailsDto.setModifieddate(currentDate);
+			
+			String cancelCarpooldetails=null;
+			try {
+				
+				//Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertSharedUpdateDtoTODao(carpooldetailsDto);
+				Carpooldetails carpooldetails = new  Carpooldetails();
+				carpooldetails.setParentid(carpooldetailsDto.getParentid());
+				cancelCarpooldetails = carpooldetailsDAO.cancelCarpooldetailsByParentId(carpooldetails);
+				logger.info("Carpooldetails after cancel  dao message::"+cancelCarpooldetails);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
+			if(ObjectUtils.anyNotNull(cancelCarpooldetails))
+			{
+				logger.info("CarpooldetailsServiceImpl : cancel Carpooldetails set message::"+cancelCarpooldetails);
+				serviceStatusDto.setStatus(true);
+				serviceStatusDto.setMessage(cancelCarpooldetails);
+			}
+			
+			return serviceStatusDto;
+
+}
 }

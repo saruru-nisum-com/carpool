@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
 import com.nisum.carpool.service.dto.DriverCarPoolDto;
+import com.nisum.carpool.service.dto.OptRideDto;
 import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
+import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.service.dto.TodayRiderDetailsDTO;
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
@@ -18,10 +20,10 @@ public interface CarpooldetailsService {
 
 	ResponseEntity<?> createCarPooldetails(CarpooldetailsDto carpooldetailsDto);
 
-	List<CustomerCarpooldetailsDto> getCarPoolDetails(String location);
+	List<CustomerCarpooldetailsDto> getCarPoolDetails(String location, String emailId);
 
 	ServiceStatusDto cancelCarpooldetails(CarpooldetailsDto carpooldetailsDto);
-
+	
 	CarpooldetailsDto loadCarpoolDetailsById(int carpoolId);
 
 	List<ParentCarpoolDetailsDto> getCarpoolsByDriver(String email) throws CarpooldetailsServiceException;
@@ -32,11 +34,18 @@ public interface CarpooldetailsService {
 	
 	ServiceStatusDto addRewards(double rewards);
 
-	String getLocationByEmailId(String emailId)throws CarpooldetailsServiceException ;
+	RegisterDTO getDriverLocationByEmailId(String emailId)throws CarpooldetailsServiceException ;
 	
 	void UpdatecarpoolStatus(Integer carpoolId) throws CarpooldetailsServiceException;
 	
 	public List<TodayRiderDetailsDTO> getRidesForDrivers(String email,String userType) throws Exception;
+	
 	public DriverCarPoolDto getDriversByRider(String email,String userType) throws Exception;
+	
+	List<OptRideDto> getCarpoolsDataNotOptedOrOptedByMe(int parentId, String emilId, Boolean optedOrNot)
+			throws CarpooldetailsServiceException;
+	
+	ServiceStatusDto cancelCarpooldetailsByParentId(CarpooldetailsDto carpooldetailsDto);
 
+	ServiceStatusDto updateCarpoolStatus();
 }

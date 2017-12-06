@@ -65,6 +65,20 @@ app.factory('carpoolRegistrationService', function($http, $q, localStorageServic
 		return deferred.promise;
 	}
 	
+	
+	ls.getUserLocation = function(data) {
+		var deferred = $q.defer()
+		var encodedUrl = encodeURI("v1/carpool/getUserLocation/"+data);
+		$http.get(encodedUrl).success(function(response) {
+			console.log("Location Loaded Successfully");
+			deferred.resolve(response);
+		}).error(function(errResponse) {
+			console.log("Location is Not Loaded "+errResponse);
+			deferred.reject(errResponse);
+		})
+		return deferred.promise;
+	}
+	
 	return ls;
 
 });

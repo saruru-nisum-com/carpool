@@ -73,22 +73,16 @@ public class RegisterDAOImpl implements RegisterDAO {
 	 * This method is used to load the Location Of Registered User With emailId
 	 */
 	@Override
-	public RegisterDomain getLocationOfRegisteredUser(String emailId) {
+	public List<RegisterDomain> getLocationOfRegisteredUser(String emailId) {
 		logger.info("UserRegistrationDaoImpl :: getLocationOfRegisteredUser :: Finding Location by emailId");
-		RegisterDomain domain=null;
+		List<RegisterDomain> list=null;
 		try {
-			List<RegisterDomain> list=registerRepository.findByEmailId(emailId);
-			if(list!=null) {
-				for(RegisterDomain registedDao:list) {
-					if(registedDao.getIsrider()==0)
-						domain=registedDao;
-				}
-			}
+			list=registerRepository.findByEmailId(emailId);
 		}catch (Exception e) {
 			logger.error("Exception Occured in Class:UserRegistrationDaoImpl Method :getLocationOfRegisteredUser Message:"+e.getMessage());
 		}
 		logger.info("Exit from UserRegistrationDaoImpl:: getLocationOfRegisteredUser");
-		return domain;
+		return list;
 	}
 
 	@Override

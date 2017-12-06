@@ -15,13 +15,16 @@ riderApp.controller('riderController',
 	$scope.riderAutocomplete = undefined;
 	$scope.isRegisteredAsRider = false;
 	$scope.isVisible = false;
+	$scope.disableGender = false;
 	
 	$scope.$on('gmPlacesAutocomplete::placeChanged', function(){
-		$scope.selectedLocation = $scope.riderAutocomplete.getPlace().name;
-		var location = $scope.riderAutocomplete.getPlace().geometry.location;
-		$scope.lat = location.lat();
-		$scope.lng = location.lng();
-		$scope.$apply();
+		if($scope.riderAutocomplete != undefined) {
+			$scope.selectedLocation = $scope.riderAutocomplete.getPlace().name;
+			var location = $scope.riderAutocomplete.getPlace().geometry.location;
+			$scope.lat = location.lat();
+			$scope.lng = location.lng();
+			$scope.$apply();
+		}
 	});
 	
 	/*
@@ -34,14 +37,20 @@ riderApp.controller('riderController',
 		var profileSessionData = localStorageService.get('profile');
 		$scope.userId = profileSessionData.emailId;
 		riderService.getRegisterRiderData($scope.userId).then (function(response){
+			var responseData = response;
+			if(responseData.length > 0) {
+				$scope.mobile = responseData[0].mobile;
+				$scope.gender = responseData[0].gender;
+				$scope.disableGender = true;
+			}
 			angular.forEach(response, function(value, key) {
 				if(value.isRider == 1) {//If isRider value is '0' then he is registered as Rider.
 					$scope.isRegisteredAsRider = true;
 					$scope.riderAutocomplete = value.location;
 					$scope.riderNearBy = value.nearby;
 					$scope.emailNotification = value.emailNotification;
-					$scope.mobile = value.mobile;
-					$scope.gender = value.gender;
+//					$scope.mobile = value.mobile;
+//					$scope.gender = value.gender;
 				}
 			});
 		});
@@ -159,6 +168,10 @@ riderApp.controller('riderController',
 		var onError = function (data, status, headers, config) {
 			alert('Error occured while updating the Rider data.');
 		};
+	}
+	
+	$scope.resetMsgVisibility = function() {
+		$scope.isVisible = false;
 	}
 
 
