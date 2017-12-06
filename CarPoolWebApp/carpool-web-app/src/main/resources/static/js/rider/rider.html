@@ -343,9 +343,9 @@ width: 100% !important;
 		</div>
 		<br>
 		<div class="col-md-8 thumbnail">
-			<div id='passengerDiv' class="header" align="center">
-				<h3 style="color: #00BFFF;">Rider profile</h3>
-				<p style="color:red;">(Fields marked with (*) are mandatory.)</p>
+			<div id='passengerDiv' class="header" align="left">
+				<h3 style="color: #00BFFF; margin-left: 80px;">Rider profile</h3>
+				<p style="color:red; margin-left: 80px;">(Fields marked with (*) are mandatory.)</p>
 			</div>
 			<div class="alert alert-success" role="alert" ng-if="isVisible==true">
 				<button type="button" class="close" data-dismiss="alert"
@@ -391,12 +391,17 @@ width: 100% !important;
 							<label>Mobile</label>
 						</div>
 						<div class="col-md-4">
-							<input class="form-control" type="text" name="mobileNumber"
-								ng-model="mobile" ng-required="true" autocomplete="off">
+							<div class="input-group">
+								<span class="input-group-addon">+91</span>
+								<input class="form-control" type="text" name="mobileNumber"
+								ng-model="mobile" ng-required="true" autocomplete="off" maxlength="10"
+								ng-pattern="/^[0-9]{10,10}$/">
+							</div>
+							
 							<div
 								ng-show="riderForm.$submitted || riderForm.mobileNumber.$touched">
-								<span ng-show="riderForm.mobileNumber.$error.required "
-									style="color: red">Please enter your mobile number.</span>
+								<span ng-show="riderForm.mobileNumber.$error.required || riderForm.mobileNumber.$error.pattern"
+									style="color: red">Please enter your valid mobile number.</span>
 							</div>
 						</div>
 					</div>
@@ -406,32 +411,36 @@ width: 100% !important;
 						</div>
 						<div class="col-md-4">
 							<label class="radio-inline"> <input type="radio"
-								ng-model="gender" name="genderMale" id="male" value="0">Male
+								ng-model="gender" name="genderMale" id="male" value="1" ng-required="!gender">Male
 							</label> <label class="radio-inline"> <input type="radio"
-								ng-model="gender" name="genderFemale" id="female" value="1">Female
+								ng-model="gender" name="genderFemale" id="female" value="2" ng-required="!gender">Female
 							</label>
+						</div>
+						<div
+							ng-show="riderForm.$submitted || riderForm.gender.$touched">
+							<span ng-show="riderForm.gender.$error.required "
+								style="color: red">Please choose your gender.</span>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-md-4 col-md-offset-2">
 							<input type="checkbox" ng-model="notifyEmail"
 								ng-true-value="true" ng-false-value="false"
-								style="margin-right: 10px;" />Notify me via email<br />
-							<div ng-show="riderForm.$submitted && riderForm.$invalid"
-								style="color: red" class="help-block">check before
-								proceed.</div>
+								/>Notify me via email<br />
+							
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-md-4 col-md-offset-2">
 							<button class="registerAsDriverBtn btn btn-primary"
 								ng-click="registerAsRider()"
-								ng-disabled="isRegisteredAsRider == true">Register</button>
+								ng-disabled="riderForm.$invalid || isRegisteredAsRider == true ">Register</button>
 							<button class="updateAsDriverBtn btn btn-primary"
 								ng-click="updateAsRider()"
 								ng-disabled="isRegisteredAsRider !== true">Update</button>
 						</div>
 					</div>
+					
 				</div>
 			</form>
 		</div>
