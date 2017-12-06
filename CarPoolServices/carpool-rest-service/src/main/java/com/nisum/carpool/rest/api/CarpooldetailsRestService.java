@@ -24,6 +24,7 @@ import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
 import com.nisum.carpool.service.dto.DriverCarPoolDto;
 import com.nisum.carpool.service.dto.Errors;
+import com.nisum.carpool.service.dto.OptRideDto;
 import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
 import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
@@ -339,5 +340,22 @@ public class CarpooldetailsRestService {
 			}
 			return null;
 		}
+	
+	
+	@RequestMapping(value = "/getCarpoolsDataNotOptedOrOptedByMe/{parentID}", method = RequestMethod.GET)
+	public ResponseEntity<?> getCarpoolsDataNotOptedOrOptedByMe(@PathVariable("parentID") Integer id,
+			@RequestParam(required = false, value = "emailId") String emailId,
+			@RequestParam(required = false, value = "optedData") Boolean optedData) {
+		logger.info("BEGIN: getCarpoolsDataNotOptedOrOptedByMe() in the CarpooldetailsRestService");
+		try {
+			return new ResponseEntity<List<OptRideDto>>(
+					carpooldetailsService.getCarpoolsDataNotOptedOrOptedByMe(id, emailId, optedData), HttpStatus.OK);
+		} catch (Exception ex) {
+			logger.error("ERROR:some thing went wrong while fetching getCarpoolsDataNotOptedOrOptedByMe");
+			return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+
+	}
+
 	
 }

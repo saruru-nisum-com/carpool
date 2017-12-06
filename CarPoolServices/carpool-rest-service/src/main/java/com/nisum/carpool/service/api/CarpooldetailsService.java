@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
 import com.nisum.carpool.service.dto.DriverCarPoolDto;
+import com.nisum.carpool.service.dto.OptRideDto;
 import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
 import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
@@ -39,5 +40,9 @@ public interface CarpooldetailsService {
 	
 	public List<TodayRiderDetailsDTO> getRidesForDrivers(String email,String userType) throws Exception;
 	public DriverCarPoolDto getDriversByRider(String email,String userType) throws Exception;
+	
+	List<OptRideDto> getCarpoolsDataNotOptedOrOptedByMe(int parentId, String emilId, Boolean optedOrNot)
+			throws CarpooldetailsServiceException;
+
 
 }

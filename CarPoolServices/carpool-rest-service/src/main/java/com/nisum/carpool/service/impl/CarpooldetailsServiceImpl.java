@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -29,6 +30,7 @@ import com.nisum.carpool.service.api.CarpooldetailsService;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
 import com.nisum.carpool.service.dto.DriverCarPoolDto;
+import com.nisum.carpool.service.dto.OptRideDto;
 import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
 import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
@@ -36,6 +38,7 @@ import com.nisum.carpool.service.dto.TodayRiderDetailsDTO;
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
 import com.nisum.carpool.util.CarpooldetailsServiceUtil;
 import com.nisum.carpool.util.Constants;
+import com.nisum.carpool.util.OptARideServiceUtil;
 import com.nisum.carpool.util.RegisterServiceUtil;
 
 
@@ -780,6 +783,76 @@ if(registerDomain!=null && registerDomain.size()>0) {
 
 			}
 			return driverCarPoolDto;
+		}
+		
+		
+		public List<OptRideDto> getCarpoolsDataNotOptedOrOptedByMe(int parentId, String emilId, Boolean OptedData)
+				throws CarpooldetailsServiceException {
+			logger.debug("BEGIN: getCarpoolsDataNotOptedOrOptedByMe in the class" + this.getClass().getName());
+			List<OptRideDto> optRideDataList = new ArrayList<OptRideDto>();
+			try {
+				List<Carpooldetails> carPoolDataList = carpooldetailsDAO.getCarpoolsByParentId(parentId);
+				carPoolDataList = OptARideServiceUtil.removeParentIdFromCarPoolList(carPoolDataList, parentId);
+				if (OptedData) {
+					optRideDataList = constructListOfOptRides(emilId, carPoolDataList);
+				} else {
+					optRideDataList = constructListOfNotOptRides(emilId, carPoolDataList);
+				}
+				logger.debug("END: getCarpoolsDataNotOptedOrOptedByMe in the class" + this.getClass().getName());
+			} catch (Exception ex) {
+				logger.error("Some thing went wrong while fetching getCarpoolsDataNotOptedOrOptedByMe::");
+				throw new CarpooldetailsServiceException(ex.getMessage());
+			}
+			return optRideDataList;
+		}
+
+		private List<OptRideDto> constructListOfNotOptRides(String emailId, List<Carpooldetails> carPoolDataList) {
+			List<CarpoolRiderDetails> carPoolRiderDetailsList = new ArrayList<CarpoolRiderDetails>();
+			List<OptRideDto> optRideDtoList = new ArrayList<OptRideDto>();
+			for (Carpooldetails carppol : carPoolDataList) {
+				carPoolRiderDetailsList = carpoolRiderDAO.getNotOptedRiderDeatils(carppol.getId());
+				if (carPoolRiderDetailsList.size() != 0) {
+					Boolean isFind = OptARideServiceUtil.findCpIdRiderEmailId(emailId, carPoolRiderDetailsList);
+					if (!isFind) {
+						List<CarpoolRiderDetails> carPoolRiderDetailsAfterFilter = OptARideServiceUtil
+								.filterAcceptStatus(carPoolRiderDetailsList);
+						int optedCount = carPoolRiderDetailsAfterFilter.size();
+						OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDto(carppol, optedCount);
+						optRideDtoList.add(optRideDto);
+					}
+				}
+			}
+			return optRideDtoList;
+		}
+
+		private List<OptRideDto> constructListOfOptRides(String emailId, List<Carpooldetails> carPoolDataList) throws Exception {
+			CarpoolRiderDetails carPoolRiderDetails;
+			List<OptRideDto> optRideDtoList = new ArrayList<OptRideDto>();
+			for (Carpooldetails carppol : carPoolDataList) {
+				carPoolRiderDetails = carpoolRiderDAO.getOptedRiderDeatils(carppol.getId(), emailId);
+				if (carPoolRiderDetails != null) {
+					carPoolRiderDetails = OptARideServiceUtil.acceptStatusList(carPoolRiderDetails);
+				}
+				int optedCount = 0;
+				if (carPoolRiderDetails != null) {
+					optedCount = calculateOptedCount(carppol);
+					OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDto(carppol, optedCount);
+					optRideDtoList.add(optRideDto);
+				}
+			}
+			return optRideDtoList;
+		}
+
+		private int calculateOptedCount(Carpooldetails carppol) {
+			List<CarpoolRiderDetails> CarPoolDetailsList = carpoolRiderDAO.getOptedRiderDeatils(carppol.getId());
+			List<CarpoolRiderDetails> CarPoolDetailsOptedList = new ArrayList<CarpoolRiderDetails>();
+			CarpoolRiderDetails carPoolRiderDetails = null;
+			Iterator<CarpoolRiderDetails> itr = CarPoolDetailsList.iterator();
+			while (itr.hasNext()) {
+				carPoolRiderDetails = OptARideServiceUtil.acceptStatusList(itr.next());
+				CarPoolDetailsOptedList.add(carPoolRiderDetails);
+			}
+			return CarPoolDetailsOptedList.size();
 		}
 	 
 }

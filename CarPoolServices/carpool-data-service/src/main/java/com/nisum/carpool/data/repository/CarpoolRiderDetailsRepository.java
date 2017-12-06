@@ -43,5 +43,14 @@ public interface CarpoolRiderDetailsRepository extends CassandraRepository<Carpo
 	
 	@Query("select * from cp_carpoolriderdetails where emailid=?0 and cpid=?1 ALLOW FILTERING")
 	CarpoolRiderDetails getRidesByMailandAllCarpoolIds(String email, int allCarpoolIds);
+	
+	@Query("select * from cp_carpoolriderdetails where cpid=:cpid ALLOW FILTERING")
+	List<CarpoolRiderDetails> getNotOptedRiderDetails(@Param("cpid") int cpid);
+
+	@Query("select * from cp_carpoolriderdetails where cpid=:cpid and emailid=:emailid ALLOW FILTERING")
+	CarpoolRiderDetails getOptedRiderDetails(@Param("cpid") int cpid, @Param("emailid") String emailid);
+
+	@Query("select * from cp_carpoolriderdetails where cpid=:cpid ALLOW FILTERING")
+	List<CarpoolRiderDetails> getOptedRiderDetails(@Param("cpid") int cpid);
 
 }
