@@ -103,6 +103,10 @@ carpoolRegApp
 					 * On load method call to get the registered user data.
 					 */
 					$scope.getRegisteredDriverData();
+					
+					
+					
+					
 
 					$scope.registerAsDriver = function() {
 						console.log('checkbox values ' + $scope.cb2wheel
@@ -260,6 +264,8 @@ carpoolRegApp
 							"nearBy" : $scope.nearBy,
 							"vehicleType" : vehicleType,
 						}
+						
+						
 						carpoolRegistrationService
 								.updateDriverData(data)
 								.then(
@@ -332,22 +338,23 @@ carpoolRegApp
 					/*
 					 * @author Harish Kumar Gudivada Method to get the Carpool Details by carpoolid
 					*/ 
-					$scope.getCarpolData = function(id) {
-						$scope.id = id;
-						carpoolRegistrationService.getCarpolData($scope.id).then(function(response) {
-											angular.forEach(response,function(value, key) {
-																	$scope.autocomplete = value.location;
-																	$scope.fromDate.value = value.fromDate;
-																	$scope.seat.value = value.totalNoOfSeats;
-																	$scope.toDate.value = value.toDate;
-																	$scope.startTime.value = value.startTime;
-																	$scope.endTime.value = value.toTime;
-																	$scope.vehicleSelect= value.vehicleType;
-																	
-											});
-										});
-					}
+//					$scope.getCarpolData = function(id) {
+//						$scope.id = id;
+//						carpoolRegistrationService.getCarpolData($scope.id).then(function(response) {
+//											angular.forEach(response,function(value, key) {
+//																	$scope.autocomplete = value.location;
+//																	$scope.fromDate.value = value.fromDate;
+//																	$scope.seat.value = value.totalNoOfSeats;
+//																	$scope.toDate.value = value.toDate;
+//																	$scope.startTime.value = value.startTime;
+//																	$scope.endTime.value = value.toTime;
+//																	$scope.vehicleSelect= value.vehicleType;
+//																	
+//											});
+//										});
+//					}
 					
+
 					
 					
 					$scope.fnAddPostRide = function() {
@@ -492,6 +499,20 @@ carpoolRegApp
 							value : 1
 						};
 					}
+					
+					/*
+					 * On load method call to get the registered user data. 
+					 */
+					//$scope.getUserLocation();
+					
+					$scope.getUserLocation = function() {
+						 $scope.userId = localStorageService.get('profile').emailId;
+						 carpoolRegistrationService.getUserLocation($scope.userId).then(function(response) {
+							 $scope.shareARideAutocomplete = response.location;
+							});
+					}
+					
+					
 					
 					$scope.lat = undefined;
 					$scope.lng = undefined;

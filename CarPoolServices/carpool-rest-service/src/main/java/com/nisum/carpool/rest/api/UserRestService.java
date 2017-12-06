@@ -133,9 +133,13 @@ public class UserRestService {
 			try {
 				//Get User location from profile
 				logger.info("get user location from userReg Service###"+userDto.getEmailId());
-				RegisterDomain rd = registerDAO.getLocationOfRegisteredUser(userDto.getEmailId());
-				if(rd!=null)
-					userLocation = rd.getLocation();
+				List<RegisterDomain> userList = registerDAO.getLocationOfRegisteredUser(userDto.getEmailId());
+				 if(userList!=null) {
+					 for(RegisterDomain registedDao:userList) {
+						 if(registedDao.getIsrider()==0)
+							 userLocation=registedDao.getLocation();
+					 }
+				 }
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

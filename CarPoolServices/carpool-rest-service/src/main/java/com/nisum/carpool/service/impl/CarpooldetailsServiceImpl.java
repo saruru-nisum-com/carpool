@@ -30,11 +30,13 @@ import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
 import com.nisum.carpool.service.dto.DriverCarPoolDto;
 import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
+import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.service.dto.TodayRiderDetailsDTO;
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
 import com.nisum.carpool.util.CarpooldetailsServiceUtil;
 import com.nisum.carpool.util.Constants;
+import com.nisum.carpool.util.RegisterServiceUtil;
 
 
 @Service
@@ -108,8 +110,15 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 
 		// code added by Harish Kumar Gudivada on 30th November 2017
 		//for loading the location from user registration and saving in the carpool details
-		if(carpooldetailsDto.getLocation()!=null && carpooldetailsDto.getLocation().equals("")) {
-			RegisterDomain regDomain = registerDAO.getLocationOfRegisteredUser(carpooldetailsDto.getEmailId());
+		if("".equals(carpooldetailsDto.getLocation())){
+			RegisterDomain regDomain=null;
+			List<RegisterDomain> userList = registerDAO.getLocationOfRegisteredUser(carpooldetailsDto.getEmailId());
+			if(userList!=null) {
+				for(RegisterDomain registedDao:userList) {
+					if(registedDao.getIsrider()==0)
+						regDomain=registedDao;
+				}
+			}
 			if(regDomain!=null) {
 				carpooldetailsDto.setLocation(regDomain.getLocation());
 				carpooldetailsDto.setLongitude(regDomain.getLongitude());
@@ -669,17 +678,28 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		 * @param emailId
 		 * @return location
 		 */
-		public String getLocationByEmailId(String emailId)throws CarpooldetailsServiceException {
+		public RegisterDTO getDriverLocationByEmailId(String emailId)throws CarpooldetailsServiceException {
 			logger.info("Entered into CarpooldetailsServiceImpl Method:getLocationByEmailId");
 			String location="";
+			RegisterDomain domain=null;
+			RegisterDTO regDto=null;
 			try {
-				location=registerDAO.getLocationOfRegisteredUser(emailId).getLocation();
+				List<RegisterDomain>  userList=registerDAO.getLocationOfRegisteredUser(emailId);
+				if(userList!=null) {
+					for(RegisterDomain registedDao:userList) {
+						if(registedDao.getIsrider()==0)
+							location=registedDao.getLocation();
+						domain=registedDao;
+					}
+				}
+				regDto= RegisterServiceUtil.convertRegisterDomainObjectToRegisterDto(domain);
 			}catch (Exception ex) {
 				logger.error("Exception Occured in Class:CarpooldetailsServiceImpl Method:getLocationByEmailId Message:"+ex.getMessage());
 				throw new CarpooldetailsServiceException(ex.getMessage());
 			}
 			logger.info("Exit from CarpooldetailsServiceImpl Method:getLocationByEmailId");
-			return location;
+		//	return location;
+			return regDto;
 		}
 		
 		 /**

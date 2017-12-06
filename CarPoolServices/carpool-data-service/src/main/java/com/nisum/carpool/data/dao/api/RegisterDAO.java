@@ -10,7 +10,7 @@ public interface RegisterDAO {
 	public RegisterDomain registerDriverorRider(RegisterDomain registerDomain);
 	List<RegisterDomain> findUserRegistrationByUserId(String emailId);
 
-	public RegisterDomain getLocationOfRegisteredUser(String emailId);
+	public List<RegisterDomain> getLocationOfRegisteredUser(String emailId);
 	
 	public RegisterDomain updateDriverOrRider(RegisterDomain regDomain);
 	
