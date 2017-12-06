@@ -388,7 +388,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 
 						Date fromDate = sdf.parse(car.getFromDate());
 						Date currentDate = sdf.parse(StrTodayDate);
-						if (fromDate.before(currentDate) && emailId.equals(car.getEmailId())) {
+						if (fromDate.before(currentDate) || emailId.equals(car.getEmailId())) {
 							break;
 						} else {
 							User user = userDAO.findByEmailId(car.getEmailId());
@@ -784,7 +784,6 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			}
 			return driverCarPoolDto;
 		}
-<<<<<<< Updated upstream
 		
 		
 		public List<OptRideDto> getCarpoolsDataNotOptedOrOptedByMe(int parentId, String emilId, Boolean OptedData)
@@ -856,12 +855,12 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			return CarPoolDetailsOptedList.size();
 		}
 	 
-=======
+
 
 		@Override
 		public ServiceStatusDto cancelCarpooldetailsByParentId(CarpooldetailsDto carpooldetailsDto) {
 			// TODO Auto-generated method stub
-			logger.info("CarpooldetailsServiceImpl : cancel Carpooldetails");
+			logger.info("CarpooldetailsServiceImpl ***:: : cancel Carpooldetails");
 			
 			//carpooldetailsDto.setModifieddate(currentDate);
 			

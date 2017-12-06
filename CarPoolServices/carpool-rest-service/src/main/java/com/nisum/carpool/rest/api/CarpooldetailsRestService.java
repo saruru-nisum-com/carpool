@@ -101,7 +101,7 @@ public class CarpooldetailsRestService {
 
 	@RequestMapping(value="/cancelByParentId",method=RequestMethod.PUT)
 	public ResponseEntity<?> cancelCarpooldetailsByParentId(@RequestBody CarpooldetailsDto carpooldetailsDto){
-		logger.info("Enter CarpooldetailsRestService :: cancel Carpooldetails");
+		logger.info("Enter CarpooldetailsRestService :::: cancel Carpooldetails");
 		logger.info("parentId=="+carpooldetailsDto.getParentid());
 		ResponseEntity<?> responseEntity = null;
 		try {

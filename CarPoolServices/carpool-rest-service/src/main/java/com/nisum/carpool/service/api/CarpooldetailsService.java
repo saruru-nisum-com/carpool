@@ -24,8 +24,6 @@ public interface CarpooldetailsService {
 
 	ServiceStatusDto cancelCarpooldetails(CarpooldetailsDto carpooldetailsDto);
 	
-	ServiceStatusDto cancelCarpooldetailsByParentId(CarpooldetailsDto carpooldetailsDto);
-	
 	CarpooldetailsDto loadCarpoolDetailsById(int carpoolId);
 
 	List<ParentCarpoolDetailsDto> getCarpoolsByDriver(String email) throws CarpooldetailsServiceException;
@@ -45,6 +43,7 @@ public interface CarpooldetailsService {
 	
 	List<OptRideDto> getCarpoolsDataNotOptedOrOptedByMe(int parentId, String emilId, Boolean optedOrNot)
 			throws CarpooldetailsServiceException;
-
+	
+	ServiceStatusDto cancelCarpooldetailsByParentId(CarpooldetailsDto carpooldetailsDto);
 
 }

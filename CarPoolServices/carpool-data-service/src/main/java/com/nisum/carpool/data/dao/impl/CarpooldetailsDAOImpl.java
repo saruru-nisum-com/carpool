@@ -309,7 +309,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	public String cancelCarpooldetailsByParentId(Carpooldetails carpooldetails) {
 		// TODO Auto-generated method stub
 		Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
-		logger.info("in parent cancel");
+		logger.info("in parent cancel:::");
 		// update Parent record
 		try {
 			logger.info("in Parent update.parent Id.." + carpooldetails.getParentid());
