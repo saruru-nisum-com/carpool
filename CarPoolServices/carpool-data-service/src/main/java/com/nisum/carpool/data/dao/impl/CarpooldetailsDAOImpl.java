@@ -294,5 +294,9 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		return carpooldetailsRepository.getCarPoolsByCpIdandDate(cpId, date);
 	}
 
-
+	@Override
+	public List<Carpooldetails> findCarpoolDetailsByParentId(int parentid) {
+		
+		return carpooldetailsRepository.findByParentid(parentid);
+	}
 }

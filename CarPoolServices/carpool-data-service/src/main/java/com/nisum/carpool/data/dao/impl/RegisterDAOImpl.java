@@ -75,7 +75,6 @@ public class RegisterDAOImpl implements RegisterDAO {
 	@Override
 	public RegisterDomain getLocationOfRegisteredUser(String emailId) {
 		logger.info("UserRegistrationDaoImpl :: getLocationOfRegisteredUser :: Finding Location by emailId");
-		String location="";
 		RegisterDomain domain=null;
 		try {
 			List<RegisterDomain> list=registerRepository.findByEmailId(emailId);
@@ -90,6 +89,11 @@ public class RegisterDAOImpl implements RegisterDAO {
 		}
 		logger.info("Exit from UserRegistrationDaoImpl:: getLocationOfRegisteredUser");
 		return domain;
+	}
+
+	@Override
+	public RegisterDomain findByemailId(String emailId) {
+		return registerRepository.getDomainByEmailId(emailId);
 	}
 
 	
