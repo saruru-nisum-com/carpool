@@ -1,5 +1,7 @@
 package com.nisum.carpool.service.impl;
 
+import static org.assertj.core.api.Assertions.catchThrowable;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -291,5 +293,23 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 
 		}
 		return riderOptedDetailsDto.stream().collect(Collectors.groupingBy(CarpoolRiderOptedDetailsDto::getFromdate));
+	}
+	/**
+	 * @author Mahesh Bheemanapalli
+	 *	This method is used to clean the carpoolriderNotification data in cp_carpoolridernotifications table	
+	 * @return ServiceStatusDto class with status and message
+	 */
+	@Override
+	public ServiceStatusDto cleanCarpoolRiderNotifications() {
+		// TODO Auto-generated method stub
+		logger.info("CarPoolRiderDetailsServiceImpl : cleanCarpoolRiderNotifications");
+		ServiceStatusDto statusDto = new ServiceStatusDto();
+			String carpoolRiderNotifications = carpoolRiderDetailsDAO.cleanCarpoolRiderNotifications();
+			logger.info("CarPoolRiderDetailsServiceImpl : cleanCarpoolRiderNotifications : "+carpoolRiderNotifications);
+			if(ObjectUtils.anyNotNull(carpoolRiderNotifications)) {
+				statusDto.setMessage(carpoolRiderNotifications);
+				statusDto.setStatus(true);
+			}
+			return statusDto;
 	}
 }

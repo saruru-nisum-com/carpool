@@ -31,4 +31,6 @@ public interface CarpoolRiderDetailsService {
 	ServiceStatusDto addRewards(double rewards);
 
 	Map<String, List<CarpoolRiderOptedDetailsDto>> findCarpoolRiderDetailsByParentId(int parentid);
+	
+	ServiceStatusDto cleanCarpoolRiderNotifications();
 }

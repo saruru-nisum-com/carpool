@@ -44,6 +44,8 @@ Carpooldetails getCarpoolByDateAndEmail(String date, String email);
 
 	public List<CarpoolRiderDetails> getOptedRiderDeatils(int id);
 	
+	public String cleanCarpoolRiderNotifications();
+	
 	}
 
 	

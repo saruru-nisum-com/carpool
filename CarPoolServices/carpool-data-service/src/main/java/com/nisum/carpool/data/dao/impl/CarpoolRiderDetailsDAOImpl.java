@@ -279,6 +279,26 @@ public List<CarpoolRiderDetails> getOptedRiderDeatils(int id) {
 	// TODO Auto-generated method stub
 	return carpoolRiderDetailsRepository.getOptedRiderDetails(id);
 }
+/**
+ * @author Mahesh Bheemanapalli
+ * 
+ *         This method is used clean carpool notifications data when scheduler runs  
+ */
+
+@Override
+public String cleanCarpoolRiderNotifications() {
+	// TODO Auto-generated method stub
+	logger.info("CarpoolRiderDetailsDAOImpl : cleanCarpoolRiderNotifications");
+	long beforeClean = carpoolridernotificationsrepository.count();
+	logger.info("CarpoolRiderDetailsDAOImpl : cleanCarpoolRiderNotifications : beforeClean "+beforeClean);
+	carpoolridernotificationsrepository.CleanCarpoolriderNotifications();
+	long afterClean = carpoolridernotificationsrepository.count();
+	logger.info("CarpoolRiderDetailsDAOImpl : cleanCarpoolRiderNotifications : afterClean "+afterClean);
+	if(beforeClean>=0&&afterClean==0) {
+		return Constants.CARPOOL_RIDER_NOTIFICATION_CLEANED;
+	}
+	return Constants.CARPOOL_RIDER_NOTIFICATION_NOT_CLEANED;
+}
 
 
 }

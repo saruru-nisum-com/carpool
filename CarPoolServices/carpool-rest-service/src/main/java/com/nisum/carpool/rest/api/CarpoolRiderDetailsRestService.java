@@ -149,7 +149,7 @@ public class CarpoolRiderDetailsRestService {
 	/**
 	 * @author Mahesh Bheemanapalli
 	 */
-	@Scheduled(cron = "0 30 23 * * ?")
+	@Scheduled(cron = "0 15 23 * * ?")
 	@RequestMapping(value = "/addRiderRewardPoints", method = RequestMethod.GET)
 	public ResponseEntity<?> addRewardPointsToRider() {
 		logger.info("CarpoolRiderDetailsRestService : addRewardPointsToRider");
@@ -180,6 +180,24 @@ public class CarpoolRiderDetailsRestService {
 	public Map<String, List<CarpoolRiderOptedDetailsDto>> findCarpoolRiderDetailsByParentId(@PathVariable("parentid") int parentid) {
 		
 		return carpoolRiderDetailsService.findCarpoolRiderDetailsByParentId(parentid);
+
+	}
+	/**
+	 * @author Mahesh Bheemanapalli
+	 */
+	@Scheduled(cron = "0 30 23 * * ?")
+	@RequestMapping(value = "/cleanCarpoolRiderNotifications", method = RequestMethod.GET)
+	public ResponseEntity<?> cleanCarpoolRiderNotifications() {
+		logger.info("CarpoolRiderDetailsRestService : cleanCarpoolRiderNotifications");
+		try {
+			ServiceStatusDto statusDto = carpoolRiderDetailsService.cleanCarpoolRiderNotifications();
+			logger.info("CarpoolRiderDetailsRestService : cleanCarpoolRiderNotifications : "+statusDto.getMessage());
+			return new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
+
+		} catch (Exception e) {
+			logger.error("CarpoolRiderDetailsRestService : addRewardPointsToRider : Inside Catch Block"+e.getMessage());
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 
 	}
 }

@@ -12,4 +12,7 @@ public interface CarpoolRiderNotificationsRepository extends CassandraRepository
 
 	@Query("select * from cp_carpoolridernotifications where cpid=:cpid allow filtering")
 	public List<CarpoolRiderNotifications> getNotifiedRidersByCPId(@Param("cpid") int cpid);
+	
+	@Query("TRUNCATE cp_carpoolridernotifications")
+	void CleanCarpoolriderNotifications();
 }
