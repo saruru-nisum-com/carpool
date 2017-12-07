@@ -8,6 +8,21 @@ public class ParentCarpoolDetailsDto implements Serializable {
 	private String fromDate;
 	private String toDate;
 	private String status;
+	private String statusName;
+
+	/**
+	 * @return the statusName
+	 */
+	public String getStatusName() {
+		return statusName;
+	}
+
+	/**
+	 * @param statusName the statusName to set
+	 */
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
 
 	public int getParentid() {
 		return parentid;
@@ -49,6 +64,9 @@ public class ParentCarpoolDetailsDto implements Serializable {
 		this.status = status;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -57,10 +75,14 @@ public class ParentCarpoolDetailsDto implements Serializable {
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		result = prime * result + parentid;
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((statusName == null) ? 0 : statusName.hashCode());
 		result = prime * result + ((toDate == null) ? 0 : toDate.hashCode());
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -87,6 +109,11 @@ public class ParentCarpoolDetailsDto implements Serializable {
 				return false;
 		} else if (!status.equals(other.status))
 			return false;
+		if (statusName == null) {
+			if (other.statusName != null)
+				return false;
+		} else if (!statusName.equals(other.statusName))
+			return false;
 		if (toDate == null) {
 			if (other.toDate != null)
 				return false;
@@ -95,10 +122,13 @@ public class ParentCarpoolDetailsDto implements Serializable {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "ParentCarpoolDetailsDto [parentId=" + parentid + ", location=" + location + ", fromDate=" + fromDate
-				+ ", toDate=" + toDate + ", status=" + status + "]";
+		return "ParentCarpoolDetailsDto [parentid=" + parentid + ", location=" + location + ", fromDate=" + fromDate
+				+ ", toDate=" + toDate + ", status=" + status + ", statusName=" + statusName + "]";
 	}
 
 }

@@ -26,6 +26,7 @@ import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.domain.RegisterDomain;
 import com.nisum.carpool.data.domain.User;
+import com.nisum.carpool.data.util.Pool_Status;
 import com.nisum.carpool.service.api.CarpooldetailsService;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
@@ -495,6 +496,8 @@ if(registerDomain!=null && registerDomain.size()>0) {
 						parentCarpoolDetailsDto.setLocation(carpooldetails.getLocation());
 						parentCarpoolDetailsDto.setParentid(carpooldetails.getParentid());
 						parentCarpoolDetailsDto.setStatus(String.valueOf(carpooldetails.getStatus()));
+						Pool_Status pool_Status = Pool_Status.values()[(carpooldetails.getStatus()-1)];
+						parentCarpoolDetailsDto.setStatusName(pool_Status.toString());
 						parentCarpoolDetailsDtos.add(parentCarpoolDetailsDto);
 						break;
 					}

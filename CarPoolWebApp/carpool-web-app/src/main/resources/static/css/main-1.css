@@ -5328,7 +5328,7 @@ body.admin-bar .q-filter-waypoints {
 .tStyle{
 	color:white;
 	height: 100px;
-    width: 319px;
+    width: 300px;
 }
 
 #approveRequest{
@@ -5379,5 +5379,6 @@ button{
     color: #00B3E3;
 }
 .poolList{
-	padding: 0px 0px 20px 20px;
+	padding: 0px 0px 20px 10px;
+	float: left;
 }

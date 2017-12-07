@@ -56,11 +56,7 @@ driverApp.controller('driverController',
 				if(value.isRider == 0) {//If isRider value is '0' then he is registered as Driver.
 					$scope.isRegisteredAsDriver = true;
 					$scope.autocomplete = value.location;
-//<<<<<<< Updated upstream
-//					$scope.selectedLocation
-//=======
 					$scope.selectedLocation = value.location;
-//>>>>>>> Stashed changes
 					$scope.nearBy = value.nearby;
 					$scope.selectedVehicleTypes = value.vehicleType;
 				} 

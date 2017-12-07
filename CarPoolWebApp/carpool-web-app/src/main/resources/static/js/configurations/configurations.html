@@ -19,16 +19,12 @@
 		</div>
 
 		<div ng-if="carpoolList.length>0" ng-repeat="carpool in carpoolList" class = "poolList">
-
-				<div ng-repeat="vehicle in vehicleDetails"
-					ng-if="vehicle.id==carpool.carpoolDetails.vehicleType">
-
 					<a href="#/configurations">
 						<table class="tStyle" frame="box" style="background-color:green">
-							<tr>
+							<tr ng-repeat="vehicle in vehicleDetails"
+					ng-if="vehicle.id==carpool.carpoolDetails.vehicleType">
 								<td>ProvidedBy: {{carpool.userName}} &nbsp;</td>
 								<td>VehicleType: {{vehicle.vehicletype}}</td>
-								</div>
 							</tr>
 							<tr>
 								<td>FromDate: {{carpool.carpoolDetails.fromDate | dateFilter}}</td>
@@ -40,7 +36,6 @@
 							</tr>
 						</table>
 					</a>
-					</div>
 		</div>
 	</div>
 	<div align="center" ng-if="carpoolList.length<=0">No Car pools Available</div>

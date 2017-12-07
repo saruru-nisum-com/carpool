@@ -17,12 +17,11 @@
 			</ul>
 		</div>
 		
-		<div ng-if="myRidesList.length>0" ng-repeat="myRide in myRidesList"
-			style="float: left">
+		<div ng-if="myRidesList.length>0" ng-repeat="myRide in myRidesList">
 
 			<table class="tStyle" frame="box" data-ng-style="{'background-color': carpool.status=='completed' ? 'red' : 'green'}">
 				<tr>
-					<td>PoolStatus: {{myRide.status}}</td>
+					<td>PoolStatus: {{myRide.statusName}}</td>
 					<td>Location: {{myRide.location}}</td>
 				</tr>
 				<tr>
