@@ -733,7 +733,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			logger.info("Entered into CarpooldetailsServiceImpl Method:getRidesForDrivers");
 			 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				String currentdate=sdf.format(new Date());
-			 Carpooldetails carpooldetails= carpooldetailsDAO.getCarpoolByDateAndEmail("11/03/2018",email);
+			 Carpooldetails carpooldetails= carpooldetailsDAO.getCarpoolByDateAndEmail(currentdate,email);
 			
 			
 				 List<TodayRiderDetailsDTO> riderDetails=new ArrayList<>();
@@ -773,7 +773,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			List<Carpooldetails> caList = new ArrayList<>();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			String currentdate = sdf.format(new Date());
-			List<Integer> allCarpoolIds = carpooldetailsDAO.getCarpoolByDate("11/03/2018");
+			List<Integer> allCarpoolIds = carpooldetailsDAO.getCarpoolByDate(currentdate);
 			CarpoolRiderDetails carpoolRiderDetails = carpoolRiderDAO.getRidesByMailandAllCarpoolIds(email, allCarpoolIds);
 			DriverCarPoolDto driverCarPoolDto = new DriverCarPoolDto();
 			if (carpoolRiderDetails != null) {
@@ -786,6 +786,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 					driverCarPoolDto.setLocation(carpooldetails.getLocation());
 					driverCarPoolDto.setStatus(String.valueOf(carpooldetails.getStatus()));
 					driverCarPoolDto.setToDate(carpooldetails.getToDate());
+					driverCarPoolDto.setEmail(carpooldetails.getEmailId());
 					User user = userDAO.findByEmailId(carpoolRiderDetails.getEmailid());
 					String mobile = registerDAO.getMobileNumberByEmail(carpoolRiderDetails.getEmailid());
 					if (user != null)

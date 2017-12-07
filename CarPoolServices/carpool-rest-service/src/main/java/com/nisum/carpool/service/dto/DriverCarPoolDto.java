@@ -1,6 +1,12 @@
 package com.nisum.carpool.service.dto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+
+
+
 
 public class DriverCarPoolDto {
 	private String location;
@@ -9,6 +15,24 @@ public class DriverCarPoolDto {
 	private String status;
 	private String mobile;
 	private String name;
+	private String email;
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	List<TodayRiderDetailsDTO> todayRiderDetailsDTOs=new ArrayList<>();
+	public List<TodayRiderDetailsDTO> getTodayRiderDetailsDTOs() {
+		return todayRiderDetailsDTOs;
+	}
+
+	public void setTodayRiderDetailsDTOs(List<TodayRiderDetailsDTO> todayRiderDetailsDTOs) {
+		this.todayRiderDetailsDTOs = todayRiderDetailsDTOs;
+	}
 
 	public String getLocation() {
 		return location;

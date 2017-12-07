@@ -327,6 +327,7 @@ public class CarpooldetailsRestService {
 	 */
 	
 	
+
 	@RequestMapping(value = "/getMySharedRides/{email:.+}/{userType}", method = RequestMethod.GET)
 	public ResponseEntity<?> getTodayRides(@PathVariable("email")String email,@PathVariable("userType")String userType) 
 	{
@@ -339,7 +340,9 @@ public class CarpooldetailsRestService {
 				List<TodayRiderDetailsDTO> ridersList =	carpooldetailsService.getRidesForDrivers(email, userType);
 			if(ridersList!=null && ridersList.size()>0 )
 			{
-				return new ResponseEntity<List<TodayRiderDetailsDTO>>(ridersList,HttpStatus.OK);
+				DriverCarPoolDto driverCarPoolDto=carpooldetailsService.getDriversByRider(email, userType);
+				driverCarPoolDto.setTodayRiderDetailsDTOs(ridersList);
+				return new ResponseEntity<DriverCarPoolDto>(driverCarPoolDto,HttpStatus.OK);
 			}
 				
 				}
@@ -348,21 +351,27 @@ public class CarpooldetailsRestService {
 				{
 					DriverCarPoolDto driverCarPoolDto=carpooldetailsService.getDriversByRider(email, userType);
 					if(driverCarPoolDto!=null)
+					{
+						List<TodayRiderDetailsDTO> riders=	carpooldetailsService.getRidesForDrivers(driverCarPoolDto.getEmail(), userType);
+						driverCarPoolDto.setTodayRiderDetailsDTOs(riders);
 					return new ResponseEntity<DriverCarPoolDto>(driverCarPoolDto,HttpStatus.OK);
-					
-					
+				
+				}
+				
 				}
 				else
 				{
 					return new ResponseEntity<String>("No rides found.",HttpStatus.OK);
 				}
-				
 			} catch (Exception ex) {
 				logger.error("Exception Occured in Class:CarpooldetailsRestService getTodayRides Message:"+ex.getMessage());
 				ex.printStackTrace();
 			}
 			return null;
-		}
+	}
+	
+
+
 	
 	
 	@RequestMapping(value = "/getCarpoolsDataNotOptedOrOptedByMe/{parentID}", method = RequestMethod.GET)
