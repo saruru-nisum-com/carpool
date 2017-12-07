@@ -48,6 +48,6 @@ public interface CarpooldetailsDAO {
 
 	public List<Carpooldetails> getCarPoolByCpIDandDate(int cpid, String date);
 	
-	
+	public List<Carpooldetails> getCarPoolsByEmailAndCurrentDate(String emailId, String date);
 
 }

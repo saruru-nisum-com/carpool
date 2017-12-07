@@ -363,9 +363,18 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :"+Constants.NO_CARPOOLS_TO_UPDATE_STATUS);
 		return Constants.NO_CARPOOLS_TO_UPDATE_STATUS;
 	}
-	/**
+	
+	/*@author Suresh valavala
+	 * (non-Javadoc)
+	 * @see com.nisum.carpool.data.dao.api.CarpooldetailsDAO#getCarPoolsByEmailAndCurrentDate(java.lang.String, java.lang.String)
+	 */
+	
+	public List<Carpooldetails> getCarPoolsByEmailAndCurrentDate(String emailId, String date){
+		return carpooldetailsRepository.getCarPoolsByEmailAndCurrentDate(emailId, date);
+	}
+	
+	 /**
 	 * @author Mahesh Bheemanapalli 
-
 	 * This is the Common method to formate current date into String formate
 	 * 
 	 * @return String

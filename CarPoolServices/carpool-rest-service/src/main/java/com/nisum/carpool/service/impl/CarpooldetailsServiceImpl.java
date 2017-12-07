@@ -62,16 +62,24 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	public ServiceStatusDto updateCarpooldetails(CarpooldetailsDto carpooldetailsDto) {
 		// TODO Auto-generated method stub
 		logger.info("CarpooldetailsServiceImpl : updateCarpooldetails");
+		List<CarpoolRiderDetails> carpoolRidersList = carpoolRiderDAO.getRidersByCpID(carpooldetailsDto.getId());
+		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
+		
+		if(carpooldetailsDto.getTotalNoOfSeats() > getFilledSeatsInPool(carpoolRidersList)) {
+			logger.info("CarpooldetailsServiceImpl : updateCarpooldetails :: selected seats less than filled seats");
+			serviceStatusDto.setStatus(false);
+			serviceStatusDto.setMessage(Constants.MSG_CARPOOL_SELECTED_LESS_SEATS);
+			return serviceStatusDto;
+		}
+			
 		carpooldetailsDto.setModifieddate(currentDate);
 		Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
 		String updateCarpooldetails = carpooldetailsDAO.updateCarpooldetails(carpooldetails);
-		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
+		
 		if(ObjectUtils.anyNotNull(updateCarpooldetails)){
 			logger.info("CarpooldetailsServiceImpl : updateCarpooldetails ::"+updateCarpooldetails);
 			serviceStatusDto.setStatus(true);
 			serviceStatusDto.setMessage(updateCarpooldetails);
-		}else {
-			serviceStatusDto.setStatus(false);
 		}
 		return serviceStatusDto;
 	}
@@ -447,7 +455,9 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		logger.info("CarpooldetailsServiceImpl:loadCarpoolDetailsByEmailId");
 
 		try {
-			List<Carpooldetails> carpooldetailsList = carpooldetailsDAO.getCarPoolByMailID(emailId);
+			Date date = new Date();
+			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+			List<Carpooldetails> carpooldetailsList = carpooldetailsDAO.getCarPoolsByEmailAndCurrentDate(emailId,format.format(date));
 		    carpooldetailsDtoList= CarpooldetailsServiceUtil.convertDaoTODto(carpooldetailsList);
 		}catch (Exception e) {
 			logger.error("Exception Occured in Class:CarpooldetailsServiceImpl Method:loadCarpoolDetailsByEmailId Message:"+e.getMessage());
@@ -882,8 +892,30 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		}
 		return statusDto;
 	}
-	 
+		/*
+		 * @author: Suresh Valavala
+		 * @Param: List<CarpoolRiderDetails>
+		 * @return: count of filled seats in a carpool
+		 */
+		private int getFilledSeatsInPool(List<CarpoolRiderDetails> ridersList) {
+			int count = 0;
+			
+			if (ridersList != null && ridersList.size() > 0) {
+				int requestedCount = 0;
+				int approvedCount = 0;
+				for (CarpoolRiderDetails rider : ridersList) {
 
+					if(rider.getStatus() == 1) {
+						++requestedCount;
+					}else if(rider.getStatus() == 2) {
+						++approvedCount;
+					}
+				}
+				count = requestedCount + approvedCount ;
+			}
+			
+			return count;
+		}
 
 		@Override
 		public ServiceStatusDto cancelCarpooldetailsByParentId(CarpooldetailsDto carpooldetailsDto) {

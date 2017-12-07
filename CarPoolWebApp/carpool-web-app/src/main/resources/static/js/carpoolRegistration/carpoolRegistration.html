@@ -167,7 +167,7 @@ h3 {
 									class="btn btn-primary btn-xs" id="gridButton{{key}}"
 									ng-click="showChildData(key)" style="width: 30px">+</button> <input
 								type="checkbox" style="position: relative; left: 5px;"
-								ng-model="selectedParent[$index]" /></td>
+								ng-model="selectedParent[$index]" ng-disabled="disablePastDates(value.fromDate)"/></td>
 							<td>{{value.vehicleType}}</td>
 							<td><span ng-switch="value.vehicleType" class="spanCls">
 									<span ng-switch-when="2"> <input type="number"
@@ -205,7 +205,7 @@ h3 {
 							ng-show="show{{key}}">
 							<td style="width: 40px"><input type="checkbox"
 								style="position: relative; left: 21px;"
-								ng-model="selectedchild[$index]" /></td>
+								ng-model="selectedchild[$index]" ng-disabled="disablePastDates(x.fromDate)"/></td>
 							<td>{{x.vehicleType}}</td>
 							<td><span ng-switch="x.vehicleType" class="spanCls">
 									<span ng-switch-when="2"> <input type="number"
