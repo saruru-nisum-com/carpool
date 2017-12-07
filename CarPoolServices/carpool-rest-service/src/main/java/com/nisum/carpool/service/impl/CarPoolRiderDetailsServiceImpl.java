@@ -87,7 +87,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 
 			Date date1 = new Date();
 
-			SimpleDateFormat sd = new SimpleDateFormat("MM/dd/yyyy");
+			SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
 			String date = sd.format(date1);
 
 			System.out.println("Date" + date);
