@@ -20,6 +20,12 @@ driverApp.controller('driverController',
 	$scope.vehicleTypes = [{id:2,type:"2-wheeler"},{id:4,type:"4-wheeler"}];
 	$scope.selectedVehicleTypes = [];
 
+	// Define options
+    $scope.autocompleteOptions = {
+    		types: ['(regions)'],
+    		  componentRestrictions: {country: "us"}
+    };
+    
 	$scope.$on('gmPlacesAutocomplete::placeChanged', function(){
 		if($scope.autocomplete != undefined) {
 			$scope.selectedLocation = $scope.autocomplete.getPlace().name;
@@ -29,7 +35,7 @@ driverApp.controller('driverController',
 			$scope.$apply();
 		}
 	});
-
+	
 	/*
 	 * @author dhiraj1125
 	 * Method to get the Driver/Rider details and check if he is already registered 
@@ -50,7 +56,11 @@ driverApp.controller('driverController',
 				if(value.isRider == 0) {//If isRider value is '0' then he is registered as Driver.
 					$scope.isRegisteredAsDriver = true;
 					$scope.autocomplete = value.location;
+<<<<<<< Updated upstream
 					$scope.selectedLocation
+=======
+					$scope.selectedLocation = value.location;
+>>>>>>> Stashed changes
 					$scope.nearBy = value.nearby;
 					$scope.selectedVehicleTypes = value.vehicleType;
 				} 
