@@ -397,7 +397,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 						Date fromDate = sdf.parse(car.getFromDate());
 						Date currentDate = sdf.parse(StrTodayDate);
 						if (fromDate.before(currentDate) || emailId.equals(car.getEmailId())) {
-							break;
+							continue;
 						} else {
 							User user = userDAO.findByEmailId(car.getEmailId());
 							if (user != null) {
