@@ -66,7 +66,7 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 		List<CarpoolRiderDetails> carpoolRidersList = carpoolRiderDAO.getRidersByCpID(carpooldetailsDto.getId());
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
 		
-		if(carpooldetailsDto.getTotalNoOfSeats() > getFilledSeatsInPool(carpoolRidersList)) {
+		if(carpooldetailsDto.getTotalNoOfSeats() < getFilledSeatsInPool(carpoolRidersList)) {
 			logger.info("CarpooldetailsServiceImpl : updateCarpooldetails :: selected seats less than filled seats");
 			serviceStatusDto.setStatus(false);
 			serviceStatusDto.setMessage(Constants.MSG_CARPOOL_SELECTED_LESS_SEATS);
@@ -457,7 +457,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 
 		try {
 			Date date = new Date();
-			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			List<Carpooldetails> carpooldetailsList = carpooldetailsDAO.getCarPoolsByEmailAndCurrentDate(emailId,format.format(date));
 		    carpooldetailsDtoList= CarpooldetailsServiceUtil.convertDaoTODto(carpooldetailsList);
 		}catch (Exception e) {

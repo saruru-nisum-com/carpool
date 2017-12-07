@@ -614,7 +614,10 @@ carpoolRegApp
 							var parseEndTime = $filter('date')(new Date(endTime),
 									'h:mm a');
 							
-							var timeStart = new Date("01/01/2007 " + parseStartTime);
+							if(!$scope.validateSelectedTime(parseStartTime,parseEndTime))
+								return false;
+							
+							/*var timeStart = new Date("01/01/2007 " + parseStartTime);
 							var timeEnd = new Date("01/01/2007 " + parseEndTime);
 
 							var diff = (timeEnd - timeStart) / 60000; // dividing
@@ -640,7 +643,7 @@ carpoolRegApp
 								$("#alertMsg").text("Start time and return time both are same.");
 								$('#postARideFormModal').modal('show');
 								return false;
-							}
+							}*/
 							return true;
 						}
 					   
@@ -819,8 +822,15 @@ carpoolRegApp
 									}
 					                 
 									$scope.confirmEdit = function(name, item) {
-										item['startTime'] = $filter('date')(new Date(item.startTime), 'h:mm a');
-										item['toTime'] = $filter('date')(new Date(item.toTime), 'h:mm a');
+										var parseStartTime = $filter('date')(new Date(item.startTime), 'h:mm a');
+										var parseEndTime = $filter('date')(new Date(item.toTime), 'h:mm a');
+										
+										if(!$scope.validateSelectedTime(parseStartTime,parseEndTime)) 
+											return false;
+										
+										item['startTime'] = parseStartTime;
+										item['toTime'] = parseEndTime;
+										
 										$scope.editteditem = item;
 										$('#editModal').modal('show');
 									}
@@ -895,6 +905,36 @@ carpoolRegApp
 								            }
 								        }
 									   return poolsList.reverse();
+								   }
+								   
+								   $scope.validateSelectedTime = function(startTime,endTime){
+									   
+									   var timeStart = new Date("01/01/2007 " + startTime);
+										var timeEnd = new Date("01/01/2007 " + endTime);
+
+										// dividing by seconds and milliseconds
+										var diff = (timeEnd - timeStart) / 60000; 
+
+										var minutes = diff % 60;
+										var hours = (diff - minutes) / 60;
+										if(hours < 0) {
+											$("#alertMsg").text("Return time is more than start time.");
+											$('#postARideFormModal').modal('show');
+											return false;
+										}
+										if(minutes < 0) {
+											$("#alertMsg").text("Return time is more than start time.");
+											$('#postARideFormModal').modal('show');
+											return false;
+										}
+										
+										if(hours == 0 && minutes == 0) {
+											$("#alertMsg").text("Start time and return time both are same.");
+											$('#postARideFormModal').modal('show');
+											return false;
+										}
+										
+										return true;
 								   }
 										
 				});
