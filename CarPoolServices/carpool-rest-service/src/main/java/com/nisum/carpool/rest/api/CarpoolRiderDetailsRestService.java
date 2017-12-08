@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nisum.carpool.data.util.Constants;
+import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.api.RewardPoints;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
@@ -25,6 +29,9 @@ import com.nisum.carpool.service.dto.Errors;
 import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
+import com.nisum.carpool.service.dto.Errors;
+import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
+import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.util.CPCancellationReasons;
 
 
@@ -40,6 +47,7 @@ public class CarpoolRiderDetailsRestService {
 	static Map<Integer, String> cancelReasonMapObj = new HashMap<Integer, String>();
 	
 	private static RewardPoints rewardPoints;
+
 	/**
 	 * author Radhika pujari
 	 */
@@ -51,6 +59,12 @@ public class CarpoolRiderDetailsRestService {
 	 * returntype:Rsponse entity
 	 * @throws CarpooldetailsServiceException 
 	 */
+
+	// private static Logger logger =
+	// LoggerFactory.getLogger(CarpoolRiderDetailsRestService.class);
+
+	
+	
 
 	@RequestMapping(value = "/getRiderBookingDetails/{emailId:.+}", method = RequestMethod.GET)
 	public ResponseEntity<?> getRiderBookingDetails(@PathVariable("emailId") String emailId) throws CarpooldetailsServiceException 
@@ -91,8 +105,8 @@ public class CarpoolRiderDetailsRestService {
 
 	@RequestMapping(value = "/loadRiderStatusReasons", method = RequestMethod.GET)
 	public ResponseEntity<Map<Integer, String>> loadRiderStatusReasons() {
-		logger.info("Start of loadRiderStatusReasons() method in RiderStatusRestService"); 
-		if(cancelReasonMapObj.isEmpty()) { 
+		logger.info("Start of loadRiderStatusReasons() method in RiderStatusRestService");
+		if (cancelReasonMapObj.isEmpty()) {
 			cancelReasonMapObj = CPCancellationReasons.readRiderStatusReasonCodes();
 			System.out.println("res status "+cancelReasonMapObj);
 		}
@@ -198,6 +212,30 @@ public class CarpoolRiderDetailsRestService {
 			logger.error("CarpoolRiderDetailsRestService : addRewardPointsToRider : Inside Catch Block"+e.getMessage());
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	@RequestMapping(value = "/optedRider", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> saveOptedRider(
+			@RequestBody @Valid   List<CarpoolRiderDetailsDTO> carpoolRiderDetailsDTO,BindingResult bindingResult) {
+		logger.info("CarpoolRiderDetailsRestService :: saveOptedRider");
+
+		List<CarpoolRiderDetails> saveOptedRiderDetails = null;
+		ResponseEntity<?> responseEntity = null;
+		
+		
+		try {
+			logger.info("Succesfully Opted Rider");
+			saveOptedRiderDetails=	 carpoolRiderDetailsService.saveOptedRiderDetails(carpoolRiderDetailsDTO);
+			responseEntity=	 new ResponseEntity<List<CarpoolRiderDetails>>(saveOptedRiderDetails, HttpStatus.OK);
+		
+		}catch (Exception e) {
+			Errors error = new Errors();
+			error.setErrorCode("500");
+			error.setErrorMessage("Failed to Save Opted Rider");
+			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.BAD_REQUEST);
+		}
+		return responseEntity;
+		
 
 	}
 }

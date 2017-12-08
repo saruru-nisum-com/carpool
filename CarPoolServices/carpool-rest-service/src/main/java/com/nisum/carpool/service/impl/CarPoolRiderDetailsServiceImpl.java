@@ -47,6 +47,9 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 
 	@Autowired
 	CarpooldetailsDAO carpooldetailsDAO;
+	@Autowired
+	CarpoolRiderDetailsDAO carpoolRiderdetailsDAO;
+
 
 	@Autowired
 	CarpoolRiderDetailsDAO carpoolRiderDetailsDAO;
@@ -312,4 +315,30 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 			}
 			return statusDto;
 	}
-}
+
+	@Override
+	public List<CarpoolRiderDetails> saveOptedRiderDetails(List<CarpoolRiderDetailsDTO> carpoolRiderDetailsDTO) {
+		
+		
+		List<CarpoolRiderDetails> saveOptedRiderDetails=null;
+		List<CarpoolRiderDetails> carpoolRiderDetails=	CarpoolRiderDetailsServiceUtil.
+				convertOptedRiderDtoToDao(carpoolRiderDetailsDTO);
+
+//The list of carpoolRiderDetails save in to db
+		try
+		{
+		logger.info("CarPoolRiderDetailsServiceImpl::saveOptedRiderDetails");
+		
+		if(carpoolRiderDetails != null && carpoolRiderDetails.size() !=0)
+		
+          saveOptedRiderDetails = carpoolRiderdetailsDAO.saveOptedRiderDetails(carpoolRiderDetails);
+		}
+		catch (Exception e) {
+		}
+	  return saveOptedRiderDetails;
+	}
+
+	}
+	
+	
+

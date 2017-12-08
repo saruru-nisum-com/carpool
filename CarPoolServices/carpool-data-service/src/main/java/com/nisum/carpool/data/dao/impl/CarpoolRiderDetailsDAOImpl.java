@@ -301,4 +301,17 @@ public String cleanCarpoolRiderNotifications() {
 }
 
 
+	@Override
+	public List<CarpoolRiderDetails> saveOptedRiderDetails(List<CarpoolRiderDetails> carpoolRiderDetails) {
+		try {
+			logger.info("CarpoolRiderDetailsDAOImpl::saveOptedRiderDetails");
+			 carpoolRiderDetailsRepository.save(carpoolRiderDetails);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return carpoolRiderDetails;
+	}
+
+	
 }

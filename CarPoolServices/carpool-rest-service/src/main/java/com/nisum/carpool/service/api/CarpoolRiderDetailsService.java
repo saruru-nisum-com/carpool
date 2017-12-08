@@ -3,6 +3,7 @@ package com.nisum.carpool.service.api;
 import java.util.List;
 import java.util.Map;
 
+import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
 import com.nisum.carpool.service.dto.CarpoolRiderOptedDetailsDto;
 import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
@@ -27,6 +28,9 @@ public interface CarpoolRiderDetailsService {
 	 * methodAuthor: @Rajesh Sekhamuri
 	 */
 	public void updateRiderStatus(List<RiderStatusDTO> riderStatusDtoListObj);
+	
+	List<CarpoolRiderDetails> saveOptedRiderDetails(List<CarpoolRiderDetailsDTO> carpoolRiderDetailsDTO);
+	
 
 	ServiceStatusDto addRewards(double rewards);
 

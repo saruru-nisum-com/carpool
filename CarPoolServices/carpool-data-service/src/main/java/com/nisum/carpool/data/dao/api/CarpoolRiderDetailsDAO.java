@@ -46,7 +46,6 @@ Carpooldetails getCarpoolByDateAndEmail(String date, String email);
 	
 	public String cleanCarpoolRiderNotifications();
 	
-	}
 
 	
 
@@ -54,3 +53,7 @@ Carpooldetails getCarpoolByDateAndEmail(String date, String email);
 	
 	
 
+//	public CarpoolRiderDetails saveOptedRiderDetails(CarpoolRiderDetails carpoolRiderDetails);
+	public List<CarpoolRiderDetails> saveOptedRiderDetails(List<CarpoolRiderDetails> carpoolRiderDetails);
+	
+}

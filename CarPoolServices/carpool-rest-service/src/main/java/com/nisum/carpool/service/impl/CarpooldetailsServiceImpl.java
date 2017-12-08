@@ -518,7 +518,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		try {
 			List<Carpooldetails> carpools = carpooldetailsDAO.getCarpoolsByParentId(parentId);
 
-			List<CarpoolRiderDetails> ridersList = null;
+			List<CarpoolRiderDetails> ridersList = null; 
 
 			// driverCarPoolDto.setLocation(location);
 
