@@ -40,16 +40,13 @@ public class OptARideServiceUtil {
 		return carPoolsDataList;
 	}
 
-	public static boolean findCpIdRiderEmailId(String emailId, List<CarpoolRiderDetails> carPoolRiderDetailsList) {
+	public static boolean findCpIdRiderEmailId(String emailId, CarpoolRiderDetails carPoolRiderDetails) {
 		// TODO Auto-generated method stub
-		CarpoolRiderDetails carPoolRiderDetails = null;
-		Iterator<CarpoolRiderDetails> itr = carPoolRiderDetailsList.iterator();
-		while (itr.hasNext()) {
-			carPoolRiderDetails = itr.next();
+		
 			if ((carPoolRiderDetails.getEmailid().equals(emailId))) {
 				return true;
 			}
-		}
+		
 		return false;
 	}
 

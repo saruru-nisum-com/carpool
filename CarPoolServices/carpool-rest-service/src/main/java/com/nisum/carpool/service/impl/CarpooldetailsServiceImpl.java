@@ -807,7 +807,9 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			List<OptRideDto> optRideDataList = new ArrayList<OptRideDto>();
 			try {
 				List<Carpooldetails> carPoolDataList = carpooldetailsDAO.getCarpoolsByParentId(parentId);
+				if(carPoolDataList.size() > 1) {
 				carPoolDataList = OptARideServiceUtil.removeParentIdFromCarPoolList(carPoolDataList, parentId);
+			}
 				if (OptedData) {
 					optRideDataList = constructListOfOptRides(emilId, carPoolDataList);
 				} else {
@@ -824,17 +826,27 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		private List<OptRideDto> constructListOfNotOptRides(String emailId, List<Carpooldetails> carPoolDataList) {
 			List<CarpoolRiderDetails> carPoolRiderDetailsList = new ArrayList<CarpoolRiderDetails>();
 			List<OptRideDto> optRideDtoList = new ArrayList<OptRideDto>();
+			int optedCount = 0;
 			for (Carpooldetails carppol : carPoolDataList) {
 				carPoolRiderDetailsList = carpoolRiderDAO.getNotOptedRiderDeatils(carppol.getId());
-				if (carPoolRiderDetailsList.size() != 0) {
-					Boolean isFind = OptARideServiceUtil.findCpIdRiderEmailId(emailId, carPoolRiderDetailsList);
+				if (carPoolRiderDetailsList.size() > 0) {
+					for(CarpoolRiderDetails carPoolRiderDetail :carPoolRiderDetailsList)
+					{
+					Boolean isFind = OptARideServiceUtil.findCpIdRiderEmailId(emailId, carPoolRiderDetail);
 					if (!isFind) {
 						List<CarpoolRiderDetails> carPoolRiderDetailsAfterFilter = OptARideServiceUtil
 								.filterAcceptStatus(carPoolRiderDetailsList);
-						int optedCount = carPoolRiderDetailsAfterFilter.size();
-						OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDto(carppol, optedCount);
-						optRideDtoList.add(optRideDto);
+					    optedCount = optedCount + 1;	
 					}
+					
+				}
+					OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDto(carppol, optedCount);
+					optRideDtoList.add(optRideDto);
+				}
+				else
+				{
+					OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDto(carppol, optedCount);
+					optRideDtoList.add(optRideDto);	
 				}
 			}
 			return optRideDtoList;
