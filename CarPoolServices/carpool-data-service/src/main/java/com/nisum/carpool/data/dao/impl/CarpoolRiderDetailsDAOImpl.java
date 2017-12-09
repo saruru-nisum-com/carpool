@@ -39,7 +39,9 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 	@Autowired
 	CarpoolRiderNotificationsRepository carpoolridernotificationsrepository;
 
-
+	/*
+	 * MethodAuthor: @Radhika Pujari
+	 */
 
 	/**
 	 * getRiderBookingDetails  for Dao Layer
@@ -51,7 +53,14 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 	@Override
 	public List<CarpoolRiderDetails> getRiderBookingDetails(String emailId) {
 		logger.info("CarpoolRiderDetailsDAOImpl::getRiderBookingDetails::emailId");
+		try {
+		
       return (List<CarpoolRiderDetails>) carpoolRiderDetailsRepository.getRiderBookingDetails(emailId);
+		}catch(Exception e) {
+			logger.info("CarpoolRiderDetailsDAOImpl::getRiderBookingDetails::error");
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
@@ -252,5 +261,57 @@ public CarpoolRiderDetails getRidesByMailandAllCarpoolIds(String email, List<Int
 	}
 	return carpoolRiderDetails;
 }
-		
+
+@Override
+public List<CarpoolRiderDetails> getNotOptedRiderDeatils(int cpid) {
+	// TODO Auto-generated method stub
+	return carpoolRiderDetailsRepository.getNotOptedRiderDetails(cpid);
+}
+
+@Override
+public CarpoolRiderDetails getOptedRiderDeatils(int id, String email) {
+	// TODO Auto-generated method stub
+	return carpoolRiderDetailsRepository.getOptedRiderDetails(id, email);
+}
+
+@Override
+public List<CarpoolRiderDetails> getOptedRiderDeatils(int id) {
+	// TODO Auto-generated method stub
+	return carpoolRiderDetailsRepository.getOptedRiderDetails(id);
+}
+/**
+ * @author Mahesh Bheemanapalli
+ * 
+ *         This method is used clean carpool notifications data when scheduler runs  
+ */
+
+@Override
+public String cleanCarpoolRiderNotifications() {
+	// TODO Auto-generated method stub
+	logger.info("CarpoolRiderDetailsDAOImpl : cleanCarpoolRiderNotifications");
+	long beforeClean = carpoolridernotificationsrepository.count();
+	logger.info("CarpoolRiderDetailsDAOImpl : cleanCarpoolRiderNotifications : beforeClean "+beforeClean);
+	carpoolridernotificationsrepository.CleanCarpoolriderNotifications();
+	long afterClean = carpoolridernotificationsrepository.count();
+	logger.info("CarpoolRiderDetailsDAOImpl : cleanCarpoolRiderNotifications : afterClean "+afterClean);
+	if(beforeClean>=0&&afterClean==0) {
+		return Constants.CARPOOL_RIDER_NOTIFICATION_CLEANED;
+	}
+	return Constants.CARPOOL_RIDER_NOTIFICATION_NOT_CLEANED;
+}
+
+
+	@Override
+	public List<CarpoolRiderDetails> saveOptedRiderDetails(List<CarpoolRiderDetails> carpoolRiderDetails) {
+		try {
+			logger.info("CarpoolRiderDetailsDAOImpl::saveOptedRiderDetails");
+			 carpoolRiderDetailsRepository.save(carpoolRiderDetails);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return carpoolRiderDetails;
+	}
+
+	
 }

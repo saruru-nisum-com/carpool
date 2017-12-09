@@ -464,7 +464,7 @@ form {
 				<div class="alert alert-success" role="alert"
 					ng-if="isVisible==true">
 					<button type="button" class="close" data-dismiss="alert"
-						aria-label="Close">
+						aria-label="Close" ng-click="resetMsgVisibility();">
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<a href="#" class="alert-link">You have {{actionName}}
@@ -477,30 +477,24 @@ form {
 								<label>Vehicle Type</label>
 							</div>
 							<div class="col-md-4">
-								<input type="checkbox" name="cb2wheel" ng-model='cb2wheel'
-									ng-true-value="2" ng-false-value="0"> 2-wheeler <br>
-								<input type="checkbox" name="cb4wheel" ng-model='cb4wheel'
-									ng-true-value="4" ng-false-value="0"> 4-wheeler <span
-									ng-show="driverForm.$submitted && driverForm.$invalid"
-									style="color: red" class="help-block">Check before
-									proceed.</span>
+							
+								<select class="form-control" ng-model="selectedVehicleTypes" multiple="multiple" 
+									ng-options="vehicle.id as vehicle.type for vehicle in vehicleTypes" ng-required="true"
+									size="2"></select>
+									<span>(Hold Ctrl to select multiple vehicles)</span>
+								<div
+									ng-show="driverForm.$submitted || driverForm.vehicleType.$touched">
+									<span ng-show="driverForm.vehicleType.$error.required"
+										style="color: red">Select atleast one vehicle type.</span>
+								</div>
 							</div>
 						</div>
-						<!-- <div class="row">
-							<div class="col-sm-4 col-md-offset-2">
-								<input type="checkbox" name="cb4wheel" ng-model='cb4wheel'
-									ng-true-value="4" ng-false-value="0"> 4-wheeler
-								<span ng-show="driverForm.$submitted && driverForm.$invalid"
-									style="color: red" class="help-block">Check before
-									proceed.</span>
-							</div>
-						</div> -->
 						<div class="form-group">
 							<div class="col-sm-2 control-label">
 								<label>Location</label>
 							</div>
 							<div class="col-md-4">
-								<input class="form-control" type="text" gm-places-autocomplete
+								<input class="form-control" type="text" gm-places-autocomplete="autocompleteOptions"
 									name="location" ng-model="autocomplete" ng-required="true"
 									placeholder="Enter your location here">
 								<div
@@ -549,16 +543,18 @@ form {
 							</div>
 							<div class="col-md-4">
 								<label class="radio-inline"> <input type="radio"
-									ng-model="gender" name="genderMale" id="male" value="1" ng-required="!gender">Male
+									ng-disabled="disableGender == true" ng-model="gender"
+									name="genderMale" id="male" value="1" ng-required="!gender">Male
 								</label> <label class="radio-inline"> <input type="radio"
-									ng-model="gender" name="genderFemale" id="female" value="2" ng-required="!gender">Female
+									ng-disabled="disableGender == true" ng-model="gender"
+									name="genderFemale" id="female" value="2" ng-required="!gender">Female
 								</label>
 							</div>
 							<div
-									ng-show="driverForm.$submitted || driverForm.gender.$touched">
-									<span ng-show="driverForm.gender.$error.required "
-										style="color: red">Please choose your gender.</span>
-								</div>
+								ng-show="driverForm.$submitted || driverForm.gender.$touched">
+								<span ng-show="driverForm.gender.$error.required "
+									style="color: red">Please choose your gender.</span>
+							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-4 col-md-offset-2">

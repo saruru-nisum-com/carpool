@@ -4,9 +4,10 @@ adminApp.controller('configurationsController',
 	$scope.userName = commonService.userName;
 	$scope.vehicleDetails=[];
 	$scope.location=commonService.location;
+	$scope.emailId=commonService.emailId;
 	
 	$scope.getCarpools = function() {
-			carpoolService.getCarPools($scope.location).then(function(response) {
+			carpoolService.getCarPools($scope.location,$scope.emailId).then(function(response) {
 				if (response.errorCode) {
 					$scope.message = response.errorMessage
 				} else {
@@ -18,7 +19,7 @@ adminApp.controller('configurationsController',
 	}
 	
 	$scope.getAllCarpools = function() {
-		carpoolService.getAllCarPools().then(function(response) {
+		carpoolService.getAllCarPools($scope.emailId).then(function(response) {
 			if (response.errorCode) {
 				$scope.message = response.errorMessage
 			} else {

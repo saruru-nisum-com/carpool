@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 
 import com.nisum.carpool.data.domain.CarpoolRiderDetails;
+import com.nisum.carpool.data.util.Ride_Status;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
 import com.nisum.carpool.service.dto.RiderStatusDTO;
 
@@ -71,5 +72,23 @@ public class CarpoolRiderDetailsServiceUtil {
 		return carpoolRiderDetailsObj;
 	}
 
+	public static List<CarpoolRiderDetails> convertOptedRiderDtoToDao(List<CarpoolRiderDetailsDTO> carpoolRiderDetailsDTO) {
 	
+		List<CarpoolRiderDetails> listOfCarpools=new ArrayList<>();
+		for (CarpoolRiderDetailsDTO carpoolRiderDetailsDTO2 : carpoolRiderDetailsDTO) {
+			CarpoolRiderDetails carpoolRiderDetails = new CarpoolRiderDetails();
+			carpoolRiderDetails.setId(carpoolRiderDetailsDTO2.getId());
+			carpoolRiderDetails.setCpid(carpoolRiderDetailsDTO2.getCpid());
+			carpoolRiderDetails.setEmailid(carpoolRiderDetailsDTO2.getEmailid());
+			carpoolRiderDetails.setStatus(Ride_Status.REQUESTED.getValue());
+			carpoolRiderDetails.setReason(carpoolRiderDetailsDTO2.getReason());
+		    carpoolRiderDetails.setCreateddate(carpoolRiderDetailsDTO2.getCreateddate().toLocalDateTime());
+			carpoolRiderDetails.setModifieddate(carpoolRiderDetailsDTO2.getModifieddate().toLocalDateTime());
+			carpoolRiderDetails.setRewards(carpoolRiderDetailsDTO2.getRewards());
+			carpoolRiderDetails.setNotifyme(false);
+			listOfCarpools.add(carpoolRiderDetails);
+			
+		}
+		return listOfCarpools;
+	}
 }

@@ -1,5 +1,7 @@
 package com.nisum.carpool.service.impl;
 
+import static org.assertj.core.api.Assertions.catchThrowable;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +24,8 @@ import com.nisum.carpool.data.domain.CarpoolRiderNotifications;
 import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.domain.RegisterDomain;
 import com.nisum.carpool.data.domain.User;
+import com.nisum.carpool.data.util.Pool_Status;
+import com.nisum.carpool.data.util.Ride_Status;
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
 import com.nisum.carpool.service.dto.CarpoolRiderOptedDetailsDto;
@@ -43,6 +47,9 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 
 	@Autowired
 	CarpooldetailsDAO carpooldetailsDAO;
+	@Autowired
+	CarpoolRiderDetailsDAO carpoolRiderdetailsDAO;
+
 
 	@Autowired
 	CarpoolRiderDetailsDAO carpoolRiderDetailsDAO;
@@ -83,7 +90,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 
 			Date date1 = new Date();
 
-			SimpleDateFormat sd = new SimpleDateFormat("MM/dd/yyyy");
+			SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
 			String date = sd.format(date1);
 
 			System.out.println("Date" + date);
@@ -107,7 +114,8 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 						emailid = carPool.getEmailId();
 						System.out.println(emailid);
 						carpoolRiderdetailsDto.setEmail(emailid);
-						carPool.getFromDate();
+						
+						carpoolRiderdetailsDto.setLocation(carPool.getLocation());
 
 						carpoolRiderdetailsDto.setFromDate(carPool.getFromDate());
 						carpoolRiderdetailsDto.setEmail(emailid);
@@ -129,8 +137,16 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 						}
 
 						carpoolRiderdetailsDto.setReason(car.getReason());
-						carpoolRiderdetailsDto.setStatus(car.getStatus());
-						carpoolRiderdetailsDto.setLocation(car.getLocation());
+						
+						Ride_Status ride_Status = Ride_Status.values()[(car.getStatus()-1)];
+						
+						
+						carpoolRiderdetailsDto.setStatusName(ride_Status.toString());
+						System.out.println(ride_Status.toString());
+						
+
+						//carpoolRiderdetailsDto.setStatus(car.getStatus());
+						//carpoolRiderdetailsDto.setLocation(car.getLocation());
 						riderBookingdetailsDtoList.add(carpoolRiderdetailsDto);
 
 					}
@@ -281,4 +297,48 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 		}
 		return riderOptedDetailsDto.stream().collect(Collectors.groupingBy(CarpoolRiderOptedDetailsDto::getFromdate));
 	}
-}
+	/**
+	 * @author Mahesh Bheemanapalli
+	 *	This method is used to clean the carpoolriderNotification data in cp_carpoolridernotifications table	
+	 * @return ServiceStatusDto class with status and message
+	 */
+	@Override
+	public ServiceStatusDto cleanCarpoolRiderNotifications() {
+		// TODO Auto-generated method stub
+		logger.info("CarPoolRiderDetailsServiceImpl : cleanCarpoolRiderNotifications");
+		ServiceStatusDto statusDto = new ServiceStatusDto();
+			String carpoolRiderNotifications = carpoolRiderDetailsDAO.cleanCarpoolRiderNotifications();
+			logger.info("CarPoolRiderDetailsServiceImpl : cleanCarpoolRiderNotifications : "+carpoolRiderNotifications);
+			if(ObjectUtils.anyNotNull(carpoolRiderNotifications)) {
+				statusDto.setMessage(carpoolRiderNotifications);
+				statusDto.setStatus(true);
+			}
+			return statusDto;
+	}
+
+	@Override
+	public List<CarpoolRiderDetails> saveOptedRiderDetails(List<CarpoolRiderDetailsDTO> carpoolRiderDetailsDTO) {
+		
+		
+		List<CarpoolRiderDetails> saveOptedRiderDetails=null;
+		List<CarpoolRiderDetails> carpoolRiderDetails=	CarpoolRiderDetailsServiceUtil.
+				convertOptedRiderDtoToDao(carpoolRiderDetailsDTO);
+
+//The list of carpoolRiderDetails save in to db
+		try
+		{
+		logger.info("CarPoolRiderDetailsServiceImpl::saveOptedRiderDetails");
+		
+		if(carpoolRiderDetails != null && carpoolRiderDetails.size() !=0)
+		
+          saveOptedRiderDetails = carpoolRiderdetailsDAO.saveOptedRiderDetails(carpoolRiderDetails);
+		}
+		catch (Exception e) {
+		}
+	  return saveOptedRiderDetails;
+	}
+
+	}
+	
+	
+

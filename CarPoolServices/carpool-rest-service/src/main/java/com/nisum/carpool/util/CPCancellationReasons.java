@@ -48,6 +48,7 @@ public class CPCancellationReasons extends DefaultHandler {
 			while (itrObj.hasNext()) {
 				Entry<Integer, String> entryObj = (Entry<Integer, String>) itrObj.next();
 				appLogger.debug("Key " + entryObj.getKey() + " Value " + entryObj.getValue());
+				System.out.println("Key " + entryObj.getKey() + " Value " + entryObj.getValue());
 			}
 		} catch (IOException ioException) {
 

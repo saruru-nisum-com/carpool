@@ -336,23 +336,24 @@ carpoolRegApp
 
 					
 					/*
-					 * @author Harish Kumar Gudivada Method to get the Carpool Details by carpoolid
-					*/ 
-//					$scope.getCarpolData = function(id) {
-//						$scope.id = id;
-//						carpoolRegistrationService.getCarpolData($scope.id).then(function(response) {
-//											angular.forEach(response,function(value, key) {
-//																	$scope.autocomplete = value.location;
-//																	$scope.fromDate.value = value.fromDate;
-//																	$scope.seat.value = value.totalNoOfSeats;
-//																	$scope.toDate.value = value.toDate;
-//																	$scope.startTime.value = value.startTime;
-//																	$scope.endTime.value = value.toTime;
-//																	$scope.vehicleSelect= value.vehicleType;
+					 * @author Harish Kumar Gudivada Method to get the Carpool
+					 * Details by carpoolid
+					 */ 
+// $scope.getCarpolData = function(id) {
+// $scope.id = id;
+// carpoolRegistrationService.getCarpolData($scope.id).then(function(response) {
+// angular.forEach(response,function(value, key) {
+// $scope.autocomplete = value.location;
+// $scope.fromDate.value = value.fromDate;
+// $scope.seat.value = value.totalNoOfSeats;
+// $scope.toDate.value = value.toDate;
+// $scope.startTime.value = value.startTime;
+// $scope.endTime.value = value.toTime;
+// $scope.vehicleSelect= value.vehicleType;
 //																	
-//											});
-//										});
-//					}
+// });
+// });
+// }
 					
 
 					
@@ -501,9 +502,9 @@ carpoolRegApp
 					}
 					
 					/*
-					 * On load method call to get the registered user data. 
+					 * On load method call to get the registered user data.
 					 */
-					//$scope.getUserLocation();
+					// $scope.getUserLocation();
 					
 					$scope.getUserLocation = function() {
 						 $scope.userId = localStorageService.get('profile').emailId;
@@ -539,17 +540,14 @@ carpoolRegApp
 					}
 					
 					$scope.getAvailablePools = function(){
-	                	 console.log(" into getAvailablePools ");
 	                	 carpoolService.getLoggedInUserCarpools(localStorageService.get('profile').emailId)
 			              .then(function(response){
 					            	  if (response.errorCode === 500) {
-										//$scope.message = response.errorMessage
+										// $scope.message =
+										// response.errorMessage
 					            		  console.log(response);
 								  }else{
-									    console.log(response);
-									    console.log(response.length+ " : response.lengths ");
 									    if(response.length > 0){
-						                	 console.log(" if condition for length ");
 										  $scope.loadTableGrid(response);
 									    }else{
 									      console.log("No Carpools Available");
@@ -560,13 +558,14 @@ carpoolRegApp
 			              });
                     }
 					
-					//Loading TableGrid of Carpools on page load
+					// Loading TableGrid of Carpools on page load
 					   $scope.getAvailablePools();
 					   
 					   $scope.validateShareARideFromDetails = function() {
 						   /*
-						    * Share a ride validation part don't disturb this code
-						    */
+							 * Share a ride validation part don't disturb this
+							 * code
+							 */
 						   var vType = $scope.vehicleSelect;
 							if(vType == 0){
 								$("#alertMsg").text("Invalid vehicle type.");
@@ -598,16 +597,34 @@ carpoolRegApp
 								return false;
 							}
 							
-							
+							if(startTime == undefined){
+								$("#alertMsg").text("Invalid start time.");
+								$('#postARideFormModal').modal('show');
+								return false;
+								}
+							if(endTime == undefined){
+								$("#alertMsg").text("Invalid return time.");
+								$('#postARideFormModal').modal('show');
+								return false;
+								}
+								
+								
 							var parseStartTime = $filter('date')(
 									new Date(startTime), 'h:mm a');
 							var parseEndTime = $filter('date')(new Date(endTime),
 									'h:mm a');
 							
-							var timeStart = new Date("01/01/2007 " + parseStartTime);
+							if(!$scope.validateSelectedTime(parseStartTime,parseEndTime))
+								return false;
+							
+							/*var timeStart = new Date("01/01/2007 " + parseStartTime);
 							var timeEnd = new Date("01/01/2007 " + parseEndTime);
 
-							var diff = (timeEnd - timeStart) / 60000; //dividing by seconds and milliseconds
+							var diff = (timeEnd - timeStart) / 60000; // dividing
+																		// by
+																		// seconds
+																		// and
+																		// milliseconds
 
 							var minutes = diff % 60;
 							var hours = (diff - minutes) / 60;
@@ -626,7 +643,7 @@ carpoolRegApp
 								$("#alertMsg").text("Start time and return time both are same.");
 								$('#postARideFormModal').modal('show');
 								return false;
-							}
+							}*/
 							return true;
 						}
 					   
@@ -659,9 +676,9 @@ carpoolRegApp
 						console.log(JSON.stringify(profileObj))
 						$scope.postRide = {
 
-							"parentid" : 9999, //optional
-							"id" : 9999,  //optional
-							"status" : 1,  //optional
+							"parentid" : 9999, // optional
+							"id" : 9999,  // optional
+							"status" : 1,  // optional
 							"createddate" : "2017-11-25",
 							"modifieddate" : "2017-11-24",
 							"vehicleType" : parseInt(vType),
@@ -684,10 +701,10 @@ carpoolRegApp
 											if (response.errorCode === 500) {
 												$scope.message = response.errorMessage
 											} else {
-												setTimeout(function(){
-													$("#alertMsg").text("Share a ride successfully.");
-													$('#postARideFormModal').modal('hide');
-												}, 10000);
+												setTimeout(function(){ $('#postARideFormModal').modal('hide');
+												}, 1000);
+												$("#alertMsg").text("Share a ride successfully.");
+												$('#postARideFormModal').modal('show'); 
 												$scope.loadTableGrid(response);
 											}
 										}, function(response) {
@@ -701,8 +718,6 @@ carpoolRegApp
 					
 					                 $scope.loadTableGrid = function(response){
 					                	 
-					                	    console.log("response");
-					                	    console.log(response);
 					                	        $scope.jsonData = response;
 											$scope.length = $scope.jsonData.length;
 											$scope.parentIncrement = 0;
@@ -712,6 +727,10 @@ carpoolRegApp
 											// Object
 											$scope.childIdData = [];
 											$scope.parentIdDetails = [];    
+											
+											if($scope.jsonData.length != 0){
+												$scope.jsonData = $scope.sortPoolsByFromDate($scope.jsonData);
+											}
 											
 											$scope.jsonData
 											.forEach(function(
@@ -760,44 +779,9 @@ carpoolRegApp
 					                	 
 					                 }
 					                 
-					                 // displaying all the Child while click on (+) button on table header
-									 /*$scope.showGridData = function() {
-
-											for (var z = 0; z < $scope.parentIdDetails.length; z++) {
-												var gridToggle = "show"+ z;
-												$scope[gridToggle] = !$scope[gridToggle];
-											}
-											if ($scope.show0) {
-												$("#gridToggleButton").text("-");
-
-												for (var y = 0; y < $scope.parentIdDetails.length; y++) {
-													$("#gridButton" + y)
-															.text("-");
-													$("#gridButton" + y)
-															.parent()
-															.parent()
-															.attr(
-																	"style",
-																	"background-color:#c4e2ed");
-												}
-
-											} else {
-												$("#gridToggleButton").text("+");
-
-												for (var y = 0; y < $scope.parentIdDetails.length; y++) {
-													$("#gridButton" + y)
-															.text("+");
-													$("#gridButton" + y)
-															.parent()
-															.parent()
-															.removeAttr(
-																	"style");
-												}
-											}
-
-									}*/
 					                 
-									 // Displaying Child on click of (+) button
+									 // Displaying Child on click of (+)
+										// button
 					                 $scope.showChildData = function(x) {
 
 											var x1 = "show" + x;
@@ -838,8 +822,15 @@ carpoolRegApp
 									}
 					                 
 									$scope.confirmEdit = function(name, item) {
-										item['startTime'] = $filter('date')(new Date(item.startTime), 'h:mm a');
-										item['toTime'] = $filter('date')(new Date(item.toTime), 'h:mm a');
+										var parseStartTime = $filter('date')(new Date(item.startTime), 'h:mm a');
+										var parseEndTime = $filter('date')(new Date(item.toTime), 'h:mm a');
+										
+										if(!$scope.validateSelectedTime(parseStartTime,parseEndTime)) 
+											return false;
+										
+										item['startTime'] = parseStartTime;
+										item['toTime'] = parseEndTime;
+										
 										$scope.editteditem = item;
 										$('#editModal').modal('show');
 									}
@@ -849,6 +840,9 @@ carpoolRegApp
 										               .then(function(response){
 										            	       if(response.errorCode){
 										            	    	       $scope.errorMessage = response.errorMessage;
+										            	       }else if(response.status == false){
+										            	    	       $scope.errorMessage = response.message;
+										            	    	       $scope.successMessage = '';
 										            	       }else{
 										            	    	       $scope.successMessage = response.message;
 										            	    	       $scope.errorMessage = '';
@@ -889,6 +883,59 @@ carpoolRegApp
 										               });
 										$('#deleteModal').modal('hide');
 								   }		
+									
+								   $scope.disablePastDates = function(strDate){
+									   var today = new Date();
+									   var someday = new Date(strDate);
+									   if(today.getFullYear() == someday.getFullYear() && today.getDay() == someday.getDay() && 
+											   today.getMonth() == someday.getMonth()){
+										   return false;
+										}
+										   return someday < today;
+								   }
+								   
+								   $scope.sortPoolsByFromDate = function(poolsList){
+									   for(var sort1=0;sort1<poolsList.length;sort1++){
+								            for(var sort=0;sort<poolsList.length;sort++){
+								                if( new Date(poolsList[sort1].fromDate) > new Date(poolsList[sort].fromDate) ) {
+								                    var swap = poolsList[sort1];
+								                    poolsList[sort1] = poolsList[sort];
+								                    poolsList[sort] = swap; 
+								                }
+								            }
+								        }
+									   return poolsList.reverse();
+								   }
+								   
+								   $scope.validateSelectedTime = function(startTime,endTime){
+									   
+									   var timeStart = new Date("01/01/2007 " + startTime);
+										var timeEnd = new Date("01/01/2007 " + endTime);
+
+										// dividing by seconds and milliseconds
+										var diff = (timeEnd - timeStart) / 60000; 
+
+										var minutes = diff % 60;
+										var hours = (diff - minutes) / 60;
+										if(hours < 0) {
+											$("#alertMsg").text("Return time is more than start time.");
+											$('#postARideFormModal').modal('show');
+											return false;
+										}
+										if(minutes < 0) {
+											$("#alertMsg").text("Return time is more than start time.");
+											$('#postARideFormModal').modal('show');
+											return false;
+										}
+										
+										if(hours == 0 && minutes == 0) {
+											$("#alertMsg").text("Start time and return time both are same.");
+											$('#postARideFormModal').modal('show');
+											return false;
+										}
+										
+										return true;
+								   }
 										
 				});
 

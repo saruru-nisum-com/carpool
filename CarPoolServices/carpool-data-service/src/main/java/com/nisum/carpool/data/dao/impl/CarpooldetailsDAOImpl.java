@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -110,8 +112,9 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		return Constants.MSG_CARPOOL_CANCEL;
 		
 	}
+	
 	/**
-	 * @author Radhika Pujari : CPL005: Create Car Pools (Post a ride)
+	 * @author Manohar Dhavala : CPL005: Create Car Pools (Post a ride)
 	 * 
 	 *         This method is used for creating carpool records in db
 	 *         @param carpooldetails
@@ -202,9 +205,6 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 
 		}
 	}
-	/**
-	* author Mahesh Bheemanapalli
-	*/
 
 	/**
 	* addRewards() for  dao layer 
@@ -216,9 +216,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	public String addRewards(double rewards) {
 		// TODO Auto-generated method stub
 		logger.info("CarpooldetailsDAOImpl : addRewards : To Driver");
-		LocalDate currentDate = LocalDate.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String rewardedDate = currentDate.format(formatter);
+		String rewardedDate = this.formateDate();
 		List<Integer> listOfIds = carpooldetailsRepository.getCarpooldetailsByFromDate(Pool_Status.CLOSED.getValue(), rewardedDate);
 		if (listOfIds.size() > 0) {
 			carpooldetailsRepository.udpateRewardPoints(rewards, listOfIds);
@@ -292,33 +290,33 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		// to find the driver email with the given car pool id
 		return carpooldetailsRepository.getDriverEmailByCPId(cpid);
 	}
-
+     /**
+      * Author:Radhika Pujari
+      */
+	@Override
+	public List<Carpooldetails> getCarPoolByCpIDandDate(int cpId, String date) {
+		logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolByCpIDandDate");
+		try {
+		return carpooldetailsRepository.getCarPoolsByCpIdandDate(cpId, date);
+	}catch (Exception e) {
+		logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolByCpIDandDate :: error");
+		e.printStackTrace();
+		return null;
+	}
+	}
 
 	@Override
 	public Carpooldetails getCarpoolByDateAndEmail(String date, String email) {
 		// TODO Auto-generated method stub
-		return  carpooldetailsRepository.getCarpoolByDateAndEmail(date, email);
+		return null;
 	}
-@Override
+
+	@Override
 	public List<Integer> getCarpoolByDate(String date) {
 		// TODO Auto-generated method stub
-		return carpooldetailsRepository.getCarpoolByDate(date);
+		return null;
 	}
-
-@Override
-public List<Carpooldetails> getCarPoolByCpIDandDate(int cpid, String date) {
-	// TODO Auto-generated method stub
-	return carpooldetailsRepository.getCarPoolsByCpIdandDate(cpid, date);
-}
-
-		
-	/**
-	 * @author Durga Manjari narni
-	 * Used to get carpools by location
-	 * @param location
-	 * @return List<Carpooldetails>
-	 */
-	@Override
+	
 	public List<Carpooldetails> getCarPoolsByLocation(String location) {
 		logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolsByLocation"); 
 		try {
@@ -328,12 +326,102 @@ public List<Carpooldetails> getCarPoolByCpIDandDate(int cpid, String date) {
 			e.printStackTrace();
 			return null;
 		}
+}
+	/**
+	 * @author Mahesh Bheemanapalli : CPL049: Functionality to update car pool
+	 *         status using scheduler
+	 * 
+	 *         This method is used update the carpool status as "Closed" except
+	 *         "Cancelled" where todate is Less than or equal to Current Date.
+	 * @return String
+	 */
+	@Override
+	public String updateCarpoolStatusToClosed() {
+		// TODO Auto-generated method stub
+		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed");
+		String todate=this.formateDate();
+		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :"+todate);
+		List<Carpooldetails> carpoolsByToDate = carpooldetailsRepository.getCarpoolsByToDate(todate);
+		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :"+carpoolsByToDate.size());
+		Set<Integer> setOfPoolIds = carpoolsByToDate.stream().filter(p->p.getStatus()!=Pool_Status.CLOSED.getValue()&&p.getStatus()!=Pool_Status.CANCELLED.getValue()).map(p->p.getId()).collect(Collectors.toSet());
+		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :"+setOfPoolIds.size());
+		if(setOfPoolIds.size()>0) {
+			Integer countBeforeUpdate = carpooldetailsRepository.checkUpdateCarpoolStatusClosedCount(Pool_Status.CLOSED.getValue());
+			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : countBeforeUpdate"+countBeforeUpdate);
+			carpooldetailsRepository.updateCarpoolStatusBySetOfPoolIds(Pool_Status.CLOSED.getValue(), setOfPoolIds);
+			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : CarpoolStatusUpdateToClose");
+			Integer countAfterUpdate = carpooldetailsRepository.checkUpdateCarpoolStatusClosedCount(Pool_Status.CLOSED.getValue());
+			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : countAfterUpdate"+countAfterUpdate);
+			if(countBeforeUpdate<countAfterUpdate) {
+				logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :"+Constants.CARPOOL_STATUS_UPDATED);
+				return Constants.CARPOOL_STATUS_UPDATED;
+			}
+			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :"+Constants.CARPOOL_STATUS_NOT_UPDATED);
+			return Constants.CARPOOL_STATUS_NOT_UPDATED;
+		}
 		
+		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :"+Constants.NO_CARPOOLS_TO_UPDATE_STATUS);
+		return Constants.NO_CARPOOLS_TO_UPDATE_STATUS;
+	}
+	
+	/*@author Suresh valavala
+	 * (non-Javadoc)
+	 * @see com.nisum.carpool.data.dao.api.CarpooldetailsDAO#getCarPoolsByEmailAndCurrentDate(java.lang.String, java.lang.String)
+	 */
+	
+	public List<Carpooldetails> getCarPoolsByEmailAndCurrentDate(String emailId, String date){
+		return carpooldetailsRepository.getCarPoolsByEmailAndCurrentDate(emailId, date);
+	}
+	
+	 /**
+	 * @author Mahesh Bheemanapalli 
+	 * This is the Common method to formate current date into String formate
+	 * 
+	 * @return String
+	 */
+	private String formateDate() {
+		logger.info("CarpooldetailsDAOImpl : formateDate : in String");
+		LocalDate currentDate = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return currentDate.format(formatter);
 	}
 
 	@Override
 	public List<Carpooldetails> findCarpoolDetailsByParentId(int parentid) {
-		
-		return carpooldetailsRepository.findByParentid(parentid);
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+	@Override
+	public String cancelCarpooldetailsByParentId(Carpooldetails carpooldetails) {
+		// TODO Auto-generated method stub
+		Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
+		logger.info("in parent cancel:::");
+		// update Parent record
+		try {
+			logger.info("in Parent update.parent Id.." + carpooldetails.getParentid());
+
+			List<Carpooldetails> poolData = carpooldetailsRepository.findByParentid(carpooldetails.getParentid());
+			logger.info("poolData size for parent=="+poolData.size());
+			if(poolData.size()>1) {
+			if (poolData != null) {
+				if (CollectionUtils.isNotEmpty(poolData)) {
+					poolData.forEach(c -> {
+						c.setStatus(Pool_Status.CANCELLED.getValue());
+						c.setModifieddate(modifiedDate.toLocalDateTime());
+						carpooldetailsRepository.save(c);
+					});
+				}
+				
+			}
+			return Constants.MSG_CARPOOL_CANCEL;
+		}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		return Constants.MSG_CARPOOL_CANCEL_MULTI;
+	
+}
 }

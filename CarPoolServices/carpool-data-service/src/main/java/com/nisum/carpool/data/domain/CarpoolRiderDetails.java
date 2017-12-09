@@ -2,18 +2,30 @@ package com.nisum.carpool.data.domain;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Table("cp_carpoolriderdetails")
 public class CarpoolRiderDetails {
 	
 	 @PrimaryKey	
 	 private  int	id; 
+	 @NotNull(message="cpid canot be null")
+	 @NotEmpty(message="cpid canot be empty")
 	 private int cpid;
+	 @NotNull(message="emailid canot be null")
+	 @NotEmpty(message="emailid canot be empty")
 	 private String emailid;
 	 private int	status;
 	 private double rewards;
+	 @Transient
+	 @JsonIgnore
 	 private  boolean notifyme;
 	 private int reason;
      private LocalDateTime  createddate;

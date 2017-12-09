@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -25,10 +26,12 @@ import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.domain.RegisterDomain;
 import com.nisum.carpool.data.domain.User;
+import com.nisum.carpool.data.util.Pool_Status;
 import com.nisum.carpool.service.api.CarpooldetailsService;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
 import com.nisum.carpool.service.dto.DriverCarPoolDto;
+import com.nisum.carpool.service.dto.OptRideDto;
 import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
 import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
@@ -36,6 +39,7 @@ import com.nisum.carpool.service.dto.TodayRiderDetailsDTO;
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
 import com.nisum.carpool.util.CarpooldetailsServiceUtil;
 import com.nisum.carpool.util.Constants;
+import com.nisum.carpool.util.OptARideServiceUtil;
 import com.nisum.carpool.util.RegisterServiceUtil;
 
 
@@ -59,16 +63,24 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 	public ServiceStatusDto updateCarpooldetails(CarpooldetailsDto carpooldetailsDto) {
 		// TODO Auto-generated method stub
 		logger.info("CarpooldetailsServiceImpl : updateCarpooldetails");
+		List<CarpoolRiderDetails> carpoolRidersList = carpoolRiderDAO.getRidersByCpID(carpooldetailsDto.getId());
+		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
+		
+		if(carpooldetailsDto.getTotalNoOfSeats() < getFilledSeatsInPool(carpoolRidersList)) {
+			logger.info("CarpooldetailsServiceImpl : updateCarpooldetails :: selected seats less than filled seats");
+			serviceStatusDto.setStatus(false);
+			serviceStatusDto.setMessage(Constants.MSG_CARPOOL_SELECTED_LESS_SEATS);
+			return serviceStatusDto;
+		}
+			
 		carpooldetailsDto.setModifieddate(currentDate);
 		Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
 		String updateCarpooldetails = carpooldetailsDAO.updateCarpooldetails(carpooldetails);
-		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
+		
 		if(ObjectUtils.anyNotNull(updateCarpooldetails)){
 			logger.info("CarpooldetailsServiceImpl : updateCarpooldetails ::"+updateCarpooldetails);
 			serviceStatusDto.setStatus(true);
 			serviceStatusDto.setMessage(updateCarpooldetails);
-		}else {
-			serviceStatusDto.setStatus(false);
 		}
 		return serviceStatusDto;
 	}
@@ -360,7 +372,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 	 * @param location 
 	 * @return List<CustomerCarpooldetailsDto>
 	 */
-	public List<CustomerCarpooldetailsDto> getCarPoolDetails(String location) {
+	public List<CustomerCarpooldetailsDto> getCarPoolDetails(String location, String emailId) {
 		try {
 			List<Carpooldetails> carpoolLists = new ArrayList<>();
 
@@ -385,8 +397,8 @@ if(registerDomain!=null && registerDomain.size()>0) {
 
 						Date fromDate = sdf.parse(car.getFromDate());
 						Date currentDate = sdf.parse(StrTodayDate);
-						if (fromDate.before(currentDate)) {
-							break;
+						if (fromDate.before(currentDate) || emailId.equals(car.getEmailId())) {
+							continue;
 						} else {
 							User user = userDAO.findByEmailId(car.getEmailId());
 							if (user != null) {
@@ -444,7 +456,9 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		logger.info("CarpooldetailsServiceImpl:loadCarpoolDetailsByEmailId");
 
 		try {
-			List<Carpooldetails> carpooldetailsList = carpooldetailsDAO.getCarPoolByMailID(emailId);
+			Date date = new Date();
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			List<Carpooldetails> carpooldetailsList = carpooldetailsDAO.getCarPoolsByEmailAndCurrentDate(emailId,format.format(date));
 		    carpooldetailsDtoList= CarpooldetailsServiceUtil.convertDaoTODto(carpooldetailsList);
 		}catch (Exception e) {
 			logger.error("Exception Occured in Class:CarpooldetailsServiceImpl Method:loadCarpoolDetailsByEmailId Message:"+e.getMessage());
@@ -480,8 +494,10 @@ if(registerDomain!=null && registerDomain.size()>0) {
 						parentCarpoolDetailsDto.setFromDate(carpooldetails.getFromDate());
 						parentCarpoolDetailsDto.setToDate(carpooldetails.getToDate());
 						parentCarpoolDetailsDto.setLocation(carpooldetails.getLocation());
-						parentCarpoolDetailsDto.setParentId(carpooldetails.getParentid());
+						parentCarpoolDetailsDto.setParentid(carpooldetails.getParentid());
 						parentCarpoolDetailsDto.setStatus(String.valueOf(carpooldetails.getStatus()));
+						Pool_Status pool_Status = Pool_Status.values()[(carpooldetails.getStatus()-1)];
+						parentCarpoolDetailsDto.setStatusName(pool_Status.toString());
 						parentCarpoolDetailsDtos.add(parentCarpoolDetailsDto);
 						break;
 					}
@@ -505,7 +521,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		try {
 			List<Carpooldetails> carpools = carpooldetailsDAO.getCarpoolsByParentId(parentId);
 
-			List<CarpoolRiderDetails> ridersList = null;
+			List<CarpoolRiderDetails> ridersList = null; 
 
 			// driverCarPoolDto.setLocation(location);
 
@@ -717,7 +733,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			logger.info("Entered into CarpooldetailsServiceImpl Method:getRidesForDrivers");
 			 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				String currentdate=sdf.format(new Date());
-			 Carpooldetails carpooldetails= carpooldetailsDAO.getCarpoolByDateAndEmail("11/03/2018",email);
+			 Carpooldetails carpooldetails= carpooldetailsDAO.getCarpoolByDateAndEmail(currentdate,email);
 			
 			
 				 List<TodayRiderDetailsDTO> riderDetails=new ArrayList<>();
@@ -757,7 +773,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			List<Carpooldetails> caList = new ArrayList<>();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			String currentdate = sdf.format(new Date());
-			List<Integer> allCarpoolIds = carpooldetailsDAO.getCarpoolByDate("11/03/2018");
+			List<Integer> allCarpoolIds = carpooldetailsDAO.getCarpoolByDate(currentdate);
 			CarpoolRiderDetails carpoolRiderDetails = carpoolRiderDAO.getRidesByMailandAllCarpoolIds(email, allCarpoolIds);
 			DriverCarPoolDto driverCarPoolDto = new DriverCarPoolDto();
 			if (carpoolRiderDetails != null) {
@@ -770,6 +786,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 					driverCarPoolDto.setLocation(carpooldetails.getLocation());
 					driverCarPoolDto.setStatus(String.valueOf(carpooldetails.getStatus()));
 					driverCarPoolDto.setToDate(carpooldetails.getToDate());
+					driverCarPoolDto.setEmail(carpooldetails.getEmailId());
 					User user = userDAO.findByEmailId(carpoolRiderDetails.getEmailid());
 					String mobile = registerDAO.getMobileNumberByEmail(carpoolRiderDetails.getEmailid());
 					if (user != null)
@@ -781,5 +798,157 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			}
 			return driverCarPoolDto;
 		}
-	 
+		
+		
+		public List<OptRideDto> getCarpoolsDataNotOptedOrOptedByMe(int parentId, String emilId, Boolean OptedData)
+				throws CarpooldetailsServiceException {
+			logger.debug("BEGIN: getCarpoolsDataNotOptedOrOptedByMe in the class" + this.getClass().getName());
+			List<OptRideDto> optRideDataList = new ArrayList<OptRideDto>();
+			try {
+				List<Carpooldetails> carPoolDataList = carpooldetailsDAO.getCarpoolsByParentId(parentId);
+				carPoolDataList = OptARideServiceUtil.removeParentIdFromCarPoolList(carPoolDataList, parentId);
+				if (OptedData) {
+					optRideDataList = constructListOfOptRides(emilId, carPoolDataList);
+				} else {
+					optRideDataList = constructListOfNotOptRides(emilId, carPoolDataList);
+				}
+				logger.debug("END: getCarpoolsDataNotOptedOrOptedByMe in the class" + this.getClass().getName());
+			} catch (Exception ex) {
+				logger.error("Some thing went wrong while fetching getCarpoolsDataNotOptedOrOptedByMe::");
+				throw new CarpooldetailsServiceException(ex.getMessage());
+			}
+			return optRideDataList;
+		}
+
+		private List<OptRideDto> constructListOfNotOptRides(String emailId, List<Carpooldetails> carPoolDataList) {
+			List<CarpoolRiderDetails> carPoolRiderDetailsList = new ArrayList<CarpoolRiderDetails>();
+			List<OptRideDto> optRideDtoList = new ArrayList<OptRideDto>();
+			for (Carpooldetails carppol : carPoolDataList) {
+				carPoolRiderDetailsList = carpoolRiderDAO.getNotOptedRiderDeatils(carppol.getId());
+				if (carPoolRiderDetailsList.size() != 0) {
+					Boolean isFind = OptARideServiceUtil.findCpIdRiderEmailId(emailId, carPoolRiderDetailsList);
+					if (!isFind) {
+						List<CarpoolRiderDetails> carPoolRiderDetailsAfterFilter = OptARideServiceUtil
+								.filterAcceptStatus(carPoolRiderDetailsList);
+						int optedCount = carPoolRiderDetailsAfterFilter.size();
+						OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDto(carppol, optedCount);
+						optRideDtoList.add(optRideDto);
+					}
+				}
+			}
+			return optRideDtoList;
+		}
+
+		private List<OptRideDto> constructListOfOptRides(String emailId, List<Carpooldetails> carPoolDataList) throws Exception {
+			CarpoolRiderDetails carPoolRiderDetails;
+			List<OptRideDto> optRideDtoList = new ArrayList<OptRideDto>();
+			for (Carpooldetails carppol : carPoolDataList) {
+				carPoolRiderDetails = carpoolRiderDAO.getOptedRiderDeatils(carppol.getId(), emailId);
+				if (carPoolRiderDetails != null) {
+					carPoolRiderDetails = OptARideServiceUtil.acceptStatusList(carPoolRiderDetails);
+				}
+				int optedCount = 0;
+				if (carPoolRiderDetails != null) {
+					optedCount = calculateOptedCount(carppol);
+					OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDto(carppol, optedCount);
+					optRideDtoList.add(optRideDto);
+				}
+			}
+			return optRideDtoList;
+		}
+
+		private int calculateOptedCount(Carpooldetails carppol) {
+			List<CarpoolRiderDetails> CarPoolDetailsList = carpoolRiderDAO.getOptedRiderDeatils(carppol.getId());
+			List<CarpoolRiderDetails> CarPoolDetailsOptedList = new ArrayList<CarpoolRiderDetails>();
+			CarpoolRiderDetails carPoolRiderDetails = null;
+			Iterator<CarpoolRiderDetails> itr = CarPoolDetailsList.iterator();
+			while (itr.hasNext()) {
+				carPoolRiderDetails = OptARideServiceUtil.acceptStatusList(itr.next());
+				CarPoolDetailsOptedList.add(carPoolRiderDetails);
+			}
+			return CarPoolDetailsOptedList.size();
+		}
+		/**
+		 * @author Mahesh Bheemanapalli : CPL049: Functionality to update car pool
+		 *         status using scheduler
+		 * 
+		 *         This method is used update the carpool status as "Closed" except
+		 *         "Cancelled" where todate is Less than or equal to Current Date.
+		 * @return ServiceStatusDto
+		 */
+	@Override
+	public ServiceStatusDto updateCarpoolStatus() {
+		// TODO Auto-generated method stub
+		logger.info("CarpooldetailsServiceImpl:updateCarpoolStatus");
+		ServiceStatusDto statusDto = new ServiceStatusDto(); 
+		try {
+			String statusToClosed = carpooldetailsDAO.updateCarpoolStatusToClosed();
+			logger.info("CarpooldetailsServiceImpl : updateCarpoolStatus :"+statusToClosed);
+			if(ObjectUtils.anyNotNull(statusToClosed)) {
+				statusDto.setStatus(true);
+				statusDto.setMessage(statusToClosed);
+			}
+		}
+		catch(Exception e) {
+			logger.debug("CarpooldetailsServiceImpl : updateCarpoolStatus"+e.getMessage());
+			statusDto.setStatus(false);
+			statusDto.setMessage(e.getMessage());
+		}
+		return statusDto;
+	}
+		/*
+		 * @author: Suresh Valavala
+		 * @Param: List<CarpoolRiderDetails>
+		 * @return: count of filled seats in a carpool
+		 */
+		private int getFilledSeatsInPool(List<CarpoolRiderDetails> ridersList) {
+			int count = 0;
+			
+			if (ridersList != null && ridersList.size() > 0) {
+				int requestedCount = 0;
+				int approvedCount = 0;
+				for (CarpoolRiderDetails rider : ridersList) {
+
+					if(rider.getStatus() == 1) {
+						++requestedCount;
+					}else if(rider.getStatus() == 2) {
+						++approvedCount;
+					}
+				}
+				count = requestedCount + approvedCount ;
+			}
+			
+			return count;
+		}
+
+		@Override
+		public ServiceStatusDto cancelCarpooldetailsByParentId(CarpooldetailsDto carpooldetailsDto) {
+			// TODO Auto-generated method stub
+			logger.info("CarpooldetailsServiceImpl ***:: : cancel Carpooldetails");
+			
+			//carpooldetailsDto.setModifieddate(currentDate);
+			
+			String cancelCarpooldetails=null;
+			try {
+				
+				//Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertSharedUpdateDtoTODao(carpooldetailsDto);
+				Carpooldetails carpooldetails = new  Carpooldetails();
+				carpooldetails.setParentid(carpooldetailsDto.getParentid());
+				cancelCarpooldetails = carpooldetailsDAO.cancelCarpooldetailsByParentId(carpooldetails);
+				logger.info("Carpooldetails after cancel  dao message::"+cancelCarpooldetails);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
+			if(ObjectUtils.anyNotNull(cancelCarpooldetails))
+			{
+				logger.info("CarpooldetailsServiceImpl : cancel Carpooldetails set message::"+cancelCarpooldetails);
+				serviceStatusDto.setStatus(true);
+				serviceStatusDto.setMessage(cancelCarpooldetails);
+			}
+			
+			return serviceStatusDto;
+
+}
 }

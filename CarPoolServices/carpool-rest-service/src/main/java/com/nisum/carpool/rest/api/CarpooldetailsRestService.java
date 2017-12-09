@@ -24,6 +24,7 @@ import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
 import com.nisum.carpool.service.dto.DriverCarPoolDto;
 import com.nisum.carpool.service.dto.Errors;
+import com.nisum.carpool.service.dto.OptRideDto;
 import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
 import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
@@ -51,19 +52,13 @@ public class CarpooldetailsRestService {
 		ResponseEntity<?> responseEntity = null;
 		try {
 			ServiceStatusDto statusDto = carpooldetailsService.updateCarpooldetails(carpooldetailsDto);
-			if (statusDto.isStatus()) {
 				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
-			}
-		} catch (Exception e) {
+		}catch (Exception e) {
 			Errors error = new Errors();
 			error.setErrorCode("500");
 			error.setErrorMessage(e.getMessage());
-			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
-			error.setErrorCode("BAD REQUEST");
-			error.setErrorMessage(Constants.MSG_UPDATE_CARPOOL_FAILED);
 			responseEntity = new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
-		
 		return responseEntity;
 
 	}
@@ -98,6 +93,35 @@ public class CarpooldetailsRestService {
 
 	}
 
+	@RequestMapping(value="/cancelByParentId",method=RequestMethod.PUT)
+	public ResponseEntity<?> cancelCarpooldetailsByParentId(@RequestBody CarpooldetailsDto carpooldetailsDto){
+		logger.info("Enter CarpooldetailsRestService :::: cancel Carpooldetails");
+		logger.info("parentId=="+carpooldetailsDto.getParentid());
+		ResponseEntity<?> responseEntity = null;
+		try {
+			ServiceStatusDto statusDto = carpooldetailsService.cancelCarpooldetailsByParentId(carpooldetailsDto);
+			if (statusDto.isStatus()) {
+				responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			Errors error = new Errors();
+			error.setErrorCode("BAD REQUEST");
+			error.setErrorMessage(Constants.MSG_CANCEL_CARPOOL_FAILED);
+			responseEntity = new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
+		}
+
+		// update in Carpool rider
+		try {
+			String cancelRider = carpoolRiderService.cancelCarpoolRiderDetails(carpooldetailsDto.getParentid());
+			logger.info("msg for Carpoll rider cancel" + cancelRider);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return responseEntity;
+
+	}
 	/**
 	 * @author Manohar Dhavala
 	 * 
@@ -121,12 +145,13 @@ public class CarpooldetailsRestService {
 	 */
 	
 	@RequestMapping(value = "/getCarPoolDetails", method = RequestMethod.GET)
-	public ResponseEntity<?> getCarPoolDetails(@RequestParam(required = false, value = "location") String location)
+	public ResponseEntity<?> getCarPoolDetails(@RequestParam(required = false, value = "location") String location,
+			@RequestParam(required = true, value = "emailId") String emailId)
 			{
 		
 		List<CustomerCarpooldetailsDto> poolList=null;
 		try {
-			poolList=carpooldetailsService.getCarPoolDetails(location);
+			poolList=carpooldetailsService.getCarPoolDetails(location, emailId);
 			return new ResponseEntity<List<CustomerCarpooldetailsDto>>(poolList, HttpStatus.OK);
 
 		} catch (Exception e) {
@@ -267,7 +292,7 @@ public class CarpooldetailsRestService {
 		
 
 	//seconds minutes hours dayofthemonth month dayoftheweek
-	@Scheduled(cron = "30 53 23 * * ?")
+	@Scheduled(cron = "0 45 23 * * ?")
 	@RequestMapping(value = "/addDriverRewardPoints", method = RequestMethod.GET)
 	public ResponseEntity<?> addRewardsToDriver() {
 		logger.info("CarpooldetailsRestService : addRewardsToDriver");
@@ -302,6 +327,7 @@ public class CarpooldetailsRestService {
 	 */
 	
 	
+
 	@RequestMapping(value = "/getMySharedRides/{email:.+}/{userType}", method = RequestMethod.GET)
 	public ResponseEntity<?> getTodayRides(@PathVariable("email")String email,@PathVariable("userType")String userType) 
 	{
@@ -314,7 +340,9 @@ public class CarpooldetailsRestService {
 				List<TodayRiderDetailsDTO> ridersList =	carpooldetailsService.getRidesForDrivers(email, userType);
 			if(ridersList!=null && ridersList.size()>0 )
 			{
-				return new ResponseEntity<List<TodayRiderDetailsDTO>>(ridersList,HttpStatus.OK);
+				DriverCarPoolDto driverCarPoolDto=carpooldetailsService.getDriversByRider(email, userType);
+				driverCarPoolDto.setTodayRiderDetailsDTOs(ridersList);
+				return new ResponseEntity<DriverCarPoolDto>(driverCarPoolDto,HttpStatus.OK);
 			}
 				
 				}
@@ -323,20 +351,63 @@ public class CarpooldetailsRestService {
 				{
 					DriverCarPoolDto driverCarPoolDto=carpooldetailsService.getDriversByRider(email, userType);
 					if(driverCarPoolDto!=null)
+					{
+						List<TodayRiderDetailsDTO> riders=	carpooldetailsService.getRidesForDrivers(driverCarPoolDto.getEmail(), userType);
+						driverCarPoolDto.setTodayRiderDetailsDTOs(riders);
 					return new ResponseEntity<DriverCarPoolDto>(driverCarPoolDto,HttpStatus.OK);
-					
-					
+				
+				}
+				
 				}
 				else
 				{
 					return new ResponseEntity<String>("No rides found.",HttpStatus.OK);
 				}
-				
 			} catch (Exception ex) {
 				logger.error("Exception Occured in Class:CarpooldetailsRestService getTodayRides Message:"+ex.getMessage());
 				ex.printStackTrace();
 			}
 			return null;
-		}
+	}
 	
+
+
+	
+	
+	@RequestMapping(value = "/getCarpoolsDataNotOptedOrOptedByMe/{parentID}", method = RequestMethod.GET)
+	public ResponseEntity<?> getCarpoolsDataNotOptedOrOptedByMe(@PathVariable("parentID") Integer id,
+			@RequestParam(required = false, value = "emailId") String emailId,
+			@RequestParam(required = false, value = "optedData") Boolean optedData) {
+		logger.info("BEGIN: getCarpoolsDataNotOptedOrOptedByMe() in the CarpooldetailsRestService");
+		try {
+			return new ResponseEntity<List<OptRideDto>>(
+					carpooldetailsService.getCarpoolsDataNotOptedOrOptedByMe(id, emailId, optedData), HttpStatus.OK);
+		} catch (Exception ex) {
+			logger.error("ERROR:some thing went wrong while fetching getCarpoolsDataNotOptedOrOptedByMe");
+			return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+
+	}
+
+	
+	/**
+	 * @author Mahesh Bheemanapalli
+	 * @param Change Status to "Close", if status other than "Cancel" & "Close"
+	 * @return 
+	 */
+	@Scheduled(cron = "0 0 23 * * ?")
+	@RequestMapping(value = "/updateCarpoolStatusToClosed", method = RequestMethod.GET)
+	public ResponseEntity<?> updateCarpoolStatus() {
+		logger.info("CarpooldetailsRestService : updateCarpoolStatus");
+		try {
+			ServiceStatusDto statusDto = carpooldetailsService.updateCarpoolStatus();
+			logger.info("CarpooldetailsRestService : updateCarpoolStatus : "+statusDto.getMessage());
+			return new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
+
+		} catch (Exception e) {
+			logger.error("CarpooldetailsRestService : updateCarpoolStatus : Inside Catch Block" +e.getMessage());
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+
+	}
 }

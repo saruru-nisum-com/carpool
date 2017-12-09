@@ -36,6 +36,7 @@ public class Constants {
 	public static final String MSG_CARPOOL_CANCEL = "Carpool Cancelled Successfully !!";
 	public static final String MSG_CARPOOL_CANCEL_MULTI = "All CarpoolDetails Cancelled Successfully !!";
 	public static final String MSG_CANCEL_CARPOOL_FAILED = "Cancel Carpool Failed !!";
+	public static final String MSG_CARPOOL_SELECTED_LESS_SEATS = "You Have Selected Less Seats Than Opted Seats For This Pool.";
 	
 	// Email configuration for new user account
 		public static final String GMAIL_SMTP="mail.smtp.auth";

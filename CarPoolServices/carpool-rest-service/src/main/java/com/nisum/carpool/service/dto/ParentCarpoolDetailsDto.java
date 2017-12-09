@@ -3,18 +3,33 @@ package com.nisum.carpool.service.dto;
 import java.io.Serializable;
 
 public class ParentCarpoolDetailsDto implements Serializable {
-	private int parentId;
+	private int parentid;
 	private String location;
 	private String fromDate;
 	private String toDate;
 	private String status;
+	private String statusName;
 
-	public int getParentId() {
-		return parentId;
+	/**
+	 * @return the statusName
+	 */
+	public String getStatusName() {
+		return statusName;
 	}
 
-	public void setParentId(int parentId) {
-		this.parentId = parentId;
+	/**
+	 * @param statusName the statusName to set
+	 */
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+
+	public int getParentid() {
+		return parentid;
+	}
+
+	public void setParentid(int parentid) {
+		this.parentid = parentid;
 	}
 
 	public String getLocation() {
@@ -49,18 +64,25 @@ public class ParentCarpoolDetailsDto implements Serializable {
 		this.status = status;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((fromDate == null) ? 0 : fromDate.hashCode());
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
-		result = prime * result + parentId;
+		result = prime * result + parentid;
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((statusName == null) ? 0 : statusName.hashCode());
 		result = prime * result + ((toDate == null) ? 0 : toDate.hashCode());
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -80,12 +102,17 @@ public class ParentCarpoolDetailsDto implements Serializable {
 				return false;
 		} else if (!location.equals(other.location))
 			return false;
-		if (parentId != other.parentId)
+		if (parentid != other.parentid)
 			return false;
 		if (status == null) {
 			if (other.status != null)
 				return false;
 		} else if (!status.equals(other.status))
+			return false;
+		if (statusName == null) {
+			if (other.statusName != null)
+				return false;
+		} else if (!statusName.equals(other.statusName))
 			return false;
 		if (toDate == null) {
 			if (other.toDate != null)
@@ -95,10 +122,13 @@ public class ParentCarpoolDetailsDto implements Serializable {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "ParentCarpoolDetailsDto [parentId=" + parentId + ", location=" + location + ", fromDate=" + fromDate
-				+ ", toDate=" + toDate + ", status=" + status + "]";
+		return "ParentCarpoolDetailsDto [parentid=" + parentid + ", location=" + location + ", fromDate=" + fromDate
+				+ ", toDate=" + toDate + ", status=" + status + ", statusName=" + statusName + "]";
 	}
 
 }

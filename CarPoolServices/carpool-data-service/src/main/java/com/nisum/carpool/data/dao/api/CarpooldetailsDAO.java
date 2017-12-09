@@ -39,9 +39,15 @@ public interface CarpooldetailsDAO {
 	Carpooldetails getCarpoolByDateAndEmail(String date, String email);
 
 	public List<Integer> getCarpoolByDate(String date);
+	
+	String updateCarpoolStatusToClosed();
 
 	List<Carpooldetails> findCarpoolDetailsByParentId(int parentid);
+	
+	public String cancelCarpooldetailsByParentId(Carpooldetails carpooldetails);
 
 	public List<Carpooldetails> getCarPoolByCpIDandDate(int cpid, String date);
+	
+	public List<Carpooldetails> getCarPoolsByEmailAndCurrentDate(String emailId, String date);
 
 }

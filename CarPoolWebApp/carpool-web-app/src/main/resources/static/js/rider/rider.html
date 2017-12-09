@@ -349,7 +349,7 @@ width: 100% !important;
 			</div>
 			<div class="alert alert-success" role="alert" ng-if="isVisible==true">
 				<button type="button" class="close" data-dismiss="alert"
-					aria-label="Close">
+					aria-label="Close" ng-click="resetMsgVisibility();">
 					<span aria-hidden="true">&times;</span>
 				</button>
 				<a href="#" class="alert-link">You have {{actionName}}
@@ -410,9 +410,9 @@ width: 100% !important;
 							<label>Gender</label>
 						</div>
 						<div class="col-md-4">
-							<label class="radio-inline"> <input type="radio"
+							<label class="radio-inline"> <input type="radio" ng-disabled="disableGender == true"
 								ng-model="gender" name="genderMale" id="male" value="1" ng-required="!gender">Male
-							</label> <label class="radio-inline"> <input type="radio"
+							</label> <label class="radio-inline"> <input type="radio" ng-disabled="disableGender == true"
 								ng-model="gender" name="genderFemale" id="female" value="2" ng-required="!gender">Female
 							</label>
 						</div>

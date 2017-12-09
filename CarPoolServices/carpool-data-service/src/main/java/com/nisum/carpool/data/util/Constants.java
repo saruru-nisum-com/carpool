@@ -76,5 +76,10 @@ public class Constants {
 		public static final String REWARDS_NOT_ADDED_RIDER="Reward Points are not added to Rider !!";
 		public static final String NO_RIDES_WITH_RESPECTIVE_CARPOOL="There is No Rides With respective same carpool Id's !!";
 		public static final String NO_CARPOOLS_TO_UPDATE="There is no Carpools to update !!";
+		public static final String NO_CARPOOLS_TO_UPDATE_STATUS="There is no Carpools to update the Status!!";
+		public static final String CARPOOL_STATUS_UPDATED="Carpool Status Updated Successfully !!";
+		public static final String CARPOOL_STATUS_NOT_UPDATED="Sorry !! Carpool Status is Not Updated";
+		public static final String CARPOOL_RIDER_NOTIFICATION_CLEANED="CarpoolriderNotifications Cleaned Successfully !! ";
+		public static final String CARPOOL_RIDER_NOTIFICATION_NOT_CLEANED="Sorry ! CarpoolriderNotifications Not Cleaned ";
 }
 

@@ -5,5 +5,10 @@ var mySharedRidesApp = angular.module('mySharedRidesApp', ['ui.router'])
 		templateUrl:'js/mySharedRides/mySharedRides.html',
 		controller: 'mySharedRidesController'
 	})
+	$stateProvider.state('approveOrReject',{
+		url:'/approveOrReject',
+		templateUrl:'js/mySharedRides/approveOrReject.html',
+		controller: 'mySharedRidesController'
+	})
 	
 })	 
