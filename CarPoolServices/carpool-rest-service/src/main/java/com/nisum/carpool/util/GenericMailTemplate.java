@@ -2,12 +2,11 @@ package com.nisum.carpool.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -21,7 +20,6 @@ import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Charsets;
@@ -31,6 +29,7 @@ import com.nisum.carpool.data.util.Ride_Status;
 import com.nisum.carpool.service.dto.EmailAccount;
 import com.nisum.carpool.service.dto.GenericEmailDto;
 import com.nisum.carpool.service.dto.MessageContextDto;
+import com.nisum.carpool.service.exception.MailServiceException;
 
 /**
  * 
@@ -46,120 +45,236 @@ public class GenericMailTemplate {
 	@Autowired
 	private MessageContextDto messageContextDto;
 
-	public void sendGenericMail(String ccMail, Map<String, GenericEmailDto> userMap) {
-		logger.info("GenericMailTemplate::sendGenericMail::Entered into sendGenericMail functionality");
+	String headerContent = "";
+	String footerContent = "";
+
+	/**
+	 * @author Rajendra Prasad Dava This method loads the header and footer file at
+	 *         while loading the class
+	 * 
+	 * @throws MailServiceException
+	 */
+	@PostConstruct
+	public void loadFilePathAtStartUp() throws MailServiceException {
+		logger.info("GenericMailTenmplate :: loadFilePathAtStartUp() :: loading header and footer files");
+		try {
+
+			headerContent = Files.toString(
+					new File(System.getProperty("user.dir") + "/src/main/resources/static/header.html"),
+					Charsets.UTF_8);
+			footerContent = Files.toString(
+					new File(System.getProperty("user.dir") + "/src/main/resources/static/footer.html"),
+					Charsets.UTF_8);
+			logger.info("loaded files :" + headerContent + "\n" + footerContent);
+		} catch (IOException e) {
+			throw new MailServiceException("Unable to load the header and footer files");
+		}
+	}
+
+	/**
+	 * @author Rajendra Prasad Dava
+	 * 
+	 *         This method sends an mail to particular receipient given in userMap
+	 * 
+	 * @param ccMail
+	 * @param userMap
+	 * @return status whether the mail is sent successfully or not
+	 * @throws MailServiceException
+	 */
+	public boolean sendGenericMail(String ccMail, Map<String, GenericEmailDto> userMap) throws MailServiceException {
+		boolean flag = false;
+		logger.info("GenericMailTemplate::sendGenericMail()::Entered into sendGenericMail functionality");
+		if (userMap == null) {
+			throw new MailServiceException("Please Enter Valid Details");
+		} else {
+			logger.info(
+					"GenericMailTemplate:: sendGenericMailTemplate :: calling performValidation() to validate the input data");
+			boolean status = performValidations(userMap);
+			Session session = null;
+			if (status) {
+				String fromMail = emailAccount.getAdminemail();
+				String password = emailAccount.getAdminpassword();
+				logger.info(
+						"GenericMailTemplate :: sendGenericEmail :: calling setPropertiesAndAuthenticateAdminMail() method to authenticate the mail");
+				session = setPropertiesAndAuthenticateAdminMail(fromMail, password);
+
+				try {
+					Message message = new MimeMessage(session);
+					message.setFrom(new InternetAddress(fromMail));
+					logger.info(
+							"GenericMailTemplate :: sendGenericMail:: calling buildAndSendMail() to build the mail");
+					flag = buildAndSendMail(message, ccMail, userMap);
+				} catch (Exception e) {
+					logger.info("GenericMailTemplate :: sendGenericMail:: failed to send mail");
+					throw new MailServiceException(Constants.MAILFAILEDEXCEPTION);
+				} // end of catch block
+			} // end of if
+			logger.info("GenericMailTemplate :: sendGenericMail :: mail sent successfully");
+			return flag;
+		} // end of else
+	}// end of method
+
+	/**
+	 * @author Rajendra Prasad Dava
+	 * 
+	 *         This method validates whether given input data is empty or not
+	 * 
+	 * @param userMap
+	 * @return status as true if validations are done successfully
+	 * @throws MailServiceException
+	 */
+	public boolean performValidations(Map<String, GenericEmailDto> userMap) throws MailServiceException {
+		logger.info("GenericMialTemplate :: performValidations:: entered into performValidations() method");
+		Set<String> toMail = null;
+		if ((toMail = userMap.keySet()) != null) {
+			for (String key : toMail) {
+				if ("".equals(key)) {
+					throw new MailServiceException("Please enter the valid receipient mail id");
+				} else {
+					GenericEmailDto genereicEmailDto = userMap.get(key);
+					if (genereicEmailDto.getDate() == null || genereicEmailDto.getDate().equals("")) {
+						throw new MailServiceException(Constants.INVALIDDATE);
+					}
+					if (genereicEmailDto.getLocation() == null || genereicEmailDto.getLocation().equals("")) {
+						throw new MailServiceException(
+								"Locatoin value should not be empty, Please enter valid Location");
+					}
+					if (genereicEmailDto.getUserName() == null || genereicEmailDto.getUserName().equals("")) {
+						throw new MailServiceException(
+								Constants.INVALIDUSERNAME);
+					}
+					if (genereicEmailDto.getStartTime() == null || genereicEmailDto.getStartTime().equals("")) {
+						throw new MailServiceException(
+								Constants.INVALIDSTARTTIME);
+					}
+					if (genereicEmailDto.getReturnTime() == null || genereicEmailDto.getReturnTime().equals("")) {
+						throw new MailServiceException(
+								Constants.INVALIDRETURNTIME);
+					}
+				} // end of else
+			} // end of for loop
+		}
+		logger.info("GenericMailTemplate :: performValidations:: exiting from performValidations()");
+		return true;
+	}
+
+	/**
+	 * @author Rajendra Prasad Dava
+	 * 
+	 *         This method set the properties for smtp server and authenticates the
+	 *         given mailid and password
+	 * @return session for given mail and password
+	 */
+	public Session setPropertiesAndAuthenticateAdminMail(String fromMail, String password) {
+		logger.info(
+				"GenericMailTemplate :: propertiesSetForSmtp :: entered into setPropertiesAndAuthenticateAdminMail() method");
 		Properties props = new Properties();
 		props.put(Constants.GMAIL_SMTP, Constants.TRUE_FLAG);
 		props.put(Constants.GMAIL_START_TLS, Constants.TRUE_FLAG);
 		props.put(Constants.GMAIL_HOST, Constants.GMAIL_HOST_NAME);
 		props.put(Constants.GMAIL_PORT, Constants.GMAIL_PORT_NUM);
+		logger.info("GenericMailTemplate :: propertiesSetForSmtp :: properties are set for smtp");
 
-		String fromMail = emailAccount.getAdminemail();
-		String password = emailAccount.getAdminpassword();
-
+		logger.info("GenericMailTemplate :: sendGenericEmail :: Authenticating admin emailid and password ");
 		Authenticator authenticator = new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(fromMail, password);
 			}
 		};
-
 		Session session = Session.getInstance(props, authenticator);
-
-		try {
-			logger.info("GenericMailTemplate :: Building the mail structure");
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(fromMail));
-			buildMailReceipientAndBody(message, ccMail, userMap);
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
+		logger.info(
+				"GenericMailTemplate :: sendGenericMail :: exiting from setPropertiesAndAuthenticateAdminMail() method");
+		return session;
 	}
 
-	public void buildMailReceipientAndBody(Message message, String ccMail, Map<String, GenericEmailDto> userMap)
-			throws AddressException, MessagingException {
-		logger.info("GenricMailTemplate :: buildMailReceipientAndBody :: Entered into buildMailReceipientAndBody");
+	/**
+	 * @author Rajendra Prasad Dava
+	 * 
+	 *         This method builds and sends an email to particular user given in
+	 *         userMap
+	 * 
+	 * @param message
+	 * @param ccMail
+	 * @param userMap
+	 * @throws AddressException
+	 * @throws MessagingException
+	 * @return status whether mail has build and sent
+	 * @throws MailServiceException 
+	 */
+	public boolean buildAndSendMail(Message message, String ccMail, Map<String, GenericEmailDto> userMap)
+			throws AddressException, MessagingException, MailServiceException {
+		logger.info("GenricMailTemplate :: buildAndSendMail :: Entered into buildAndSendMail(ccMail, userMap)");
 		Set<String> toMail = userMap.keySet();
-		String bodyMsg;
+		String bodyMsg = null;
 		for (String key : toMail) {
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(key));
 
 			if (ccMail != null && !ccMail.equals("")) {
 				message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(ccMail));
 			}
+
 			GenericEmailDto dto = userMap.get(key);
 
 			if (dto.getStatus() == Ride_Status.APPROVED.getValue()) {
-				logger.info("GenericMailTemplate :: Method to build a message when a pool is approved by driver "
-						+ messageContextDto.getApproveSub());
+				logger.info(
+						"GenericMailTemplate :: buildAndSendMail :: Calling buildMessageBodyTemplate(dto, msgPrefix, msgSuffix, wishMsg) to build a message when a pool is approved by driver "
+								+ messageContextDto.getApproveSub());
 				message.setSubject(messageContextDto.getApproveSub());
-				bodyMsg = messageBodyTemplate(dto, messageContextDto.getMsgPrefix(),
+				bodyMsg = buildMessageBodyTemplate(dto, messageContextDto.getMsgPrefix(),
 						messageContextDto.getMsgApproveSuffix(), messageContextDto.getMsgWishApprove());
-				message.setText(bodyMsg);
-				message.setContent(bodyMsg, "text/html");
 			} else if (dto.getStatus() == Ride_Status.REJECTED.getValue()) {
-				logger.info("GenericMailTemplate :: Method to build a message when a poolis rejected by driver "
-						+ messageContextDto.getRejectSub());
+				logger.info(
+						"GenericMailTemplate :: buildAndSendMail ::Calling buildMessageBodyTemplate(dto, msgPrefix, msgSuffix, wishMsg) to build a message when a poolis rejected by driver "
+								+ messageContextDto.getRejectSub());
 
 				message.setSubject(messageContextDto.getRejectSub());
-				bodyMsg = messageBodyTemplate(dto, messageContextDto.getMsgPrefix(),
+				bodyMsg = buildMessageBodyTemplate(dto, messageContextDto.getMsgPrefix(),
 						messageContextDto.getMsgRejectSuffix(), messageContextDto.getMsgWish());
-				message.setText(bodyMsg);
-				message.setContent(bodyMsg, "text/html");
-
 			} else if (dto.getStatus() == Ride_Status.CANCELLED.getValue() && dto.getIsRider() == 1) {
-				logger.info("GenericMailTemplate :: Method to build a message when rider cancels the ride"
-						+ messageContextDto.getRiderCancelSub());
+				logger.info(
+						"GenericMailTemplate ::  buildAndSendMail :: Calling buildNotifyMeMessageBodyTemplate (dto) when rider cancels the ride"
+								+ messageContextDto.getRiderCancelSub());
 				message.setSubject(messageContextDto.getRiderCancelSub());
 				bodyMsg = riderCancelMessageBodyTemplate(dto);
-				message.setText(bodyMsg);
-				message.setContent(bodyMsg, "text/html");
 			} else if (dto.getStatus() == Pool_Status.CANCELLED.getValue()) {
-				logger.info("GenericMailTemplate :: Method to build a message when driver cancels the ride"
-						+ messageContextDto.getCancelSub());
-				message.setSubject(messageContextDto.getCancelSub());
-				bodyMsg = messageBodyTemplate(dto, messageContextDto.getMsgPrefix(),
-						messageContextDto.getMsgCancelSuffix(), messageContextDto.getMsgWish());
-				message.setText(bodyMsg);
-				message.setContent(bodyMsg, "text/html");
-
-			} else if (dto.isNotifyMe() == true) {
 				logger.info(
-						"GenericMailTemplate :: Method to build a message when a pool is reopened: Pool has been reopened");
+						"GenericMailTemplate ::  buildAndSendMail :: Calling buildMessageBodyTemplate(dto, msgPrefix, msgSuffix, wishMsg) to build a message when driver cancels the ride");
+				message.setSubject(messageContextDto.getCancelSub());
+				bodyMsg = buildMessageBodyTemplate(dto, messageContextDto.getMsgPrefix(),
+						messageContextDto.getMsgCancelSuffix(), messageContextDto.getMsgWish());
+			} else if (dto.isNotifyMe()) {
+				logger.info(
+						"GenericMailTemplate :: buildAndSendMail :: Calling buildNotifyMeMessageBodyTemplate (dto)");
 				message.setSubject("Pool has been reopened");
-				bodyMsg = notifyMeMessageBodyTemplate(dto);
-				message.setText(bodyMsg);
-				message.setContent(bodyMsg, "text/html");
+				bodyMsg = buildNotifyMeMessageBodyTemplate(dto);
 			}
 		}
+		message.setText(bodyMsg);
+		message.setContent(bodyMsg, "text/html");
 		Transport.send(message);
-
+		logger.info(
+				"GenericMailTemplate :: buildAndSendMail :: Exiting form buildAndSendMail() as the mail sent successfully");
+		return true;
 	}
 
 	/**
-	 * method that builds message template for approve, reject, driver cancel by
-	 * taking following parameters
+	 * @author Rajendra Prasad Dava
+	 * 
+	 *         This method builds message template for approve, reject and driver
+	 *         cancel a ride for given parameters
 	 * 
 	 * @param genericEmailDto
 	 * @param msgPrefix
 	 * @param msgSuffix
 	 * @param wishMsg
-	 * @return message that to be set for body of email
+	 * @return String which will be set as body of email for approve, reject and
+	 *         driver cancel
 	 */
-	public String messageBodyTemplate(GenericEmailDto genericEmailDto, String msgPrefix, String msgSuffix,
+	public String buildMessageBodyTemplate(GenericEmailDto genericEmailDto, String msgPrefix, String msgSuffix,
 			String wishMsg) {
-
+		logger.info(
+				"GenericMailTemplate :: buildMessageBodyTemplate :: Entered into buildMessageBodyTemplate(genericEmailDto, msgPrefix, msgSuffix, wishMsg)");
 		StringBuilder sb = new StringBuilder();
-
-		String headerContent = "";
-		String footerContent = "";
-
-		try {
-			headerContent = Files.toString(new File(messageContextDto.getHeaderPath()), Charsets.UTF_8);
-			footerContent = Files.toString(new File(messageContextDto.getFooterpath()), Charsets.UTF_8);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
 		sb.append(headerContent);
 		sb.append("<br/>");
 		sb.append("<html><head></head><title></title>");
@@ -187,30 +302,29 @@ public class GenericMailTemplate {
 		sb.append(footerContent);
 		sb.append(
 				"<i style='font-size:10px;font-family:Trebuchet MS;padding:10px'>Note: This is an auto generated e-mail. Please check this in <a href='#'>Carpool</a>.</i>");
+		logger.info(
+				"GenericMailTemplate :: buildMessageBodyTemplate :: Exiting from buildMessageBodyTemplate(genericEmailDto, msgPrefix, msgSuffix, wishMsg)");
 		return sb.toString();
 	}
 
 	/**
-	 * method that builds mail template when rider cancels the ride
+	 * @author Rajendra Prasad Dava
+	 * 
+	 *         This method builds mail template when rider cancels the ride
+	 * 
 	 * 
 	 * @param genericEmailDto
-	 * @return message that to be set for body of email whne rider cancels the ride
+	 * @return message that to be set for body of email when rider cancels the ride
+	 * @throws MailServiceException 
 	 */
-	public String riderCancelMessageBodyTemplate(GenericEmailDto genericEmailDto) {
-
-		StringBuilder sb = new StringBuilder();
-
-		String headerContent = "";
-		String footerContent = "";
-
-		try {
-			headerContent = Files.toString(new File(messageContextDto.getHeaderPath()), Charsets.UTF_8);
-			footerContent = Files.toString(new File(messageContextDto.getFooterpath()), Charsets.UTF_8);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public String riderCancelMessageBodyTemplate(GenericEmailDto genericEmailDto) throws MailServiceException {
 		logger.info(
-				"GenericMailTemplate :: riderCancelMessageBodyTemplate::Building body of mail when rider cancels the ride");
+				"GenericMailTemplate :: riderCancelMessageBodyTemplate::Entered into riderCancelMessageBodyTemplate(geenricEmailDto)");
+		if(genericEmailDto.getIsRider()==0) {
+			throw new MailServiceException(
+					Constants.INVALIDISRIDERVALUE);
+		}
+		StringBuilder sb = new StringBuilder();
 		sb.append(headerContent);
 		sb.append("<br/>");
 		sb.append("<html><head></head><title></title>");
@@ -221,8 +335,8 @@ public class GenericMailTemplate {
 		sb.append("<b style='font-size:14px;font-family:Trebuchet MS;padding:10px'>"
 				+ genericEmailDto.getRiderUserName() + " has cancelled his ride on " + genericEmailDto.getDate()
 				+ " from " + genericEmailDto.getLocation() + " to Nisum at " + genericEmailDto.getStartTime()
-				+ " and from Nisum to " + genericEmailDto.getLocation() + " at  " + genericEmailDto.getReturnTime()+"."
-				+ "</b>");
+				+ " and from Nisum to " + genericEmailDto.getLocation() + " at  " + genericEmailDto.getReturnTime()
+				+ "." + "</b>");
 		if (genericEmailDto.getRemarks() != null) {
 			sb.append("<br><br>");
 			sb.append("<i style='font-size:16px;font-family:Trebuchet MS;padding:10px;colorRed'>Remarks: "
@@ -235,28 +349,24 @@ public class GenericMailTemplate {
 		sb.append(footerContent);
 		sb.append(
 				"<i style='font-size:10px;font-family:Trebuchet MS;padding:10px'>Note: This is an auto generated e-mail. Please check this in <a href='#'>Carpool</a>.</i>");
+		logger.info(
+				"GenericMailTemplate :: riderCancelMessageBodyTemplate::Exiting from riderCancelMessageBodyTemplate(geenricEmailDto)");
 		return sb.toString();
 	}
 
 	/**
-	 * method that builds mail template when pool is reopened
+	 * @author Rajendra Prasad
+	 * 
+	 *         This method builds mail template when pool is reopened
+	 * 
+	 * 
 	 * @param genericEmailDto
 	 * @return message that to be set for body of email when pool is reopened
 	 */
-	public String notifyMeMessageBodyTemplate(GenericEmailDto genericEmailDto) {
-
+	public String buildNotifyMeMessageBodyTemplate(GenericEmailDto genericEmailDto) {
+		logger.info(
+				"GenericMailTemplate :: buildNotifyMeMessageBodyTemplate::Entered into buildNotifyMeMessageBodyTemplate(genericEmailDto) ");
 		StringBuilder sb = new StringBuilder();
-
-		String headerContent = "";
-		String footerContent = "";
-
-		try {
-			headerContent = Files.toString(new File(messageContextDto.getHeaderPath()), Charsets.UTF_8);
-			footerContent = Files.toString(new File(messageContextDto.getFooterpath()), Charsets.UTF_8);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		logger.info("GenericMailTemplate :: notifyMeMessageBodyTemplate::Building body of mail for pool reopened");
 		sb.append(headerContent);
 		sb.append("<br/>");
 		sb.append("<html><head></head><title></title>");
@@ -274,7 +384,8 @@ public class GenericMailTemplate {
 		sb.append(footerContent);
 		sb.append(
 				"<i style='font-size:10px;font-family:Trebuchet MS;padding:10px'>Note: This is an auto generated e-mail. Please check this in <a href='#'>Carpool</a>.</i>");
-
+		logger.info(
+				"GenericMailTemplate :: buildNotifyMeMessageBodyTemplate::Exiting from buildNotifyMeMessageBodyTemplate(genericemailDto)");
 		return sb.toString();
 	}
 }

@@ -66,6 +66,14 @@ public class Constants {
 		public static final String MSG_UPDATE_CARPOOL_FAILED = "Updating Carpool Failed !!";
 		
 		public static final String CANCELING_RIDE_FAILED = "Canceling Car Pool failed";
-		public static final String DRIVER_IS_REGISTERED_AS_RIDER = "Driver is already registered as rider for the day";;
+		public static final String DRIVER_IS_REGISTERED_AS_RIDER = "Driver is already registered as rider for the day";
+		//Exceptions and Mail Constants for GenericMailTemplate 
+		public static final String MAILFAILEDEXCEPTION="Unable to send email";
+		public static final String INVALIDDATE="Date value should not be empty, Please enter valid Date";
+		public static final String INVALIDUSERNAME="Username value should not be empty, Please enter valid userName";
+		public static final String INVALIDSTARTTIME="Start time value should not be empty, Please enter valid startTime";
+		public static final String INVALIDRETURNTIME="Return time value should not be empty, Please enter valid returnTime";
+		public static final String INVALIDISRIDERVALUE="Isrider value should not be empty, Please enter valid isRider";
+		
 		
 }
