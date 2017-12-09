@@ -395,9 +395,10 @@ if(registerDomain!=null && registerDomain.size()>0) {
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 						String StrTodayDate = sdf.format(new Date());
 
-						Date fromDate = sdf.parse(car.getFromDate());
+						Date toDate = sdf.parse(car.getToDate());
 						Date currentDate = sdf.parse(StrTodayDate);
-						if (fromDate.before(currentDate) || emailId.equals(car.getEmailId())) {
+						if (toDate.before(currentDate) || emailId.equals(car.getEmailId()) ||
+								car.getStatus() == 5) {
 							continue;
 						} else {
 							User user = userDAO.findByEmailId(car.getEmailId());
@@ -484,9 +485,9 @@ if(registerDomain!=null && registerDomain.size()>0) {
 				List<Carpooldetails> carpoolsByParentId = carpooldetailsDAO.getCarpoolsByParentId(p);
 				for (Carpooldetails carpooldetails : carpoolsByParentId) {
 					if (carpooldetails.getId().equals(carpooldetails.getParentid())) {
-						Date fromDate = sdf.parse(carpooldetails.getFromDate());
+						Date toDate = sdf.parse(carpooldetails.getToDate());
 						Date currentDtae = sdf.parse(currentdate);
-						if (carpooldetails.getStatus() == 5 || fromDate.before(currentDtae)) {
+						if (carpooldetails.getStatus() == 5 || toDate.before(currentDtae)) {
 							break;
 						}
 

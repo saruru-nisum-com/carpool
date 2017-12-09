@@ -5,6 +5,7 @@ app.service('commonService', function(localStorageService) {
 	cs.profile=profile;
 	cs.categoriesList=localStorageService.get('categoriesList');
 	cs.userName=profile ? profile.userName : null;
-	cs.location=profile ? profile.location : null;
+	cs.riderLocation=profile ? profile.riderLocation : null;
+	cs.driverLocation=profile ? profile.driverLocation : null;
 	return cs;
 });

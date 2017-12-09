@@ -27,7 +27,51 @@ public class UserDTO implements Serializable {
 	private byte[] imageIcon;
 	private String notifications;
 	private String profileName;
+	private String driverLocation;
 	private String location;
+	/**
+	 * @return the location
+	 */
+	public String getLocation() {
+		return location;
+	}
+
+	/**
+	 * @param location the location to set
+	 */
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	/**
+	 * @return the driverLocation
+	 */
+	public String getDriverLocation() {
+		return driverLocation;
+	}
+
+	/**
+	 * @param driverLocation the driverLocation to set
+	 */
+	public void setDriverLocation(String driverLocation) {
+		this.driverLocation = driverLocation;
+	}
+
+	/**
+	 * @return the riderLocation
+	 */
+	public String getRiderLocation() {
+		return riderLocation;
+	}
+
+	/**
+	 * @param riderLocation the riderLocation to set
+	 */
+	public void setRiderLocation(String riderLocation) {
+		this.riderLocation = riderLocation;
+	}
+
+	private String riderLocation;
 	
 	public byte[] getImageIcon() {
 		return imageIcon;
@@ -159,12 +203,6 @@ public class UserDTO implements Serializable {
 		this.profileName = profileName;
 	}
 
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
+	
 
 }

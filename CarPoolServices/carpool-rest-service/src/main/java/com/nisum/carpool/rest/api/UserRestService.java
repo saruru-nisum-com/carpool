@@ -71,7 +71,8 @@ public class UserRestService {
 
 		UserDTO userInfo = null;
 		User 	userData=null;
-		String userLocation=null;
+		String driverLocation=null;
+		String riderLocation=null;
 		logger.info("UserRestService :: Creating Users :::");
 		logger.info("User Rest service"+userDto.getUserName()+"emailId::"+userDto.getEmailId());
 		
@@ -136,8 +137,11 @@ public class UserRestService {
 				List<RegisterDomain> userList = registerDAO.getLocationOfRegisteredUser(userDto.getEmailId());
 				 if(userList!=null) {
 					 for(RegisterDomain registedDao:userList) {
-						 if(registedDao.getIsrider()==0)
-							 userLocation=registedDao.getLocation();
+						 if(registedDao.getIsrider()==0) {
+							 driverLocation=registedDao.getLocation();
+						 } else {
+							 riderLocation=registedDao.getLocation();
+						 }
 					 }
 				 }
 				
@@ -145,9 +149,10 @@ public class UserRestService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if(userLocation!=null) {
-				logger.info("user location from profile**"+userLocation);
-				userDto.setLocation(userLocation);
+			if(driverLocation!=null || riderLocation!=null) {
+				logger.info("user location from profile**"+driverLocation);
+				userDto.setDriverLocation(driverLocation);
+				userDto.setRiderLocation(riderLocation);
 			}
 			
 			httpRequest.setAttribute("userSession", userDto);

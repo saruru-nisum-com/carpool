@@ -60,7 +60,7 @@ var app = angular
 		.controller(
 				'mainController',
 				function($scope, $rootScope, localStorageService, $state,
-						$http, loginLogoutService) {
+						$http, loginLogoutService,$window) {
 					var vm = this;
 //					vm.redirect = function() {
 //						$state.go('addquestion');
@@ -88,6 +88,8 @@ var app = angular
 
 						loginLogoutService.logout().then(function(response) {
 							if (response.status) {
+								$window.localStorage.clear();
+								$window.location.reload();
 								$state.go('login');
 							}
 						})

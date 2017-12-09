@@ -1,13 +1,14 @@
 adminApp.controller('configurationsController',
 						function($scope, localStorageService,carpoolService,commonService,dateFilter) {
 	$scope.carpoolList=[];
-	$scope.userName = commonService.userName;
 	$scope.vehicleDetails=[];
-	$scope.location=commonService.location;
+	$scope.riderLocation=localStorageService.get('riderLocation')!=null ? localStorageService.get('riderLocation') : commonService.riderLocation;
 	$scope.emailId=commonService.emailId;
+	console.log('useremailid'+$scope.emailId);
 	
 	$scope.getCarpools = function() {
-			carpoolService.getCarPools($scope.location,$scope.emailId).then(function(response) {
+		if ($scope.riderLocation != null) {
+			carpoolService.getCarPools($scope.riderLocation,$scope.emailId).then(function(response) {
 				if (response.errorCode) {
 					$scope.message = response.errorMessage
 				} else {
@@ -16,6 +17,9 @@ adminApp.controller('configurationsController',
 			}, function(response) {
 				console.log(response);
 			})
+		} else {
+			$scope.carpoolList=[];
+		}
 	}
 	
 	$scope.getAllCarpools = function() {

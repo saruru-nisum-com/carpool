@@ -76,7 +76,6 @@ riderApp.controller('riderController',
 		var nearby = $scope.riderNearBy;
 		var mobile = $scope.mobile;//static for now, need to change
 		var gender = $scope.gender;
-
 		if($scope.notifyEmail == true){
 			var emailNotification = true;
 		}else{
@@ -109,6 +108,7 @@ riderApp.controller('riderController',
 				$scope.isRegisteredAsRider= true;
 				$scope.isVisible=true;
 				$scope.actionName="Registered";
+				localStorageService.set('riderLocation',location);
 			}
 		});
 
