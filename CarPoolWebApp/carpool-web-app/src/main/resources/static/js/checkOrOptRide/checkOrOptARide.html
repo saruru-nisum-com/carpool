@@ -1,0 +1,56 @@
+<link rel="stylesheet" href="css/./checkOrOpt.css">
+<div classs = "container-fluid">
+<div class = "col-md-2">
+		<div id = "leftHandMenu">
+			<div ng-include="'js/partials/leftSideMenu.html'"></div>
+		</div>
+		</div>
+	
+	<div>
+			<ul id="nav-tabs" ng-init='getMyOptedNotOptedRides()' >
+			</ul>
+   </div>
+	
+	<div class = "col-md-8">
+		<div align="center" style="color: #2535A9;">
+			<h3>Opt A Ride</h3>
+		</div>
+		
+		<div>
+		<table cellpadding="5">
+	<tr>
+		<td><input type="radio" ng-model="showNotOptedOrOptedPool" name="optedornot" ng-checked=true ng-click="toggler1();" ng-value="false"/>Show Pools Not Opted by Me</td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><input type="radio" ng-model="showNotOptedOrOptedPool"  name="optedornot" ng-checked=false  ng-click="toggler2();" ng-value="true"/>Show Pools Opted by Me</td>
+		<td><button class="btn btn-primary" style="border-radius: 150px;">OPT</button></td>
+		<td><button class="btn btn-primary" style="border-radius: 150px;">Notify Me</button></td>
+	</tr>
+</table>
+</div>
+
+
+<div>
+<table class="optRide">
+  <tr>
+  	<th><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" ></th>
+    <th>Date</th>
+    <th>Total Seats</th>
+    <th>Opted Seats</th>
+    <th>Status</th>
+  </tr>
+  <tr  ng-repeat = "notOptOrOptARide in optedorNotOptedDataList">
+  	<td ><input type="checkbox" ng-model="selectedAll"/></td>
+    <td>{{notOptOrOptARide.date}}</td>
+    <td>{{notOptOrOptARide.totalSeats}}</td>
+    <td>{{notOptOrOptARide.optedSeats}}</td>
+    <td>{{notOptOrOptARide.status}}</td>
+  </tr>
+  </table>
+</div>
+</div>
+</div>
+
+

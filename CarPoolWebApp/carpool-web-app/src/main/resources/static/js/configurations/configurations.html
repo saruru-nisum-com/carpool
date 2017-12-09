@@ -19,7 +19,7 @@
 		</div>
 
 		<div ng-if="carpoolList.length>0" ng-repeat="carpool in carpoolList" class = "poolList">
-					<a href="#/configurations">
+					<a ui-sref="checkOrOptRide({parentid: carpool.carpoolDetails.parentid})">
 						<table class="tStyle" frame="box" style="background-color:green">
 							<tr ng-repeat="vehicle in vehicleDetails"
 					ng-if="vehicle.id==carpool.carpoolDetails.vehicleType">

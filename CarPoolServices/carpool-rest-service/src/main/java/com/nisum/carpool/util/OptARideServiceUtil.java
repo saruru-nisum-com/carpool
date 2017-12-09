@@ -50,16 +50,4 @@ public class OptARideServiceUtil {
 		return false;
 	}
 
-	public static List<CarpoolRiderDetails> filterAcceptStatus(List<CarpoolRiderDetails> carPoolRiderDetailsList) {
-		CarpoolRiderDetails carPoolRiderDetails = null;
-		Iterator<CarpoolRiderDetails> itr = carPoolRiderDetailsList.iterator();
-		List<CarpoolRiderDetails> carPoolRiderDeatilsAcceptedStatusList = new ArrayList<CarpoolRiderDetails>();
-		while (itr.hasNext()) {
-			carPoolRiderDetails = itr.next();
-			carPoolRiderDetails = OptARideServiceUtil.acceptStatusList(carPoolRiderDetails);
-			carPoolRiderDeatilsAcceptedStatusList.add(carPoolRiderDetails);
-		}
-		return carPoolRiderDeatilsAcceptedStatusList;
-	}
-
 }

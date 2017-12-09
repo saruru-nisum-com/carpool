@@ -1,7 +1,7 @@
 var app = angular
 		.module(
 				'nisumApp',
-				[ 'ui.router', 'gm', 'profileApp', 'loginApp', 'carpoolRegistrationApp', 'LocalStorageModule',
+				[ 'ui.router', 'gm', 'profileApp', 'loginApp', 'carpoolRegistrationApp','checkOrOptRideApp', 'LocalStorageModule',
 						'textAngular', 'am.multiselect', 'leftSideMenuApp','google-signin','configurationsApp','mySharedRidesApp', 'driverApp', 'riderApp','riderDetailsApp'])
 			
 

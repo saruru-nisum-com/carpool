@@ -834,8 +834,8 @@ if(registerDomain!=null && registerDomain.size()>0) {
 					{
 					Boolean isFind = OptARideServiceUtil.findCpIdRiderEmailId(emailId, carPoolRiderDetail);
 					if (!isFind) {
-						List<CarpoolRiderDetails> carPoolRiderDetailsAfterFilter = OptARideServiceUtil
-								.filterAcceptStatus(carPoolRiderDetailsList);
+						 OptARideServiceUtil
+								.acceptStatusList(carPoolRiderDetail);
 					    optedCount = optedCount + 1;	
 					}
 					

@@ -1,0 +1,28 @@
+.optRide{
+    font-family: verdana;
+    border-collapse: collapse;
+    width: 40%;
+    position: relative;
+    border: 1px solid black;
+    margin-top: 20px;   
+}
+
+.optRide td, .optRide th{
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 5px;
+}
+
+.optRide th {
+    background-color: SteelBlue;
+    color: white;
+}
+
+#main{
+    top:200px;
+    margin:auto;
+    width:800px;
+    height: 400px;
+    position: relative;
+}
+
