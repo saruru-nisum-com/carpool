@@ -6,12 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageContextDto {
 	
-	@Value("${header.filepath}")
-	private String headerPath;
-	
-	@Value("${footer.filepath}")
-	private String footerpath;
-	
 	@Value("${gmail.subject}")
 	private String subject;
 	
@@ -51,21 +45,6 @@ public class MessageContextDto {
 	@Value("${mail.wish.reject.cancel}")
 	private String msgWish;
 
-	public String getHeaderPath() {
-		return headerPath;
-	}
-
-	public void setHeaderPath(String headerPath) {
-		this.headerPath = headerPath;
-	}
-
-	public String getFooterpath() {
-		return footerpath;
-	}
-
-	public void setFooterpath(String footerpath) {
-		this.footerpath = footerpath;
-	}
 
 	public String getSubject() {
 		return subject;
@@ -170,4 +149,112 @@ public class MessageContextDto {
 	public void setMsgWish(String msgWish) {
 		this.msgWish = msgWish;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((approveSub == null) ? 0 : approveSub.hashCode());
+		result = prime * result + ((cancelSub == null) ? 0 : cancelSub.hashCode());
+		result = prime * result + ((msgApproveSuffix == null) ? 0 : msgApproveSuffix.hashCode());
+		result = prime * result + ((msgCancelSuffix == null) ? 0 : msgCancelSuffix.hashCode());
+		result = prime * result + ((msgNewPoolPrefix == null) ? 0 : msgNewPoolPrefix.hashCode());
+		result = prime * result + ((msgNewPoolSuffix == null) ? 0 : msgNewPoolSuffix.hashCode());
+		result = prime * result + ((msgPrefix == null) ? 0 : msgPrefix.hashCode());
+		result = prime * result + ((msgRejectSuffix == null) ? 0 : msgRejectSuffix.hashCode());
+		result = prime * result + ((msgWish == null) ? 0 : msgWish.hashCode());
+		result = prime * result + ((msgWishApprove == null) ? 0 : msgWishApprove.hashCode());
+		result = prime * result + ((rejectSub == null) ? 0 : rejectSub.hashCode());
+		result = prime * result + ((riderCancelSub == null) ? 0 : riderCancelSub.hashCode());
+		result = prime * result + ((subject == null) ? 0 : subject.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MessageContextDto other = (MessageContextDto) obj;
+		if (approveSub == null) {
+			if (other.approveSub != null)
+				return false;
+		} else if (!approveSub.equals(other.approveSub))
+			return false;
+		if (cancelSub == null) {
+			if (other.cancelSub != null)
+				return false;
+		} else if (!cancelSub.equals(other.cancelSub))
+			return false;
+		if (msgApproveSuffix == null) {
+			if (other.msgApproveSuffix != null)
+				return false;
+		} else if (!msgApproveSuffix.equals(other.msgApproveSuffix))
+			return false;
+		if (msgCancelSuffix == null) {
+			if (other.msgCancelSuffix != null)
+				return false;
+		} else if (!msgCancelSuffix.equals(other.msgCancelSuffix))
+			return false;
+		if (msgNewPoolPrefix == null) {
+			if (other.msgNewPoolPrefix != null)
+				return false;
+		} else if (!msgNewPoolPrefix.equals(other.msgNewPoolPrefix))
+			return false;
+		if (msgNewPoolSuffix == null) {
+			if (other.msgNewPoolSuffix != null)
+				return false;
+		} else if (!msgNewPoolSuffix.equals(other.msgNewPoolSuffix))
+			return false;
+		if (msgPrefix == null) {
+			if (other.msgPrefix != null)
+				return false;
+		} else if (!msgPrefix.equals(other.msgPrefix))
+			return false;
+		if (msgRejectSuffix == null) {
+			if (other.msgRejectSuffix != null)
+				return false;
+		} else if (!msgRejectSuffix.equals(other.msgRejectSuffix))
+			return false;
+		if (msgWish == null) {
+			if (other.msgWish != null)
+				return false;
+		} else if (!msgWish.equals(other.msgWish))
+			return false;
+		if (msgWishApprove == null) {
+			if (other.msgWishApprove != null)
+				return false;
+		} else if (!msgWishApprove.equals(other.msgWishApprove))
+			return false;
+		if (rejectSub == null) {
+			if (other.rejectSub != null)
+				return false;
+		} else if (!rejectSub.equals(other.rejectSub))
+			return false;
+		if (riderCancelSub == null) {
+			if (other.riderCancelSub != null)
+				return false;
+		} else if (!riderCancelSub.equals(other.riderCancelSub))
+			return false;
+		if (subject == null) {
+			if (other.subject != null)
+				return false;
+		} else if (!subject.equals(other.subject))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "MessageContextDto [subject=" + subject + ", approveSub=" + approveSub + ", rejectSub=" + rejectSub
+				+ ", cancelSub=" + cancelSub + ", riderCancelSub=" + riderCancelSub + ", msgNewPoolPrefix="
+				+ msgNewPoolPrefix + ", msgNewPoolSuffix=" + msgNewPoolSuffix + ", msgPrefix=" + msgPrefix
+				+ ", msgApproveSuffix=" + msgApproveSuffix + ", msgRejectSuffix=" + msgRejectSuffix
+				+ ", msgCancelSuffix=" + msgCancelSuffix + ", msgWishApprove=" + msgWishApprove + ", msgWish=" + msgWish
+				+ "]";
+	}
+	
 }

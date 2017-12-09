@@ -65,7 +65,6 @@ public class GenericMailTemplate {
 			footerContent = Files.toString(
 					new File(System.getProperty("user.dir") + "/src/main/resources/static/footer.html"),
 					Charsets.UTF_8);
-			logger.info("loaded files :" + headerContent + "\n" + footerContent);
 		} catch (IOException e) {
 			throw new MailServiceException("Unable to load the header and footer files");
 		}
