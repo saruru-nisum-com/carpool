@@ -75,6 +75,7 @@ public class Constants {
 		public static final String INVALIDSTARTTIME="Start time value should not be empty, Please enter valid startTime";
 		public static final String INVALIDRETURNTIME="Return time value should not be empty, Please enter valid returnTime";
 		public static final String INVALIDISRIDERVALUE="Isrider value should not be empty, Please enter valid isRider";
+		public static final String INVALIDLOCATIONVALUE="Locatoin value should not be empty, Please enter valid Location";
 		
 		
 }

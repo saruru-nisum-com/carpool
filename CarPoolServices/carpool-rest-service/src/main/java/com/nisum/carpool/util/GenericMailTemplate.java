@@ -137,7 +137,7 @@ public class GenericMailTemplate {
 					}
 					if (genereicEmailDto.getLocation() == null || genereicEmailDto.getLocation().equals("")) {
 						throw new MailServiceException(
-								"Locatoin value should not be empty, Please enter valid Location");
+								Constants.INVALIDLOCATIONVALUE);
 					}
 					if (genereicEmailDto.getUserName() == null || genereicEmailDto.getUserName().equals("")) {
 						throw new MailServiceException(
