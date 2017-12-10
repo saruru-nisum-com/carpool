@@ -1,7 +1,5 @@
 package com.nisum.carpool.service.impl;
 
-import static org.assertj.core.api.Assertions.catchThrowable;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,7 +22,6 @@ import com.nisum.carpool.data.domain.CarpoolRiderNotifications;
 import com.nisum.carpool.data.domain.Carpooldetails;
 import com.nisum.carpool.data.domain.RegisterDomain;
 import com.nisum.carpool.data.domain.User;
-import com.nisum.carpool.data.util.Pool_Status;
 import com.nisum.carpool.data.util.Ride_Status;
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;

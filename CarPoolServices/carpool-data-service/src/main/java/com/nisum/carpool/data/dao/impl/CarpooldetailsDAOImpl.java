@@ -207,17 +207,24 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	}
 
 	/**
-	* addRewards() for  dao layer 
-	* Parameter: rewards (reading the reward points from "application.properties").
-	* This method is used to update the reward points to driver when the carpool status is "Closed" 
-	* returntype:String statement from com.nisum.carpool.data.util.Constants;   
-	*/
+	 * @author Mahesh Bheemanapalli : CPL040: Adding reward points to to driver
+	 * 
+	 *         Parameter: rewards (reading the reward points from
+	 *         "application.properties").
+	 * 
+	 *         This method is used to update the reward points to driver when the
+	 *         carpool status is "Closed"
+	 * 
+	 *         returntype:String statement from
+	 *         com.nisum.carpool.data.util.Constants;
+	 */
 	@Override
 	public String addRewards(double rewards) {
 		// TODO Auto-generated method stub
 		logger.info("CarpooldetailsDAOImpl : addRewards : To Driver");
 		String rewardedDate = this.formateDate();
-		List<Integer> listOfIds = carpooldetailsRepository.getCarpooldetailsByFromDate(Pool_Status.CLOSED.getValue(), rewardedDate);
+		List<Integer> listOfIds = carpooldetailsRepository.getCarpooldetailsByToDateAndStatus(Pool_Status.CLOSED.getValue(),
+				rewardedDate);
 		if (listOfIds.size() > 0) {
 			carpooldetailsRepository.udpateRewardPoints(rewards, listOfIds);
 			return Constants.ADDED_REWARDS_TO_DRIVER;
@@ -339,28 +346,33 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	public String updateCarpoolStatusToClosed() {
 		// TODO Auto-generated method stub
 		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed");
-		String todate=this.formateDate();
-		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :"+todate);
+		String todate = this.formateDate();
+		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :" + todate);
 		List<Carpooldetails> carpoolsByToDate = carpooldetailsRepository.getCarpoolsByToDate(todate);
-		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :"+carpoolsByToDate.size());
-		Set<Integer> setOfPoolIds = carpoolsByToDate.stream().filter(p->p.getStatus()!=Pool_Status.CLOSED.getValue()&&p.getStatus()!=Pool_Status.CANCELLED.getValue()).map(p->p.getId()).collect(Collectors.toSet());
-		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :"+setOfPoolIds.size());
-		if(setOfPoolIds.size()>0) {
-			Integer countBeforeUpdate = carpooldetailsRepository.checkUpdateCarpoolStatusClosedCount(Pool_Status.CLOSED.getValue());
-			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : countBeforeUpdate"+countBeforeUpdate);
+		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :" + carpoolsByToDate.size());
+		Set<Integer> setOfPoolIds = carpoolsByToDate.stream()
+				.filter(p -> p.getStatus() != Pool_Status.CLOSED.getValue()
+						&& p.getStatus() != Pool_Status.CANCELLED.getValue())
+				.map(p -> p.getId()).collect(Collectors.toSet());
+		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :" + setOfPoolIds.size());
+		if (setOfPoolIds.size() > 0) {
+			Integer countBeforeUpdate = carpooldetailsRepository
+					.checkUpdateCarpoolStatusClosedCount(Pool_Status.CLOSED.getValue());
+			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : countBeforeUpdate" + countBeforeUpdate);
 			carpooldetailsRepository.updateCarpoolStatusBySetOfPoolIds(Pool_Status.CLOSED.getValue(), setOfPoolIds);
 			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : CarpoolStatusUpdateToClose");
-			Integer countAfterUpdate = carpooldetailsRepository.checkUpdateCarpoolStatusClosedCount(Pool_Status.CLOSED.getValue());
-			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : countAfterUpdate"+countAfterUpdate);
-			if(countBeforeUpdate<countAfterUpdate) {
-				logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :"+Constants.CARPOOL_STATUS_UPDATED);
+			Integer countAfterUpdate = carpooldetailsRepository
+					.checkUpdateCarpoolStatusClosedCount(Pool_Status.CLOSED.getValue());
+			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : countAfterUpdate" + countAfterUpdate);
+			if (countBeforeUpdate < countAfterUpdate) {
+				logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :" + Constants.CARPOOL_STATUS_UPDATED);
 				return Constants.CARPOOL_STATUS_UPDATED;
 			}
-			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :"+Constants.CARPOOL_STATUS_NOT_UPDATED);
+			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :" + Constants.CARPOOL_STATUS_NOT_UPDATED);
 			return Constants.CARPOOL_STATUS_NOT_UPDATED;
 		}
-		
-		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :"+Constants.NO_CARPOOLS_TO_UPDATE_STATUS);
+
+		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :" + Constants.NO_CARPOOLS_TO_UPDATE_STATUS);
 		return Constants.NO_CARPOOLS_TO_UPDATE_STATUS;
 	}
 	

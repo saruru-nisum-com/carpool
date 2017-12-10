@@ -15,6 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.nisum.carpool.data.dao.api.CarpooldetailsDAO;
 import com.nisum.carpool.data.domain.Carpooldetails;
+import com.nisum.carpool.data.util.Constants;
 import com.nisum.carpool.data.util.Pool_Status;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
@@ -28,9 +29,6 @@ public class CarpooldetailsServiceImplTest {
 	
 	@Mock
 	CarpooldetailsDAO carpooldetailsDAO;
-	
-	//@Mock
-	//ObjectUtils objectUtils;
 	
 	CarpooldetailsDto carpooldetailsDto = new CarpooldetailsDto();
 	Pool_Status poolStatus;
@@ -63,7 +61,6 @@ public class CarpooldetailsServiceImplTest {
 		Carpooldetails convertDtoTODao = CarpooldetailsServiceUtil.convertDtoTODao(carpooldetailsDto);
 		when(carpooldetailsDAO.updateCarpooldetails(convertDtoTODao))
 				.thenReturn("Current record Updated Successfully !!");
-		// when(objectUtils.allNotNull(convertDtoTODao)).thenReturn(true);
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
 		serviceStatusDto.setStatus(true);
 		serviceStatusDto.setMessage("Current record Updated Successfully !!");
@@ -106,5 +103,46 @@ public class CarpooldetailsServiceImplTest {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * @author Mahesh Bheemanapalli
+	 * 
+	 * Test cases to update rewards in carpoolDetails
+	 */
+	@Test
+	public void addRewardsTest() {
+		double rewards=1.00;
+		String statusMessage = Constants.ADDED_REWARDS_TO_DRIVER;
+		ServiceStatusDto expected = new ServiceStatusDto();
+		expected.setStatus(true);
+		expected.setMessage(statusMessage);
+		when(carpooldetailsDAO.addRewards(rewards)).thenReturn(statusMessage);
+		ServiceStatusDto actual = carpooldetailsServiceImpl.addRewards(rewards);
+		assertEquals(expected.getMessage(), actual.getMessage());
+	}
+	/**
+	 * @author Mahesh Bheemanapalli
+	 */
+	@Test
+	public void updateCarpoolStatusTest() {
+		String expectedStatus = Constants.CARPOOL_STATUS_UPDATED;
+		ServiceStatusDto statusDto = new ServiceStatusDto();
+		statusDto.setStatus(true);
+		statusDto.setMessage(expectedStatus);
+		when(carpooldetailsDAO.updateCarpoolStatusToClosed()).thenReturn(expectedStatus);
+		ServiceStatusDto actualStatus = carpooldetailsServiceImpl.updateCarpoolStatus();
+		assertEquals(statusDto.getMessage(), actualStatus.getMessage());
+	}
+	/**
+	 * @author Mahesh Bheemanapalli
+	 */
+	@Test
+	public void updateCarpoolStatusFailureTest() {
+		String expectedStatus = Constants.CARPOOL_STATUS_UPDATED;
+		ServiceStatusDto statusDto = new ServiceStatusDto();
+		statusDto.setStatus(false);
+		statusDto.setMessage(expectedStatus);
+		when(carpooldetailsDAO.updateCarpoolStatusToClosed()).thenThrow(NullPointerException.class);
+		ServiceStatusDto actual = carpooldetailsServiceImpl.updateCarpoolStatus();
+		assertEquals(statusDto.isStatus(), actual.isStatus());
+	}
 }

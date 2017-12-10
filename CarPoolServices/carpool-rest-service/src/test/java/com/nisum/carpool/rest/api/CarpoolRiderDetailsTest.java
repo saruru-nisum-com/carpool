@@ -22,8 +22,11 @@ import com.nisum.carpool.data.dao.api.CarpoolRiderDetailsDAO;
 import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
+import com.nisum.carpool.service.dto.Errors;
+import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.service.impl.CarPoolRiderDetailsServiceImpl;
 import com.nisum.carpool.util.CarpoolRiderDetailsServiceUtil;
+import com.nisum.carpool.util.Constants;
 
 /**
  * @author Lakshmi Kiran
@@ -36,7 +39,7 @@ public class CarpoolRiderDetailsTest {
 	CarpoolRiderDetailsRestService carpoolRiderDetailsRestService;
 
 	@Mock
-	CarPoolRiderDetailsServiceImpl carPoolRiderDetailsServiceImpl;;
+	CarpoolRiderDetailsService carpoolRiderDetailsService;;
 
 	@Test
 	public void findCarpoolRiderDetailsByCPIdTest() {
@@ -54,8 +57,37 @@ public class CarpoolRiderDetailsTest {
 		list.add(riderDetailsDTO);
 		
 		ResponseEntity<List<CarpoolRiderDetailsDTO>> expected = new ResponseEntity<List<CarpoolRiderDetailsDTO>>(list, HttpStatus.OK);
-		when(carPoolRiderDetailsServiceImpl.findCarpoolRiderDetailsByCPId(1)).thenReturn(list);
+		when(carpoolRiderDetailsService.findCarpoolRiderDetailsByCPId(1)).thenReturn(list);
 		ResponseEntity<List<CarpoolRiderDetailsDTO>> actual = carpoolRiderDetailsRestService.findCarpoolRiderDetailsByCPId(1);
 		assertEquals(expected, actual);
+	}
+	/**
+	 * @author Mahesh Bheemanapalli
+	 */
+	@Test
+	public void addRewardsToDriverTest() {
+		double rewards=1.00;
+		ServiceStatusDto statusDto = new ServiceStatusDto();
+		statusDto.setStatus(true);
+		statusDto.setMessage("Reward Points added to Driver Successfully !!");
+		when(carpoolRiderDetailsService.addRewards(rewards)).thenReturn(statusDto);
+		ResponseEntity<ServiceStatusDto> expected = new ResponseEntity<ServiceStatusDto>(statusDto,HttpStatus.OK);
+		ResponseEntity<?> actual = carpoolRiderDetailsRestService.addRewardPointsToRider();
+		assertEquals(expected.getStatusCode(), actual.getStatusCode());
+		assertEquals(expected.getBody(), actual.getBody());
+	}
+	/**
+	 * @author Mahesh Bheemanapalli
+	 */
+	@Test
+	public void addRewardsToDriverFailureTest() {
+		double rewards=1.00;
+		when(carpoolRiderDetailsService.addRewards(rewards)).thenThrow(NullPointerException.class);
+		Errors error = new Errors();
+		error.setErrorCode("BAD REQUEST");
+		error.setErrorMessage(Constants.UPDATE_CARPOOL_STATUS_FAILED);
+		ResponseEntity<?> expected = new ResponseEntity<Errors>(error,HttpStatus.NOT_ACCEPTABLE);
+		ResponseEntity<?> actual = carpoolRiderDetailsRestService.addRewardPointsToRider();
+		assertEquals(expected.getStatusCode(), actual.getStatusCode());
 	}
 }

@@ -48,10 +48,10 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	public Carpooldetails findCarpoolDetailsById(int id);
 	
 	@Query("select id from cp_carpooldetails where rewards=0 and status=:status and todate<= :rewardedDate allow filtering")
-	List<Integer> getCarpooldetailsByFromDate(@Param("status") int status,@Param("rewardedDate") String rewardedDate);
+	List<Integer> getCarpooldetailsByToDateAndStatus(@Param("status") int status,@Param("rewardedDate") String rewardedDate);
 	
 	@Query("update cp_carpooldetails set rewards=:rewards where id IN (:listOfIds)")
-	Integer udpateRewardPoints(@Param("rewards") double rewards, @Param("listOfIds") List<Integer> listOfIds);
+	String udpateRewardPoints(@Param("rewards") double rewards, @Param("listOfIds") List<Integer> listOfIds);
 	
 	@Query("select parentid from cp_carpooldetails where emailid=?0 allow filtering")
 	public List<Integer> getParentIdByEmail(@Param("email")String email);
@@ -89,7 +89,7 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	List<Carpooldetails> getCarpoolsByToDate(@Param("todate") String todate);
 	
 	@Query("update cp_carpooldetails set status=:poolStatus where id IN (:cpids)")
-	Integer updateCarpoolStatusBySetOfPoolIds(@Param("poolStatus") int poolStatus,@Param("cpids") Set<Integer> cpids);
+	String updateCarpoolStatusBySetOfPoolIds(@Param("poolStatus") int poolStatus,@Param("cpids") Set<Integer> cpids);
 	
 	@Query("select count(*) from cp_carpooldetails where status=:poolStatus allow filtering")
 	Integer checkUpdateCarpoolStatusClosedCount(@Param("poolStatus") int poolStatus);

@@ -16,7 +16,10 @@ public class ServiceStatusDto {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
+	@Override
+	public String toString() {
+		return "ServiceStatusDto [status=" + status + ", message=" + message + "]";
+	}
 	
 
 }

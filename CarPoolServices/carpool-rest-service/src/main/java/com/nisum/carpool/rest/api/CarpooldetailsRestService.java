@@ -296,16 +296,21 @@ public class CarpooldetailsRestService {
 	@RequestMapping(value = "/addDriverRewardPoints", method = RequestMethod.GET)
 	public ResponseEntity<?> addRewardsToDriver() {
 		logger.info("CarpooldetailsRestService : addRewardsToDriver");
+		ResponseEntity<?> responseEntity = null;
 		try {
 			String driverRewardPoints = rewardPoints.getDriverRewardPoints();
 			double rewards = Double.parseDouble(driverRewardPoints);
 			ServiceStatusDto statusDto = carpooldetailsService.addRewards(rewards);
-			return new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
+			responseEntity= new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
 
 		} catch (Exception e) {
 			logger.error("CarpooldetailsRestService : addRewardPointsToDriver : Inside Catch Block" +e.getMessage());
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			Errors error = new Errors();
+			error.setErrorCode("500");
+			error.setErrorMessage(e.getMessage());
+			responseEntity = new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
+		return responseEntity;
 
 	}
 	/**
@@ -315,7 +320,7 @@ public class CarpooldetailsRestService {
 	 */
 	
 	@Autowired
-	public void setEmailAccount(RewardPoints rewardPoints) {
+	public void setRewardPoints(RewardPoints rewardPoints) {
 		CarpooldetailsRestService.rewardPoints = rewardPoints;
 	}
 	
@@ -398,15 +403,20 @@ public class CarpooldetailsRestService {
 	@RequestMapping(value = "/updateCarpoolStatusToClosed", method = RequestMethod.GET)
 	public ResponseEntity<?> updateCarpoolStatus() {
 		logger.info("CarpooldetailsRestService : updateCarpoolStatus");
+		ResponseEntity<?> responseEntity = null;
 		try {
 			ServiceStatusDto statusDto = carpooldetailsService.updateCarpoolStatus();
 			logger.info("CarpooldetailsRestService : updateCarpoolStatus : "+statusDto.getMessage());
-			return new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
+			responseEntity=new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
 
 		} catch (Exception e) {
 			logger.error("CarpooldetailsRestService : updateCarpoolStatus : Inside Catch Block" +e.getMessage());
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			Errors error = new Errors();
+			error.setErrorCode("500");
+			error.setErrorMessage(e.getMessage());
+			responseEntity = new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
+		return responseEntity;
 
 	}
 }

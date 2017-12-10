@@ -29,9 +29,6 @@ import com.nisum.carpool.service.dto.Errors;
 import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
-import com.nisum.carpool.service.dto.Errors;
-import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
-import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.util.CPCancellationReasons;
 
 
@@ -167,17 +164,22 @@ public class CarpoolRiderDetailsRestService {
 	@RequestMapping(value = "/addRiderRewardPoints", method = RequestMethod.GET)
 	public ResponseEntity<?> addRewardPointsToRider() {
 		logger.info("CarpoolRiderDetailsRestService : addRewardPointsToRider");
+		ResponseEntity<?> responseEntity = null;
 		try {
 			String riderRewardPoints = rewardPoints.getRiderRewardPoints();
 			double rewards = Double.parseDouble(riderRewardPoints);
 			ServiceStatusDto statusDto = carpoolRiderDetailsService.addRewards(rewards);
 
-			return new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
+			responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
 
 		} catch (Exception e) {
 			logger.error("CarpoolRiderDetailsRestService : addRewardPointsToRider : Inside Catch Block"+e.getMessage());
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			Errors error = new Errors();
+			error.setErrorCode("500");
+			error.setErrorMessage(e.getMessage());
+			responseEntity = new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
+		return responseEntity;
 
 	}
 	/**

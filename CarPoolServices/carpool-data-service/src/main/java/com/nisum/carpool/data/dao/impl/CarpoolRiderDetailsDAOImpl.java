@@ -221,7 +221,7 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String rewardedDate = currentDate.format(formatter);
 		List<Integer> carpoolClosedCpids = carpooldetailsRepository
-				.getCarpooldetailsByFromDate(Pool_Status.CLOSED.getValue(), rewardedDate);
+				.getCarpooldetailsByToDateAndStatus(Pool_Status.CLOSED.getValue(), rewardedDate);
 		if (carpoolClosedCpids.size() > 0) {
 			for (int i = 0; i < carpoolClosedCpids.size(); i++) {
 				Integer ridersId = carpoolRiderDetailsRepository.getListOfClosedRiders(Ride_Status.APPROVED.getValue(),
