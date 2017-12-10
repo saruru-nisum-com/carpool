@@ -1,17 +1,14 @@
 app.factory('optRideService', function($http, $q) {
 	var ors = {};
-
-	ors.getMyOptedNotOptedRides = function(parentid, emailid) {
+	ors.getMyOptedNotOptedRides = function(parentid, emailid, isOpted) {
 		var deferred = $q.defer();
-		console.log("inside service++++");
 		$http.get("v1/carpool/getCarpoolsDataNotOptedOrOptedByMe/"+parentid+
-				"?emailId="+emailid+"&optedData="+false).success(function(response) {
+				"?emailId="+emailid+"&optedData="+isOpted).success(function(response) {
 			deferred.resolve(response);
 		}).error(function(response) {
 			deferred.reject(response);
 		})
 		return deferred.promise;
 	}
-	
 	return ors;
 });

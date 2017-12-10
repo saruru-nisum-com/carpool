@@ -386,7 +386,6 @@ public class CarpooldetailsRestService {
 			logger.error("ERROR:some thing went wrong while fetching getCarpoolsDataNotOptedOrOptedByMe");
 			return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-
 	}
 
 	

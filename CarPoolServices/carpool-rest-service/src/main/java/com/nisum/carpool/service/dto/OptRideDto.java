@@ -5,7 +5,15 @@ public class OptRideDto {
 	private Integer optedSeats;
 	private Integer totalSeats;
 	private String date;
-	private Integer status;
+	private String status;
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	public Integer getOptedSeats() {
 		return optedSeats;
@@ -30,19 +38,13 @@ public class OptRideDto {
 	public void setDate(String date) {
 		this.date = date;
 	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
+	
+	
 	@Override
 	public String toString() {
 		return "OptRideDto [optedSeats=" + optedSeats + ", totalSeats=" + totalSeats + ", date=" + date + ", status="
 				+ status + "]";
 	}
 
+	
 }

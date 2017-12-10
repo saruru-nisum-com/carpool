@@ -834,18 +834,13 @@ if(registerDomain!=null && registerDomain.size()>0) {
 					{
 					Boolean isFind = OptARideServiceUtil.findCpIdRiderEmailId(emailId, carPoolRiderDetail);
 					if (!isFind) {
-						 OptARideServiceUtil
-								.acceptStatusList(carPoolRiderDetail);
 					    optedCount = optedCount + 1;	
-					}
-					
-				}
-					OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDto(carppol, optedCount);
-					optRideDtoList.add(optRideDto);
+					}	
+				}	
 				}
 				else
 				{
-					OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDto(carppol, optedCount);
+					OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDtoNotOptedPool(carppol, optedCount);
 					optRideDtoList.add(optRideDto);	
 				}
 			}
@@ -857,13 +852,10 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			List<OptRideDto> optRideDtoList = new ArrayList<OptRideDto>();
 			for (Carpooldetails carppol : carPoolDataList) {
 				carPoolRiderDetails = carpoolRiderDAO.getOptedRiderDeatils(carppol.getId(), emailId);
-				if (carPoolRiderDetails != null) {
-					carPoolRiderDetails = OptARideServiceUtil.acceptStatusList(carPoolRiderDetails);
-				}
 				int optedCount = 0;
 				if (carPoolRiderDetails != null) {
 					optedCount = calculateOptedCount(carppol);
-					OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDto(carppol, optedCount);
+					OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDtoOptedPool(carppol, optedCount, carPoolRiderDetails);
 					optRideDtoList.add(optRideDto);
 				}
 			}
@@ -876,7 +868,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			CarpoolRiderDetails carPoolRiderDetails = null;
 			Iterator<CarpoolRiderDetails> itr = CarPoolDetailsList.iterator();
 			while (itr.hasNext()) {
-				carPoolRiderDetails = OptARideServiceUtil.acceptStatusList(itr.next());
+				carPoolRiderDetails = OptARideServiceUtil.acceptRiderStatusList(itr.next());
 				CarPoolDetailsOptedList.add(carPoolRiderDetails);
 			}
 			return CarPoolDetailsOptedList.size();

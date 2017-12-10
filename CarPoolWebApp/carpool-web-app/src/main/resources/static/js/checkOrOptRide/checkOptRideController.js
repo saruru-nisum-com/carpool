@@ -2,9 +2,40 @@ checkOrOptRideModuleApp.controller('checkOptRideController',
 		function($http, $scope, $stateParams, commonService, optRideService){ 
 	$scope.optedorNotOptedDataList={};
 	$scope.userEmail = commonService.emailId;
-	
-	optRideService.getMyOptedNotOptedRides($stateParams.parentid, $scope.userEmail, $scope.showNotOptedOrOptedPool).then(function(response) {		
+	$scope.showNotOptedOrOptedPool = false;
+    $scope.radioChecked = function(){
+	if(!$scope.showNotOptedOrOptedPool)
+			{
+			$scope.showNotOptedOrOptedPool = false;
+			optRideService.getMyOptedNotOptedRides($stateParams.parentid, $scope.userEmail, $scope.showNotOptedOrOptedPool).then(function(response) {		
+				
+				if (response.errorCode) {
+						$scope.message = response.errorMessage;
+					} else {
+						$scope.optedorNotOptedDataList=response;
+					}
+				}, function(response) {
+					console.log(response);
+				})
+			}
 		
+		else
+			{
+			$scope.showNotOptedOrOptedPool = true;
+			optRideService.getMyOptedNotOptedRides($stateParams.parentid, $scope.userEmail, $scope.showNotOptedOrOptedPool).then(function(response) {		
+				
+				if (response.errorCode) {
+						$scope.message = response.errorMessage;
+					} else {
+						$scope.optedorNotOptedDataList=response;
+					}
+				}, function(response) {
+					console.log(response);
+				})
+			}	
+				
+	}
+	optRideService.getMyOptedNotOptedRides($stateParams.parentid, $scope.userEmail, $scope.showNotOptedOrOptedPool).then(function(response) {			
 		if (response.errorCode) {
 				$scope.message = response.errorMessage;
 			} else {
@@ -13,7 +44,6 @@ checkOrOptRideModuleApp.controller('checkOptRideController',
 		}, function(response) {
 			console.log(response);
 		})
-		
 		$scope.showPoolsOpted = function() {
 			$scope.selectedAll = false;
 		   };
@@ -39,7 +69,6 @@ checkOrOptRideModuleApp.controller('checkOptRideController',
 			   $scope.opt1 = false;
 			   $scope.opt2 = true;  
 		   }
-
 });
 
 
