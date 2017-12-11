@@ -94,13 +94,13 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 			List<CarpoolRiderDetails> carpoolRiderLists = (List<CarpoolRiderDetails>) carpoolRiderDetailsDAO
 					.getRiderBookingDetails(emailId);
 
-			logger.info("" + carpoolRiderLists);
+			
 			if (carpoolRiderLists != null) {
 				for (CarpoolRiderDetails car : carpoolRiderLists) {
 
 					int cpid = car.getCpid();
 
-					logger.info("cpid" + cpid + "date : " + date);
+					
 
 					List<Carpooldetails> carpoolList = carpooldetailsDAO.getCarPoolByCpIDandDate(cpid, date);
 
@@ -108,7 +108,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 
 						RiderBookingDetailsDTO carpoolRiderdetailsDto = new RiderBookingDetailsDTO();
 						emailid = carPool.getEmailId();
-						System.out.println(emailid);
+						
 						carpoolRiderdetailsDto.setEmail(emailid);
 						
 						carpoolRiderdetailsDto.setLocation(carPool.getLocation());
@@ -138,7 +138,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 						
 						
 						carpoolRiderdetailsDto.setStatusName(ride_Status.toString());
-						System.out.println(ride_Status.toString());
+						
 						
 
 						//carpoolRiderdetailsDto.setStatus(car.getStatus());
