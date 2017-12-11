@@ -1,5 +1,4 @@
 <div>
-
 <div class = "col-md-2">
 		<div id = "leftHandMenu">
 			<div ng-include="'js/partials/leftSideMenu.html'"></div>
@@ -41,5 +40,26 @@
 
 	 <div align="center" ng-if="myRidesList.length<=0">No Rides Found</div>
 </div>
+</div>
+
+<div id="deleteModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+
+			<div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3>Are you sure. Do you want to cancel the ride?</h3>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="custombtn btn-normal"
+					ng-click="cancelRide();">Ok</button>
+				<button type="button" class="custombtn btn-cancel"
+					data-dismiss="modal">cancel</button>
+			</div>
+		</div>
+
+	</div>
 </div>
 

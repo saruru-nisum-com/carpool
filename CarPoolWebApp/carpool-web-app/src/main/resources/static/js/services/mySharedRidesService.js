@@ -41,6 +41,25 @@ app.factory('mySharedRidesService', function($http, $q) {
 		 return deferred.promise;
 	}
 	
+	srs.rider = function(email) {
+		var deferred = $q.defer();
+		$http.get('v1/carpool/getRiderBookingDetails/'+email).success(function(response) {
+			deferred.resolve(response);
+		}).error(function(response) {
+			deferred.reject(response);
+		})
+		return deferred.promise;
+	}
 	
+	srs.getReason=function() {
+		var deferred = $q.defer();
+
+		$http.get('v1/carpool/loadRiderStatusReasons').success(function(response) {
+			deferred.resolve(response);
+		}).error(function(response) {
+			deferred.reject(response);
+		})
+		return deferred.promise;
+	}
 	return srs;
 });
