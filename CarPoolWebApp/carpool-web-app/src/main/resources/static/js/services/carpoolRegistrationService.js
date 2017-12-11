@@ -23,6 +23,25 @@ app.factory('carpoolRegistrationService', function($http, $q, localStorageServic
 		})
 		return deferred.promise;
 	}
+	ls.getCarpoolVehicleType = function(emailId) {
+		var deferred = $q.defer();
+		
+		$http.get('v1/carpool/getProfile/'+emailId).success(function(response) {
+			deferred.resolve(response);
+		}).error(function(response) {
+			deferred.reject(response);
+		})
+		return deferred.promise;
+	}
+	ls.getVehicleDetails = function(emailId) {
+		var deferred = $q.defer();
+		$http.get('v1/carpool/getVehicleTypes').success(function(response) {
+			deferred.resolve(response);
+		}).error(function(response) {
+			deferred.reject(response);
+		})
+		return deferred.promise;
+	}
 	
 	ls.registerAsDriver=function(data) {
 		var deferred = $q.defer();

@@ -2,14 +2,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Carppol Registration</title>
+<title>Share a Ride</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet" href="css/./carpool.css">
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script> -->
 
 </head>
 <style>
@@ -18,7 +14,8 @@
 }
 
 h3 {
-	margin-bottom: 40px;
+	margin-bottom: 10px;
+	color: #00BFFF;
 }
 </style>
 <body>
@@ -29,6 +26,7 @@ h3 {
 			</div>
 			<div class="rightpane col-md-8">
 				<h3>Share a ride</h3>
+				<p style="color:red;">(Fields marked with (*) are mandatory)</p> 
 				<!--  <div class = "row">
 				<div class = "col-md-12">
 					<h3>Share A Ride</h3>
@@ -39,47 +37,31 @@ h3 {
 					<div class="form-container">
 						<div class="row pool-element">
 							<div class="col-md-2">
-								<label>Vehicle Type</label>
+								<label>Vehicle Type</label><span style='color:red;'>*</span>
 							</div>
-							<!-- <td><select ng-model="vType" required="required">
-								<option ng-repeat="x in names">{{x}}</option>
-						</select></td> -->
 							<div class="col-md-4">
 								<select name="vehicleSelect" id="vehicleSelect"
 									class="form-control" ng-model="vehicleSelect"
 									ng-init=" vehicleSelect = data[0].id"
 									ng-options="option.id as option.name for option in data"
-									ng-change="fnVehicleType()">
+									ng-change="fnVehicleType(vehicleSelect)">
 								</select>
 							</div>
 						</div>
 						<div class="row pool-element">
 							<div class="col-md-2">
-								<label>Total No: of Seats</label>
+								<label>Total No: of Seats</label><span style='color:red;'>*</span>
 							</div>
-							<div class="col-md-4">
-								<span ng-switch="vehicleSelect" class="spanCls"
-									style="top: 11px;"> <span ng-switch-when="0"> <input
-										type="number" name="input" class="form-control"
-										ng-model="seat.value" min="0" max="0" class='vsCls'
-										ng-readonly="true"><br> <br>
-								</span> <span ng-switch-when="2"> <input type="number"
-										class="form-control" name="input" ng-model="seat.value"
-										min="1" max="1" value='1' class='vsCls' ng-readonly="true"><br>
-										<br>
-								</span> <span ng-switch-when="4"> <input type="number"
-										class="form-control" name="input" ng-model="seat.value"
-										min="1" max="4" class='vsCls' required><br> <br>
-								</span>
-								</span>
+							<div class="col-md-4"> 
+								<input type="number"  class="form-control" class="spanCls" name="seats"  data-ng-model="seats"  min="{{minSeats}}" max="{{maxSeats}}" data-ng-disabled="inactive">
 							</div>
 						</div>
 
 
 
-						<div class="row pool-element" style="margin-top: -10px;">
+						<div class="row pool-element">
 							<div class="col-md-2">
-								<label>Location:</label>
+								<label>Location</label><span style='color:red;'>*</span>
 							</div>
 							<div class="col-md-4" data-ng-init="getUserLocation();">
 								<input type="text" id="locId" class="form-control"
@@ -99,7 +81,7 @@ h3 {
 
 						<div class="row pool-element" style="margin-top: -10px;">
 							<div class="col-md-2">
-								<label>From Date</label>
+								<label>From Date</label><span style='color:red;'>*</span>
 							</div>
 							<div class='prTabTd col-md-4'>
 								<input type="date" id="exampleInput" class="form-control"
@@ -113,7 +95,7 @@ h3 {
 
 						<div class="row pool-element">
 							<div class="col-md-2">
-								<label>To Date</label>
+								<label>To Date</label><span style='color:red;'>*</span>
 							</div>
 							<div class='prTabTd col-md-4'>
 								<input type="date" id="exampleInput" class="form-control"
@@ -126,7 +108,7 @@ h3 {
 						</div>
 						<div class="row pool-element">
 							<div class="col-md-2">
-								<label>Start Time</label>
+								<label>Start Time</label><span style='color:red;'>*</span>
 							</div>
 							<div class='prTabTd col-md-4'>
 								<input type="time" id="exampleInput" class="form-control"
@@ -135,7 +117,7 @@ h3 {
 						</div>
 						<div class="row pool-element">
 							<div class="col-md-2">
-								<label>Return Time</label>
+								<label>Return Time</label><span style='color:red;'>*</span>
 							</div>
 							<div class='prTabTd col-md-4'>
 								<input type="time" id="exampleInput" class="form-control"
@@ -151,7 +133,7 @@ h3 {
 					</div>
 				</form>
 				<table class="grid">
-					<tr>
+					<tr data-ng-if="parentIdData.length > 0">
 						<th style="width: 30px;"></th>
 						<th style="width: 100px;">Vehicle Type</th>
 						<th style="width: 130px;">Total No: of Seats</th>
