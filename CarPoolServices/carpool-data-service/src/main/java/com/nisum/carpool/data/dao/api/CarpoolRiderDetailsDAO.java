@@ -12,7 +12,7 @@ public interface CarpoolRiderDetailsDAO {
 	public List<CarpoolRiderDetails> getRiderBookingDetails(String emailId);
 	
 
-	String cancelCarpoolRiderDetails(int cpid);
+	List<CarpoolRiderDetails> cancelCarpoolRiderDetails(int cpid);
 
 	public List<CarpoolRiderDetails> findCarpoolRiderDetailsByCPId(int cpid);
 	

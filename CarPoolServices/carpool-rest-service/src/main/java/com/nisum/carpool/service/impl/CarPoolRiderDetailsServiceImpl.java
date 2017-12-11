@@ -59,12 +59,11 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 	}
 
 	@Override
-	public String cancelCarpoolRiderDetails(int cpid) {
+	public List<CarpoolRiderDetailsDTO> cancelCarpoolRiderDetails(int cpid) {
 		// TODO Auto-generated method stub
 
-		String cancelRiderStatus = carpoolRiderDetailsDAO.cancelCarpoolRiderDetails(cpid);
-
-		return cancelRiderStatus;
+		List<CarpoolRiderDetails> cpList =  carpoolRiderDetailsDAO.cancelCarpoolRiderDetails(cpid);
+		return CarpoolRiderDetailsServiceUtil.convertDaoTODto(cpList);
 	}
 
 	/**

@@ -71,25 +71,31 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 
 	// cancel Rider details when Driver cancel carpool
 	@Override
-	public String cancelCarpoolRiderDetails(int cpid) {
+	public List<CarpoolRiderDetails> cancelCarpoolRiderDetails(int cpid) {
 		System.out.println("in cancelCarpool Rider daoImpl cpId=**" + cpid);
-		List<CarpoolRiderDetails> carPoolData = carpoolRiderDetailsRepository.getRiderDetailsByCpId(cpid);
+		List<CarpoolRiderDetails> carPoolRiderData = carpoolRiderDetailsRepository.getRiderDetailsByCpId(cpid);
 
-		System.out.println("carPoll rider cancel size==" + carPoolData.size());
+		System.out.println("carPoll rider cancel size**==" + carPoolRiderData.size());
 
-		Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
-		if(carPoolData!=null) {
-			  if (CollectionUtils.isNotEmpty(carPoolData)) {
-				  carPoolData.forEach(c->{
-					  System.out.println("pool value=="+Pool_Status.CLOSED.getValue());
-						c.setStatus(Pool_Status.CANCELLED.getValue());
-					  c.setModifieddate(modifiedDate.toLocalDateTime());
-					  carpoolRiderDetailsRepository.save(c);
-					});
-				 }
-		  } 
+		try {
+			Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
+			if(carPoolRiderData!=null) {
+				  if (CollectionUtils.isNotEmpty(carPoolRiderData)) {
+					  carPoolRiderData.forEach(c->{
+							c.setStatus(Ride_Status.CANCELLED.getValue());
+						  c.setModifieddate(modifiedDate.toLocalDateTime());
+						  carpoolRiderDetailsRepository.save(c);
+						});
+					  
+					 }
+			  }
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.info(" cancelling rider rides failed");
+			e.printStackTrace();
+		} 
 	  
-		return Constants.MSG_CANCEL_CARPOOL_RIDER;
+		return carPoolRiderData;
 	}
 
 	@Override

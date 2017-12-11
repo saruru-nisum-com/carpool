@@ -936,7 +936,6 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			String cancelCarpooldetails=null;
 			try {
 				
-				//Carpooldetails carpooldetails = CarpooldetailsServiceUtil.convertSharedUpdateDtoTODao(carpooldetailsDto);
 				Carpooldetails carpooldetails = new  Carpooldetails();
 				carpooldetails.setParentid(carpooldetailsDto.getParentid());
 				cancelCarpooldetails = carpooldetailsDAO.cancelCarpooldetailsByParentId(carpooldetails);
