@@ -18,28 +18,27 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.nisum.carpool.data.dao.api.CarpoolRiderDetailsDAO;
-import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
+import com.nisum.carpool.service.api.RewardPoints;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
 import com.nisum.carpool.service.dto.Errors;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
-import com.nisum.carpool.service.impl.CarPoolRiderDetailsServiceImpl;
-import com.nisum.carpool.util.CarpoolRiderDetailsServiceUtil;
-import com.nisum.carpool.util.Constants;
 
 /**
  * @author Lakshmi Kiran
  *
  */
 @RunWith(MockitoJUnitRunner.class)
-public class CarpoolRiderDetailsTest {
+public class CarpoolRiderDetailsRestServiceTest {
 
 	@InjectMocks
 	CarpoolRiderDetailsRestService carpoolRiderDetailsRestService;
 
 	@Mock
-	CarpoolRiderDetailsService carpoolRiderDetailsService;;
+	CarpoolRiderDetailsService carpoolRiderDetailsService;
+	
+	@Mock
+	RewardPoints rewardPoints;
 
 	@Test
 	public void findCarpoolRiderDetailsByCPIdTest() {
@@ -65,14 +64,47 @@ public class CarpoolRiderDetailsTest {
 	 * @author Mahesh Bheemanapalli
 	 */
 	@Test
-	public void addRewardsToDriverTest() {
-		double rewards=1.00;
+	public void addRewardsToRiderTest() {
+		String riderRewardPoints="0.25";
+		double rewards = 0.25;
 		ServiceStatusDto statusDto = new ServiceStatusDto();
 		statusDto.setStatus(true);
-		statusDto.setMessage("Reward Points added to Driver Successfully !!");
+		statusDto.setMessage("Reward Points added to Rider Successfully !!");
 		when(carpoolRiderDetailsService.addRewards(rewards)).thenReturn(statusDto);
 		ResponseEntity<ServiceStatusDto> expected = new ResponseEntity<ServiceStatusDto>(statusDto,HttpStatus.OK);
+		when(rewardPoints.getRiderRewardPoints()).thenReturn(riderRewardPoints);
+		
+
 		ResponseEntity<?> actual = carpoolRiderDetailsRestService.addRewardPointsToRider();
+		//assertEquals(expected.getStatusCode(), actual.getStatusCode());
+		System.out.println("actual :"+actual);
+		assertEquals(expected.getBody(), actual.getBody());
+	}
+	/**
+	 * @author Mahesh Bheemanapalli
+	 */
+	@Test
+	public void addRewardsToRiderFailureTest() {
+		double rewards=0.25;
+		when(carpoolRiderDetailsService.addRewards(rewards)).thenThrow(NullPointerException.class);
+		Errors error = new Errors();
+		error.setErrorCode("BAD REQUEST");
+		error.setErrorMessage("Reward Points are not added to Rider !!");
+		ResponseEntity<?> expected = new ResponseEntity<Errors>(error,HttpStatus.NOT_ACCEPTABLE);
+		ResponseEntity<?> actual = carpoolRiderDetailsRestService.addRewardPointsToRider();
+		assertEquals(expected.getStatusCode(), actual.getStatusCode());
+	}
+	/**
+	 * @author Mahesh Bheemanapalli
+	 */
+	@Test
+	public void cleanCarpoolRiderNotificationsTest() {
+		ServiceStatusDto statusDto=new ServiceStatusDto();
+		statusDto.setStatus(true);
+		statusDto.setMessage("CarpoolriderNotifications Cleaned Successfully !!");
+		when(carpoolRiderDetailsService.cleanCarpoolRiderNotifications()).thenReturn(statusDto);
+		ResponseEntity<ServiceStatusDto> expected = new ResponseEntity<ServiceStatusDto>(statusDto,HttpStatus.OK);
+		ResponseEntity<?> actual = carpoolRiderDetailsRestService.cleanCarpoolRiderNotifications();
 		assertEquals(expected.getStatusCode(), actual.getStatusCode());
 		assertEquals(expected.getBody(), actual.getBody());
 	}
@@ -80,14 +112,13 @@ public class CarpoolRiderDetailsTest {
 	 * @author Mahesh Bheemanapalli
 	 */
 	@Test
-	public void addRewardsToDriverFailureTest() {
-		double rewards=1.00;
-		when(carpoolRiderDetailsService.addRewards(rewards)).thenThrow(NullPointerException.class);
+	public void cleanCarpoolRiderNotificationsFailureTest() {
 		Errors error = new Errors();
-		error.setErrorCode("BAD REQUEST");
-		error.setErrorMessage(Constants.UPDATE_CARPOOL_STATUS_FAILED);
-		ResponseEntity<?> expected = new ResponseEntity<Errors>(error,HttpStatus.NOT_ACCEPTABLE);
-		ResponseEntity<?> actual = carpoolRiderDetailsRestService.addRewardPointsToRider();
+		error.setErrorCode("500");
+		error.setErrorMessage(null);
+		when(carpoolRiderDetailsService.cleanCarpoolRiderNotifications()).thenThrow(NullPointerException.class);
+		ResponseEntity<Errors> expected = new ResponseEntity<Errors>(error,HttpStatus.NOT_ACCEPTABLE);
+		ResponseEntity<?> actual = carpoolRiderDetailsRestService.cleanCarpoolRiderNotifications();
 		assertEquals(expected.getStatusCode(), actual.getStatusCode());
 	}
 }

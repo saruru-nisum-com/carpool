@@ -49,7 +49,8 @@ public class CarpooldetailsRestService {
 	private static Logger logger = LoggerFactory.getLogger(CarpooldetailsRestService.class);
 	@Autowired
 	CarpooldetailsService carpooldetailsService;
-	private static RewardPoints rewardPoints;
+	@Autowired
+	private RewardPoints rewardPoints;
 	@Autowired
 	CarpoolRiderDetailsService carpoolRiderService;
 
@@ -393,11 +394,12 @@ public class CarpooldetailsRestService {
 	
 	/**
 	 * @author Mahesh Bheemanapalli
+	 * This method is used to add reward points to driver when status closed and todate date less than or equal to current date.
 	 */
 		
 
 	//seconds minutes hours dayofthemonth month dayoftheweek
-	@Scheduled(cron = "30 53 23 * * ?")
+	@Scheduled(cron = "0 30 23 * * ?")
 	@RequestMapping(value = "/addDriverRewardPoints", method = RequestMethod.GET)
 	public ResponseEntity<?> addRewardsToDriver() {
 		logger.info("CarpooldetailsRestService : addRewardsToDriver");
@@ -417,16 +419,6 @@ public class CarpooldetailsRestService {
 		}
 		return responseEntity;
 
-	}
-	/**
-	 * @author Mahesh Bheemanapalli
-	 * @param rewardPoints
-	 * @return 
-	 */
-	
-	@Autowired
-	public void setRewardPoints(RewardPoints rewardPoints) {
-		CarpooldetailsRestService.rewardPoints = rewardPoints;
 	}
 	
 	/**

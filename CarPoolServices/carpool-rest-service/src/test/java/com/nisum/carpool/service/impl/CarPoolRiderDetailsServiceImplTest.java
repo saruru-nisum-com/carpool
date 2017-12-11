@@ -24,7 +24,7 @@ public class CarPoolRiderDetailsServiceImplTest {
 	/**
 	 * @author Mahesh Bheemanapalli
 	 * 
-	 * Test cases to update rewards in carpoolDetails
+	 * Test cases to update rewards in CarpoolRiderDetails
 	 */
 	@Test
 	public void addRewardsTest() {
@@ -35,6 +35,19 @@ public class CarPoolRiderDetailsServiceImplTest {
 		expected.setMessage(statusMessage);
 		when(carpoolRiderDetailsDAO.addRewards(rewards)).thenReturn(statusMessage);
 		ServiceStatusDto actual = carPoolRiderDetailsServiceImpl.addRewards(rewards);
+		assertEquals(expected.getMessage(), actual.getMessage());
+	}
+	/**
+	 * @author Mahesh Bheemanapalli
+	 */
+	@Test
+	public void cleanCarpoolRiderNotificationsTest() {
+		String notificationCleaned = Constants.CARPOOL_RIDER_NOTIFICATION_CLEANED;
+		when(carpoolRiderDetailsDAO.cleanCarpoolRiderNotifications()).thenReturn(notificationCleaned);
+		ServiceStatusDto expected = new ServiceStatusDto();
+		expected.setStatus(true);
+		expected.setMessage(notificationCleaned);
+		ServiceStatusDto actual = carPoolRiderDetailsServiceImpl.cleanCarpoolRiderNotifications();
 		assertEquals(expected.getMessage(), actual.getMessage());
 	}
 }

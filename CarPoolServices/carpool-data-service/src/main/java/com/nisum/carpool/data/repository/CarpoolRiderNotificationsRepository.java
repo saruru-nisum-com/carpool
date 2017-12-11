@@ -14,5 +14,5 @@ public interface CarpoolRiderNotificationsRepository extends CassandraRepository
 	public List<CarpoolRiderNotifications> getNotifiedRidersByCPId(@Param("cpid") int cpid);
 	
 	@Query("TRUNCATE cp_carpoolridernotifications")
-	void CleanCarpoolriderNotifications();
+	Integer CleanCarpoolriderNotifications();
 }

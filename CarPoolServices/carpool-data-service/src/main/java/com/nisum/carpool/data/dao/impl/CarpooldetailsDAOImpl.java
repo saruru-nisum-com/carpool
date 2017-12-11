@@ -362,12 +362,12 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		if (setOfPoolIds.size() > 0) {
 			Integer countBeforeUpdate = carpooldetailsRepository
 					.checkUpdateCarpoolStatusClosedCount(Pool_Status.CLOSED.getValue());
-			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : countBeforeUpdate" + countBeforeUpdate);
+			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : countBeforeUpdate " + countBeforeUpdate);
 			carpooldetailsRepository.updateCarpoolStatusBySetOfPoolIds(Pool_Status.CLOSED.getValue(), setOfPoolIds);
 			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : CarpoolStatusUpdateToClose");
 			Integer countAfterUpdate = carpooldetailsRepository
 					.checkUpdateCarpoolStatusClosedCount(Pool_Status.CLOSED.getValue());
-			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : countAfterUpdate" + countAfterUpdate);
+			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : countAfterUpdate " + countAfterUpdate);
 			if (countBeforeUpdate < countAfterUpdate) {
 				logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :" + Constants.CARPOOL_STATUS_UPDATED);
 				return Constants.CARPOOL_STATUS_UPDATED;
