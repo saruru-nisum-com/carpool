@@ -23,6 +23,7 @@ public class OptARideServiceUtil {
 	}
 	public static OptRideDto convertToOptRideDtoNotOptedPool(Carpooldetails carpool, int optedCount) {
 		OptRideDto optRideDto = new OptRideDto();
+		optRideDto.setCpId(carpool.getId());
 		optRideDto.setDate(carpool.getFromDate());
 		optRideDto.setTotalSeats(carpool.getNoofseats());
 		optRideDto.setOptedSeats(optedCount);

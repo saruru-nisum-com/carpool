@@ -2,6 +2,7 @@ package com.nisum.carpool.service.dto;
 
 public class OptRideDto {
 
+	private Integer cpId;
 	private Integer optedSeats;
 	private Integer totalSeats;
 	private String date;
@@ -39,12 +40,19 @@ public class OptRideDto {
 		this.date = date;
 	}
 	
-	
-	@Override
-	public String toString() {
-		return "OptRideDto [optedSeats=" + optedSeats + ", totalSeats=" + totalSeats + ", date=" + date + ", status="
-				+ status + "]";
+	public Integer getCpId() {
+		return cpId;
 	}
+
+	public void setCpId(Integer cpId) {
+		this.cpId = cpId;
+	}
+	   @Override
+		public String toString() {
+			return "OptRideDto [cpId=" + cpId + ", optedSeats=" + optedSeats + ", totalSeats=" + totalSeats + ", date="
+					+ date + ", status=" + status + "]";
+		}
+
 
 	
 }
