@@ -15,7 +15,9 @@ public interface CarpoolRiderDetailsService {
 
 	//List<CarpoolRiderDetailsDTO> getRiderBookingDetails(String emailId); 
 	
-	String cancelCarpoolRiderDetails(int cpid);
+	//String cancelCarpoolRiderDetails(int cpid);
+	
+	List<CarpoolRiderDetailsDTO> cancelCarpoolRiderDetails(int cpid);
 
 	List<CarpoolRiderDetailsDTO> findCarpoolRiderDetailsByCPId(int cpid);
 
