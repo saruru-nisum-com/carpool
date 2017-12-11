@@ -610,27 +610,6 @@ carpoolRegApp
 								parseEndTime))
 							return false;
 
-						/*
-						 * var timeStart = new Date("01/01/2007 " +
-						 * parseStartTime); var timeEnd = new Date("01/01/2007 " +
-						 * parseEndTime);
-						 * 
-						 * var diff = (timeEnd - timeStart) / 60000; // dividing //
-						 * by // seconds // and // milliseconds
-						 * 
-						 * var minutes = diff % 60; var hours = (diff - minutes) /
-						 * 60; if(hours < 0) { $("#alertMsg").text("Return time
-						 * is more than start time.");
-						 * $('#postARideFormModal').modal('show'); return false; }
-						 * if(minutes < 0) { $("#alertMsg").text("Return time is
-						 * more than start time.");
-						 * $('#postARideFormModal').modal('show'); return false; }
-						 * 
-						 * if(hours == 0 && minutes == 0) {
-						 * $("#alertMsg").text("Start time and return time both
-						 * are same."); $('#postARideFormModal').modal('show');
-						 * return false; }
-						 */
 						return true;
 					}
 
@@ -800,21 +779,33 @@ carpoolRegApp
 
 					}
 
-					$scope.confirmEdit = function(name, item) {
-						var parseStartTime = $filter('date')(
-								new Date(item.startTime), 'h:mm a');
-						var parseEndTime = $filter('date')(
-								new Date(item.toTime), 'h:mm a');
-
-						if (!$scope.validateSelectedTime(parseStartTime,
-								parseEndTime))
+					$scope.selectedParent = [];
+                    $scope.selectedchild = [];
+                    
+					$scope.confirmEdit = function(item,selectedRowIndex,selectedRowType) {
+						var parseStartTime = $filter('date')(new Date(item.startTime), 'h:mm a');
+						var parseEndTime = $filter('date')(new Date(item.toTime), 'h:mm a');
+						
+						if(!$scope.validateSelectedTime(parseStartTime,parseEndTime)) 
 							return false;
-
+						
 						item['startTime'] = parseStartTime;
 						item['toTime'] = parseEndTime;
-
+						
 						$scope.editteditem = item;
+						$scope.selectedRowIndex = selectedRowIndex;
+						$scope.selectedRowType = selectedRowType;
 						$('#editModal').modal('show');
+					}
+					
+					$scope.closeEditModal = function(){
+						$('#editModal').modal('hide');
+						if($scope.selectedRowType == 'child'){
+							$scope.selectedchild[$scope.selectedRowIndex] = false;
+						}else{
+							$scope.selectedParent[$scope.selectedRowIndex] = false;
+						}
+						
 					}
 
 					$scope.editItem = function() {

@@ -1,0 +1,1 @@
+var dayWiseReportsApp = angular.module('dayWiseReportsApp', ['ui.router'])

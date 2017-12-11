@@ -149,8 +149,8 @@ h3 {
 									class="btn btn-primary btn-xs" id="gridButton{{key}}"
 									ng-click="showChildData(key)" style="width: 30px">+</button> <input
 								type="checkbox" style="position: relative; left: 5px;"
-								ng-model="selectedParent[$index]" ng-disabled="disablePastDates(value.fromDate)"/></td>
-							<td>{{value.vehicleType}}</td>
+								ng-model="selectedParent[$index]" ng-disabled="disablePastDates(value.fromDate)" ng-checked="selectedParent[$index]"/></td>
+							<td>{{value.vehicleType}} Wheeler</td>
 							<td><span ng-switch="value.vehicleType" class="spanCls">
 									<span ng-switch-when="2"> <input type="number"
 										name="input" ng-model="value.totalNoOfSeats" min="1" max="1"
@@ -177,7 +177,7 @@ h3 {
 								<!-- <img src="images/./view.png" style="left: -10px" title="view" ng-click="activate(checkedData)"/> -->
 								<img src="images/./edit.png"
 								style="width: 20px; height: 20px; left: -5px;" title="edit"
-								ng-click="!selectedParent[$index]|| confirmEdit('carpool',value);" />
+								ng-click="!selectedParent[$index]|| confirmEdit(value,$index,'parent');" />
 								<img src="images/./delete2.png"
 								style="width: 20px; height: 20px;" title="delete"
 								ng-click="!selectedParent[$index]|| confirmDelete('carpool',value);" />
@@ -187,8 +187,8 @@ h3 {
 							ng-show="show{{key}}">
 							<td style="width: 40px"><input type="checkbox"
 								style="position: relative; left: 21px;"
-								ng-model="selectedchild[$index]" ng-disabled="disablePastDates(x.fromDate)"/></td>
-							<td>{{x.vehicleType}}</td>
+								ng-model="selectedchild[$index]" ng-disabled="disablePastDates(x.fromDate)" ng-checked="selectedchild[$index]"/></td>
+							<td>{{x.vehicleType}} Wheeler</td>
 							<td><span ng-switch="x.vehicleType" class="spanCls">
 									<span ng-switch-when="2"> <input type="number"
 										name="input" ng-model="x.totalNoOfSeats" min="1" max="1"
@@ -215,7 +215,7 @@ h3 {
 								<!-- <img src="images/./view.png" style="left: -10px" title="view" ng-click="activate(checkedData)" />-->
 								<img src="images/./edit.png"
 								style="width: 20px; height: 20px; left: -5px;" title="edit"
-								ng-click="!selectedchild[$index]|| confirmEdit('carpool',x);" />
+								ng-click="!selectedchild[$index]|| confirmEdit(x,$index,'child');" />
 								<img src="images/./delete2.png"
 								style="width: 20px; height: 20px;" left: -5px;" title="delete"
 								ng-click="!selectedchild[$index]|| confirmDelete('carpool',x);" />
@@ -233,10 +233,10 @@ h3 {
 								<h3>Are you sure. Do you want to edit this carPool?</h3>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="custombtn btn-normal"
+								<button type="button" class="btn btn-info"
 									ng-click="editItem();">Ok</button>
-								<button type="button" class="custombtn btn-cancel"
-									data-dismiss="modal">cancel</button>
+								<button type="button" class="btn btn-default"
+									ng-click="closeEditModal();">cancel</button>
 							</div>
 						</div>
 					</div>
@@ -251,7 +251,7 @@ h3 {
 								<div class="success" ng-if="successMessage!='';">{{successMessage}}</div>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="custombtn btn-cancel"
+								<button type="button" class="btn btn-info"
 									data-dismiss="modal">Ok</button>
 							</div>
 						</div>
@@ -266,9 +266,9 @@ h3 {
 								<h3>Are you sure. Do you want to Delete this carPool?</h3>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="custombtn btn-normal"
+								<button type="button" class="btn btn-info"
 									ng-click="deleteItem();">Ok</button>
-								<button type="button" class="custombtn btn-cancel"
+								<button type="button" class="btn btn-default"
 									data-dismiss="modal">cancel</button>
 							</div>
 						</div>
