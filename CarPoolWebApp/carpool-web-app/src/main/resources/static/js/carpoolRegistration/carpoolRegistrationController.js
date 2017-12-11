@@ -542,6 +542,8 @@ carpoolRegApp
 												} else {
 													console
 															.log("No Carpools Available");
+													$scope
+													.loadTableGrid(response);
 												}
 											}
 										}, function(response) {
