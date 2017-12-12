@@ -1,10 +1,5 @@
 <div class="col-md-10" ng-controller="configurationsController">
 	<div>
-		<div>
-			<ul id="nav-tabs" ng-init='getCarpools()'>
-			</ul>
-		</div>
-
 		<div align="center" style="color: #2535A9;">
 			<h3>Available car pools</h3>
 			<input type="checkbox" name="AllCarPools" data-ng-change='ngChange()'
@@ -13,12 +8,14 @@
 
 		<div ng-if="carpoolList.length>0" ng-repeat="carpool in carpoolList"
 			class="poolList">
-			 <a ui-sref="checkOrOptRide({parentid: carpool.carpoolDetails.parentid})">
+			<a
+				ui-sref="checkOrOptRide({parentid: carpool.carpoolDetails.parentid})">
 				<table class="tStyle" frame="box" style="background-color: green">
 					<tr>
 						<td>ProvidedBy: {{carpool.userName}}</td>
 						<td ng-repeat="vehicle in vehicleDetails"
-						ng-if="vehicle.id==carpool.carpoolDetails.vehicleType">VehicleType: {{vehicle.vehicletype}}</td>
+							ng-if="vehicle.id==carpool.carpoolDetails.vehicleType">VehicleType:
+							{{vehicle.vehicletype}}</td>
 					</tr>
 					<tr>
 						<td>FromDate: {{carpool.carpoolDetails.fromDate |
@@ -33,10 +30,10 @@
 			</a>
 		</div>
 		<div align="center" ng-if="carpoolList.length<=0">No Car pools
-		Available</div>
+			Available</div>
 	</div>
 	<div id="bottom">
-	<hr class="hr">
-	<div ng-include="'js/riderBookingDetails/riderBookingDetails.html'"></div>
-</div>
+		<hr class="hr">
+		<div ng-include="'js/riderBookingDetails/riderBookingDetails.html'"></div>
+	</div>
 </div>

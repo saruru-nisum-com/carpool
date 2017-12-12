@@ -39,12 +39,12 @@ loginApp.controller('loginController', function($scope, $state,
 																$scope.autocomplete = value.location;
 																$scope.nearBy = value.nearby;
 																$scope.userStatus.push("D");
-																localStorage.setItem("userStatus",$scope.userStatus)
+																localStorageService.set("userStatus",$scope.userStatus)
 																
 															} else if (value.isRider == 1) {// If
 																		console.log("Registered as Rider");
 																		$scope.userStatus.push("R")
-																		localStorage.setItem("userStatus",$scope.userStatus)
+																		localStorageService.set("userStatus",$scope.userStatus)
 																		
 															}
 														});

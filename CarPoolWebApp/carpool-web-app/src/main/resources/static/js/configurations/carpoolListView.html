@@ -1,94 +1,48 @@
 <div class="col-md-10" ng-controller="configurationsController">
 	<div>
-
 		<div align="center" style="color: #2535A9;">
 			<h3>Available car pools</h3>
 			<input type="checkbox" name="AllCarPools" data-ng-change='ngChange()'
 				data-ng-model='isCheck' /> See All Pools
 		</div>
 
-				<table class="grid" border="2px" ng-if="carpoolList.length>0">
-					
-					
-					<thead class="thead-inverse" align="center">
-					<tr>
-						<th>PostedBy</th>
-						<th>emailId</th>
-				<th>Location</th>
-				<th>VehicleType</th>
-				<th>FromDate</th>
-				<th>ToDate</th>
-				<th>PoolStatus</th>
-				<th>CheckAndOpt</th>
+		<table class="grid" border="2px" ng-if="carpoolList.length>0">
 
-					</tr>
-					<tr ng-repeat="carpool in carpoolList">
-						<td>{{carpool.userName}}</td>
-						<td>{{carpool.carpoolDetails.emailId}}</td>
-						<td>{{carpool.location}}</td>
-						<td ng-repeat="vehicle in vehicleDetails"
+
+			<thead class="thead-inverse" align="center">
+				<tr>
+					<th>PostedBy</th>
+					<th>emailId</th>
+					<th>Location</th>
+					<th>VehicleType</th>
+					<th>FromDate</th>
+					<th>ToDate</th>
+					<th>PoolStatus</th>
+					<th>CheckAndOpt</th>
+
+				</tr>
+				<tr ng-repeat="carpool in carpoolList">
+					<td>{{carpool.userName}}</td>
+					<td>{{carpool.carpoolDetails.emailId}}</td>
+					<td>{{carpool.location}}</td>
+					<td ng-repeat="vehicle in vehicleDetails"
 						ng-if="vehicle.id==carpool.carpoolDetails.vehicleType">{{vehicle.vehicletype}}</td>
-						<td>{{carpool.carpoolDetails.fromDate |
-							dateFilter}}</td>
-						<td>{{carpool.carpoolDetails.toDate | dateFilter}}</td>
-						<td>{{carpool.carpoolDetails.statusName}}</td>
-						<td><button class="button" >CheckAndOpt</button></td>
-					</tr>
+					<td>{{carpool.carpoolDetails.fromDate | dateFilter}}</td>
+					<td>{{carpool.carpoolDetails.toDate | dateFilter}}</td>
+					<td>{{carpool.carpoolDetails.statusName}}</td>
+					<td><button class="button"
+							ng-click="checkRiderOrNot(carpool.carpoolDetails.parentid)">CheckAndOpt</button></td>
+				</tr>
 
-				</thead>
-					
-					
-				</table>
+			</thead>
+
+
+		</table>
 		<div align="center" ng-if="carpoolList.length<=0">No Car pools
-		Available</div>
+			Available</div>
 	</div>
 	<div id="bottom">
-	<hr class="hr">
-	
-	<link rel="stylesheet" href="css/./carpool.css">
-<div class="tab-pane active" id="1">
-	<div align="center" style="color: #2535A9;">
-		<h3>List of Opt Rides</h3>
+		<hr class="hr">
+		<div ng-include="'js/riderBookingDetails/riderBookingDetails.html'"></div>
 	</div>
-	<div class="row">
-		<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-xl-12">
-			<table class="grid" border="2x">
-				<thead class="thead-inverse" align="center">
-					<tr>
-						<th><input type='checkbox'></th>
-
-						<th>Date</th>
-						<th>Driver</th>
-						<th>Email</th>
-						<th>Mobile No</th>
-						<th>Location</th>
-						<th>Status</th>
-						<th>Reason</th>
-
-					</tr>
-					<tr ng-repeat="riderDetails in riderBookingList">
-						<td><input type='checkbox' ng-hide="riderDetails.statusName!='APPROVED'" ng-model="selectedRiderDetails[$index]"></td>
-						<td>{{riderDetails.fromDate}}</td>
-						<td>{{riderDetails.userName}}</td>
-						<td>{{riderDetails.email}}</td>
-						<td>{{riderDetails.mobile}}</td>
-						<td>{{riderDetails.location}}</td>
-						<td>{{riderDetails.statusName}}</td>
-						
-						 <td><select  ng-if="riderDetails.statusName=='APPROVED'" 
-						         ng-disabled="!selectedRiderDetails[$index]" ng-class="{'txtdisabled': !selectedRiderDetails[$index]}">
-						      <option value="0">Select</option>						    
-                       <option ng-repeat="(key,value) in reasons">{{value}}</option>
-					  </select>
-					    <input ng-if="riderDetails.statusName!='APPROVED'" type='text' ng-model="reasons[riderDetails.reason]"/>
-						</td> 
-					</tr>
-
-				</thead>
-			</table>
-		</div>
-	
-</div>
-</div>
-</div>
 </div>
