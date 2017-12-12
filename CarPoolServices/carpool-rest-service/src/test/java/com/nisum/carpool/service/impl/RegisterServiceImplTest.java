@@ -111,4 +111,15 @@ public class RegisterServiceImplTest {
 		registerServiceImpl.searchLocation(registerDTO);
 		assertEquals(registerDTO.getLocation(), "Hyderabad");
 	}
+	
+	/**
+	 * @author dhiraj singh
+	 * description: this taste case is updating the driver/rider details
+	 * Date created: 07/12/17
+	 * Date modified: 08/12/17 
+	 */
+	@Test
+	public void testUpdateDriverData() throws Exception{
+		
+	}
 }

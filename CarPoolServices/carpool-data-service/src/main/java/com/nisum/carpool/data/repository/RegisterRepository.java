@@ -23,6 +23,9 @@ import com.nisum.carpool.data.domain.RegisterDomain;
 	@Query("select * from cp_userregistration where emailId= ?0 and isrider= ?1 allow filtering")
 	public RegisterDomain findByUserid(String userId, Integer isrider); 
 	
+//	@Query("select registrationid from cp_userregistration where emailid= ?0 and isrider= ?1 allow filtering")
+//	public RegisterDomain findByUserid(String userId, Integer isrider); 
+	
 	@Query("select * from cp_userregistration where emailid= ?0 allow filtering")
 	public RegisterDomain getDomainByEmailId(String emailid); 
 }

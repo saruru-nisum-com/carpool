@@ -5,7 +5,7 @@
  * date modified: 29th nov. 20117
  */
 riderApp.controller('riderController', 
-		function($scope, $state, localStorageService, riderService, $rootScope, $filter) {
+		function($scope, $state, localStorageService, riderService, driverService, $rootScope, $filter) {
 	
 
 	$scope.showError=false;
@@ -16,6 +16,9 @@ riderApp.controller('riderController',
 	$scope.isRegisteredAsRider = false;
 	$scope.isVisible = false;
 	$scope.disableGender = false;
+	$scope.emailNotification = false;
+	$scope.nearby = undefined;
+	$scope.silentlyModifiedDateRider = $filter('date')(new Date(), 'yyyy-MM-dd');
 	
 	$scope.$on('gmPlacesAutocomplete::placeChanged', function(){
 		if($scope.riderAutocomplete != undefined) {
@@ -41,14 +44,21 @@ riderApp.controller('riderController',
 			if(responseData.length > 0) {
 				$scope.mobile = responseData[0].mobile;
 				$scope.gender = responseData[0].gender;
+				//below code is for automatically location available to the page, commented for now
+				$scope.riderAutocomplete = responseData[0].location;
+				$scope.selectedLocation = responseData[0].location;
+				$scope.lat = responseData[0].latitude;
+				$scope.lng = responseData[0].longitude;
+				$scope.notifyEmail = responseData[0].emailNotification;
+				$scope.nearby = responseData[0].nearby;
 				$scope.disableGender = true;
 			}
 			angular.forEach(response, function(value, key) {
-				if(value.isRider == 1) {//If isRider value is '0' then he is registered as Rider.
+				if(value.isRider == 1) {//If isRider value is '1' then he is registered as Rider.
 					$scope.isRegisteredAsRider = true;
 					$scope.riderAutocomplete = value.location;
 					$scope.riderNearBy = value.nearby;
-					$scope.emailNotification = value.emailNotification;
+					$scope.notifyEmail = value.emailNotification;
 //					$scope.mobile = value.mobile;
 //					$scope.gender = value.gender;
 				}
@@ -74,7 +84,7 @@ riderApp.controller('riderController',
 		var latitude = $scope.lat;
 		var longitude = $scope.lng;
 		var nearby = $scope.riderNearBy;
-		var mobile = $scope.mobile;//static for now, need to change
+		var mobile = $scope.mobile;
 		var gender = $scope.gender;
 		if($scope.notifyEmail == true){
 			var emailNotification = true;
@@ -82,10 +92,11 @@ riderApp.controller('riderController',
 			var emailNotification = false;
 		}
 
+		var emailNotification = $scope.notifyEmail;
+
 		var isRider = 1;//driver==>0 || rider==>1
 		var createdDate = $filter('date')(new Date(), 'yyyy-MM-dd');
 		var modifiedDate = $filter('date')(new Date(), 'yyyy-MM-dd');
-		//window.alert(parseFromDate + " " + parseEndTime);
 
 		$scope.registerRiderJson = {
 				"registrationId" : registrationId,
@@ -116,37 +127,26 @@ riderApp.controller('riderController',
 
 	
 	/*
-	 * @author Dhiraj Singh
-	 * Method to update the Rider data.
+	 * @author dhiraj1125
+	 * Description: Method to update the Rider data.
 	 */
 	$scope.updateAsRider = function() {
 		console.log("Update rider data method called.");
+		
+		console.log("$scope.notifyEmail = "+$scope.notifyEmail);
 
 		var profileSessionData = localStorageService.get('profile');
 		var userId = profileSessionData.emailId;
 		$scope.userId = userId
-
-//		if($scope.cb2wheel==2 && $scope.cb4wheel==4){
-//			var vehicleType = [$scope.cb2wheel, $scope.cb4wheel];
-//		}else if($scope.cb2wheel==2 && $scope.cb4wheel==0){
-//			var vehicleType = [$scope.cb2wheel];
-//		}else if($scope.cb4wheel==4 && $scope.cb2wheel==0){
-//			var vehicleType = [$scope.cb4wheel];
-//		}
-
-		if($scope.notifyEmail == true){
-			var emailNotification = true;
-		}else{
-			var emailNotification = false;
-		}
+		var emailNotification = $scope.notifyEmail;
 		
 		var modifiedDate = $filter('date')(new Date(), 'yyyy-MM-dd');
-		
 		var data = {
 				"emailId" : userId,
 				"location" : $scope.selectedLocation,
+				"latitude" : $scope.lat,
+				"longitude" : $scope.lng,
 				"nearby" : $scope.riderNearBy,
-				//"vehicleType" :  vehicleType,
 				"isRider" : 1,
 				"emailNotification" : emailNotification,
 				"modifiedDate": modifiedDate,
@@ -157,6 +157,7 @@ riderApp.controller('riderController',
 			console.log("Rider data updated successfuly"+successResponse);
 			$scope.isVisible=true;
 			$scope.actionName="Updated";
+			
 		}, function(errorResponse) {
 			console.log("Failed to update the rider data."+errorResponse);
 		});

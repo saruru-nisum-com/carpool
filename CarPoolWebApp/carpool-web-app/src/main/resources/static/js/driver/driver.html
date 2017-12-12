@@ -446,6 +446,20 @@ form {
 	padding-top: 5%;
 }
 </style>
+<!-- <script type="text/javascript">
+	function initialize() {
+
+	 var options = {
+	  types: ['(regions)'],
+	  componentRestrictions: {country: "in"}
+	 };
+
+	 var input = document.getElementById('searchTextField');
+	 var autocomplete = new google.maps.places.Autocomplete(input, options);
+	 
+	}
+   google.maps.event.addDomListener(window, 'load', initialize);
+</script> -->
 <title>Driver Registration</title>
 <body>
 	<div class="container-fluid">
@@ -479,13 +493,13 @@ form {
 							<div class="col-md-4">
 							
 								<select class="form-control" ng-model="selectedVehicleTypes" multiple="multiple" 
-									ng-options="vehicle.id as vehicle.type for vehicle in vehicleTypes" ng-required="true"
+									ng-options="vehicle.id as vehicle.vehicletype for vehicle in vehicleTypes" ng-required="true"
 									size="2"></select>
 									<span>(Hold Ctrl to select multiple vehicles)</span>
 								<div
 									ng-show="driverForm.$submitted || driverForm.vehicleType.$touched">
 									<span ng-show="driverForm.vehicleType.$error.required"
-										style="color: red">Select atleast one vehicle type.</span>
+										style="color: red">Select at-least one vehicle type.</span>
 								</div>
 							</div>
 						</div>
@@ -504,6 +518,20 @@ form {
 								</div>
 							</div>
 						</div>
+						<!-- <div class="form-group">
+							<div class="col-sm-2 control-label">
+									<label>Location</label>
+							</div>
+							<div class="col-md-4">
+								<input id="searchTextField" class="form-control" type="text" name="location" ng-model="autocomplete" 
+								ng-required="true" placeholder="Enter your location here" autocomplete="on" google-place="">
+								<div
+									ng-show="driverForm.$submitted || driverForm.location.$touched">
+									<span ng-show="driverForm.location.$error.required"
+										style="color: red">Tell us your location.</span>
+								</div>
+							</div>
+					   </div> -->
 						<div class="form-group">
 							<div class="col-sm-2 control-label">
 								<label>NearBy(pickup)</label>

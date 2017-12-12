@@ -178,8 +178,18 @@ public class RegisterServiceImpl  implements RegisterService{
 				final Integer isRider = registerDTO.getIsRider(); 
 				RegisterDomain registerDomain  = registerRepository.findByUserid(userId, isRider);
 				RegisterDomain updatedRegDomainObj = buildUpdatedDriverRriderData(registerDTO, registerDomain);
+				registerDAO.updateDriverOrRider(updatedRegDomainObj);
 				
-				registerDAO.updateDriverOrRider(registerDomain);
+				//Logic to update the Rider data with the updated driver data.
+				RegisterDomain existingRiderObj  = registerRepository.findByUserid(userId, 1);
+				RegisterDomain updatedRiderDomainObj = buildUpdatedRiderData(existingRiderObj, registerDTO);
+				registerDAO.updateDriverOrRider(updatedRiderDomainObj);
+				
+
+				//Logic to update the Driver data with the updated Rider data.
+				RegisterDomain existingDriverObj = registerRepository.findByUserid(userId, 0);
+				RegisterDomain updatedDriverDomainObj = buildUpdatedDriverData(existingDriverObj, registerDTO);
+				registerDAO.updateDriverOrRider(updatedDriverDomainObj);
 			}
 			return registerDTO;
 		} catch(Exception e) {
@@ -188,23 +198,63 @@ public class RegisterServiceImpl  implements RegisterService{
 		}
 		
 	}
-	
+
 	/**
 	 * @author : Dhiraj Singh
 	 * Description: 
 	 */
 	private RegisterDomain buildUpdatedDriverRriderData(RegisterDTO registerDTO, RegisterDomain registerDomain) {
-		registerDomain.setLocation(registerDTO.getLocation());
+		
 		registerDomain.setVehicletype(registerDTO.getVehicleType());
+		registerDomain.setLocation(registerDTO.getLocation());
+		registerDomain.setLatitude(registerDTO.getLatitude());
+		registerDomain.setLongitude(registerDTO.getLongitude());
 		registerDomain.setMobile(registerDTO.getMobile());
 		registerDomain.setNearby(registerDTO.getNearby());
+		registerDomain.setEmailnotification(registerDTO.isEmailNotification());
 //		registerDomain.setGender(registerDTO.);
 		
 		return registerDomain;
 		
 	}
 
+	/**
+	 * @author dhiraj Singh
+	 * Method to build the updated rider object when user is updating the driver data as driver and rider data should be same.
+	 * @param existingRiderObj
+	 * @param registerDTO
+	 * @return
+	 */
+	private RegisterDomain buildUpdatedRiderData(RegisterDomain existingRiderObj, RegisterDTO registerDTO) {
+		
+		existingRiderObj.setLocation(registerDTO.getLocation());
+		existingRiderObj.setLatitude(registerDTO.getLatitude());
+		existingRiderObj.setLongitude(registerDTO.getLongitude());
+		existingRiderObj.setMobile(registerDTO.getMobile());
+		existingRiderObj.setNearby(registerDTO.getNearby());
+//		existingRiderObj.setModifieddate(registerDTO.getModifiedDate());
+		
+		return existingRiderObj;
+		
+	}
 	
+	/**
+	 * @author dhiraj Singh
+	 * Method to build the updated driver object when user is updating the rider data as driver and rider data should be same.
+	 * @param existingDriverObj
+	 * @param registerDTO
+	 * @return
+	 */
+	private RegisterDomain buildUpdatedDriverData(RegisterDomain existingDriverObj, RegisterDTO registerDTO) {
+		existingDriverObj.setLocation(registerDTO.getLocation());
+		existingDriverObj.setLatitude(registerDTO.getLatitude());
+		existingDriverObj.setLongitude(registerDTO.getLongitude());
+		existingDriverObj.setMobile(registerDTO.getMobile());
+		existingDriverObj.setNearby(registerDTO.getNearby());
+		
+		return existingDriverObj;
+	}
+
 
 	
 }

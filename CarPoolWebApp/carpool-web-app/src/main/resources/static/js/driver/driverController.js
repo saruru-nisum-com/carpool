@@ -5,7 +5,7 @@
  * date modified: 29th nov. 20117
  */
 driverApp.controller('driverController', 
-		function($scope, $state, localStorageService, driverService, $rootScope, $filter) {
+		function($scope, $state, localStorageService, driverService, riderService, $rootScope, $filter) {
 
 	$scope.showError=false;
 	$scope.cb2wheel=false;
@@ -17,14 +17,9 @@ driverApp.controller('driverController',
 	$scope.isRegisteredAsDriver = false;
 	$scope.isVisible=false;
 	$scope.disableGender = false;
-	$scope.vehicleTypes = [{id:2,type:"2-wheeler"},{id:4,type:"4-wheeler"}];
 	$scope.selectedVehicleTypes = [];
-
-	// Define options
-    $scope.autocompleteOptions = {
-    		types: ['(regions)'],
-    		  componentRestrictions: {country: "us"}
-    };
+	$scope.vehicleTypes = [];
+	$scope.silentlyModifiedDate = $filter('date')(new Date(), 'yyyy-MM-dd');
     
 	$scope.$on('gmPlacesAutocomplete::placeChanged', function(){
 		if($scope.autocomplete != undefined) {
@@ -35,7 +30,8 @@ driverApp.controller('driverController',
 			$scope.$apply();
 		}
 	});
-	
+    
+
 	/*
 	 * @author dhiraj1125
 	 * Method to get the Driver/Rider details and check if he is already registered 
@@ -50,6 +46,11 @@ driverApp.controller('driverController',
 			if(responseData.length > 0) {
 				$scope.mobile = responseData[0].mobile;
 				$scope.gender = responseData[0].gender;
+				//below code is for automatically location population based on rider location, commented for now
+				$scope.autocomplete = responseData[0].location;
+				$scope.selectedLocation = responseData[0].location;
+				$scope.lat = responseData[0].latitude;
+				$scope.lng = responseData[0].longitude;
 				$scope.disableGender = true;
 			}
 			angular.forEach(responseData, function(value, key) {
@@ -57,6 +58,10 @@ driverApp.controller('driverController',
 					$scope.isRegisteredAsDriver = true;
 					$scope.autocomplete = value.location;
 					$scope.selectedLocation = value.location;
+					//below 2 line code is for automatically location population based on rider location, un-commented for now
+					//$scope.autocomplete = value.location;
+					//$scope.selectedLocation = value.location;
+					
 					$scope.nearBy = value.nearby;
 					$scope.selectedVehicleTypes = value.vehicleType;
 				} 
@@ -68,6 +73,23 @@ driverApp.controller('driverController',
 	 * On load method call to get the registered user data. 
 	 */
 	$scope.getRegisteredDriverData();
+	
+	/*
+	 * Description: this function is written to get the vehicle type
+	 */
+	$scope.getVehicleDetails = function() {
+		driverService.getVehicleDetails().then(function(response) {
+			if (response.errorCode) {
+				$scope.message = response.errorMessage
+			} else {
+				$scope.vehicleTypes=response;
+			}
+		}, function(response) {
+			console.log(response);
+		})
+		
+	}
+	$scope.getVehicleDetails();
 
 	$scope.registerAsDriver = function() {
 		console.log('checkbox values '+$scope.cb2wheel +'and '+$scope.cb4wheel);
@@ -85,8 +107,8 @@ driverApp.controller('driverController',
 		var latitude = $scope.lat;
 		var longitude = $scope.lng;
 		var nearby = $scope.nearBy;
-		var mobile = $scope.mobile;//static for now, need to change
-		var emailNotification = true;//static for now, need to change
+		var mobile = $scope.mobile;
+		var emailNotification = true;
 		var isRider = 0;//driver==>0 || rider==>1
 		var createdDate = $filter('date')(new Date(), 'yyyy-MM-dd');
 		var modifiedDate = $filter('date')(new Date(), 'yyyy-MM-dd');
@@ -141,12 +163,11 @@ driverApp.controller('driverController',
 //			$http.post('/student/submitData', { student:$scope.student })
 //			.success(onSuccess)
 //			.error(onError);
-
 	}
 
 	/*
 	 * @author dhiraj1125
-	 * Method to update the Driver data.
+	 * Description: Method to update the Driver data.
 	 */
 	$scope.updateAsDriver = function() {
 		console.log("Update driver data method called.");
@@ -159,6 +180,8 @@ driverApp.controller('driverController',
 		var data = {
 				"emailId" : userId,
 				"location" : $scope.selectedLocation,
+				"latitude" : $scope.lat,
+				"longitude" : $scope.lng,
 				"nearby" : $scope.nearBy,
 				"vehicleType" : $scope.selectedVehicleTypes,
 				"isRider" : 0,
@@ -169,6 +192,7 @@ driverApp.controller('driverController',
 			console.log("Driver data updated successfuly"+successResponse);
 			$scope.isVisible=true;
 			$scope.actionName="Updated";
+
 		}, function(errorResponse) {
 			console.log("Failed to update the driver data."+errorResponse);
 		});
