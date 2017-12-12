@@ -197,7 +197,7 @@ public class CarpoolRiderDetailsRestService {
 	/**
 	 * @author Mahesh Bheemanapalli
 	 */
-	@Scheduled(cron = "0 45 23 * * ?")
+	@Scheduled(cron = "${schedular.job.cron.cleannotification}")
 	@RequestMapping(value = "/cleanCarpoolRiderNotifications", method = RequestMethod.GET)
 	public ResponseEntity<?> cleanCarpoolRiderNotifications() {
 		logger.info("CarpoolRiderDetailsRestService : cleanCarpoolRiderNotifications");

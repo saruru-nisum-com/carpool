@@ -398,7 +398,7 @@ public class CarpooldetailsRestService {
 		
 
 	//seconds minutes hours dayofthemonth month dayoftheweek
-	@Scheduled(cron = "${schedular.job.cron.addrewardtodriver}")
+	@Scheduled(cron = "${schedular.job.cron.addrewardtodriver}")//added by Harish Kumar Gudivada on 12 Dec 2017 schedular reading the cron expression from property files
 	@RequestMapping(value = "/addDriverRewardPoints", method = RequestMethod.GET)
 	public ResponseEntity<?> addRewardsToDriver() {
 		logger.info("CarpooldetailsRestService : addRewardsToDriver");
@@ -496,7 +496,7 @@ public class CarpooldetailsRestService {
 	 * @param Change Status to "Close", if status other than "Cancel" & "Close"
 	 * @return 
 	 */
-	@Scheduled(cron = "${schedular.job.cron.updatecarpoolstatus}")
+	@Scheduled(cron = "${schedular.job.cron.updatecarpoolstatus}")//added by Harish Kumar Gudivada on 12 Dec 2017 schedular reading the cron expression from property files
 	@RequestMapping(value = "/updateCarpoolStatusToClosed", method = RequestMethod.GET)
 	public ResponseEntity<?> updateCarpoolStatus() {
 		logger.info("CarpooldetailsRestService : updateCarpoolStatus");
