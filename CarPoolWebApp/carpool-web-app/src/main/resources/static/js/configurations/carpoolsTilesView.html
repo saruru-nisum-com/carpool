@@ -13,12 +13,12 @@
 
 		<div ng-if="carpoolList.length>0" ng-repeat="carpool in carpoolList"
 			class="poolList">
-			<a href="#/configurations">
+			 <a ui-sref="checkOrOptRide({parentid: carpool.carpoolDetails.parentid})">
 				<table class="tStyle" frame="box" style="background-color: green">
-					<tr ng-repeat="vehicle in vehicleDetails"
-						ng-if="vehicle.id==carpool.carpoolDetails.vehicleType">
-						<td>ProvidedBy: {{carpool.userName}} &nbsp;</td>
-						<td>VehicleType: {{vehicle.vehicletype}}</td>
+					<tr>
+						<td>ProvidedBy: {{carpool.userName}}</td>
+						<td ng-repeat="vehicle in vehicleDetails"
+						ng-if="vehicle.id==carpool.carpoolDetails.vehicleType">VehicleType: {{vehicle.vehicletype}}</td>
 					</tr>
 					<tr>
 						<td>FromDate: {{carpool.carpoolDetails.fromDate |
@@ -26,7 +26,7 @@
 						<td>ToDate: {{carpool.carpoolDetails.toDate | dateFilter}}</td>
 					</tr>
 					<tr>
-						<td>Location: {{carpool.location}} &nbsp;</td>
+						<td>Location: {{carpool.location}}</td>
 						<td>PoolStatus: {{carpool.carpoolDetails.statusName}}</td>
 					</tr>
 				</table>
@@ -37,51 +37,6 @@
 	</div>
 	<div id="bottom">
 	<hr class="hr">
-	
-	<link rel="stylesheet" href="css/./carpool.css">
-<div class="tab-pane active" id="1">
-	<div align="center" style="color: #2535A9;">
-		<h3>List of Opt Rides</h3>
-	</div>
-	<div class="row">
-		<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-xl-12">
-			<table class="grid" border="2x">
-				<thead class="thead-inverse" align="center">
-					<tr>
-						<th><input type='checkbox'></th>
-
-						<th>Date</th>
-						<th>Driver</th>
-						<th>Email</th>
-						<th>Mobile No</th>
-						<th>Location</th>
-						<th>Status</th>
-						<th>Reason</th>
-
-					</tr>
-					<tr ng-repeat="riderDetails in riderBookingList">
-						<td><input type='checkbox' ng-hide="riderDetails.statusName!='APPROVED'" ng-model="selectedRiderDetails[$index]"></td>
-						<td>{{riderDetails.fromDate}}</td>
-						<td>{{riderDetails.userName}}</td>
-						<td>{{riderDetails.email}}</td>
-						<td>{{riderDetails.mobile}}</td>
-						<td>{{riderDetails.location}}</td>
-						<td>{{riderDetails.statusName}}</td>
-						
-						 <td><select  ng-if="riderDetails.statusName=='APPROVED'" 
-						         ng-disabled="!selectedRiderDetails[$index]" ng-class="{'txtdisabled': !selectedRiderDetails[$index]}">
-						      <option value="0">Select</option>						    
-                       <option ng-repeat="(key,value) in reasons">{{value}}</option>
-					  </select>
-					    <input ng-if="riderDetails.statusName!='APPROVED'" type='text' ng-model="reasons[riderDetails.reason]"/>
-						</td> 
-					</tr>
-
-				</thead>
-			</table>
-		</div>
-	
-</div>
-</div>
+	<div ng-include="'js/riderBookingDetails/riderBookingDetails.html'"></div>
 </div>
 </div>
