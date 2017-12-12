@@ -15,6 +15,14 @@ public class CarpoolRiderDetailsDTO {
 	 private int reason;
      private Timestamp  createddate;
 	 private Timestamp modifieddate;
+	 private String location;
+	 
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
 	/**
 	 * @return the id
 	 */

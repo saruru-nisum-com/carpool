@@ -82,6 +82,7 @@ public class CarpoolRiderDetailsServiceUtil {
 			carpoolRiderDetails.setEmailid(carpoolRiderDetailsDTO2.getEmailid());
 			carpoolRiderDetails.setStatus(Ride_Status.REQUESTED.getValue());
 			carpoolRiderDetails.setReason(carpoolRiderDetailsDTO2.getReason());
+			carpoolRiderDetails.setLocation(carpoolRiderDetailsDTO2.getLocation());
 		    carpoolRiderDetails.setCreateddate(carpoolRiderDetailsDTO2.getCreateddate().toLocalDateTime());
 			carpoolRiderDetails.setModifieddate(carpoolRiderDetailsDTO2.getModifieddate().toLocalDateTime());
 			carpoolRiderDetails.setRewards(carpoolRiderDetailsDTO2.getRewards());

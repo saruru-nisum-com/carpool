@@ -232,8 +232,8 @@ public class CarpoolRiderDetailsRestService {
 		
 		}catch (Exception e) {
 			Errors error = new Errors();
-			error.setErrorCode("500");
-			error.setErrorMessage("Failed to Save Opted Rider");
+			error.setErrorCode(e.getMessage());
+			error.setErrorMessage(Constants.CARPOOL_OPTED_RIDER_NOT_SAVED);
 			responseEntity=new ResponseEntity<Errors>(error, HttpStatus.BAD_REQUEST);
 		}
 		return responseEntity;
