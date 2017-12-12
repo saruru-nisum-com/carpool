@@ -232,6 +232,10 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		return Constants.REWARDS_NOT_ADDED_DRIVER;
 	}
 
+	/**
+	 * @author Rajendra Prasd Dava
+	 *   modified the method as it has return null, written repository call for this method
+	 */
 	@Override
 	public List<Carpooldetails> getCarpoolsByParentId(int parentId) {
 		// TODO Auto-generated method stub
@@ -306,7 +310,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		try {
 		return carpooldetailsRepository.getCarPoolsByCpIdandDate(cpId, date);
 	}catch (Exception e) {
-		logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolByCpIDandDate :: error");
+		logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolByCpIDandDate :: error"+e.getMessage());
 		e.printStackTrace();
 		return null;
 	}
@@ -358,12 +362,12 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		if (setOfPoolIds.size() > 0) {
 			Integer countBeforeUpdate = carpooldetailsRepository
 					.checkUpdateCarpoolStatusClosedCount(Pool_Status.CLOSED.getValue());
-			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : countBeforeUpdate" + countBeforeUpdate);
+			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : countBeforeUpdate " + countBeforeUpdate);
 			carpooldetailsRepository.updateCarpoolStatusBySetOfPoolIds(Pool_Status.CLOSED.getValue(), setOfPoolIds);
 			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : CarpoolStatusUpdateToClose");
 			Integer countAfterUpdate = carpooldetailsRepository
 					.checkUpdateCarpoolStatusClosedCount(Pool_Status.CLOSED.getValue());
-			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : countAfterUpdate" + countAfterUpdate);
+			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : countAfterUpdate " + countAfterUpdate);
 			if (countBeforeUpdate < countAfterUpdate) {
 				logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :" + Constants.CARPOOL_STATUS_UPDATED);
 				return Constants.CARPOOL_STATUS_UPDATED;
@@ -401,7 +405,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	@Override
 	public List<Carpooldetails> findCarpoolDetailsByParentId(int parentid) {
 		// TODO Auto-generated method stub
-		return null;
+		return carpooldetailsRepository.findByParentid(parentid);
 	}
 
 	@Override

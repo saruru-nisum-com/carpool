@@ -100,13 +100,13 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 			List<CarpoolRiderDetails> carpoolRiderLists = (List<CarpoolRiderDetails>) carpoolRiderDetailsDAO
 					.getRiderBookingDetails(emailId);
 
-			logger.info("" + carpoolRiderLists);
+			
 			if (carpoolRiderLists != null) {
 				for (CarpoolRiderDetails car : carpoolRiderLists) {
 
 					int cpid = car.getCpid();
 
-					logger.info("cpid" + cpid + "date : " + date);
+					
 
 					List<Carpooldetails> carpoolList = carpooldetailsDAO.getCarPoolByCpIDandDate(cpid, date);
 
@@ -114,7 +114,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 
 						RiderBookingDetailsDTO carpoolRiderdetailsDto = new RiderBookingDetailsDTO();
 						emailid = carPool.getEmailId();
-						System.out.println(emailid);
+						
 						carpoolRiderdetailsDto.setEmail(emailid);
 
 						carpoolRiderdetailsDto.setLocation(carPool.getLocation());
@@ -144,6 +144,8 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 
 						carpoolRiderdetailsDto.setStatusName(ride_Status.toString());
 						System.out.println(ride_Status.toString());
+						
+						
 
 						// carpoolRiderdetailsDto.setStatus(car.getStatus());
 						// carpoolRiderdetailsDto.setLocation(car.getLocation());
@@ -314,10 +316,14 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 	public Map<String, List<CarpoolRiderOptedDetailsDto>> findCarpoolRiderDetailsByParentId(int parentid) {
 
 		List<Carpooldetails> carpooldetails = carpooldetailsDAO.findCarpoolDetailsByParentId(parentid);
+		System.out.println("list if carpool details by parent id"+carpooldetails);
 		List<CarpoolRiderOptedDetailsDto> riderOptedDetailsDto = new ArrayList<>();
 		for (Carpooldetails details : carpooldetails) {
+			System.out.println(details.getParentid());
 			List<CarpoolRiderDetails> carpoolRiderDetails = carpoolRiderDetailsDAO
-					.findCarpoolRiderDetailsByCPId(details.getId());
+					.findCarpoolRiderDetailsByCPId(details.getParentid());
+			
+			System.out.println("carpool rider details by parentId:"+carpoolRiderDetails);
 			for (CarpoolRiderDetails riderDetails : carpoolRiderDetails) {
 				CarpoolRiderOptedDetailsDto optedDetailsDto = new CarpoolRiderOptedDetailsDto();
 				RegisterDomain domain = registerDAO.findByemailId(riderDetails.getEmailid());

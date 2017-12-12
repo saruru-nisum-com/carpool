@@ -1,43 +1,11 @@
-<div classs = "container-fluid">
-	<div class = "col-md-2">
-		<div id = "leftHandMenu">
+<div class="col-md-12">
+	<div class="col-md-2">
+		<div id="leftHandMenu">
 			<div ng-include="'js/partials/leftSideMenu.html'"></div>
 		</div>
 	</div>
-	<div class = "col-md-8">
-	
-	<div>
-		<div>
-			<ul id="nav-tabs" ng-init='getCarpools()'>
-			</ul>
-		</div>
-
-		<div align="center" style="color: #2535A9;">
-			<h3>Available car pools</h3>
-		<input type="checkbox" name="AllCarPools" data-ng-change='ngChange()'
-			data-ng-model='isCheck' /> See All Pools
-		</div>
-
-		<div ng-if="carpoolList.length>0" ng-repeat="carpool in carpoolList" class = "poolList">
-					<a ui-sref="checkOrOptRide({parentid: carpool.carpoolDetails.parentid})">
-						<table class="tStyle" frame="box" style="background-color:green">
-							<tr ng-repeat="vehicle in vehicleDetails"
-					ng-if="vehicle.id==carpool.carpoolDetails.vehicleType">
-								<td>ProvidedBy: {{carpool.userName}} &nbsp;</td>
-								<td>VehicleType: {{vehicle.vehicletype}}</td>
-							</tr>
-							<tr>
-								<td>FromDate: {{carpool.carpoolDetails.fromDate | dateFilter}}</td>
-								<td>ToDate: {{carpool.carpoolDetails.toDate | dateFilter}}</td>
-							</tr>
-							<tr>
-								<td>Location: {{carpool.location}} &nbsp;</td>
-								<td>PoolStatus: {{carpool.carpoolDetails.statusName}}</td>
-							</tr>
-						</table>
-					</a>
-		</div>
-	</div>
-	<div align="center" ng-if="carpoolList.length<=0">No Car pools Available</div>
-	</div>
+ 	<a ng-click=toggleView('Tiles')><img src="images/grid.png" class="img"></a>
+ 	<a ng-click=toggleView('List')><img src="images/list.png" class="img"></a> 
+ 	<div ng-include=mychoice></div>
 </div>
+

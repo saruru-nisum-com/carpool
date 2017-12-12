@@ -35,8 +35,7 @@ public class CarpooldetailsDAOTest {
 	@Mock
 	CarpooldetailsRepository carpooldetailsRepository;
 	
-        Carpooldetails carpooldetails;
-        Pool_Status poolStatus;
+    private Carpooldetails carpooldetails;
 	
 	List<Carpooldetails> carpooldetailsExpectedList;
 	
@@ -180,7 +179,9 @@ public class CarpooldetailsDAOTest {
 		*/
 		
 	}	
-
+	/**
+	* author Mahesh Bheemanapalli
+	*/
 	@Test
 	public void addRewardsTest() {
 		LocalDate currentDate = LocalDate.now();
@@ -191,10 +192,13 @@ public class CarpooldetailsDAOTest {
 		String expectedResult = Constants.ADDED_REWARDS_TO_DRIVER;
 		List<Integer> list = Arrays.asList(1,2);
 		when(carpooldetailsRepository.getCarpooldetailsByToDateAndStatus(status, rewardedDate)).thenReturn(list);
-		when(carpooldetailsRepository.udpateRewardPoints(rewards, list)).thenReturn(expectedResult);
+		when(carpooldetailsRepository.udpateRewardPoints(rewards, list)).thenReturn(1);
 		String actualResult = carpooldetailsDAOImpl.addRewards(rewards);
 		assertEquals(expectedResult, actualResult);
 	}
+	/**
+	* author Mahesh Bheemanapalli
+	*/
 	@Test
 	public void addRewardsFailureTest() {
 		LocalDate currentDate = LocalDate.now();
@@ -205,10 +209,13 @@ public class CarpooldetailsDAOTest {
 		String expectedResult = Constants.REWARDS_NOT_ADDED_DRIVER;
 		List<Integer> list = Arrays.asList();
 		when(carpooldetailsRepository.getCarpooldetailsByToDateAndStatus(status, rewardedDate)).thenReturn(list);
-		when(carpooldetailsRepository.udpateRewardPoints(rewards, list)).thenReturn(expectedResult);
+		when(carpooldetailsRepository.udpateRewardPoints(rewards, list)).thenReturn(0);
 		String actualResult = carpooldetailsDAOImpl.addRewards(rewards);
 		assertEquals(expectedResult, actualResult);
 	}
+	/**
+	* author Mahesh Bheemanapalli
+	*/
 	@Test
 	public void updateCarpoolStatusToClosedTest() {
 		Timestamp createdDate=new Timestamp(1511249628);
@@ -217,7 +224,7 @@ public class CarpooldetailsDAOTest {
 		LocalDate currentDate = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String todate = currentDate.format(formatter);
-		
+		Integer openStatus = Pool_Status.OPEN.getValue();
 		Integer status=Pool_Status.CLOSED.getValue();
 		
 		List<Carpooldetails> carpoolDetailsList=new ArrayList<>();
@@ -232,7 +239,7 @@ public class CarpooldetailsDAOTest {
 		carpooldetails1.setToDate(todate);
 		carpooldetails1.setFromtime("12:30");
 		carpooldetails1.setToTime("13:30");
-		carpooldetails1.setStatus(Pool_Status.OPEN.getValue());
+		carpooldetails1.setStatus(openStatus);
 		carpooldetails1.setCreateddate(createdDate.toLocalDateTime());
 		carpooldetails1.setModifieddate(modifiedDate.toLocalDateTime());
 		
@@ -247,7 +254,7 @@ public class CarpooldetailsDAOTest {
 		carpooldetails2.setToDate(todate);
 		carpooldetails2.setFromtime("12:30");
 		carpooldetails2.setToTime("13:30");
-		carpooldetails2.setStatus(Pool_Status.OPEN.getValue());
+		carpooldetails2.setStatus(openStatus);
 		carpooldetails2.setCreateddate(createdDate.toLocalDateTime());
 		carpooldetails2.setModifieddate(modifiedDate.toLocalDateTime());
 		
@@ -257,13 +264,17 @@ public class CarpooldetailsDAOTest {
 		when(carpooldetailsRepository.getCarpoolsByToDate(todate)).thenReturn(carpoolDetailsList);
 
 		Set<Integer> setOfPoolIds = carpoolDetailsList.stream().filter(p -> p.getStatus() != Pool_Status.CLOSED.getValue()).map(p -> p.getId()).collect(Collectors.toSet());
-
 		assertEquals(setOfPoolIds.size(), 2);
 		String expectedResult=Constants.CARPOOL_STATUS_UPDATED;
-		when(carpooldetailsRepository.checkUpdateCarpoolStatusClosedCount(status)).thenReturn(0);
-		when(carpooldetailsRepository.updateCarpoolStatusBySetOfPoolIds(status, setOfPoolIds)).thenReturn(expectedResult);
-		when(carpooldetailsRepository.checkUpdateCarpoolStatusClosedCount(status)).thenReturn(2);
-
+		Integer beforeUpdate=0;
+		Integer afterUpdate=2;
+		System.out.println(beforeUpdate);
+		when(carpooldetailsRepository.checkUpdateCarpoolStatusClosedCount(status)).thenReturn(beforeUpdate);
+		System.out.println(status);
+		System.out.println(afterUpdate);
+		when(carpooldetailsRepository.updateCarpoolStatusBySetOfPoolIds(status, setOfPoolIds)).thenReturn(1);
+		System.out.println(afterUpdate);
+		when(carpooldetailsRepository.checkUpdateCarpoolStatusClosedCount(status)).thenReturn(afterUpdate);
 		
 		String actualResult = carpooldetailsDAOImpl.updateCarpoolStatusToClosed();
 		assertEquals(expectedResult, actualResult);

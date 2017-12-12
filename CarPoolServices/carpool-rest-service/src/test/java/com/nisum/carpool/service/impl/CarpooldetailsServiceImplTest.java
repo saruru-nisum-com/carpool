@@ -30,16 +30,14 @@ public class CarpooldetailsServiceImplTest {
 	@Mock
 	CarpooldetailsDAO carpooldetailsDAO;
 	
-	CarpooldetailsDto carpooldetailsDto = new CarpooldetailsDto();
+	CarpooldetailsDto carpooldetailsDto = null;
 	Pool_Status poolStatus;
-	
-	//carpooldetails.setStatus(Pool_Status.valueOf(carpooldetailsDto.getStatus().toString()));
 	
 	@Before
 	public void setUp() throws Exception{
 		Timestamp createdDate = new Timestamp(1511249628);
 		Timestamp modifiedDate = carpooldetailsServiceImpl.currentDate;
-		CarpooldetailsDto carpooldetailsDto = new CarpooldetailsDto();
+		 carpooldetailsDto = new CarpooldetailsDto();
 		carpooldetailsDto.setId(1);
 		carpooldetailsDto.setParentid(1);
 		carpooldetailsDto.setEmailId("mbheemanapalli@nisum.com");
@@ -71,7 +69,7 @@ public class CarpooldetailsServiceImplTest {
 	@Test
 	public void cancelCarpoolTest() {
 		carpooldetailsDto.setEmailId("smamidala@nisum.com");
-		carpooldetailsDto.setStatus(4);
+		carpooldetailsDto.setStatus(5);
 		Carpooldetails convertDtoTODao = CarpooldetailsServiceUtil.convertUpdateDtoTODao(carpooldetailsDto);
 		when(carpooldetailsDAO.cancelCarpooldetails(convertDtoTODao)).thenReturn("Carpool Cancelled Successfully !!");
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();

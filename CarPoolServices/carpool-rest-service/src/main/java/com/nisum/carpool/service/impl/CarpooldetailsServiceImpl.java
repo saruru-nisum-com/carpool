@@ -172,7 +172,6 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 		logger.info("Status for creating car pool is valid");
 		
 		List<Carpooldetails> carPoolList = processPostRideDomain(carpooldetails);
-System.out.println(carPoolList);
 		String msg = carpooldetailsDAO.addCarpoolDetails(carPoolList);
 
 		if (msg == Constants.MSG_CARPOOL_ADD) {
@@ -296,6 +295,8 @@ System.out.println(carPoolList);
 			cp.setEmailId(carpooldetails.getEmailId());
 			cp.setVehicleType(carpooldetails.getVehicleType());
 			cp.setLocation(carpooldetails.getLocation());
+			cp.setLongitude(carpooldetails.getLongitude());
+			cp.setLatitude(carpooldetails.getLatitude());
 			carPoolList.add(cp);
 		}
 
@@ -527,17 +528,18 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			// driverCarPoolDto.setLocation(location);
 
 			for (Carpooldetails carpooldetails : carpools) {
-				if (carpooldetails.getId() == carpooldetails.getParentid()) {
-					continue;
+				if (!carpooldetails.getId().equals(carpooldetails.getParentid())) {
+					DriverCarPoolDto driverCarPoolDto = new DriverCarPoolDto();
+					ridersList = carpoolRiderDAO.getRidersByCpID(carpooldetails.getId());
+					driverCarPoolDto.setFromDate(carpooldetails.getFromDate());
+					driverCarPoolDto.setToDate(carpooldetails.getToDate());
+					driverCarPoolDto.setLocation(carpooldetails.getLocation());
+	                driverCarPoolDto.setTotalSeats(carpooldetails.getNoofseats());
+	                driverCarPoolDto.setFilledSeats(getFilledSeatsInPool(ridersList));
+	                Pool_Status pool_Status = Pool_Status.values()[(carpooldetails.getStatus()-1)];
+					driverCarPoolDto.setStatus(pool_Status.toString());
+					driverCarPoolDtoList.add(driverCarPoolDto);
 				}
-				DriverCarPoolDto driverCarPoolDto = new DriverCarPoolDto();
-				ridersList = carpoolRiderDAO.getRidersByCpID(carpooldetails.getId());
-				driverCarPoolDto.setFromDate(carpooldetails.getFromDate());
-				driverCarPoolDto.setToDate(carpooldetails.getToDate());
-				driverCarPoolDto.setLocation(carpooldetails.getLocation());
-
-				driverCarPoolDto.setStatus(String.valueOf(carpooldetails.getStatus()));
-				driverCarPoolDtoList.add(driverCarPoolDto);
 			}
 			logger.debug("END: getCarPoolsByParentId in the class" + this.getClass().getName());
 		} catch (Exception ex) {
@@ -782,7 +784,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 				Carpooldetails carpooldetails = carpooldetailsDAO.loadCarpoolDetailsById(carpoolRiderDetails.getCpid());
 				
 				if (carpooldetails != null) {
-
+                     driverCarPoolDto.setParentId(carpooldetails.getParentid());
 					driverCarPoolDto.setFromDate(carpooldetails.getFromDate());
 					driverCarPoolDto.setLocation(carpooldetails.getLocation());
 					driverCarPoolDto.setStatus(String.valueOf(carpooldetails.getStatus()));

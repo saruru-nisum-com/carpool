@@ -61,4 +61,37 @@ public class RegisterDAOImplTest {
 		assertEquals(registerListExpected, actual);
 		;
 	}
+	
+
+	@Test	
+	public void testLocationOfRegisteredUser() {
+		try {
+			
+			RegisterDomain regDom=new RegisterDomain();
+			regDom.setLocation("Hyderabad");
+			regDom.setLongitude("11.908");
+			regDom.setLatitude("90.889");
+			regDom.setIsrider(0);
+			regDom.setEmailid("user1@gmail.com");
+			
+			List<RegisterDomain> domainObj =new ArrayList<>();
+			domainObj.add(regDom);
+			
+			when(registerRepository.findByEmailId("user1@gmail.com")).thenReturn(domainObj);
+			
+			List<RegisterDomain> domain = registerDAOImpl.getLocationOfRegisteredUser("user1@gmail.com");
+			
+			RegisterDomain regUser=null;
+			if(domain!=null) {
+				for(RegisterDomain registedDao:domain) {
+					if(registedDao!=null && registedDao.getIsrider() !=null && registedDao.getIsrider()==0)
+						regUser=registedDao;
+				}
+			}
+			assertEquals(regDom,regUser);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

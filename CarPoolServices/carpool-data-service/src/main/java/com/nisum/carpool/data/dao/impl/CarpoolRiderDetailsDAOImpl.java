@@ -57,7 +57,7 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 		
       return (List<CarpoolRiderDetails>) carpoolRiderDetailsRepository.getRiderBookingDetails(emailId);
 		}catch(Exception e) {
-			logger.info("CarpoolRiderDetailsDAOImpl::getRiderBookingDetails::error");
+			logger.info("CarpoolRiderDetailsDAOImpl::getRiderBookingDetails::error"+e.getMessage());
 			e.printStackTrace();
 			return null;
 		}

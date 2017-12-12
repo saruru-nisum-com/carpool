@@ -1,6 +1,5 @@
 package com.nisum.carpool.rest.api;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +23,7 @@ import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.api.CarpooldetailsService;
 import com.nisum.carpool.service.api.CommonServices;
 import com.nisum.carpool.service.api.RewardPoints;
+import com.nisum.carpool.service.api.UserService;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
 import com.nisum.carpool.service.dto.CarpooldetailsDto;
 import com.nisum.carpool.service.dto.CustomerCarpooldetailsDto;
@@ -35,6 +35,7 @@ import com.nisum.carpool.service.dto.ParentCarpoolDetailsDto;
 import com.nisum.carpool.service.dto.RegisterDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.service.dto.TodayRiderDetailsDTO;
+import com.nisum.carpool.service.dto.UserDTO;
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
 import com.nisum.carpool.service.exception.MailServiceException;
 import com.nisum.carpool.util.Constants;
@@ -47,7 +48,8 @@ public class CarpooldetailsRestService {
 	private static Logger logger = LoggerFactory.getLogger(CarpooldetailsRestService.class);
 	@Autowired
 	CarpooldetailsService carpooldetailsService;
-	private static RewardPoints rewardPoints;
+	@Autowired
+	private RewardPoints rewardPoints;
 	@Autowired
 	CarpoolRiderDetailsService carpoolRiderService;
 
@@ -57,6 +59,8 @@ public class CarpooldetailsRestService {
 	@Autowired
 	GenericMailTemplate genericMailTemplate;
 	
+	@Autowired
+	UserService userService;
 	
 	@RequestMapping(value = "/update", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateCarpooldetails(@RequestBody CarpooldetailsDto carpooldetailsDto) {
@@ -124,7 +128,15 @@ public class CarpooldetailsRestService {
 					mailDto.setReturnTime(carpooldetailsDto.getToTime());
 					mailDto.setRemarks(Constants.MSG_DRIVER_CANCEL_POOL);
 					mailDto.setDate(carpooldetailsDto.getModifieddate().toString());
-					mailDto.setUserName("");
+					UserDTO user =userService.findByEmailId(c.getEmailid());
+					if(user!=null && user.getUserName()!=null) {
+					mailDto.setUserName(user.getUserName());
+					}
+					else {
+						String userName=c.getEmailid();
+						String[] a1=	userName.split("@");
+						mailDto.setUserName(a1[0]);
+					}
 					Map<String, GenericEmailDto> map=new HashMap<>();
 					map.put(c.getEmailid(), mailDto);
 					 try {
@@ -142,10 +154,6 @@ public class CarpooldetailsRestService {
 			logger.info("mail sending failed in cancel a pool");
 			e.printStackTrace();
 		}
-		
-
-		
-	
 		 
 		return responseEntity;
 
@@ -187,7 +195,15 @@ public class CarpooldetailsRestService {
 					mailDto.setLocation(carpooldetailsDto.getLocation());
 					mailDto.setStartTime(carpooldetailsDto.getStartTime());
 					mailDto.setReturnTime(carpooldetailsDto.getToTime());
-					mailDto.setUserName("");
+					UserDTO user =userService.findByEmailId(c.getEmailid());
+					if(user!=null && user.getUserName()!=null) {
+					mailDto.setUserName(user.getUserName());
+					}
+					else {
+						String userName=c.getEmailid();
+						String[] a1=	userName.split("@");
+						mailDto.setUserName(a1[0]);
+					}
 					mailDto.setRemarks(Constants.MSG_DRIVER_CANCEL_POOL);
 					mailDto.setDate(carpooldetailsDto.getModifieddate().toString());
 					Map<String, GenericEmailDto> map=new HashMap<>();
@@ -377,11 +393,12 @@ public class CarpooldetailsRestService {
 	
 	/**
 	 * @author Mahesh Bheemanapalli
+	 * This method is used to add reward points to driver when status closed and todate date less than or equal to current date.
 	 */
 		
 
 	//seconds minutes hours dayofthemonth month dayoftheweek
-	@Scheduled(cron = "30 53 23 * * ?")
+	@Scheduled(cron = "${schedular.job.cron.addrewardtodriver}")//added by Harish Kumar Gudivada on 12 Dec 2017 schedular reading the cron expression from property files
 	@RequestMapping(value = "/addDriverRewardPoints", method = RequestMethod.GET)
 	public ResponseEntity<?> addRewardsToDriver() {
 		logger.info("CarpooldetailsRestService : addRewardsToDriver");
@@ -401,16 +418,6 @@ public class CarpooldetailsRestService {
 		}
 		return responseEntity;
 
-	}
-	/**
-	 * @author Mahesh Bheemanapalli
-	 * @param rewardPoints
-	 * @return 
-	 */
-	
-	@Autowired
-	public void setRewardPoints(RewardPoints rewardPoints) {
-		CarpooldetailsRestService.rewardPoints = rewardPoints;
 	}
 	
 	/**
@@ -489,7 +496,7 @@ public class CarpooldetailsRestService {
 	 * @param Change Status to "Close", if status other than "Cancel" & "Close"
 	 * @return 
 	 */
-	@Scheduled(cron = "0 0 23 * * ?")
+	@Scheduled(cron = "${schedular.job.cron.updatecarpoolstatus}")//added by Harish Kumar Gudivada on 12 Dec 2017 schedular reading the cron expression from property files
 	@RequestMapping(value = "/updateCarpoolStatusToClosed", method = RequestMethod.GET)
 	public ResponseEntity<?> updateCarpoolStatus() {
 		logger.info("CarpooldetailsRestService : updateCarpoolStatus");

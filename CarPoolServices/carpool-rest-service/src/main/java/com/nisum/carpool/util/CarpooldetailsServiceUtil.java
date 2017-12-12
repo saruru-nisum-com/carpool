@@ -42,6 +42,8 @@ public class CarpooldetailsServiceUtil {
 				carpooldetailsDto.setStatusName(pool_Status.toString());
 				carpooldetailsDto.setStatus(c.getStatus());
 				carpooldetailsDto.setLocation(c.getLocation());
+				carpooldetailsDto.setLongitude(c.getLongitude());
+				carpooldetailsDto.setLatitude(c.getLatitude());
 				if(c.getCreateddate()!=null)
 				carpooldetailsDto.setCreateddate(CommonsUtil.convertLocalDateTimeToTimeStamp(c.getCreateddate()));
 				if(c.getModifieddate()!=null)
@@ -70,6 +72,8 @@ public class CarpooldetailsServiceUtil {
 			carpooldetailsDto.setStatusName(pool_Status.toString());
 			carpooldetailsDto.setStatus(carpooldetails.getStatus());
 			carpooldetailsDto.setLocation(carpooldetails.getLocation());
+			carpooldetailsDto.setLongitude(carpooldetails.getLongitude());
+			carpooldetailsDto.setLatitude(carpooldetails.getLatitude());
 			if(carpooldetails.getCreateddate()!=null)
 			carpooldetailsDto.setCreateddate(CommonsUtil.convertLocalDateTimeToTimeStamp(carpooldetails.getCreateddate()));
 			if(carpooldetails.getModifieddate()!=null)
@@ -95,6 +99,8 @@ public class CarpooldetailsServiceUtil {
 		carpooldetails.setToTime(carpooldetailsDto.getToTime());
 		carpooldetails.setStatus(carpooldetailsDto.getStatus());
 		carpooldetails.setLocation(carpooldetailsDto.getLocation());
+		carpooldetails.setLongitude(carpooldetailsDto.getLongitude());
+		carpooldetails.setLatitude(carpooldetailsDto.getLatitude());
 		if(carpooldetailsDto.getCreateddate()!=null)
 		carpooldetails.setCreateddate(CommonsUtil.convertTimeStampToLocalDateTime(carpooldetailsDto.getCreateddate()));
 		if(carpooldetailsDto.getModifieddate()!=null)
@@ -117,6 +123,9 @@ public class CarpooldetailsServiceUtil {
 			carpooldetails.setFromtime(carpooldetailsDto.getStartTime());
 			carpooldetails.setToTime(carpooldetailsDto.getToTime());
 			carpooldetails.setStatus(carpooldetailsDto.getStatus());
+			carpooldetails.setLocation(carpooldetailsDto.getLocation());
+			carpooldetails.setLongitude(carpooldetailsDto.getLongitude());
+			carpooldetails.setLatitude(carpooldetailsDto.getLatitude());
 			if(carpooldetailsDto.getModifieddate()!=null)
 			carpooldetails.setModifieddate(carpooldetailsDto.getModifieddate().toLocalDateTime());
 		} catch (Exception e) {
@@ -193,12 +202,9 @@ public class CarpooldetailsServiceUtil {
 		
 		
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-		System.out.println(cal.getTime());
 		// Output "Wed Sep 26 14:23:28 EST 2012"
 
 		String formatted = format1.format(cal.getTime());
-		System.out.println(formatted);
-
 		return formatted;
 	}
 

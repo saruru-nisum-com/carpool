@@ -51,7 +51,7 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	List<Integer> getCarpooldetailsByToDateAndStatus(@Param("status") int status,@Param("rewardedDate") String rewardedDate);
 	
 	@Query("update cp_carpooldetails set rewards=:rewards where id IN (:listOfIds)")
-	String udpateRewardPoints(@Param("rewards") double rewards, @Param("listOfIds") List<Integer> listOfIds);
+	Integer udpateRewardPoints(@Param("rewards") double rewards, @Param("listOfIds") List<Integer> listOfIds);
 	
 	@Query("select parentid from cp_carpooldetails where emailid=?0 allow filtering")
 	public List<Integer> getParentIdByEmail(@Param("email")String email);
@@ -74,7 +74,7 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	@Query("select emailid from cp_carpooldetails where parentid=:cpid allow filtering")
 	public String getDriverEmailByCPId(@Param("cpid") int cpid);
 	
-	@Query("select * from cp_carpooldetails where parentid=:cpId and fromdate>:date allow filtering")
+	@Query("select * from cp_carpooldetails where id=:cpId and fromdate>:date allow filtering")
 	List<Carpooldetails>  getCarPoolsByCpIdandDate(@Param("cpId")int cpId,@Param("date") String date);
 	
 	@Query("select  *  from cp_carpooldetails where fromdate=:fromdate and emailid=:emailid allow filtering")
@@ -89,7 +89,7 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	List<Carpooldetails> getCarpoolsByToDate(@Param("todate") String todate);
 	
 	@Query("update cp_carpooldetails set status=:poolStatus where id IN (:cpids)")
-	String updateCarpoolStatusBySetOfPoolIds(@Param("poolStatus") int poolStatus,@Param("cpids") Set<Integer> cpids);
+	Integer updateCarpoolStatusBySetOfPoolIds(@Param("poolStatus") int poolStatus,@Param("cpids") Set<Integer> cpids);
 	
 	@Query("select count(*) from cp_carpooldetails where status=:poolStatus allow filtering")
 	Integer checkUpdateCarpoolStatusClosedCount(@Param("poolStatus") int poolStatus);
@@ -97,4 +97,5 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	@Query("select * from cp_carpooldetails where emailid=:emailId and id=:id allow filtering")
     List<Carpooldetails> getCPDetailsByCPID(@Param("emailId") String emailId,@Param("id") Integer id); 
     
+	//int checkUpdateCarpoolStatusClosedCount(@Param("poolStatus") int poolStatus);
 }

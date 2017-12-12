@@ -5381,4 +5381,31 @@ button{
 .poolList{
 	padding: 0px 0px 20px 10px;
 	float: left;
+	height: fixed;
+}
+#bottom {
+    margin-top: 230px;
+}
+.errStatus {
+	color: red;
+	font-size: 16px;
+	background: #f7beba;
+	border-radius: 10px;
+	min-height: 40px;
+	padding: 10px;
+}
+
+.success {
+	color: green;
+	font-size: 16px;
+	background: #c0f5c7;
+	border-radius: 10px;
+	min-height: 40px;
+	padding: 10px;
+}
+.hr{
+	border: 3px solid;
+}
+.img{
+	height: 30px;
 }

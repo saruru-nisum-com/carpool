@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="css/./carpool.css">
+
+<div class="modal-header"></div>
+<div class="modal-body">
+	<div class="container" style="padding-top: 25px;">
+	  <ul class="nav nav-pills">
+	    <li class="active"><a data-toggle="pill" data-target="#approveOrReject">Approval</a></li>
+	    <li><a data-toggle="pill" data-target="#dayWiseReport">Day wise Report</a></li>
+	  </ul>
+	  
+	  <div class="tab-content">
+	    <div id="approveOrReject" class="tab-pane fade in active">
+	      <h3>Approval</h3>
+	      <p>approval screen</p>
+	    </div>
+	    <div id="dayWiseReport" class="tab-pane fade" style="padding-top: 20px;">
+	         <table class="grid" style="width:73% !important">
+				<tr>
+					<th>Date</th>
+					<th>Total Seats</th>
+					<th>Filled Seats</th>
+					<th>Status</th>
+					<th>Actions</th>
+				</tr>
+				<tbody>
+				     <tr ng-repeat="x in dayWiseList">
+				     	<td>{{x.fromDate}}</td>
+				     	<td>{{x.totalSeats}}</td>
+				     	<td>{{x.filledSeats}}</td>
+				     	<td>{{x.status}}</td>
+				     	<td></td>
+				     </tr>
+				</tbody>
+	        </table>
+	    </div>
+	  </div>
+	</div>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-default" ng-click="closePopup();">Close</button>
+</div>

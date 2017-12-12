@@ -42,9 +42,11 @@ public class CarpoolRiderDetailsRestService {
 	@Autowired
 	CarpoolRiderDetailsService carpoolRiderDetailsService;
 	
+	@Autowired
+	private RewardPoints rewardPoints;
+	
 	static Map<Integer, String> cancelReasonMapObj = new HashMap<Integer, String>();
 	
-	private static RewardPoints rewardPoints;
 
 	/**
 	 * author Radhika pujari
@@ -70,7 +72,7 @@ public class CarpoolRiderDetailsRestService {
 		logger.info("CarpoolRiderDetailsRestService::getRiderBookingDetails::start");
 		Errors error = new Errors();
 		try {
-		
+			logger.info("CarpoolRiderDetailsRestService::getRiderBookingDetails::list is empty");
 	    List<RiderBookingDetailsDTO> poolList = carpoolRiderDetailsService.getRiderBookingDetails(emailId);
 	    if(poolList.isEmpty()) {
 	      	error.setErrorCode("204");
@@ -78,10 +80,11 @@ public class CarpoolRiderDetailsRestService {
 			return new ResponseEntity<Errors>(error, HttpStatus.NO_CONTENT);
 	    }else
 	    
-
+	    	logger.info("CarpoolRiderDetailsRestService::getRiderBookingDetails::sucess Response");
 		return new ResponseEntity<List<RiderBookingDetailsDTO>>(poolList, HttpStatus.OK);
 		
 		}catch(Exception e) {
+			logger.error("CarpoolRiderDetailsRestService::getRiderBookingDetails::sucess Response"+e.getMessage());
 			throw new CarpooldetailsServiceException("Error-Message");
 		}
 	}
@@ -196,14 +199,16 @@ public class CarpoolRiderDetailsRestService {
 	/**
 	 * @author Mahesh Bheemanapalli
 	 */
-	@Scheduled(cron = "0 15 23 * * ?")
+	@Scheduled(cron = "${schedular.job.cron.addrewardtorider}")
 	@RequestMapping(value = "/addRiderRewardPoints", method = RequestMethod.GET)
 	public ResponseEntity<?> addRewardPointsToRider() {
 		logger.info("CarpoolRiderDetailsRestService : addRewardPointsToRider");
 		ResponseEntity<?> responseEntity = null;
 		try {
 			String riderRewardPoints = rewardPoints.getRiderRewardPoints();
+			System.out.println(riderRewardPoints);
 			double rewards = Double.parseDouble(riderRewardPoints);
+			System.out.println(rewards);
 			ServiceStatusDto statusDto = carpoolRiderDetailsService.addRewards(rewards);
 
 			responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
@@ -218,15 +223,6 @@ public class CarpoolRiderDetailsRestService {
 		return responseEntity;
 
 	}
-	/**
-	 * @author Mahesh Bheemanapalli
-	 * @param rewardPoints
-	 * @return 
-	 */
-	@Autowired
-	public void setEmailAccount(RewardPoints rewardPoints) {
-		CarpoolRiderDetailsRestService.rewardPoints = rewardPoints;
-	}
 	
 	@RequestMapping(value = "/parent/{parentid}", method = RequestMethod.GET)
 	public Map<String, List<CarpoolRiderOptedDetailsDto>> findCarpoolRiderDetailsByParentId(@PathVariable("parentid") int parentid) {
@@ -237,19 +233,24 @@ public class CarpoolRiderDetailsRestService {
 	/**
 	 * @author Mahesh Bheemanapalli
 	 */
-	@Scheduled(cron = "0 30 23 * * ?")
+	@Scheduled(cron = "${schedular.job.cron.cleannotification}")
 	@RequestMapping(value = "/cleanCarpoolRiderNotifications", method = RequestMethod.GET)
 	public ResponseEntity<?> cleanCarpoolRiderNotifications() {
 		logger.info("CarpoolRiderDetailsRestService : cleanCarpoolRiderNotifications");
+		ResponseEntity<?> responseEntity = null;
 		try {
 			ServiceStatusDto statusDto = carpoolRiderDetailsService.cleanCarpoolRiderNotifications();
 			logger.info("CarpoolRiderDetailsRestService : cleanCarpoolRiderNotifications : "+statusDto.getMessage());
-			return new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
+			responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
 
 		} catch (Exception e) {
 			logger.error("CarpoolRiderDetailsRestService : addRewardPointsToRider : Inside Catch Block"+e.getMessage());
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			Errors error = new Errors();
+			error.setErrorCode("500");
+			error.setErrorMessage(e.getMessage());
+			responseEntity = new ResponseEntity<Errors>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
+		return responseEntity;
 	}
 	
 	@RequestMapping(value = "/optedRider", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
