@@ -271,10 +271,14 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 	public Map<String, List<CarpoolRiderOptedDetailsDto>> findCarpoolRiderDetailsByParentId(int parentid) {
 
 		List<Carpooldetails> carpooldetails = carpooldetailsDAO.findCarpoolDetailsByParentId(parentid);
+		System.out.println("list if carpool details by parent id"+carpooldetails);
 		List<CarpoolRiderOptedDetailsDto> riderOptedDetailsDto = new ArrayList<>();
 		for (Carpooldetails details : carpooldetails) {
+			System.out.println(details.getParentid());
 			List<CarpoolRiderDetails> carpoolRiderDetails = carpoolRiderDetailsDAO
-					.findCarpoolRiderDetailsByCPId(details.getId());
+					.findCarpoolRiderDetailsByCPId(details.getParentid());
+			
+			System.out.println("carpool rider details by parentId:"+carpoolRiderDetails);
 			for (CarpoolRiderDetails riderDetails : carpoolRiderDetails) {
 					CarpoolRiderOptedDetailsDto optedDetailsDto = new CarpoolRiderOptedDetailsDto();
 					RegisterDomain domain = registerDAO.findByemailId(riderDetails.getEmailid());

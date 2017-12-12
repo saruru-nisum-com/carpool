@@ -232,6 +232,10 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		return Constants.REWARDS_NOT_ADDED_DRIVER;
 	}
 
+	/**
+	 * @author Rajendra Prasd Dava
+	 *   modified the method as it has return null, written repository call for this method
+	 */
 	@Override
 	public List<Carpooldetails> getCarpoolsByParentId(int parentId) {
 		// TODO Auto-generated method stub
@@ -401,7 +405,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	@Override
 	public List<Carpooldetails> findCarpoolDetailsByParentId(int parentid) {
 		// TODO Auto-generated method stub
-		return null;
+		return carpooldetailsRepository.findByParentid(parentid);
 	}
 
 	@Override
