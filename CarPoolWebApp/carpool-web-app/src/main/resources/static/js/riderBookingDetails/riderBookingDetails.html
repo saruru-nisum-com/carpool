@@ -1,73 +1,52 @@
 <link rel="stylesheet" href="css/./carpool.css">
 <div class="tab-pane active" id="1">
-	<div align="center" style="color: #2535A9;">
-		<h3>List of Opt Rides</h3>
-	</div>
-	<div class="row">
-		<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-xl-12">
-			<table class="grid" border="2x">
-				<thead class="thead-inverse" align="center">
-					<tr>
-						<th><input type='checkbox'></th>
+    <div align="center" style="color: #2535A9 ;">
+        <h3>List of Opted Rides</h3>
+    </div>
+    
+    <div align="center" ng-if="riderBookingList.length<=0">No Rides Found</div>
+    <div class="row">
+        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-xl-12">
+        <div >
+         <input type="button" value="Cancel" style="float: right;" ng-if="riderBookingList.length>0" class="btn btn-primary">
+                </div>
+            <table class="grid" border="2x">
+            
+                <thead class="thead-inverse" align="center">
+                    <tr ng-if="riderBookingList.length>0">
+                        <th>Select</th>
 
-						<th>Date</th>
-						<th>Driver</th>
-						<th>Email</th>
-						<th>Mobile No</th>
-						<th>Location</th>
-						<th>Status</th>
-						<th>Reason</th>
+                        <th>Date</th>
+                        <th>Driver</th>
+                        <th>Email</th>
+                        <th>Mobile No</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Reason</th>
 
-					</tr>
-					<tr ng-repeat="riderDetails in riderBookingList">
-						<td><input type='checkbox' ng-hide="riderDetails.statusName!='APPROVED'" ng-model="selectedRiderDetails[$index]"></td>
-						<td>{{riderDetails.fromDate}}</td>
-						<td>{{riderDetails.userName}}</td>
-						<td>{{riderDetails.email}}</td>
-						<td>{{riderDetails.mobile}}</td>
-						<td>{{riderDetails.location}}</td>
-						<td>{{riderDetails.statusName}}</td>
-						
-<!-- 						<td data-ng-include='tempId'></td> -->
-						 <td><select  ng-if="riderDetails.statusName=='APPROVED'" 
-						         ng-disabled="!selectedRiderDetails[$index]" ng-class="{'txtdisabled': !selectedRiderDetails[$index]}">
-						      <option value="0">Select</option>						    
-                       <option ng-repeat="(key,value) in reasons">{{value}}</option>
-					  </select>
-					    <input ng-if="riderDetails.statusName!='APPROVED'" type='text' ng-model="reasons[riderDetails.reason]"/>
-						</td> 
-					</tr>
+                    </tr>
+                    <tr  ng-repeat="riderDetails in riderBookingList">
+                        <td><input type='checkbox' ng-hide="riderDetails.statusName!='APPROVED' && riderDetails.statusName!='REQUESTED'" ng-model="selectedRiderDetails[$index]"></td>
+                        <td>{{riderDetails.fromDate}}</td>
+                        <td>{{riderDetails.userName}}</td>
+                        <td>{{riderDetails.email}}</td>
+                        <td>{{riderDetails.mobile}}</td>
+                        <td>{{riderDetails.location}}</td>
+                        <td>{{riderDetails.statusName}}</td>
+                        
+<!--                         <td data-ng-include='tempId'></td> -->
+                         <td><select  ng-if="riderDetails.statusName=='APPROVED' || riderDetails.statusName=='REQUESTED'" 
+                                 ng-disabled="!selectedRiderDetails[$index]" ng-class="{'txtdisabled': !selectedRiderDetails[$index]}">
+                              <option value="0">Select</option>                            
+                      <option ng-repeat="(key,value) in reasons">{{value}}</option>
+                      </select>
+                       <span ng-if="riderDetails.statusName!='APPROVED' && riderDetails.statusName!='REQUESTED'" ng-model="reasons[riderDetails.reason]" ng-bind="reasons[riderDetails.reason]"> </span>
+                        </td> 
+                    </tr>
 
-				</thead>
-				<!-- <tbody>
-							<tr ng-repeat="user in usersList.users track by $index">
-								<td><input type="checkbox" value=""
-									ng-model="userselected[$index]"
-									ng-change="userChange(user.userId,userselected[$index]);"></td>
-
-								<td>{{user.userName}}</td>
-								<td>{{user.emailId}}</td>
-								<td>{{user.role.role}}</td>
-								<td>{{user.createDate | date: 'MM-dd-yyyy HH:mm:ss'}}</td>
-								<td><select name="mySelect" id="mySelect"
-									ng-model="user.role.roleId"
-									ng-options="role.roleId as role.role for role in rolesList.roles"
-									ng-change='' ng-disabled="!userselected[$index]"></select></td>
-								<td ng-class="{'disabled':!userselected[$index]}"
-									ng-disabled="!userselected[$index]">
-									<img
-									class="deleteicon" src="images/delete.png"
-									ng-click="!userselected[$index]|| confirmDelete('user',user.userId);" />
-									<span
-									ng-click="!userselected[$index]|| confirmEdit('user',user);"
-									class="glyphicon glyphicon-floppy-save editicon"></span>
-								</td>
-								</td>
-							</tr>
-
-						</tbody> -->
-			</table>
-		</div>
-
-
-	
+                </thead>
+                
+            </table>
+            
+            
+        </div>

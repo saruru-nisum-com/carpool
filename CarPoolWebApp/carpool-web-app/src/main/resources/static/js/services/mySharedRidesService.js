@@ -31,6 +31,16 @@ app.factory('mySharedRidesService', function($http, $q) {
 		return deferred.promise;
 	}
 	
+	srs.getRideDetails = function(parentId) {
+		 var deferred = $q.defer();
+		 $http.get('v1/carpool/getSharedRidesByParentId/'+parentId).success(function(response){
+			 deferred.resolve(response);
+		 }).error(function(response){
+			deferred.reject(response); 
+		 })
+		 return deferred.promise;
+	}
+	
 	
 	return srs;
 });

@@ -3,12 +3,8 @@ package com.nisum.carpool.service.dto;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-
-
-
-
 public class DriverCarPoolDto {
+	private Integer parentId;
 	private String location;
 	private String fromDate;
 	private String toDate;
@@ -16,6 +12,9 @@ public class DriverCarPoolDto {
 	private String mobile;
 	private String name;
 	private String email;
+	private Integer totalSeats;
+	private Integer filledSeats;
+	List<TodayRiderDetailsDTO> todayRiderDetailsDTOs=new ArrayList<>();
 
 	public String getEmail() {
 		return email;
@@ -25,13 +24,21 @@ public class DriverCarPoolDto {
 		this.email = email;
 	}
 
-	List<TodayRiderDetailsDTO> todayRiderDetailsDTOs=new ArrayList<>();
+	
 	public List<TodayRiderDetailsDTO> getTodayRiderDetailsDTOs() {
 		return todayRiderDetailsDTOs;
 	}
 
 	public void setTodayRiderDetailsDTOs(List<TodayRiderDetailsDTO> todayRiderDetailsDTOs) {
 		this.todayRiderDetailsDTOs = todayRiderDetailsDTOs;
+	}
+
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
 	}
 
 	public String getLocation() {
@@ -82,6 +89,22 @@ public class DriverCarPoolDto {
 		this.name = name;
 	}
 
+	public int getTotalSeats() {
+		return totalSeats;
+	}
+
+	public void setTotalSeats(int totalSeats) {
+		this.totalSeats = totalSeats;
+	}
+
+	public int getFilledSeats() {
+		return filledSeats;
+	}
+
+	public void setFilledSeats(int filledSeats) {
+		this.filledSeats = filledSeats;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -92,6 +115,8 @@ public class DriverCarPoolDto {
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((toDate == null) ? 0 : toDate.hashCode());
+		result = prime * result + ((totalSeats == null) ? 0 : totalSeats.hashCode());
+		result = prime * result + ((filledSeats == null) ? 0 : filledSeats.hashCode());
 		return result;
 	}
 
@@ -134,13 +159,23 @@ public class DriverCarPoolDto {
 				return false;
 		} else if (!toDate.equals(other.toDate))
 			return false;
+		if (totalSeats == null) {
+			if (other.totalSeats != null)
+				return false;
+		} else if (!totalSeats.equals(other.totalSeats))
+			return false;
+		if (filledSeats == null) {
+			if (other.filledSeats != null)
+				return false;
+		} else if (!filledSeats.equals(other.filledSeats))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		return "DriverCarPoolDto [location=" + location + ", fromDate=" + fromDate + ", toDate=" + toDate + ", status="
-				+ status + ", mobile=" + mobile + ", name=" + name + "]";
+				+ status + ", mobile=" + mobile + ", name=" + name + ", totalSeats=" + totalSeats + ", filledSeats=" + filledSeats + "]";
 	}
 
 }

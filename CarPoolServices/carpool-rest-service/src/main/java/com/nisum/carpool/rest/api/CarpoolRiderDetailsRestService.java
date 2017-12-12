@@ -69,7 +69,7 @@ public class CarpoolRiderDetailsRestService {
 		logger.info("CarpoolRiderDetailsRestService::getRiderBookingDetails::start");
 		Errors error = new Errors();
 		try {
-		
+			logger.info("CarpoolRiderDetailsRestService::getRiderBookingDetails::list is empty");
 	    List<RiderBookingDetailsDTO> poolList = carpoolRiderDetailsService.getRiderBookingDetails(emailId);
 	    if(poolList.isEmpty()) {
 	      	error.setErrorCode("204");
@@ -77,10 +77,11 @@ public class CarpoolRiderDetailsRestService {
 			return new ResponseEntity<Errors>(error, HttpStatus.NO_CONTENT);
 	    }else
 	    
-
+	    	logger.info("CarpoolRiderDetailsRestService::getRiderBookingDetails::sucess Response");
 		return new ResponseEntity<List<RiderBookingDetailsDTO>>(poolList, HttpStatus.OK);
 		
 		}catch(Exception e) {
+			logger.error("CarpoolRiderDetailsRestService::getRiderBookingDetails::sucess Response"+e.getMessage());
 			throw new CarpooldetailsServiceException("Error-Message");
 		}
 	}

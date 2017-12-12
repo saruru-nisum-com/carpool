@@ -41,8 +41,5 @@ mySharedRidesApp.controller('mySharedRidesController', function($scope,commonSer
 			console.log(response);
 		})
 	}
-	$scope.go = function ( path ) {
-		$state.go( path );
-		}
 	$scope.getMyRides();
 });

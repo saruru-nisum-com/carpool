@@ -310,7 +310,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		try {
 		return carpooldetailsRepository.getCarPoolsByCpIdandDate(cpId, date);
 	}catch (Exception e) {
-		logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolByCpIDandDate :: error");
+		logger.info("Entered into CarpooldetailsDAOImpl :: getCarPoolByCpIDandDate :: error"+e.getMessage());
 		e.printStackTrace();
 		return null;
 	}
