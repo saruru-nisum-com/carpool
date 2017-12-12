@@ -141,7 +141,20 @@ driverApp.controller('driverController',
 					if (response.errorCode === 500) {
 						$scope.message = response.errorMessage
 					}else {
-						console.log("response from getRegisterDriverData from server...."+JSON.stringify(response));
+						var userStatus = localStorageService
+						.get('userStatus');
+				if (userStatus !== null) {
+					if (userStatus.indexOf("D") < 0) {
+						userStatus.push("D");
+					}
+				}
+				else{
+					userStatus=[];
+					userStatus.push("D");
+				}
+				localStorageService.set("userStatus",userStatus);
+				$scope.$broadcast("checkStatus",userStatus);
+				console.log("response from getRegisterDriverData from server...."+JSON.stringify(response));
 					}
 				}, function(response) {
 					// console

@@ -1,81 +1,53 @@
-<html>
 
-<body ng-app="leftMenu">
-<div class="container-fluid">
-<div class="row">
-   		 <div class="col-md-12">
-					<!-- menu -->
-					<div id="MainMenu">
-						<div class="list-group panel">
+<!-- menu -->
+<div id="MainMenu" ng-controller="leftSideMenuController">
+	<div class="list-group panel" ng-init="checkUserStatus();">
 
-						
-						<a href="#/todaysRide" id = "todaysRide" class="list-group-item list-group-item-success" data-parent="#MainMenu">My Today's Ride</a>
-						<a href="#/configurations" id = "configurations" class="list-group-item list-group-item-success" data-parent="#MainMenu">Opt A Ride</a>
-						<a href="#/mySharedRides" id = "mySharedRides" class="list-group-item list-group-item-success" data-parent="#MainMenu">My Shared Rides</a>
-						<a href="#/carpoolRegistration" id = "carpoolRegistration" class="list-group-item list-group-item-success" data-parent="#MainMenu">Share A Ride</a>
 
-						<a href="#history" class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#MainMenu" id = "historyMenu">History
-								<i class="fa fa-caret-down"></i>
-						</a>
-						<div class="collapse" rel="history" id = "history">
-								<a href="#/sharedRides" class="list-group-item" id = "sharedRides">Shared Rides</a>
-								<a href="#/myRides" id = "myRides" class="list-group-item">My Rides</a>
-						</div>
-						<a href="#profile" class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#MainMenu" id = "profileMenu">Profile
-								<i class="fa fa-caret-down"></i>
-						</a>
-						<div class="collapse" id="profile">
-								<a href="#/driver" id = "driver" class="list-group-item">Driver</a>  
-								<a href="#/rider" id = "rider" class="list-group-item">Rider</a>
-							</div>
-							<a href="#/faq" class="list-group-item list-group-item-success" data-parent="#MainMenu">Faqs</a>					
-						</div>
-					</div>
-				</div>
-				</div>
+		<a href="#/todaysRide" id="todaysRide" class="list-group-item list-group-item-success" data-parent="#MainMenu">My Today's Ride</a>
+		<a href="#/configurations" id="configurations" class="list-group-item list-group-item-success" data-parent="#MainMenu">Opt A Ride</a> 
+		<a ng-hide="rider" href="#/mySharedRides" id="mySharedRides" class="list-group-item list-group-item-success" data-parent="#MainMenu">My Shared Rides</a> 
+		<a ng-hide="rider"href="#/carpoolRegistration" id="carpoolRegistration" class="list-group-item list-group-item-success" data-parent="#MainMenu">Share A Ride</a>
+		 <a ng-hide="rider && driver" href="#history" class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#MainMenu" id="historyMenu">History
+			<i class="fa fa-caret-down"></i>
+		</a>
+		<div class="collapse" rel="history" id="history">
+			<a ng-hide="rider" href="#/sharedRides" class="list-group-item" id="sharedRides">Shared Rides</a> <a ng-hide="driver" href="#/myRides" id="myRides" class="list-group-item">My Rides</a>
+		</div>
+		<a href="#profile" class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#MainMenu" id="profileMenu">Profile
+			<i class="fa fa-caret-down"></i>
+		</a>
+		<div class="collapse" id="profile">
+			<a href="#/driver" id="driver" class="list-group-item">Driver</a> 
+			<a href="#/rider" id="rider" class="list-group-item">Rider</a>
+		</div>
+		<a href="#/faq" class="list-group-item list-group-item-success" data-parent="#MainMenu">Faqs</a>
+	</div>
 </div>
+
 <script>
-$(document).ready(function(){
-	var status = localStorage.getItem("userStatus");
-	if(status == "R,D"){
-		//for both R,D
-		//enable all links.
-	}else if(status == "R"){
-		//for R
-		$("#driverSharedRides").prop("href","#");
-		$("#carpoolRegistration").prop("href","#");
-		$("#sharedRides").prop("href","#");
-	}else if(status == "D"){
-		//for D
-		$("#myRides").prop("href","#");
-	}else if(status == "undefined"){
-		$("#driverSharedRides").prop("href","#");
-		$("#carpoolRegistration").prop("href","#");
-		$("#driver").prop("href","#");
-	}
-	
-	$('#historyMenu').click(function(event){
-		event.preventDefault();
-		var $target = event.target;
-		var display = $target.nextElementSibling.style.display
-		if(display == "block"){
-			$target.nextElementSibling.style.display = "none";
-		}else{
-			$target.nextElementSibling.style.display = "block";
-		}
+	$(document).ready(function() {
+
+		$('#historyMenu').click(function(event) {
+			event.preventDefault();
+			var $target = event.target;
+			var display = $target.nextElementSibling.style.display
+			if (display == "block") {
+				$target.nextElementSibling.style.display = "none";
+			} else {
+				$target.nextElementSibling.style.display = "block";
+			}
+		})
+
+		$('#profileMenu').click(function(event) {
+			event.preventDefault();
+			var $target = event.target;
+			var display = $target.nextElementSibling.style.display
+			if (display == "block") {
+				$target.nextElementSibling.style.display = "none";
+			} else {
+				$target.nextElementSibling.style.display = "block";
+			}
+		})
 	})
-	
-	$('#profileMenu').click(function(event){
-		event.preventDefault();
-		var $target = event.target;
-		var display = $target.nextElementSibling.style.display
-		if(display == "block"){
-			$target.nextElementSibling.style.display = "none";
-		}else{
-			$target.nextElementSibling.style.display = "block";
-		}
-	})
-})
 </script>
-</body>
-</html>
