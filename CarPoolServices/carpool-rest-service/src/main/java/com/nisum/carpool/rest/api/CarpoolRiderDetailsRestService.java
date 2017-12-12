@@ -19,14 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nisum.carpool.data.util.Constants;
 import com.nisum.carpool.data.domain.CarpoolRiderDetails;
+import com.nisum.carpool.data.util.Constants;
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.api.RewardPoints;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
 import com.nisum.carpool.service.dto.CarpoolRiderOptedDetailsDto;
 import com.nisum.carpool.service.dto.Errors;
 import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
+import com.nisum.carpool.service.dto.RiderStatusDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
 import com.nisum.carpool.util.CPCancellationReasons;
@@ -94,10 +95,12 @@ public class CarpoolRiderDetailsRestService {
 	}
 
 	/*
-	 * methodAuthor: @Rajesh Sekhamuri methodName: riderStatus()
+	 * methodAuthor: @Rajesh Sekhamuri methodName: loadRiderStatusReasons()
 	 * 
-	 * @Params return Map<Integer, String> reason code with name form of key and
-	 * value pair
+	 * @Params 
+	 * 
+	 * return Map<Integer, String> reason code with name form of key and
+	 * value pair <Reason code, Reason name>
 	 */
 
 	@RequestMapping(value = "/loadRiderStatusReasons", method = RequestMethod.GET)
@@ -105,11 +108,44 @@ public class CarpoolRiderDetailsRestService {
 		logger.info("Start of loadRiderStatusReasons() method in RiderStatusRestService");
 		if (cancelReasonMapObj.isEmpty()) {
 			cancelReasonMapObj = CPCancellationReasons.readRiderStatusReasonCodes();
-			System.out.println("res status "+cancelReasonMapObj);
+			logger.debug("res status "+cancelReasonMapObj);
 		}
-		System.out.println("ABC ******** "+cancelReasonMapObj.size());
 		logger.info("End of loadRiderStatusReasons() method in RiderStatusRestService");
 		return new ResponseEntity<Map<Integer, String>>(cancelReasonMapObj, HttpStatus.OK);
+	}
+	@RequestMapping(value = "/updateRiderStatus", method = RequestMethod.POST) 
+	public ResponseEntity<?> updateRiderStatus(@RequestBody List<RiderStatusDTO> updateRiderStatus) {
+		logger.info("Start of updateRiderStatus() method in RiderStatusRestService");
+		try {
+			if(updateRiderStatus == null || updateRiderStatus.isEmpty()) {
+				ServiceStatusDto statusDto = new ServiceStatusDto();
+				statusDto.setStatus(false);
+				statusDto.setMessage(Constants.CP_MSG_APPROVE_REJECT_UPDATE_FAILURE);
+				ResponseEntity<ServiceStatusDto> updateRiderStatusEntityObj = new ResponseEntity<ServiceStatusDto>(statusDto,
+						HttpStatus.BAD_REQUEST);
+				logger.info("End of updateRiderStatus() method in RiderStatusRestService");
+				return updateRiderStatusEntityObj;
+			} else {
+				carpoolRiderDetailsService.updateRiderStatus(updateRiderStatus);
+				ServiceStatusDto statusDto = new ServiceStatusDto();
+				statusDto.setStatus(true);
+				statusDto.setMessage(Constants.CP_MSG_APPROVE_REJECT_UPDATE_SUCCESS);
+				ResponseEntity<ServiceStatusDto> updateRiderStatusEntityObj = new ResponseEntity<ServiceStatusDto>(statusDto,
+						HttpStatus.OK);
+				logger.info("End of updateRiderStatus() method in RiderStatusRestService");
+				return updateRiderStatusEntityObj;
+			}
+			
+		} catch(Exception exceptionObj) {
+			ServiceStatusDto statusDto = new ServiceStatusDto();
+			statusDto.setStatus(false);
+			statusDto.setMessage(Constants.CP_MSG_APPROVE_REJECT_UPDATE_FAILURE);
+			ResponseEntity<ServiceStatusDto> updateRiderStatusEntityObj = new ResponseEntity<ServiceStatusDto>(statusDto,
+					HttpStatus.BAD_REQUEST);
+			logger.info("End of updateRiderStatus() method in RiderStatusRestService");
+			return updateRiderStatusEntityObj;
+		}
+		
 	}
 	
 	/**

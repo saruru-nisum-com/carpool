@@ -83,5 +83,8 @@ public class Constants {
 		public static final String CARPOOL_RIDER_NOTIFICATION_NOT_CLEANED="Sorry ! CarpoolriderNotifications Not Cleaned ";
 		public static final String CARPOOL_RIDER_NOTIFICATIONS_NOT_SAVED="Sorry ! CarpoolriderNotifications details not saved";
 		public static final String CARPOOL_OPTED_RIDER_NOT_SAVED="Sorry ! CarpoolOptedRider details not saved";
+		
+		public static final String CP_MSG_APPROVE_REJECT_UPDATE_FAILURE = "Sorry !! Unable to update status";
+		public static final String CP_MSG_APPROVE_REJECT_UPDATE_SUCCESS = "Status updated successfully.";
 }
 

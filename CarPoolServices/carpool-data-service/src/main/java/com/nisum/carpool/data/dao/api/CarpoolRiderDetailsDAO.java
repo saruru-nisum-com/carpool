@@ -27,14 +27,12 @@ public interface CarpoolRiderDetailsDAO {
 	
 	public String addRewards(double rewards);
 
-	/*
-	 * MethodAuthor: @Rajesh Sekhamuri
-	 */
-
 
 	public Integer updateRiderStatus(CarpoolRiderDetails carpoolRiderDaoObj);
 	
-Carpooldetails getCarpoolByDateAndEmail(String date, String email);
+	public List<Carpooldetails> getCPDetailsByCPID(String emailId, Integer id);
+	
+    Carpooldetails getCarpoolByDateAndEmail(String date, String email);
 	
 	public List<Integer> getCarpoolByDate(String date);
 	public CarpoolRiderDetails getRidesByMailandAllCarpoolIds(String email, List<Integer> allCarpoolIds);

@@ -319,5 +319,13 @@ public String cleanCarpoolRiderNotifications() {
 		return carpoolRiderDetails;
 	}
 
+	/**
+	 *  @author:Rajesh Sekhamuri
+	 */
+	@Override
+	public List<Carpooldetails> getCPDetailsByCPID(String emailId, Integer id) {
+		return carpooldetailsRepository.getCPDetailsByCPID(emailId, id);
+	}
+
 	
 }

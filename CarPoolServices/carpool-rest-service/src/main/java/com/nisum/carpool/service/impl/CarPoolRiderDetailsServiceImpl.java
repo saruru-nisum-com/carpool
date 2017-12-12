@@ -1,8 +1,10 @@
 package com.nisum.carpool.service.impl;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,10 +28,12 @@ import com.nisum.carpool.data.util.Ride_Status;
 import com.nisum.carpool.service.api.CarpoolRiderDetailsService;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
 import com.nisum.carpool.service.dto.CarpoolRiderOptedDetailsDto;
+import com.nisum.carpool.service.dto.GenericEmailDto;
 import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
 import com.nisum.carpool.service.dto.RiderStatusDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.util.CarpoolRiderDetailsServiceUtil;
+import com.nisum.carpool.util.GenericMailTemplate;
 
 @Service
 public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsService {
@@ -47,9 +51,11 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 	@Autowired
 	CarpoolRiderDetailsDAO carpoolRiderdetailsDAO;
 
-
 	@Autowired
 	CarpoolRiderDetailsDAO carpoolRiderDetailsDAO;
+
+	@Autowired
+	GenericMailTemplate genericMailTemplateObj;
 
 	@Override
 	public List<CarpoolRiderDetailsDTO> findCarpoolRiderDetailsByCPId(int cpid) {
@@ -62,7 +68,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 	public List<CarpoolRiderDetailsDTO> cancelCarpoolRiderDetails(int cpid) {
 		// TODO Auto-generated method stub
 
-		List<CarpoolRiderDetails> cpList =  carpoolRiderDetailsDAO.cancelCarpoolRiderDetails(cpid);
+		List<CarpoolRiderDetails> cpList = carpoolRiderDetailsDAO.cancelCarpoolRiderDetails(cpid);
 		return CarpoolRiderDetailsServiceUtil.convertDaoTODto(cpList);
 	}
 
@@ -110,7 +116,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 						emailid = carPool.getEmailId();
 						System.out.println(emailid);
 						carpoolRiderdetailsDto.setEmail(emailid);
-						
+
 						carpoolRiderdetailsDto.setLocation(carPool.getLocation());
 
 						carpoolRiderdetailsDto.setFromDate(carPool.getFromDate());
@@ -133,16 +139,14 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 						}
 
 						carpoolRiderdetailsDto.setReason(car.getReason());
-						
-						Ride_Status ride_Status = Ride_Status.values()[(car.getStatus()-1)];
-						
-						
+
+						Ride_Status ride_Status = Ride_Status.values()[(car.getStatus() - 1)];
+
 						carpoolRiderdetailsDto.setStatusName(ride_Status.toString());
 						System.out.println(ride_Status.toString());
-						
 
-						//carpoolRiderdetailsDto.setStatus(car.getStatus());
-						//carpoolRiderdetailsDto.setLocation(car.getLocation());
+						// carpoolRiderdetailsDto.setStatus(car.getStatus());
+						// carpoolRiderdetailsDto.setLocation(car.getLocation());
 						riderBookingdetailsDtoList.add(carpoolRiderdetailsDto);
 
 					}
@@ -158,35 +162,74 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 	}
 
 	/*
-	 * MethodAuthor: @Rajesh Sekhamuri (non-Javadoc)
-	 * 
+	 * @author: Rajesh Sekhamuri (non-Javadoc)
+	 * @param List<RiderStatusDTO>
+	 * @return Boolean isRiderUpdated, isMailSent
 	 * @see
 	 * com.nisum.carpool.service.api.CarpoolRiderDetailsService#updateRiderStatus(
 	 * java.util.List)
+	 * 
 	 */
 	@Override
-	public void updateRiderStatus(List<RiderStatusDTO> riderStatusDtoListObj) {
+	public Boolean updateRiderStatus(List<RiderStatusDTO> riderStatusDtoListObj) throws Exception {
+		Boolean isRiderUpdated = false;
+		Boolean isMailSent = false;
 		List riderStatusListObj = null;
-		try {
-			riderStatusListObj = riderStatusDtoListObj;
-			int riderObjSize = riderStatusListObj.size();
-			System.out.println("Input Rider Status object list size " + riderObjSize);
-			for (int riderVar = 0; riderVar <= riderObjSize - 1; riderVar++) {
-				RiderStatusDTO riderStatusObj = (RiderStatusDTO) riderStatusListObj.get(riderVar); // Downcast into
-																									// RiderStatusDTO
-				System.out.println("Real object " + riderStatusObj);
-				CarpoolRiderDetails carpoolRiderDaoObj = CarpoolRiderDetailsServiceUtil
-						.convertRiderStatusDtoToDao(riderStatusObj);
-				System.out.println("DAO Object " + carpoolRiderDaoObj.getId() + " " + carpoolRiderDaoObj.getEmailid());
-				Integer riderStatusCount = 0; // carpoolRiderdetailsDAO.updateRiderStatus(carpoolRiderDaoObj);
-				if (riderStatusCount > 0) { // If rider status record updated into db, should send mail to rider
-					// Email send code start
-					System.out.println("Email implementation **** " + riderStatusCount);
+		logger.info("Start of updateRiderStatus() method in CarPoolRiderDetailsServiceImpl"); 
+		riderStatusListObj = riderStatusDtoListObj;
+		int riderObjSize = riderStatusListObj.size();
+		logger.debug("Input Rider Status object list size "+riderObjSize);
+		for (int riderVar = 0; riderVar <= riderObjSize - 1; riderVar++) {
+			RiderStatusDTO riderStatusObj = (RiderStatusDTO) riderStatusListObj.get(riderVar); // Downcast into
+			logger.debug("Each rider object "+riderStatusObj);
+			System.out.println("Real object " + riderStatusObj);
+			CarpoolRiderDetails carpoolRiderDaoObj = CarpoolRiderDetailsServiceUtil
+					.convertRiderStatusDtoToDao(riderStatusObj);
+			logger.debug("Convert DTO to DAO Object  " + carpoolRiderDaoObj.getId() + " " + carpoolRiderDaoObj.getEmailid());
+			Integer riderStatusCount = 0; //
+			riderStatusCount = carpoolRiderdetailsDAO.updateRiderStatus(carpoolRiderDaoObj);
+			logger.debug("Rider Status updated "+riderStatusCount);
+			if (riderStatusCount > 0) { // If rider status record updated into db, should send mail to rider
+				// Email send code start
+				logger.debug("Email send implementation starts **** " + riderStatusCount);
+				int id = riderStatusObj.getCpid();
+				String emailId = riderStatusObj.getRiderEmailId() != "" ? riderStatusObj.getRiderEmailId() : "";
+				if(emailId.equals("") || emailId == null ) {
+					logger.debug("Invalid email id "+emailId);
+					return isRiderUpdated;
 				}
-			}
-		} catch (Exception e) {
+				List<Carpooldetails> cpDetailsListObj = carpoolRiderdetailsDAO.getCPDetailsByCPID(emailId, id);
+				logger.debug("Get basic ride details from carpooldetails " + cpDetailsListObj.size());
+				for (int cpDetVar = 0; cpDetVar < cpDetailsListObj.size(); cpDetVar++) {
+					Carpooldetails cpDetObject = cpDetailsListObj.get(cpDetVar);
+					GenericEmailDto genericEmailDTOObj = new GenericEmailDto(); 
+					genericEmailDTOObj.setUserName(riderStatusObj.getRiderName());
+					genericEmailDTOObj.setLocation(cpDetObject.getLocation());
+					genericEmailDTOObj.setStatus(carpoolRiderDaoObj.getStatus());
+					genericEmailDTOObj.setIsRider(0); // static optional value
+					genericEmailDTOObj.setStartTime(cpDetObject.getFromtime());
+					genericEmailDTOObj.setReturnTime(cpDetObject.getToTime());
+					SimpleDateFormat sDateFormateObj = new SimpleDateFormat("dd/mm/yyyy");
+					Timestamp timestampObj =riderStatusObj.getCurrentDate();
+					Date dateObj = new Date(timestampObj.getTime());
+					String currentDateStrObj = sDateFormateObj.format(dateObj);
+					genericEmailDTOObj.setDate(currentDateStrObj);
+					Map<String, GenericEmailDto> mailObj = new HashMap<String, GenericEmailDto>();
+					mailObj.put(emailId, genericEmailDTOObj);
+					isMailSent = genericMailTemplateObj.sendGenericMail("", mailObj);
+					logger.debug("Mail send successfully? " + isMailSent);
+					logger.info("End of updateRiderStatus() method in CarPoolRiderDetailsServiceImpl"); 
+					return isMailSent;
+				}
 
+			} else {
+				logger.debug("Unable to update carpool rider status into db ");
+				logger.info("End of updateRiderStatus() method in CarPoolRiderDetailsServiceImpl"); 
+				return isRiderUpdated;
+			}
 		}
+		logger.info("End of updateRiderStatus() method in CarPoolRiderDetailsServiceImpl"); 
+		return isMailSent;
 	}
 
 	/**
@@ -276,26 +319,27 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 			List<CarpoolRiderDetails> carpoolRiderDetails = carpoolRiderDetailsDAO
 					.findCarpoolRiderDetailsByCPId(details.getId());
 			for (CarpoolRiderDetails riderDetails : carpoolRiderDetails) {
-					CarpoolRiderOptedDetailsDto optedDetailsDto = new CarpoolRiderOptedDetailsDto();
-					RegisterDomain domain = registerDAO.findByemailId(riderDetails.getEmailid());
-					User user = userDAO.findByEmailId(riderDetails.getEmailid());
-					optedDetailsDto.setEmailId(domain.getEmailid());
-					optedDetailsDto.setMobile(domain.getMobile());
-					optedDetailsDto.setName(user.getUserName());
-					optedDetailsDto.setReason(riderDetails.getReason());
-					optedDetailsDto.setStatus(riderDetails.getStatus());
-					optedDetailsDto.setCarpoolRiderDetailsId(riderDetails.getId());
-					optedDetailsDto.setFromdate(details.getFromDate());
-					optedDetailsDto.setCarpoolId(details.getId());
-					riderOptedDetailsDto.add(optedDetailsDto);
+				CarpoolRiderOptedDetailsDto optedDetailsDto = new CarpoolRiderOptedDetailsDto();
+				RegisterDomain domain = registerDAO.findByemailId(riderDetails.getEmailid());
+				User user = userDAO.findByEmailId(riderDetails.getEmailid());
+				optedDetailsDto.setEmailId(domain.getEmailid());
+				optedDetailsDto.setMobile(domain.getMobile());
+				optedDetailsDto.setName(user.getUserName());
+				optedDetailsDto.setReason(riderDetails.getReason());
+				optedDetailsDto.setStatus(riderDetails.getStatus());
+				optedDetailsDto.setCarpoolRiderDetailsId(riderDetails.getId());
+				optedDetailsDto.setFromdate(details.getFromDate());
+				optedDetailsDto.setCarpoolId(details.getId());
+				riderOptedDetailsDto.add(optedDetailsDto);
 			}
 
 		}
 		return riderOptedDetailsDto.stream().collect(Collectors.groupingBy(CarpoolRiderOptedDetailsDto::getFromdate));
 	}
+
 	/**
-	 * @author Mahesh Bheemanapalli
-	 *	This method is used to clean the carpoolriderNotification data in cp_carpoolridernotifications table	
+	 * @author Mahesh Bheemanapalli This method is used to clean the
+	 *         carpoolriderNotification data in cp_carpoolridernotifications table
 	 * @return ServiceStatusDto class with status and message
 	 */
 	@Override
@@ -303,38 +347,32 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 		// TODO Auto-generated method stub
 		logger.info("CarPoolRiderDetailsServiceImpl : cleanCarpoolRiderNotifications");
 		ServiceStatusDto statusDto = new ServiceStatusDto();
-			String carpoolRiderNotifications = carpoolRiderDetailsDAO.cleanCarpoolRiderNotifications();
-			logger.info("CarPoolRiderDetailsServiceImpl : cleanCarpoolRiderNotifications : "+carpoolRiderNotifications);
-			if(ObjectUtils.anyNotNull(carpoolRiderNotifications)) {
-				statusDto.setMessage(carpoolRiderNotifications);
-				statusDto.setStatus(true);
-			}
-			return statusDto;
+		String carpoolRiderNotifications = carpoolRiderDetailsDAO.cleanCarpoolRiderNotifications();
+		logger.info("CarPoolRiderDetailsServiceImpl : cleanCarpoolRiderNotifications : " + carpoolRiderNotifications);
+		if (ObjectUtils.anyNotNull(carpoolRiderNotifications)) {
+			statusDto.setMessage(carpoolRiderNotifications);
+			statusDto.setStatus(true);
+		}
+		return statusDto;
 	}
 
 	@Override
 	public List<CarpoolRiderDetails> saveOptedRiderDetails(List<CarpoolRiderDetailsDTO> carpoolRiderDetailsDTO) {
-		
-		
-		List<CarpoolRiderDetails> saveOptedRiderDetails=null;
-		List<CarpoolRiderDetails> carpoolRiderDetails=	CarpoolRiderDetailsServiceUtil.
-				convertOptedRiderDtoToDao(carpoolRiderDetailsDTO);
 
-//The list of carpoolRiderDetails save in to db
-		try
-		{
-		logger.info("CarPoolRiderDetailsServiceImpl::saveOptedRiderDetails");
-		
-		if(carpoolRiderDetails != null && carpoolRiderDetails.size() !=0)
-		
-          saveOptedRiderDetails = carpoolRiderdetailsDAO.saveOptedRiderDetails(carpoolRiderDetails);
+		List<CarpoolRiderDetails> saveOptedRiderDetails = null;
+		List<CarpoolRiderDetails> carpoolRiderDetails = CarpoolRiderDetailsServiceUtil
+				.convertOptedRiderDtoToDao(carpoolRiderDetailsDTO);
+
+		// The list of carpoolRiderDetails save in to db
+		try {
+			logger.info("CarPoolRiderDetailsServiceImpl::saveOptedRiderDetails");
+
+			if (carpoolRiderDetails != null && carpoolRiderDetails.size() != 0)
+
+				saveOptedRiderDetails = carpoolRiderdetailsDAO.saveOptedRiderDetails(carpoolRiderDetails);
+		} catch (Exception e) {
 		}
-		catch (Exception e) {
-		}
-	  return saveOptedRiderDetails;
+		return saveOptedRiderDetails;
 	}
 
-	}
-	
-	
-
+}

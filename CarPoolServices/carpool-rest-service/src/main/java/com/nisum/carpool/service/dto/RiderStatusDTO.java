@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 public class RiderStatusDTO {
 
 	private Integer id;
-//	private Integer cpid;
+	private Integer cpid;
 	private String riderName;  
 	//private String riderMobileNo;
 	private String riderEmailId;
@@ -29,12 +29,12 @@ public class RiderStatusDTO {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-//	public Integer getCpid() {
-//		return cpid;
-//	}
-//	public void setCpid(Integer cpid) {
-//		this.cpid = cpid;
-//	}
+	public Integer getCpid() {
+		return cpid;
+	}
+	public void setCpid(Integer cpid) {
+		this.cpid = cpid;
+	}
 	
 	
 	public String getRiderName() {

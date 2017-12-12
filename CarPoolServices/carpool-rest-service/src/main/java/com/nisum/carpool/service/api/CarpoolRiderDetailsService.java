@@ -26,10 +26,7 @@ public interface CarpoolRiderDetailsService {
 
 	List<CarpoolRiderDetailsDTO> cancelRiderBookingdetails(List<CarpoolRiderDetailsDTO> rides) throws Exception; 
 
-	/*
-	 * methodAuthor: @Rajesh Sekhamuri
-	 */
-	public void updateRiderStatus(List<RiderStatusDTO> riderStatusDtoListObj);
+	Boolean updateRiderStatus(List<RiderStatusDTO> riderStatusDtoListObj) throws Exception;
 	
 	List<CarpoolRiderDetails> saveOptedRiderDetails(List<CarpoolRiderDetailsDTO> carpoolRiderDetailsDTO);
 	

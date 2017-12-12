@@ -93,4 +93,8 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	
 	@Query("select count(*) from cp_carpooldetails where status=:poolStatus allow filtering")
 	Integer checkUpdateCarpoolStatusClosedCount(@Param("poolStatus") int poolStatus);
+	
+	@Query("select * from cp_carpooldetails where emailid=:emailId and id=:id allow filtering")
+    List<Carpooldetails> getCPDetailsByCPID(@Param("emailId") String emailId,@Param("id") Integer id); 
+    
 }
