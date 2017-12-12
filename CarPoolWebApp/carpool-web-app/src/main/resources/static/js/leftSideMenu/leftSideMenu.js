@@ -1,3 +1,7 @@
+/**
+ * @Author: Vasu Anupoju
+ * description: for Left side menu html page.
+ */
 var leftSideMenuApp=angular.module('leftSideMenuApp', ['ui.router' ])
 .config(function($stateProvider){
 	$stateProvider.state('leftSideMenu',{

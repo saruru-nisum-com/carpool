@@ -1,3 +1,7 @@
+/**
+ * @Author: Vasu Anupoju
+ * description: for Left side menu validations.
+ */
 leftSideMenuApp.controller('leftSideMenuController', function($scope, $state,
 		localStorageService) {
 	$scope.rider=false;

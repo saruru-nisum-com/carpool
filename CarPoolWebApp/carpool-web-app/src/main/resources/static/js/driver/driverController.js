@@ -141,8 +141,9 @@ driverApp.controller('driverController',
 					if (response.errorCode === 500) {
 						$scope.message = response.errorMessage
 					}else {
-						var userStatus = localStorageService
-						.get('userStatus');
+						//Author:Vasu
+						//Start: For leftside menu validations(as a driver register)
+						var userStatus = localStorageService .get('userStatus');
 				if (userStatus !== null) {
 					if (userStatus.indexOf("D") < 0) {
 						userStatus.push("D");
@@ -154,6 +155,7 @@ driverApp.controller('driverController',
 				}
 				localStorageService.set("userStatus",userStatus);
 				$scope.$broadcast("checkStatus",userStatus);
+				//End: For leftside menu validations(as a driver register)
 				console.log("response from getRegisterDriverData from server...."+JSON.stringify(response));
 					}
 				}, function(response) {

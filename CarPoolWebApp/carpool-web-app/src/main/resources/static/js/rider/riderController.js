@@ -139,11 +139,10 @@ riderApp.controller(
 												$scope.isRegisteredAsRider = true;
 												$scope.isVisible = true;
 												$scope.actionName = "Registered";
-												localStorageService.set(
-														'riderLocation',
-														location);
-												var userStatus = localStorageService
-														.get('userStatus');
+												//Author:Vasu
+												//Start: For leftside menu validations(as a Rider register)
+												localStorageService.set('riderLocation',location);
+												var userStatus = localStorageService.get('userStatus');
 												if (userStatus !== null) {
 													if (userStatus.indexOf("R") < 0) {
 														userStatus.push("R");
@@ -153,12 +152,9 @@ riderApp.controller(
 													userStatus=[];
 													userStatus.push("R");
 												}
-												localStorageService.set(
-														"userStatus",
-														userStatus);
-												$scope.$broadcast(
-														"checkStatus",
-														userStatus);
+												localStorageService.set( "userStatus", userStatus);
+												$scope.$broadcast( "checkStatus",userStatus);
+												//End: For leftside menu validations(as a Rider register)
 											}
 										});
 
