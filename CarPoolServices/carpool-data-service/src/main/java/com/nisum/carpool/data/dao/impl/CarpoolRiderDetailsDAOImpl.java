@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -202,12 +201,14 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 	@Override
 	public String addRewards(double rewards) {
 		// TODO Auto-generated method stub
-		logger.info("CarpoolRiderDetailsDAOImpl : updaterewardPointsWithId : To Rider");
+		logger.info("BEGIN :: CarpoolRiderDetailsDAOImpl : updaterewardPointsWithId : To Rider");
 		Set<Integer> riders = this.getSetOfCarpoolRiders();
 		if (riders.size() > 0) {
 			carpoolRiderDetailsRepository.udpateRiderRewardPoints(rewards, riders);
+			logger.info("CLOSED :: CarpoolRiderDetailsDAOImpl : updaterewardPointsWithId : To Rider : status : "+Constants.ADDED_REWARDS_TO_RIDER);
 			return Constants.ADDED_REWARDS_TO_RIDER;
 		}
+		logger.info("CLOSED :: CarpoolRiderDetailsDAOImpl : updaterewardPointsWithId : To Rider : status : "+Constants.REWARDS_NOT_ADDED_RIDER);
 		return Constants.REWARDS_NOT_ADDED_RIDER;
 	}
 	/**
@@ -221,20 +222,22 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 	 * returntype:Set<Integer> i.e carpoolrider id's;
 	 */
 	public Set<Integer> getSetOfCarpoolRiders() {
-		logger.info("CarpoolRiderDetailsDAOImpl : getSetOfCarpoolRiders");
+		logger.info("BEGIN :: CarpoolRiderDetailsDAOImpl : getSetOfCarpoolRiders");
 		Set<Integer> SetOfClosedRiders = new HashSet<>();
 		LocalDate currentDate = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String rewardedDate = currentDate.format(formatter);
+		logger.info("STEP1 :: CarpoolRiderDetailsDAOImpl : getSetOfCarpoolRiders : Current Date : "+rewardedDate);
 		List<Integer> carpoolClosedCpids = carpooldetailsRepository
 				.getCarpooldetailsByToDateAndStatus(Pool_Status.CLOSED.getValue(), rewardedDate);
+		logger.info("STEP2 :: CarpoolRiderDetailsDAOImpl : getSetOfCarpoolRiders : No-of Carpools Having rewards Zero where status is closed and todate is less or equal to current date : "+carpoolClosedCpids.size());
 		if (carpoolClosedCpids.size() > 0) {
 			for (int i = 0; i < carpoolClosedCpids.size(); i++) {
-				Integer ridersId = carpoolRiderDetailsRepository.getListOfClosedRiders(Ride_Status.APPROVED.getValue(),
+				List<Integer> ridersId = carpoolRiderDetailsRepository.getListOfClosedRiders(Ride_Status.APPROVED.getValue(),
 						carpoolClosedCpids.get(i));
-				if (ObjectUtils.anyNotNull(ridersId)&&ridersId>0) {
-					SetOfClosedRiders.add(ridersId);
-					logger.info("CarpoolRiderDetailsDAOImpl : getListOfCarpoolRiders"+ridersId);
+		logger.info("STEP3 :: CarpoolRiderDetailsDAOImpl : getSetOfCarpoolRiders : No-of Riders where status Approved and carpool status closed : "+ridersId.size());
+				if(CollectionUtils.isNotEmpty(ridersId)&&ridersId.size()>0) {
+					SetOfClosedRiders.addAll(ridersId);
 				}
 			}
 		}
@@ -294,16 +297,27 @@ public List<CarpoolRiderDetails> getOptedRiderDeatils(int id) {
 @Override
 public String cleanCarpoolRiderNotifications() {
 	// TODO Auto-generated method stub
-	logger.info("CarpoolRiderDetailsDAOImpl : cleanCarpoolRiderNotifications");
-	long beforeClean = carpoolridernotificationsrepository.count();
-	logger.info("CarpoolRiderDetailsDAOImpl : cleanCarpoolRiderNotifications : beforeClean "+beforeClean);
-	carpoolridernotificationsrepository.CleanCarpoolriderNotifications();
-	long afterClean = carpoolridernotificationsrepository.count();
-	logger.info("CarpoolRiderDetailsDAOImpl : cleanCarpoolRiderNotifications : afterClean "+afterClean);
-	if(beforeClean>=0&&afterClean==0) {
-		return Constants.CARPOOL_RIDER_NOTIFICATION_CLEANED;
+	logger.info("BEGIN:: CarpoolRiderDetailsDAOImpl : cleanCarpoolRiderNotifications");
+	String status=null;
+	try {
+		long beforeClean = carpoolridernotificationsrepository.count();
+		logger.info("STEP1 :: CarpoolRiderDetailsDAOImpl : cleanCarpoolRiderNotifications : No-of records Before cleanCarpoolRiderNotifications() "+beforeClean);
+		carpoolridernotificationsrepository.CleanCarpoolriderNotifications();
+		long afterClean = carpoolridernotificationsrepository.count();
+		logger.info("STEP2 :: CarpoolRiderDetailsDAOImpl : cleanCarpoolRiderNotifications : No-of records After cleanCarpoolRiderNotifications() "+afterClean);
+		if(beforeClean>0&&afterClean==0) {
+			status=Constants.CARPOOL_RIDER_NOTIFICATION_CLEANED;
+			logger.info("CLOSED :: CarpoolRiderDetailsDAOImpl : cleanCarpoolRiderNotifications : status :"+status);
+			return status;
+		}
+		status=Constants.CARPOOL_RIDER_NOTIFICATION_NOT_CLEANED;
+		logger.info("CLOSED :: CarpoolRiderDetailsDAOImpl : cleanCarpoolRiderNotifications : status :"+status);
+		return status;
 	}
-	return Constants.CARPOOL_RIDER_NOTIFICATION_NOT_CLEANED;
+	catch(Exception e) {
+		logger.error("CarpoolRiderDetailsDAOImpl : cleanCarpoolRiderNotifications : Inside Catch Block and Have a Exception is :"+e.getMessage());
+	}
+	return status;
 }
 
 

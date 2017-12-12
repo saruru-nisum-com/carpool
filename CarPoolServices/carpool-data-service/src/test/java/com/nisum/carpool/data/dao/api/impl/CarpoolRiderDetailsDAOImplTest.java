@@ -17,7 +17,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.nisum.carpool.data.dao.impl.CarpoolRiderDetailsDAOImpl;
-import com.nisum.carpool.data.domain.CarpoolRiderNotifications;
 import com.nisum.carpool.data.repository.CarpoolRiderDetailsRepository;
 import com.nisum.carpool.data.repository.CarpoolRiderNotificationsRepository;
 import com.nisum.carpool.data.repository.CarpooldetailsRepository;
@@ -32,7 +31,7 @@ public class CarpoolRiderDetailsDAOImplTest {
 	@InjectMocks
 	CarpoolRiderDetailsDAOImpl carpoolRiderDetailsDAOImpl;
 	@Mock
-	CarpoolRiderNotificationsRepository carpoolRiderNotificationsRepository;
+	CarpoolRiderNotificationsRepository carpoolridernotificationsrepository;
 	@Mock
 	CarpooldetailsRepository carpooldetailsRepository;
 	/**
@@ -46,7 +45,8 @@ public class CarpoolRiderDetailsDAOImplTest {
 		List<Integer> list = Arrays.asList(1,2);
 		when(carpooldetailsRepository.getCarpooldetailsByToDateAndStatus(Pool_Status.CLOSED.getValue(), rewardedDate)).thenReturn(list);
 		assertEquals(list.size(), 2);
-		when(carpoolRiderDetailsRepository.getListOfClosedRiders(Ride_Status.APPROVED.getValue(),1)).thenReturn(1);
+		List<Integer> list1 = Arrays.asList(1,2);
+		when(carpoolRiderDetailsRepository.getListOfClosedRiders(Ride_Status.APPROVED.getValue(),1)).thenReturn(list1);
 		Set<Integer> set=new HashSet<>(list);
 		String expected = Constants.ADDED_REWARDS_TO_RIDER;
 		when(carpoolRiderDetailsRepository.udpateRiderRewardPoints(1.00, set)).thenReturn(1);
@@ -64,7 +64,8 @@ public class CarpoolRiderDetailsDAOImplTest {
 		List<Integer> list = Arrays.asList(1,2);
 		when(carpooldetailsRepository.getCarpooldetailsByToDateAndStatus(Pool_Status.CLOSED.getValue(), rewardedDate)).thenReturn(list);
 		assertEquals(list.size(), 2);
-		when(carpoolRiderDetailsRepository.getListOfClosedRiders(Ride_Status.APPROVED.getValue(),1)).thenReturn(0);
+		List<Integer> list1 = Arrays.asList();
+		when(carpoolRiderDetailsRepository.getListOfClosedRiders(Ride_Status.APPROVED.getValue(),1)).thenReturn(list1);
 		Set<Integer> set=new HashSet<>(list);
 		String expected = Constants.REWARDS_NOT_ADDED_RIDER;
 		when(carpoolRiderDetailsRepository.udpateRiderRewardPoints(1.00, set)).thenReturn(1);
@@ -79,29 +80,29 @@ public class CarpoolRiderDetailsDAOImplTest {
 		long beforeClean=2;
 		long afterClean=0;
 		String expected = Constants.CARPOOL_RIDER_NOTIFICATION_CLEANED;
-		when(carpoolRiderDetailsRepository.count()).thenReturn(beforeClean);
-		when(carpoolRiderNotificationsRepository.CleanCarpoolriderNotifications()).thenReturn(1);
-		when(carpoolRiderDetailsRepository.count()).thenReturn(afterClean);
+		when(carpoolridernotificationsrepository.count()).thenReturn(beforeClean);
+		when(carpoolridernotificationsrepository.CleanCarpoolriderNotifications()).thenReturn(1);
+		when(carpoolridernotificationsrepository.count()).thenReturn(afterClean);
 		String carpoolRiderNotifications = carpoolRiderDetailsDAOImpl.cleanCarpoolRiderNotifications();
-		assertEquals(expected, carpoolRiderNotifications);
+			assertEquals(expected, carpoolRiderNotifications);
 	}
 	/**
 	* author Mahesh Bheemanapalli
 	*/
 	@Test
 	public void cleanCarpoolRiderNotificationsFailureTest() {
-		CarpoolRiderNotifications carpoolRiderNotifications = new CarpoolRiderNotifications();
+		/*CarpoolRiderNotifications carpoolRiderNotifications = new CarpoolRiderNotifications();
 		carpoolRiderNotifications.setCpid(1);
 		carpoolRiderNotifications.setEmailid("mbheemanapalli@nisum.com");
 		carpoolRiderNotifications.setId(1);
-		carpoolRiderNotifications.setNotified(true);
-		long beforeClean=4;
-		long afterClean=4;
+		carpoolRiderNotifications.setNotified(true);*/
+		long beforeClean=0;
+		long afterClean=0;
 		
 		String expected = Constants.CARPOOL_RIDER_NOTIFICATION_NOT_CLEANED;
-		when(carpoolRiderDetailsRepository.count()).thenReturn(beforeClean);
-		when(carpoolRiderNotificationsRepository.CleanCarpoolriderNotifications()).thenReturn(0);
-		when(carpoolRiderDetailsRepository.count()).thenReturn(afterClean);
+		when(carpoolridernotificationsrepository.count()).thenReturn(beforeClean);
+		when(carpoolridernotificationsrepository.CleanCarpoolriderNotifications()).thenReturn(0);
+		when(carpoolridernotificationsrepository.count()).thenReturn(afterClean);
 		String actual = carpoolRiderDetailsDAOImpl.cleanCarpoolRiderNotifications();
 		assertEquals(expected, actual);
 	}

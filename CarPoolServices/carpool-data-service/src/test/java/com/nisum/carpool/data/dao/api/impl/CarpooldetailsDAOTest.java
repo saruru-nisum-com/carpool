@@ -217,8 +217,23 @@ public class CarpooldetailsDAOTest {
 	* author Mahesh Bheemanapalli
 	*/
 	@Test
+	public void addRewardsFailureTest2() {
+		LocalDate currentDate = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String rewardedDate = currentDate.format(formatter);
+		Integer status=Pool_Status.CLOSED.getValue();
+		double rewards=1.00;
+		List<Integer> list = Arrays.asList();
+		when(carpooldetailsRepository.getCarpooldetailsByToDateAndStatus(status, rewardedDate)).thenThrow(NullPointerException.class);
+		String actualResult = carpooldetailsDAOImpl.addRewards(rewards);
+		assertEquals(null, actualResult);
+	}
+	/**
+	* author Mahesh Bheemanapalli
+	*/
+	@Test
 	public void updateCarpoolStatusToClosedTest() {
-		Timestamp createdDate=new Timestamp(1511249628);
+		Timestamp createdDate=new Timestamp(1513082462);
 		Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
 		
 		LocalDate currentDate = LocalDate.now();
@@ -268,12 +283,8 @@ public class CarpooldetailsDAOTest {
 		String expectedResult=Constants.CARPOOL_STATUS_UPDATED;
 		Integer beforeUpdate=0;
 		Integer afterUpdate=2;
-		System.out.println(beforeUpdate);
 		when(carpooldetailsRepository.checkUpdateCarpoolStatusClosedCount(status)).thenReturn(beforeUpdate);
-		System.out.println(status);
-		System.out.println(afterUpdate);
 		when(carpooldetailsRepository.updateCarpoolStatusBySetOfPoolIds(status, setOfPoolIds)).thenReturn(1);
-		System.out.println(afterUpdate);
 		when(carpooldetailsRepository.checkUpdateCarpoolStatusClosedCount(status)).thenReturn(afterUpdate);
 		
 		String actualResult = carpooldetailsDAOImpl.updateCarpoolStatusToClosed();

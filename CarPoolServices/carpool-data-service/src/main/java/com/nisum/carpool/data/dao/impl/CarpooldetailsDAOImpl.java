@@ -221,15 +221,31 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	@Override
 	public String addRewards(double rewards) {
 		// TODO Auto-generated method stub
-		logger.info("CarpooldetailsDAOImpl : addRewards : To Driver");
-		String rewardedDate = this.formateDate();
-		List<Integer> listOfIds = carpooldetailsRepository.getCarpooldetailsByToDateAndStatus(Pool_Status.CLOSED.getValue(),
-				rewardedDate);
-		if (listOfIds.size() > 0) {
-			carpooldetailsRepository.udpateRewardPoints(rewards, listOfIds);
-			return Constants.ADDED_REWARDS_TO_DRIVER;
+		logger.info("BEGIN :: CarpooldetailsDAOImpl : addRewards : To Driver");
+		String status=null;
+		try {
+			logger.info("BEGIN(i) :: CarpooldetailsDAOImpl : addRewards : To Driver : Inside Try Block");
+			String currentDate = this.getCurrnetDate();
+			logger.info("STEP1 :: CarpooldetailsDAOImpl : addRewards : Inside Try Block : Current Date :"+currentDate);
+			List<Integer> listOfIds = carpooldetailsRepository.getCarpooldetailsByToDateAndStatus(Pool_Status.CLOSED.getValue(),
+					currentDate);
+			logger.info("STEP2 :: CarpooldetailsDAOImpl : addRewards : Inside Try Block : No-of Carpools having Zero rewards where status closed and todate less than or equal to Current Date : "+listOfIds.size());
+			if (listOfIds.size() > 0) {
+				logger.info("STEP3 :: CarpooldetailsDAOImpl : addRewards : Inside Try Block : Inside If Condition Before adding the Rewards");
+				carpooldetailsRepository.udpateRewardPoints(rewards, listOfIds);
+				logger.info("STEP4 :: CarpooldetailsDAOImpl : addRewards : Inside Try Block : Inside If Condition After adding the Rewards");
+				status=Constants.ADDED_REWARDS_TO_DRIVER;
+				logger.info("CLOSED :: CarpooldetailsDAOImpl : addRewards : Inside Try Block : Inside If Condition After adding the Rewards : Status : "+status);
+				return status;
+			}
+			status=Constants.REWARDS_NOT_ADDED_DRIVER;
+			logger.info("CLOSED :: CarpooldetailsDAOImpl : addRewards : Inside Try Block : Inside If Condition After adding the Rewards : Status : "+status);
+			return status;
 		}
-		return Constants.REWARDS_NOT_ADDED_DRIVER;
+		catch(Exception e) {
+			logger.error("CarpooldetailsDAOImpl : addRewards : Inside Catch Block Had a Exception is : "+e.getMessage());
+		}
+		return status;
 	}
 
 	/**
@@ -349,35 +365,36 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	@Override
 	public String updateCarpoolStatusToClosed() {
 		// TODO Auto-generated method stub
-		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed");
-		String todate = this.formateDate();
-		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :" + todate);
-		List<Carpooldetails> carpoolsByToDate = carpooldetailsRepository.getCarpoolsByToDate(todate);
-		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :" + carpoolsByToDate.size());
-		Set<Integer> setOfPoolIds = carpoolsByToDate.stream()
-				.filter(p -> p.getStatus() != Pool_Status.CLOSED.getValue()
-						&& p.getStatus() != Pool_Status.CANCELLED.getValue())
-				.map(p -> p.getId()).collect(Collectors.toSet());
-		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :" + setOfPoolIds.size());
-		if (setOfPoolIds.size() > 0) {
-			Integer countBeforeUpdate = carpooldetailsRepository
-					.checkUpdateCarpoolStatusClosedCount(Pool_Status.CLOSED.getValue());
-			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : countBeforeUpdate " + countBeforeUpdate);
-			carpooldetailsRepository.updateCarpoolStatusBySetOfPoolIds(Pool_Status.CLOSED.getValue(), setOfPoolIds);
-			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : CarpoolStatusUpdateToClose");
-			Integer countAfterUpdate = carpooldetailsRepository
-					.checkUpdateCarpoolStatusClosedCount(Pool_Status.CLOSED.getValue());
-			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : countAfterUpdate " + countAfterUpdate);
-			if (countBeforeUpdate < countAfterUpdate) {
-				logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :" + Constants.CARPOOL_STATUS_UPDATED);
-				return Constants.CARPOOL_STATUS_UPDATED;
+		logger.info("BEGIN :: CarpooldetailsDAOImpl : updateCarpoolStatusToClosed");
+			logger.info("BEGIN(i) :: CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : Inside Try Block");
+			String currentDate = this.getCurrnetDate();
+			logger.info("STEP1 :: CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : CurrentDate : " + currentDate);
+			List<Carpooldetails> carpoolsByCurrentDate = carpooldetailsRepository.getCarpoolsByToDate(currentDate);
+			logger.info("STEP2 :: CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : No-of Carpools Lessthan or Equalto the Current Date : " + carpoolsByCurrentDate.size());
+			Set<Integer> setOfPoolIds = carpoolsByCurrentDate.stream()
+					.filter(p -> p.getStatus() != Pool_Status.CLOSED.getValue()
+							&& p.getStatus() != Pool_Status.CANCELLED.getValue())
+					.map(p -> p.getId()).collect(Collectors.toSet());
+			logger.info("STEP3 :: CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : No-of Carpools To Update the Status to Closed : " + setOfPoolIds.size());
+			if (setOfPoolIds.size() > 0) {
+				Integer countBeforeUpdate = carpooldetailsRepository
+						.checkUpdateCarpoolStatusClosedCount(Pool_Status.CLOSED.getValue());
+				logger.info("STEP4 :: CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : No-of Carpools had Pool Status Closed : " + countBeforeUpdate);
+				carpooldetailsRepository.updateCarpoolStatusBySetOfPoolIds(Pool_Status.CLOSED.getValue(), setOfPoolIds);
+				logger.info("STEP5 :: CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : UpdatedCarpoolStatusToClosed");
+				Integer countAfterUpdate = carpooldetailsRepository
+						.checkUpdateCarpoolStatusClosedCount(Pool_Status.CLOSED.getValue());
+				logger.info("STEP6 :: CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : No-of Carpools after Updated the Status : " + countAfterUpdate);
+				if (countBeforeUpdate < countAfterUpdate) {
+					logger.info("CLOSED :: CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : Status Inside If Condition : " + Constants.CARPOOL_STATUS_UPDATED);
+					return Constants.CARPOOL_STATUS_UPDATED;
+				}
+				logger.info("CLOSED :: CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : Status Inside Else Condition : " + Constants.CARPOOL_STATUS_NOT_UPDATED);
+				return Constants.CARPOOL_STATUS_NOT_UPDATED;
 			}
-			logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :" + Constants.CARPOOL_STATUS_NOT_UPDATED);
-			return Constants.CARPOOL_STATUS_NOT_UPDATED;
-		}
 
-		logger.info("CarpooldetailsDAOImpl : updateCarpoolStatusToClosed :" + Constants.NO_CARPOOLS_TO_UPDATE_STATUS);
-		return Constants.NO_CARPOOLS_TO_UPDATE_STATUS;
+			logger.info("CLOSED :: CarpooldetailsDAOImpl : updateCarpoolStatusToClosed : Status OutSide IF condition : " + Constants.NO_CARPOOLS_TO_UPDATE_STATUS);
+			return Constants.NO_CARPOOLS_TO_UPDATE_STATUS;
 	}
 	
 	/*@author Suresh valavala
@@ -395,8 +412,8 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	 * 
 	 * @return String
 	 */
-	private String formateDate() {
-		logger.info("CarpooldetailsDAOImpl : formateDate : in String");
+	private String getCurrnetDate() {
+		logger.info("BEGIN(ii) :: CarpooldetailsDAOImpl : getCurrnetDate : in String");
 		LocalDate currentDate = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return currentDate.format(formatter);

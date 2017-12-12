@@ -401,14 +401,14 @@ public class CarpooldetailsRestService {
 	@Scheduled(cron = "${schedular.job.cron.addrewardtodriver}")//added by Harish Kumar Gudivada on 12 Dec 2017 schedular reading the cron expression from property files
 	@RequestMapping(value = "/addDriverRewardPoints", method = RequestMethod.GET)
 	public ResponseEntity<?> addRewardsToDriver() {
-		logger.info("CarpooldetailsRestService : addRewardsToDriver");
+		logger.info("BEGIN :: CarpooldetailsRestService : addRewardsToDriver");
 		ResponseEntity<?> responseEntity = null;
 		try {
 			String driverRewardPoints = rewardPoints.getDriverRewardPoints();
 			double rewards = Double.parseDouble(driverRewardPoints);
 			ServiceStatusDto statusDto = carpooldetailsService.addRewards(rewards);
 			responseEntity= new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
-
+			logger.info("CLOSED :: CarpooldetailsRestService : addRewardsToDriver : Status : "+statusDto.getMessage());
 		} catch (Exception e) {
 			logger.error("CarpooldetailsRestService : addRewardPointsToDriver : Inside Catch Block" +e.getMessage());
 			Errors error = new Errors();
@@ -496,18 +496,18 @@ public class CarpooldetailsRestService {
 	 * @param Change Status to "Close", if status other than "Cancel" & "Close"
 	 * @return 
 	 */
-	@Scheduled(cron = "${schedular.job.cron.updatecarpoolstatus}")//added by Harish Kumar Gudivada on 12 Dec 2017 schedular reading the cron expression from property files
+	@Scheduled(cron = "${schedular.job.cron.updatecarpoolstatustoclosed}")//added by Harish Kumar Gudivada on 12 Dec 2017 schedular reading the cron expression from property files
 	@RequestMapping(value = "/updateCarpoolStatusToClosed", method = RequestMethod.GET)
 	public ResponseEntity<?> updateCarpoolStatus() {
-		logger.info("CarpooldetailsRestService : updateCarpoolStatus");
+		logger.info("BEGIN :: CarpooldetailsRestService : updateCarpoolStatus");
 		ResponseEntity<?> responseEntity = null;
 		try {
 			ServiceStatusDto statusDto = carpooldetailsService.updateCarpoolStatus();
-			logger.info("CarpooldetailsRestService : updateCarpoolStatus : "+statusDto.getMessage());
 			responseEntity=new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
+			logger.info("CLOSED :: CarpooldetailsRestService : updateCarpoolStatus : "+statusDto.getMessage());
 
 		} catch (Exception e) {
-			logger.error("CarpooldetailsRestService : updateCarpoolStatus : Inside Catch Block" +e.getMessage());
+			logger.error("CLOSED :: CarpooldetailsRestService : updateCarpoolStatus : Inside Catch Block" +e.getMessage());
 			Errors error = new Errors();
 			error.setErrorCode("500");
 			error.setErrorMessage(e.getMessage());

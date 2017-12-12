@@ -36,7 +36,7 @@ public interface CarpoolRiderDetailsRepository extends CassandraRepository<Carpo
 	int checkWhetherDriverIsRiderWithStatus(@Param("emailid")String emailid, @Param("cpid") int cpid);
 	
 	@Query("select id from cp_carpoolriderdetails where status=:status and rewards=0 and cpid=:cpid allow filtering;")
-	Integer getListOfClosedRiders(@Param("status") int status,@Param("cpid") int cpid);
+	List<Integer> getListOfClosedRiders(@Param("status") int status,@Param("cpid") int cpid);
 
 	@Query("update cp_carpoolriderdetails set rewards=:rewards where id IN (:listOfIds)")
 	Integer udpateRiderRewardPoints(@Param("rewards") double rewards, @Param("listOfIds") Set<Integer> listOfIds);

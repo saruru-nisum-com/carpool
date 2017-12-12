@@ -682,12 +682,13 @@ if(registerDomain!=null && registerDomain.size()>0) {
 	@Override
 	public ServiceStatusDto addRewards(double rewards) {
 			// TODO Auto-generated method stub
-			logger.info("CarpooldetailsServiceImpl : addRewards : To Driver");
+			logger.info("BEGIN :: CarpooldetailsServiceImpl : addRewards : To Driver");
 			ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
 			String updaterewardPointsWithId = carpooldetailsDAO.addRewards(rewards);
 			if(ObjectUtils.anyNotNull(updaterewardPointsWithId)) {
 				serviceStatusDto.setStatus(true);
 				serviceStatusDto.setMessage(updaterewardPointsWithId);
+				logger.info("CLOSED :: CarpooldetailsServiceImpl : addRewards : To Driver :Status :"+serviceStatusDto.getMessage());
 			}
 			return serviceStatusDto;
 	}
@@ -886,18 +887,18 @@ if(registerDomain!=null && registerDomain.size()>0) {
 	@Override
 	public ServiceStatusDto updateCarpoolStatus() {
 		// TODO Auto-generated method stub
-		logger.info("CarpooldetailsServiceImpl:updateCarpoolStatus");
+		logger.info("BEGIN :: CarpooldetailsServiceImpl : updateCarpoolStatus");
 		ServiceStatusDto statusDto = new ServiceStatusDto(); 
 		try {
 			String statusToClosed = carpooldetailsDAO.updateCarpoolStatusToClosed();
-			logger.info("CarpooldetailsServiceImpl : updateCarpoolStatus :"+statusToClosed);
 			if(ObjectUtils.anyNotNull(statusToClosed)) {
 				statusDto.setStatus(true);
 				statusDto.setMessage(statusToClosed);
 			}
+			logger.info("CLOSED :: CarpooldetailsServiceImpl : updateCarpoolStatus : Status : "+statusDto.getMessage());
 		}
 		catch(Exception e) {
-			logger.debug("CarpooldetailsServiceImpl : updateCarpoolStatus"+e.getMessage());
+			logger.error("CLOSED :: CarpooldetailsServiceImpl : updateCarpoolStatus"+e.getMessage());
 			statusDto.setStatus(false);
 			statusDto.setMessage(e.getMessage());
 		}

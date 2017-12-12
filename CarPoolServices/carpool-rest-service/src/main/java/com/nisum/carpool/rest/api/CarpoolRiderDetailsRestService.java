@@ -202,16 +202,14 @@ public class CarpoolRiderDetailsRestService {
 	@Scheduled(cron = "${schedular.job.cron.addrewardtorider}")
 	@RequestMapping(value = "/addRiderRewardPoints", method = RequestMethod.GET)
 	public ResponseEntity<?> addRewardPointsToRider() {
-		logger.info("CarpoolRiderDetailsRestService : addRewardPointsToRider");
+		logger.info("BEGIN :: CarpoolRiderDetailsRestService : addRewardPointsToRider");
 		ResponseEntity<?> responseEntity = null;
 		try {
 			String riderRewardPoints = rewardPoints.getRiderRewardPoints();
-			System.out.println(riderRewardPoints);
 			double rewards = Double.parseDouble(riderRewardPoints);
-			System.out.println(rewards);
 			ServiceStatusDto statusDto = carpoolRiderDetailsService.addRewards(rewards);
-
 			responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
+			logger.info("CLOSED :: CarpoolRiderDetailsRestService : addRewardPointsToRider : status : "+statusDto.getMessage());
 
 		} catch (Exception e) {
 			logger.error("CarpoolRiderDetailsRestService : addRewardPointsToRider : Inside Catch Block"+e.getMessage());
@@ -233,16 +231,15 @@ public class CarpoolRiderDetailsRestService {
 	/**
 	 * @author Mahesh Bheemanapalli
 	 */
-	@Scheduled(cron = "${schedular.job.cron.cleannotification}")
+	@Scheduled(cron = "${schedular.job.cron.cleancarpoolridernotifications}")
 	@RequestMapping(value = "/cleanCarpoolRiderNotifications", method = RequestMethod.GET)
 	public ResponseEntity<?> cleanCarpoolRiderNotifications() {
-		logger.info("CarpoolRiderDetailsRestService : cleanCarpoolRiderNotifications");
+		logger.info("BEGIN :: CarpoolRiderDetailsRestService : cleanCarpoolRiderNotifications");
 		ResponseEntity<?> responseEntity = null;
 		try {
 			ServiceStatusDto statusDto = carpoolRiderDetailsService.cleanCarpoolRiderNotifications();
-			logger.info("CarpoolRiderDetailsRestService : cleanCarpoolRiderNotifications : "+statusDto.getMessage());
 			responseEntity = new ResponseEntity<ServiceStatusDto>(statusDto, HttpStatus.OK);
-
+			logger.info("CLOSED :: CarpoolRiderDetailsRestService : cleanCarpoolRiderNotifications : "+statusDto.getMessage());
 		} catch (Exception e) {
 			logger.error("CarpoolRiderDetailsRestService : addRewardPointsToRider : Inside Catch Block"+e.getMessage());
 			Errors error = new Errors();

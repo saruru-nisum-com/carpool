@@ -302,12 +302,13 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 	@Override
 	public ServiceStatusDto addRewards(double rewards) {
 		// TODO Auto-generated method stub
-		logger.info("CarPoolRiderDetailsServiceImpl : addRewards : To Rider");
+		logger.info("BEGIN :: CarPoolRiderDetailsServiceImpl : addRewards : To Rider");
 		ServiceStatusDto serviceStatusDto = new ServiceStatusDto();
 		String updaterewardPointsWithId = carpoolRiderDetailsDAO.addRewards(rewards);
 		if (ObjectUtils.anyNotNull(updaterewardPointsWithId)) {
 			serviceStatusDto.setStatus(true);
 			serviceStatusDto.setMessage(updaterewardPointsWithId);
+			logger.info("CLOSED :: CarPoolRiderDetailsServiceImpl : addRewards : To Rider : "+serviceStatusDto.getMessage());
 		}
 		return serviceStatusDto;
 	}
@@ -356,15 +357,15 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 	@Override
 	public ServiceStatusDto cleanCarpoolRiderNotifications() {
 		// TODO Auto-generated method stub
-		logger.info("CarPoolRiderDetailsServiceImpl : cleanCarpoolRiderNotifications");
+		logger.info("BEGIN :: CarPoolRiderDetailsServiceImpl : cleanCarpoolRiderNotifications");
 		ServiceStatusDto statusDto = new ServiceStatusDto();
-		String carpoolRiderNotifications = carpoolRiderDetailsDAO.cleanCarpoolRiderNotifications();
-		logger.info("CarPoolRiderDetailsServiceImpl : cleanCarpoolRiderNotifications : " + carpoolRiderNotifications);
-		if (ObjectUtils.anyNotNull(carpoolRiderNotifications)) {
-			statusDto.setMessage(carpoolRiderNotifications);
-			statusDto.setStatus(true);
-		}
-		return statusDto;
+			String carpoolRiderNotifications = carpoolRiderDetailsDAO.cleanCarpoolRiderNotifications();
+			if(ObjectUtils.anyNotNull(carpoolRiderNotifications)) {
+				statusDto.setMessage(carpoolRiderNotifications);
+				statusDto.setStatus(true);
+				logger.info("CLOSED :: CarPoolRiderDetailsServiceImpl : cleanCarpoolRiderNotifications : status : "+statusDto.getMessage());
+			}
+			return statusDto;
 	}
 
 	@Override
