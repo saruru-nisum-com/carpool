@@ -172,7 +172,6 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 		logger.info("Status for creating car pool is valid");
 		
 		List<Carpooldetails> carPoolList = processPostRideDomain(carpooldetails);
-System.out.println(carPoolList);
 		String msg = carpooldetailsDAO.addCarpoolDetails(carPoolList);
 
 		if (msg == Constants.MSG_CARPOOL_ADD) {
@@ -296,6 +295,8 @@ System.out.println(carPoolList);
 			cp.setEmailId(carpooldetails.getEmailId());
 			cp.setVehicleType(carpooldetails.getVehicleType());
 			cp.setLocation(carpooldetails.getLocation());
+			cp.setLongitude(carpooldetails.getLongitude());
+			cp.setLatitude(carpooldetails.getLatitude());
 			carPoolList.add(cp);
 		}
 

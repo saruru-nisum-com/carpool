@@ -1,6 +1,5 @@
 package com.nisum.carpool.rest.api;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -399,7 +398,7 @@ public class CarpooldetailsRestService {
 		
 
 	//seconds minutes hours dayofthemonth month dayoftheweek
-	@Scheduled(cron = "0 30 23 * * ?")
+	@Scheduled(cron = "${schedular.job.cron.addrewardtodriver}")
 	@RequestMapping(value = "/addDriverRewardPoints", method = RequestMethod.GET)
 	public ResponseEntity<?> addRewardsToDriver() {
 		logger.info("CarpooldetailsRestService : addRewardsToDriver");
@@ -497,7 +496,7 @@ public class CarpooldetailsRestService {
 	 * @param Change Status to "Close", if status other than "Cancel" & "Close"
 	 * @return 
 	 */
-	@Scheduled(cron = "0 0 23 * * ?")
+	@Scheduled(cron = "${schedular.job.cron.updatecarpoolstatus}")
 	@RequestMapping(value = "/updateCarpoolStatusToClosed", method = RequestMethod.GET)
 	public ResponseEntity<?> updateCarpoolStatus() {
 		logger.info("CarpooldetailsRestService : updateCarpoolStatus");

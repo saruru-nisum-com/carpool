@@ -105,5 +105,9 @@ CREATE TABLE cp_carpoolridernotifications (
 alter table cp_carpooldetails add location text;
 alter table cp_carpoolriderdetails add location text;
 
+------Version VI------
+
+alter table cp_carpooldetails add longitude text;
+alter table cp_carpooldetails add latitude text;
 
  

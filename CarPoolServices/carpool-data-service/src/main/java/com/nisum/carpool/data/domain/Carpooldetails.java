@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 
-import com.nisum.carpool.data.util.Pool_Status;
-
 @Table("cp_carpooldetails")
 public class Carpooldetails implements Serializable{
 	/**
@@ -34,6 +32,8 @@ public class Carpooldetails implements Serializable{
     //private Timestamp modifieddate;
 	private LocalDateTime createddate;
 	private LocalDateTime modifieddate; 
+	private String latitude="";
+	private String longitude="";
 	
 	public Integer getId() {
 		return id;
@@ -128,6 +128,19 @@ public class Carpooldetails implements Serializable{
 	public void setLocation(String location) {
 		this.location = location;
 	}
+	
+	public String getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+	public String getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -149,6 +162,9 @@ public class Carpooldetails implements Serializable{
 		result = prime * result + ((toDate == null) ? 0 : toDate.hashCode());
 		result = prime * result + ((toTime == null) ? 0 : toTime.hashCode());
 		result = prime * result + ((vehicleType == null) ? 0 : vehicleType.hashCode());
+		result = prime * result + ((latitude == null) ? 0 : latitude.hashCode());
+		result = prime * result + ((location == null) ? 0 : location.hashCode());
+		result = prime * result + ((longitude == null) ? 0 : longitude.hashCode());
 		return result;
 	}
 	/* (non-Javadoc)
@@ -232,6 +248,21 @@ public class Carpooldetails implements Serializable{
 			if (other.vehicleType != null)
 				return false;
 		} else if (!vehicleType.equals(other.vehicleType))
+			return false;
+		if (latitude == null) {
+			if (other.latitude != null)
+				return false;
+		} else if (!latitude.equals(other.latitude))
+			return false;
+		if (location == null) {
+			if (other.location != null)
+				return false;
+		} else if (!location.equals(other.location))
+			return false;
+		if (longitude == null) {
+			if (other.longitude != null)
+				return false;
+		} else if (!longitude.equals(other.longitude))
 			return false;
 		return true;
 	}
