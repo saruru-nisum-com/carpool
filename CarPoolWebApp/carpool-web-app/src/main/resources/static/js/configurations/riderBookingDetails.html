@@ -35,12 +35,9 @@
                         <td>{{riderDetails.statusName}}</td>
                         
 <!--                         <td data-ng-include='tempId'></td> -->
-                         <td><select  ng-if="riderDetails.statusName=='APPROVED' || riderDetails.statusName=='REQUESTED'" 
-                                 ng-disabled="!selectedRiderDetails[$index]" ng-class="{'txtdisabled': !selectedRiderDetails[$index]}">
-                              <option value="0">Select</option>                            
-                      <option ng-repeat="(key,value) in reasons">{{value}}</option>
-                      </select>
-                       <span ng-if="riderDetails.statusName!='APPROVED' && riderDetails.statusName!='REQUESTED'" ng-model="reasons[riderDetails.reason]" ng-bind="reasons[riderDetails.reason]"> </span>
+                         <td><select ng-show="riderDetails.statusName=='APPROVED' || riderDetails.statusName=='REQUESTED'"
+                        ng-disabled="!selectedRiderDetails[$index]" ng-class="{'txtdisabled': !selectedRiderDetails[$index]}"
+                        ng-change="changeLocation(riderDetails, selected)" ng-model="selected" ng-options="reason as reason.name for reason in reasons"></select>
                         </td> 
                     </tr>
 
