@@ -1,5 +1,6 @@
 package com.nisum.carpool.rest.api; 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,11 +27,13 @@ import com.nisum.carpool.service.api.RewardPoints;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
 import com.nisum.carpool.service.dto.CarpoolRiderOptedDetailsDto;
 import com.nisum.carpool.service.dto.Errors;
+import com.nisum.carpool.service.dto.ReasonsDTO;
 import com.nisum.carpool.service.dto.RiderBookingDetailsDTO;
 import com.nisum.carpool.service.dto.RiderStatusDTO;
 import com.nisum.carpool.service.dto.ServiceStatusDto;
 import com.nisum.carpool.service.exception.CarpooldetailsServiceException;
 import com.nisum.carpool.util.CPCancellationReasons;
+
 
 
 @RestController
@@ -47,7 +50,8 @@ public class CarpoolRiderDetailsRestService {
 	
 	static Map<Integer, String> cancelReasonMapObj = new HashMap<Integer, String>();
 	
-
+	static List<ReasonsDTO> reasonsdtolist = new ArrayList<ReasonsDTO>();
+	
 	/**
 	 * author Radhika pujari
 	 */
@@ -98,24 +102,24 @@ public class CarpoolRiderDetailsRestService {
 	}
 
 	/*
-	 * methodAuthor: @Rajesh Sekhamuri methodName: loadRiderStatusReasons()
+	 * methodAuthor: @Rajesh Sekhamuri methodName: riderStatus()
 	 * 
-	 * @Params 
-	 * 
-	 * return Map<Integer, String> reason code with name form of key and
-	 * value pair <Reason code, Reason name>
+	 * @Params return Map<Integer, String> reason code with name form of key and
+	 * value pair
 	 */
 
 	@RequestMapping(value = "/loadRiderStatusReasons", method = RequestMethod.GET)
-	public ResponseEntity<Map<Integer, String>> loadRiderStatusReasons() {
+	public ResponseEntity<List<ReasonsDTO>> loadRiderStatusReasons() {
 		logger.info("Start of loadRiderStatusReasons() method in RiderStatusRestService");
-		if (cancelReasonMapObj.isEmpty()) {
-			cancelReasonMapObj = CPCancellationReasons.readRiderStatusReasonCodes();
-			logger.debug("res status "+cancelReasonMapObj);
+		if (reasonsdtolist.isEmpty()) {
+			reasonsdtolist = CPCancellationReasons.readRiderStatusReasonCodes();
+			System.out.println("res status "+reasonsdtolist);
 		}
+		System.out.println("ABC ******** "+cancelReasonMapObj.size());
 		logger.info("End of loadRiderStatusReasons() method in RiderStatusRestService");
-		return new ResponseEntity<Map<Integer, String>>(cancelReasonMapObj, HttpStatus.OK);
+		return new ResponseEntity<List<ReasonsDTO>>(reasonsdtolist, HttpStatus.OK);
 	}
+	
 	@RequestMapping(value = "/updateRiderStatus", method = RequestMethod.POST) 
 	public ResponseEntity<?> updateRiderStatus(@RequestBody List<RiderStatusDTO> updateRiderStatus) {
 		logger.info("Start of updateRiderStatus() method in RiderStatusRestService");
@@ -158,42 +162,13 @@ public class CarpoolRiderDetailsRestService {
 	 */
 
 	@RequestMapping(value = "/cancelRiderBookingDetails", method = RequestMethod.POST)
-	public ResponseEntity<?> cancelRiderBookingDetails(@RequestBody List<CarpoolRiderDetailsDTO> rides) {
+	public ResponseEntity<?> cancelRiderBookingDetails(@RequestBody List<RiderBookingDetailsDTO> rides) {
 		logger.info("cancelling a ride");
-		try {
+		
+		
+		return carpoolRiderDetailsService.cancelRiderBookingdetails(rides);
 
-			List<CarpoolRiderDetailsDTO> cprdto = carpoolRiderDetailsService.cancelRiderBookingdetails(rides);
-
-			if (cprdto == null) {
-
-				logger.info("carpoolriderdetailsrestservice:Canceling ride failed");
-				ServiceStatusDto statusDto = new ServiceStatusDto();
-				statusDto.setStatus(false);
-				statusDto.setMessage(Constants.CANCELING_RIDE_FAILED);
-				ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto,
-						HttpStatus.BAD_REQUEST);
-				return entity;
-			}
-
-			else {
-				logger.info("carpoolriderdetailsrestservice:Successfully cancelled a ride");
-				ResponseEntity<List<CarpoolRiderDetailsDTO>> entity = new ResponseEntity<List<CarpoolRiderDetailsDTO>>(
-						cprdto, HttpStatus.OK);
-				return entity;
-
-			}
-
-		} catch (Exception e) {
-
-			logger.info(e.getMessage());
-			ServiceStatusDto statusDto = new ServiceStatusDto();
-			statusDto.setStatus(false);
-			statusDto.setMessage(Constants.CANCELING_RIDE_FAILED);
-			ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto,
-					HttpStatus.BAD_REQUEST);
-			return entity;
-
-		}
+	
 
 	}
 	/**
