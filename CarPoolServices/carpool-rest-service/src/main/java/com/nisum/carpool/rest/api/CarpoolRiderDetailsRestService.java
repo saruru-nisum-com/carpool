@@ -252,4 +252,32 @@ public class CarpoolRiderDetailsRestService {
 		
 
 	}
+	/**
+	 * @author Simhadri Naidu Guntreddi
+	 * 
+	 *         This method is used for get My Rides Details History 
+	 */
+
+	@RequestMapping(value = "/myrider/history/{email:.+}", method = RequestMethod.POST)
+	public ResponseEntity<?> getRiderBookingDetailsHistory(@PathVariable("email") String email,@RequestBody RiderBookingDetailsDTO historyDTO) throws Exception {
+		logger.info("My Rides History");
+		try {
+		 List<RiderBookingDetailsDTO>  myRidesHistoryList = carpoolRiderDetailsService.getRiderBookingHistory(email, historyDTO);
+		 if(myRidesHistoryList==null ||myRidesHistoryList.size()==0 )
+		 {
+				logger.info("carpoolriderdetailsrestservice: please enter details");
+
+			 return new ResponseEntity<List<RiderBookingDetailsDTO>>(myRidesHistoryList, HttpStatus.NO_CONTENT);
+		 }
+			logger.info("carpoolriderdetailsrestservice:My Rides History Details");
+
+		return new ResponseEntity<List<RiderBookingDetailsDTO>>(myRidesHistoryList, HttpStatus.OK);
+
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+			return new ResponseEntity<List<RiderBookingDetailsDTO>>(HttpStatus.BAD_REQUEST);
+
+		}
+	}
+	
 }

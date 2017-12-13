@@ -564,5 +564,91 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 		}
 	  return saveOptedRiderDetails;
 	}
+	/**
+	 * @author Simhadri Naidu Guntreddi
+	 * 
+	 *         This method is used for MyRides Details History based on emailID
+	 * 
+	 */
 
+	@Override
+	public List<RiderBookingDetailsDTO> getRiderBookingHistory(String email,
+			RiderBookingDetailsDTO historyDTO) throws Exception {
+
+		List<RiderBookingDetailsDTO> historyDTOList = new ArrayList<>();
+		List<CarpoolRiderDetails> carpoolRiderDetailsList = carpoolRiderDetailsDAO.getRiderBookingDetails(email);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String date = sdf.format(new Date());
+		Date today = sdf.parse(date);
+		
+		
+		for (CarpoolRiderDetails carpoolRiderDetails : carpoolRiderDetailsList) {
+			RiderBookingDetailsDTO riderBookingDetailsHistoryDTO = new RiderBookingDetailsDTO();
+			Carpooldetails carpooldetails = carpooldetailsDAO.getCarpoolByPoolID(carpoolRiderDetails.getCpid());
+			if (carpooldetails != null) {
+			//	Date fromDate = sdf.parse(carpooldetails.getFromDate());
+				//Date toDate = sdf.parse(carpooldetails.getToDate());
+				riderBookingDetailsHistoryDTO.setEmail(carpooldetails.getEmailId());
+				riderBookingDetailsHistoryDTO.setFromDate(carpooldetails.getFromDate());
+				riderBookingDetailsHistoryDTO.setToDate(carpooldetails.getToDate());
+				riderBookingDetailsHistoryDTO.setLocation(carpooldetails.getLocation());
+				riderBookingDetailsHistoryDTO.setStatus(carpoolRiderDetails.getStatus());
+				// Ride_Status ride_Status =
+				// Ride_Status.values()[(carpoolRiderDetails.getStatus() - 1)];
+				// riderBookingDetailsHistoryDTO.setStatusName(ride_Status.toString());
+				riderBookingDetailsHistoryDTO.setReason(carpoolRiderDetails.getReason());
+				riderBookingDetailsHistoryDTO.setVehicleType(carpooldetails.getVehicleType());
+				User user = userDAO.findByEmailId(carpooldetails.getEmailId());
+				if (user != null) {
+					riderBookingDetailsHistoryDTO.setUserName(user.getUserName());
+				}
+				List<RegisterDomain> registerDomainList = registerDAO.findUserRegistrationByUserId(carpooldetails.getEmailId());
+
+				if (registerDomainList != null && registerDomainList.size() > 0) {
+					for (RegisterDomain registerDomain : registerDomainList) {
+						if (registerDomain.getIsrider() == 1) {
+							riderBookingDetailsHistoryDTO.setMobile(registerDomain.getMobile());
+						}
+					}
+				}
+				
+			}
+			historyDTOList.add(riderBookingDetailsHistoryDTO);
+		}
+		if (historyDTO.getFromDate() != null || historyDTO.getToDate() != null || historyDTO.getLocation() != null
+				|| historyDTO.getStatus() != 0) {
+			List<RiderBookingDetailsDTO> historyDTOList1 = new ArrayList<>();
+
+			for (RiderBookingDetailsDTO dto : historyDTOList) {
+				if (historyDTO.getLocation() != null) {
+					if (!(dto.getLocation().equals(historyDTO.getLocation()))) {
+						continue;
+
+					}	
+				}
+				if (historyDTO.getFromDate() != null && historyDTO.getToDate() != null) {
+					Date fromDate = sdf.parse(historyDTO.getFromDate());
+					Date toDate = sdf.parse(historyDTO.getToDate());
+					
+					if(!(fromDate.after(toDate) || fromDate.equals(toDate)) && !( toDate.before(today) ||
+							toDate.equals(today) || toDate.before(fromDate)) )
+						continue;
+
+					
+				}
+				if (historyDTO.getStatus() != 0 ) {
+					if (!(dto.getStatus() == historyDTO.getStatus())) {
+						continue;
+
+					}
+				}
+				
+				historyDTOList1.add(dto);
+			}
+			return historyDTOList1;
+
+		}
+
+		return historyDTOList;
+	}
 }
