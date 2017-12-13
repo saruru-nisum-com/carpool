@@ -1,5 +1,5 @@
-<div class="col-md-10" ng-controller="configurationsController">
-	<div>
+<div class="col-md-10">
+	<div ng-controller="configurationsController">
 		<div align="center" style="color: #2535A9;">
 			<h3>Available car pools</h3>
 			<input type="checkbox" name="AllCarPools" data-ng-change='ngChange()'
@@ -32,8 +32,8 @@
 		<div align="center" ng-if="carpoolList.length<=0">No Car pools
 			Available</div>
 	</div>
-	 <div id="bottom">
+	 <div id="bottom" ng-controller="riderBookingDetailsController">
 		<hr class="hr">
-		<div ng-include="'js/configurations/riderBookingDetails.html'"></div>
+		<div ng-include="'js/riderBookingDetails/riderBookingDetails.html'"></div>
 	</div> 
 </div>
