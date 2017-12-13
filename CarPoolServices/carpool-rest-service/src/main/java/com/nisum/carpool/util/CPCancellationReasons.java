@@ -1,8 +1,10 @@
 package com.nisum.carpool.util;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -17,16 +19,18 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.nisum.carpool.service.dto.CPCancellRideReasons;
+import com.nisum.carpool.service.dto.ReasonsDTO;
 
 public class CPCancellationReasons extends DefaultHandler {
 
 	private CPCancellRideReasons cpCanRideReasonsObj;
 	private String temp;
 	static Map<Integer, String> cpResMapObj = new HashMap<Integer, String>();
+	static List<ReasonsDTO> reasonsdtolist  = new ArrayList<ReasonsDTO>();
 	private static Logger appLogger = Logger.getLogger(CPCancellationReasons.class);
 	
 	
-	public static Map readRiderStatusReasonCodes() {
+	public static List<ReasonsDTO> readRiderStatusReasonCodes() {
 		appLogger.info("Start of readRiderStatusReasonCodes() method in CPCancellationReasons");
 		try {
 			// Create a "parser factory" for creating SAX parsers
@@ -63,7 +67,7 @@ public class CPCancellationReasons extends DefaultHandler {
 			appLogger.error("Exception occured into readRiderStatusReasonCodes() method in CPCancellationReasons ", pcException.fillInStackTrace());
 		}
 		appLogger.info("End of readRiderStatusReasonCodes() method in CPCancellationReasons");
-		return cpResMapObj;
+		return reasonsdtolist;
 	}
 
 	/*
@@ -90,6 +94,7 @@ public class CPCancellationReasons extends DefaultHandler {
 	/*
 	 * When the parser encounters the end of an element, it calls this method
 	 */
+	/*
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		if (qName.equalsIgnoreCase("RejectionReason")) {
 			cpResMapObj.put(cpCanRideReasonsObj.getReasonCode(), cpCanRideReasonsObj.getReasonName());
@@ -99,5 +104,24 @@ public class CPCancellationReasons extends DefaultHandler {
 			cpCanRideReasonsObj.setReasonCode(Integer.valueOf(temp));
 		}
 
+	}*/
+	
+	public void endElement(String uri, String localName, String qName) throws SAXException {
+		if (qName.equalsIgnoreCase("RejectionReason")) {
+			
+			ReasonsDTO rdto = new ReasonsDTO();
+			rdto.setId(cpCanRideReasonsObj.getReasonCode());
+			rdto.setName(cpCanRideReasonsObj.getReasonName());
+			
+			reasonsdtolist.add(rdto);
+			
+		} else if (qName.equalsIgnoreCase("ReasonName")) {
+			cpCanRideReasonsObj.setReasonName(temp);
+		} else if (qName.equalsIgnoreCase("ReasonCode")) {
+			cpCanRideReasonsObj.setReasonCode(Integer.valueOf(temp));
+		}
+
 	}
+	
+	
 }
