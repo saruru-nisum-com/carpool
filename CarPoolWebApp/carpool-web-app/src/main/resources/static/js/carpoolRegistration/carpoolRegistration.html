@@ -17,6 +17,36 @@ h3 {
 	margin-bottom: 10px;
 	color: #00BFFF;
 }
+
+.thumbnail {
+	display: block;
+	padding: 4px;
+	margin-bottom: 20px;
+	line-height: 1.42857143;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	-webkit-transition: border .2s ease-in-out;
+	-o-transition: border .2s ease-in-out;
+	transition: border .2s ease-in-out;
+	width: 930px !important;
+}
+
+.col-md-2 {
+	padding-left: 67px !important;
+}
+
+.col-md-4 {
+	padding-right: 0px !important;
+	padding-left: 53px !important;
+}
+.shareARideTitle {
+padding-left: 50px !important;
+}
+.manFieldTitle {
+padding-left: 50px !important;
+}
+
 </style>
 <body>
 	<div class="container-fluid">
@@ -24,114 +54,120 @@ h3 {
 			<div id="leftHandMenu" class="leftpane col-md-2">
 				<div ng-include="'js/partials/leftSideMenu.html'"></div>
 			</div>
+
 			<div class="rightpane col-md-8">
-				<h3>Share a ride</h3>
-				<p style="color:red;">(Fields marked with (*) are mandatory)</p> 
-				<!--  <div class = "row">
+				<br> <br>
+				<div id="shareARideBorder" class="col-md-8 thumbnail">
+					<h3 class="shareARideTitle">Share a ride</h3>
+					<p class="manFieldTitle" style="color: #C0C0C0;">(All fields are mandatory)</p>
+					<!--  <div class = "row">
 				<div class = "col-md-12">
 					<h3>Share A Ride</h3>
 				</div>
 			</div>-->
-				<!-- Post A Ride Design start  -->
-				<form name="postRideForm">
-					<div class="form-container">
-						<div class="row pool-element">
-							<div class="col-md-2">
-								<label>Vehicle Type</label><span style='color:red;'>*</span>
+					<!-- Post A Ride Design start  -->
+					<form name="postRideForm">
+						<div class="form-container">
+							<div class="row pool-element">
+								<div class="col-md-2">
+									<label>Vehicle Type</label>
+								</div>
+								<div class="col-md-4">
+									<select name="vehicleSelect" id="vehicleSelect"
+										class="form-control" ng-model="vehicleSelect"
+										ng-init=" vehicleSelect = data[0].id"
+										ng-options="option.id as option.name for option in data"
+										ng-change="fnVehicleType(vehicleSelect)">
+									</select>
+								</div>
 							</div>
-							<div class="col-md-4">
-								<select name="vehicleSelect" id="vehicleSelect"
-									class="form-control" ng-model="vehicleSelect"
-									ng-init=" vehicleSelect = data[0].id"
-									ng-options="option.id as option.name for option in data"
-									ng-change="fnVehicleType(vehicleSelect)">
-								</select>
+							<div class="row pool-element">
+								<div class="col-md-2">
+									<label>Total No: of Seats</label>
+								</div>
+								<div class="col-md-4">
+									<input type="number" class="form-control" class="spanCls"
+										name="seats" data-ng-model="seats" min="{{minSeats}}"
+										max="{{maxSeats}}" data-ng-disabled="inactive">
+								</div>
 							</div>
-						</div>
-						<div class="row pool-element">
-							<div class="col-md-2">
-								<label>Total No: of Seats</label><span style='color:red;'>*</span>
-							</div>
-							<div class="col-md-4"> 
-								<input type="number"  class="form-control" class="spanCls" name="seats"  data-ng-model="seats"  min="{{minSeats}}" max="{{maxSeats}}" data-ng-disabled="inactive">
-							</div>
-						</div>
 
 
 
-						<div class="row pool-element">
-							<div class="col-md-2">
-								<label>Location</label><span style='color:red;'>*</span>
-							</div>
-							<div class="col-md-4" data-ng-init="getUserLocation();">
-								<input type="text" id="locId" class="form-control"
-									gm-places-autocomplete name="location"
-									ng-model="shareARideAutocomplete"
-									placeholder="Please Enter location here"> <br />
+							<div class="row pool-element">
+								<div class="col-md-2">
+									<label>Location</label>
+								</div>
+								<div class="col-md-4" data-ng-init="getUserLocation();">
+									<input type="text" id="locId" class="form-control"
+										gm-places-autocomplete name="location"
+										ng-model="shareARideAutocomplete"
+										placeholder="Please Enter location here"> <br />
 
-								<div
-									ng-show="postRideForm.$submitted || postRideForm.location.$touched">
-									<div ng-show="postRideForm.location.$error.required "
-										style="color: red">Tell us your location.</div>
+									<div
+										ng-show="postRideForm.$submitted || postRideForm.location.$touched">
+										<div ng-show="postRideForm.location.$error.required "
+											style="color: red">Tell us your location.</div>
+									</div>
+								</div>
+							</div>
+
+
+
+							<div class="row pool-element" style="margin-top: -10px;">
+								<div class="col-md-2">
+									<label>From Date</label>
+								</div>
+								<div class='prTabTd col-md-4'>
+									<input type="date" id="exampleInput" class="form-control"
+										name="fromDate" ng-model="fromDate.value"
+										min="{{fromDate.currentDate | date: 'yyyy-MM-dd'}}"
+										placeholder="yyyy-MM-dd" required /> <span class="error"
+										ng-show="!postRideForm.fromDate.$valid"> Not a valid
+										date!</span>
+								</div>
+							</div>
+
+							<div class="row pool-element">
+								<div class="col-md-2">
+									<label>To Date</label>
+								</div>
+								<div class='prTabTd col-md-4'>
+									<input type="date" id="exampleInput" class="form-control"
+										name="toDate" ng-model="toDate.value"
+										min="{{toDate.currentDate | date: 'yyyy-MM-dd'}}"
+										placeholder="yyyy-MM-dd" required /> <span class="error"
+										ng-show="!postRideForm.toDate.$valid"> Not a valid
+										date! </span>
+								</div>
+							</div>
+							<div class="row pool-element">
+								<div class="col-md-2">
+									<label>Start Time</label>
+								</div>
+								<div class='prTabTd col-md-4'>
+									<input type="time" id="exampleInput" class="form-control"
+										name="startTime" ng-model="startTime.value" required />
+								</div>
+							</div>
+							<div class="row pool-element">
+								<div class="col-md-2">
+									<label>Return Time</label>
+								</div>
+								<div class='prTabTd col-md-4'>
+									<input type="time" id="exampleInput" class="form-control"
+										name="endTime" ng-model="endTime.value" required />
+								</div>
+							</div>
+							<div class="row pool-element">
+								<div class="col-md-4 col-md-offset-2">
+									<button class="postARideAddBtn btn btn-primary"
+										ng-click="fnAddPostRide()">Add</button>
 								</div>
 							</div>
 						</div>
-
-
-
-						<div class="row pool-element" style="margin-top: -10px;">
-							<div class="col-md-2">
-								<label>From Date</label><span style='color:red;'>*</span>
-							</div>
-							<div class='prTabTd col-md-4'>
-								<input type="date" id="exampleInput" class="form-control"
-									name="fromDate" ng-model="fromDate.value"
-									min="{{fromDate.currentDate | date: 'yyyy-MM-dd'}}"
-									placeholder="yyyy-MM-dd" required /> <span class="error"
-									ng-show="!postRideForm.fromDate.$valid"> Not a valid
-									date!</span>
-							</div>
-						</div>
-
-						<div class="row pool-element">
-							<div class="col-md-2">
-								<label>To Date</label><span style='color:red;'>*</span>
-							</div>
-							<div class='prTabTd col-md-4'>
-								<input type="date" id="exampleInput" class="form-control"
-									name="toDate" ng-model="toDate.value"
-									min="{{toDate.currentDate | date: 'yyyy-MM-dd'}}"
-									placeholder="yyyy-MM-dd" required /> <span class="error"
-									ng-show="!postRideForm.toDate.$valid"> Not a valid date!
-								</span>
-							</div>
-						</div>
-						<div class="row pool-element">
-							<div class="col-md-2">
-								<label>Start Time</label><span style='color:red;'>*</span>
-							</div>
-							<div class='prTabTd col-md-4'>
-								<input type="time" id="exampleInput" class="form-control"
-									name="startTime" ng-model="startTime.value" required />
-							</div>
-						</div>
-						<div class="row pool-element">
-							<div class="col-md-2">
-								<label>Return Time</label><span style='color:red;'>*</span>
-							</div>
-							<div class='prTabTd col-md-4'>
-								<input type="time" id="exampleInput" class="form-control"
-									name="endTime" ng-model="endTime.value" required />
-							</div>
-						</div>
-						<div class="row pool-element">
-							<div class="col-md-4 col-md-offset-2">
-								<button class="postARideAddBtn btn btn-primary"
-									ng-click="fnAddPostRide()">Add</button>
-							</div>
-						</div>
-					</div>
-				</form>
+					</form>
+				</div>
 				<table class="grid">
 					<tr data-ng-if="parentIdData.length > 0">
 						<th style="width: 30px;"></th>
@@ -149,22 +185,23 @@ h3 {
 									class="btn btn-primary btn-xs" id="gridButton{{key}}"
 									ng-click="showChildData(key)" style="width: 30px">+</button> <input
 								type="checkbox" style="position: relative; left: 5px;"
-								ng-model="selectedParent[$index]" ng-disabled="disablePastDates(value.fromDate)" ng-checked="selectedParent[$index]"/></td>
+								ng-model="selectedParent[$index]"
+								ng-disabled="disablePastDates(value.fromDate)"
+								ng-checked="selectedParent[$index]" /></td>
 							<td>{{getSeatsOrVechicleName(value.vehicleType,'name')}}</td>
-							<td>
-									  <span ng-switch="value.vehicleType" class="spanCls">
-											<span ng-switch-when="2"> <input type="number"
-												name="input" ng-model="value.totalNoOfSeats" min="1" max="{{getSeatsOrVechicleName(2,'seats')}}"
-												value='1' ng-readonly="true"
-												ng-disabled="!selectedParent[$index]"
-												ng-class="{'txtdisabled': !selectedParent[$index]}">
-										</span> <span ng-switch-when="4"> <input type="number"
-												name="input" ng-model="value.totalNoOfSeats" min="1" max="{{getSeatsOrVechicleName(4,'seats')}}"
-												ng-disabled="!selectedParent[$index]"
-												ng-class="{'txtdisabled': !selectedParent[$index]}" required>
-										</span>
-									</span>
-							</td>
+							<td><span ng-switch="value.vehicleType" class="spanCls">
+									<span ng-switch-when="2"> <input type="number"
+										name="input" ng-model="value.totalNoOfSeats" min="1"
+										max="{{getSeatsOrVechicleName(2,'seats')}}" value='1'
+										ng-readonly="true" ng-disabled="!selectedParent[$index]"
+										ng-class="{'txtdisabled': !selectedParent[$index]}">
+								</span> <span ng-switch-when="4"> <input type="number"
+										name="input" ng-model="value.totalNoOfSeats" min="1"
+										max="{{getSeatsOrVechicleName(4,'seats')}}"
+										ng-disabled="!selectedParent[$index]"
+										ng-class="{'txtdisabled': !selectedParent[$index]}" required>
+								</span>
+							</span></td>
 							<td>{{value.fromDate}}</td>
 							<td>{{value.toDate}}</td>
 							<td><input type="time" ng-model="value.startTime"
@@ -189,16 +226,19 @@ h3 {
 							ng-show="show{{key}}">
 							<td style="width: 40px"><input type="checkbox"
 								style="position: relative; left: 21px;"
-								ng-model="selectedchild[$index]" ng-disabled="disablePastDates(x.fromDate)" ng-checked="selectedchild[$index]"/></td>
+								ng-model="selectedchild[$index]"
+								ng-disabled="disablePastDates(x.fromDate)"
+								ng-checked="selectedchild[$index]" /></td>
 							<td>{{getSeatsOrVechicleName(value.vehicleType,'name')}}</td>
 							<td><span ng-switch="x.vehicleType" class="spanCls">
 									<span ng-switch-when="2"> <input type="number"
-										name="input" ng-model="x.totalNoOfSeats" min="1" max="{{getSeatsOrVechicleName(2,'seats')}}"
-										value='1' ng-readonly="true"
-										ng-disabled="!selectedchild[$index]"
+										name="input" ng-model="x.totalNoOfSeats" min="1"
+										max="{{getSeatsOrVechicleName(2,'seats')}}" value='1'
+										ng-readonly="true" ng-disabled="!selectedchild[$index]"
 										ng-class="{'txtdisabled': !selectedchild[$index]}">
 								</span> <span ng-switch-when="4"> <input type="number"
-										name="input" ng-model="x.totalNoOfSeats" min="1" max="{{getSeatsOrVechicleName(2,'seats')}}"
+										name="input" ng-model="x.totalNoOfSeats" min="1"
+										max="{{getSeatsOrVechicleName(2,'seats')}}"
 										ng-disabled="!selectedchild[$index]"
 										ng-class="{'txtdisabled': !selectedchild[$index]}" required>
 								</span>
@@ -253,8 +293,7 @@ h3 {
 								<div class="success" ng-if="successMessage!='';">{{successMessage}}</div>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-info"
-									data-dismiss="modal">Ok</button>
+								<button type="button" class="btn btn-info" data-dismiss="modal">Ok</button>
 							</div>
 						</div>
 					</div>
@@ -292,6 +331,28 @@ h3 {
 							<div class="modal-footer">
 								<button type="button" class="btn btn-info"
 									ng-click="cancelModelPopUp();">Ok</button>
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Close</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="modal fade" id="postARideFormModalSuccess" role="dialog">
+					<div class="modal-dialog">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title" style="color: green;">Success</h4>
+							</div>
+							<div class="modal-body">
+								<p id="alertMsgSucc"></p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-info"
+									ng-click="cancelModelPopUpSucc();">Ok</button>
 								<button type="button" class="btn btn-default"
 									data-dismiss="modal">Close</button>
 							</div>

@@ -452,13 +452,18 @@ carpoolRegApp
 						$scope.readVehicleTypeNamesVar = response;
 					};
 
+					
 					$scope.fromDate = {
-						value : new Date(),
-						currentDate : new Date()
+						/*	value : new Date(),
+						currentDate : new Date() */
+						value : new Date(new Date().getTime() + 24 * 60 * 60 * 1000),   //tomorrow date
+						currentDate : new Date(new Date().getTime() + 24 * 60 * 60 * 1000)   //tomorrow date
 					};
 					$scope.toDate = {
-						value : new Date(),
-						currentDate : new Date()
+					/*	value : new Date(),
+						currentDate : new Date() */
+					value : new Date(new Date().getTime() + 24 * 60 * 60 * 1000),     //tomorrow date
+					currentDate : new Date(new Date().getTime() + 24 * 60 * 60 * 1000) //tomorrow date
 					};
 
 					$scope.startTime = {
@@ -522,9 +527,11 @@ carpoolRegApp
 									});
 
 					$scope.names = [ 'Two-Wheller', 'Four-Wheller' ];
-					$scope.seats = function(vType) {
-						check.checkVehicle(vType);
-					}
+//					$scope.seats = function(vType) {
+//						try{
+//							check.checkVehicle(vType);
+//						} catch(e){}
+//					}
 
 					$scope.getAvailablePools = function() {
 						carpoolService
@@ -662,12 +669,12 @@ carpoolRegApp
 										$scope.message = response.errorMessage
 									} else {
 										setTimeout(function() {
-											$('#postARideFormModal').modal(
+											$('#postARideFormModalSuccess').modal(
 													'hide');
 										}, 1000);
-										$("#alertMsg").text(
+										$("#alertMsgSucc").text(
 												"Share a ride successfully.");
-										$('#postARideFormModal').modal('show');
+										$('#postARideFormModalSuccess').modal('show');
 										$scope.loadTableGrid(response);
 									}
 								}, function(response) {
@@ -852,6 +859,10 @@ carpoolRegApp
 						$('#postARideFormModal').modal('hide');
 					}
 
+					$scope.cancelModelPopUpSucc = function() {
+						$('#postARideFormModalSuccess').modal('hide');
+					}
+					
 					$scope.confirmDelete = function(name, item) {
 						item['startTime'] = $filter('date')(
 								new Date(item.startTime), 'h:mm a');
