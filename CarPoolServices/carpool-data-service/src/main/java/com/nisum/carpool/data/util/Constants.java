@@ -86,5 +86,6 @@ public class Constants {
 		
 		public static final String CP_MSG_APPROVE_REJECT_UPDATE_FAILURE = "Sorry !! Unable to update status";
 		public static final String CP_MSG_APPROVE_REJECT_UPDATE_SUCCESS = "Status updated successfully.";
+		public static final String CANCELING_RIDE_SUCCESS = "Cancelling ride successfully";
 }
 
