@@ -35,14 +35,14 @@
 <div ng-show="opt1">
 <table class="optRide" ng-show="!optedorNotOptedDataList.length == 0">
   <tr>
-  	<th><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" ></th>
+  	<th><input type="checkbox" ng-click="checkAll()" ></th>
     <th>Date</th>
     <th>Total Seats</th>
     <th>Opted Seats</th>
     <th>Status</th>
   </tr>
   <tr  ng-repeat = "notOptARide in optedorNotOptedDataList | orderBy : 'date'">
-  	<td ><input type="checkbox" ng-model="selectedAll" data-ng-click="optedARideFn(notOptARide)"/></td>
+  	<td ><input type="checkbox" ng-model="notoptdatamodel" data-ng-click="optedARideFn(notOptARide)"/></td>
     <td>{{notOptARide.date| date: 'yyyy-MM-dd'}}</td>
     <td>{{notOptARide.totalSeats}}</td>
     <td>{{notOptARide.optedSeats}}</td>
