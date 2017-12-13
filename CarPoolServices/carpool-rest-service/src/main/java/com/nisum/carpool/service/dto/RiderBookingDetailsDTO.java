@@ -1,10 +1,5 @@
 package com.nisum.carpool.service.dto;
 
-import java.sql.Timestamp;
-import java.util.List;
-
-import com.nisum.carpool.data.domain.CarpoolRiderDetails;
-
 public class RiderBookingDetailsDTO {
 	private String userName;
 	private String mobile;
@@ -14,9 +9,23 @@ public class RiderBookingDetailsDTO {
 	 private String location;
 	 private String  fromDate;
 	 private String statusName;
-
+	 private String ridermail;
+	 private int cpid;
 	 
-    /**
+
+    public String getRidermail() {
+		return ridermail;
+	}
+	public void setRidermail(String ridermail) {
+		this.ridermail = ridermail;
+	}
+	public int getCpid() {
+		return cpid;
+	}
+	public void setCpid(int cpid) {
+		this.cpid = cpid;
+	}
+	/**
 	 * @return the statusName
 	 */
 	public String getStatusName() {
@@ -117,6 +126,17 @@ public class RiderBookingDetailsDTO {
 		this.fromDate = fromDate;
 	}
 	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "RiderBookingDetailsDTO [userName=" + userName + ", mobile=" + mobile + ", email=" + email + ", status="
+				+ status + ", reason=" + reason + ", location=" + location + ", fromDate=" + fromDate + ", statusName="
+				+ statusName + ", ridermail=" + ridermail + ", cpid=" + cpid + "]";
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -124,19 +144,23 @@ public class RiderBookingDetailsDTO {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + cpid;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((fromDate == null) ? 0 : fromDate.hashCode());
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
 		result = prime * result + reason;
+		result = prime * result + ((ridermail == null) ? 0 : ridermail.hashCode());
 		result = prime * result + status;
 		result = prime * result + ((statusName == null) ? 0 : statusName.hashCode());
 		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		return result;
 	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -146,6 +170,8 @@ public class RiderBookingDetailsDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		RiderBookingDetailsDTO other = (RiderBookingDetailsDTO) obj;
+		if (cpid != other.cpid)
+			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -168,6 +194,11 @@ public class RiderBookingDetailsDTO {
 			return false;
 		if (reason != other.reason)
 			return false;
+		if (ridermail == null) {
+			if (other.ridermail != null)
+				return false;
+		} else if (!ridermail.equals(other.ridermail))
+			return false;
 		if (status != other.status)
 			return false;
 		if (statusName == null) {
@@ -182,15 +213,7 @@ public class RiderBookingDetailsDTO {
 			return false;
 		return true;
 	}
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "RiderBookingDetailsDTO [userName=" + userName + ", mobile=" + mobile + ", email=" + email + ", status="
-				+ status + ", reason=" + reason + ", location=" + location + ", fromDate=" + fromDate + ", statusName="
-				+ statusName + "]";
-	}
+	
 	
 	 
 
