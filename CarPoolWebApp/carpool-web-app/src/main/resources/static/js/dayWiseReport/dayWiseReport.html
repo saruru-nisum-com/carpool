@@ -10,8 +10,42 @@
 	  
 	  <div class="tab-content">
 	    <div id="approveOrReject" class="tab-pane fade in active">
-	      <h3>Approval</h3>
-	      <p>approval screen</p>
+	 
+	     	
+	     	<button class = "driverRejectBtn" name="Reject" style="position:absolute; margin-left: 667px;">Reject</button>
+	     	<button class = "driverApproveBtn"  name="Approve" data-ng-click="doApproval();" style="margin-left: 730px;" >Approve</button>
+	     
+	     <table class="approveGrid">
+			<tr>
+				<th></th>
+				<th>Name</th>
+				<th>Mobile No</th>
+				<th>Email Id</th>
+				<th>Status</th>
+				<th>Reason</th>
+			</tr>
+			<tbody  ng-repeat="(key,value) in poolsList">
+			 <tr><td colspan="6" style="text-align: left !important;">{{key}}</td></tr> 
+			     <tr  ng-repeat=" pool in value">
+                        <td><input type='checkbox' ng-hide="pool.statusName!='APPROVED' && pool.statusName!='REQUESTED'" ng-model="selectedPoolList[$index]" data-ng-click="checkedRowRiderDetails(pool);"></td>
+                        <td>{{pool.name}}</td>
+			     	    <td>{{pool.mobile}}</td>
+			     	     <td>{{pool.emailId}}</td>
+			     	    <td>{{pool.statusName}}</td>
+			     	     
+                        
+<!--                         <td data-ng-include='tempId'></td> -->
+                         <td><select  ng-if="pool.statusName=='APPROVED' || pool.statusName=='REQUESTED'" 
+                                 ng-disabled="!selectedPoolList[$index]" ng-class="{'txtdisabled': !selectedPoolList[$index]}">
+                              <option value="0">Select</option>                            
+                      <option ng-repeat="(key,value) in reasons">{{value}}</option>
+                      </select>
+                       <span ng-if="pool.statusName!='APPROVED' && pool.statusName!='REQUESTED'" ng-model="reasons[pool.reason]" ng-bind="reasons[pool.reason]"> </span>
+                        </td> 
+                    </tr>
+
+			</tbody>
+		</table>
 	    </div>
 	    <div id="dayWiseReport" class="tab-pane fade" style="padding-top: 20px;">
 	         <table class="grid" style="width:73% !important">
@@ -36,6 +70,30 @@
 	  </div>
 	</div>
 </div>
+<!-- MyShareRides model starts -->
+<div class="modal fade" id="MyShareRidesModal" role="dialog">
+					<div class="modal-dialog">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title" style="color: #f0ad4e;">Warning</h4>
+							</div>
+							<div class="modal-body">
+								<p id="alertMsg"></p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-info"
+									ng-click="cancelModelPopUp();">Ok</button> 
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Close</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<!-- MyShareRides model end -->
 <div class="modal-footer">
 <button type="button" class="btn btn-default" ng-click="closePopup();">Close</button>
 </div>

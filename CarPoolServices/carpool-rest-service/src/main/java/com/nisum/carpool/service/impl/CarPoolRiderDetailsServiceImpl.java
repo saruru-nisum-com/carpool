@@ -332,7 +332,12 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 				optedDetailsDto.setMobile(domain.getMobile());
 				optedDetailsDto.setName(user.getUserName());
 				optedDetailsDto.setReason(riderDetails.getReason());
-				optedDetailsDto.setStatus(riderDetails.getStatus());
+				Ride_Status ride_Status = Ride_Status.values()[(riderDetails.getStatus()-1)];
+				
+				
+				optedDetailsDto.setStatusName(ride_Status.toString());
+				
+				//optedDetailsDto.setStatus(riderDetails.getStatus());
 				optedDetailsDto.setCarpoolRiderDetailsId(riderDetails.getId());
 				optedDetailsDto.setFromdate(details.getFromDate());
 				optedDetailsDto.setCarpoolId(details.getId());
