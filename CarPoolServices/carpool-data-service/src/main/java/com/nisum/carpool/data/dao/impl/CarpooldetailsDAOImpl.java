@@ -156,6 +156,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	public List<Carpooldetails> getCarPoolByMailID(String email) {
 		return carpooldetailsRepository.getCarPoolsByEmail(email);
 	}
+	
 	/**
 	 * @author Manohar Dhavala : CPL005: Create Car Pools (Post a ride)
 	 * 
@@ -204,6 +205,10 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 				return Constants.CARPOOL_VALID;
 
 		}
+	}
+	
+	public List<Carpooldetails> getCarPoolByMailIDAndFutureDates(String email) {
+		return carpooldetailsRepository.getCarPoolsByEmailAndFutureDates(email,getCurrnetDate());
 	}
 
 	/**

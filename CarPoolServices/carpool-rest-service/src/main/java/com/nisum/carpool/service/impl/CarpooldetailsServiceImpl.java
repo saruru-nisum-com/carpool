@@ -178,7 +178,7 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 			logger.info("Car pool has been created succesfully");
 			try {
 				List<CarpooldetailsDto> cpdtolist = CarpooldetailsServiceUtil
-						.convertDaoTODto(carpooldetailsDAO.getCarPoolByMailID(carpooldetails.getEmailId()));
+						.convertDaoTODto(carpooldetailsDAO.getCarPoolByMailIDAndFutureDates(carpooldetails.getEmailId()));
 				ResponseEntity<List<CarpooldetailsDto>> entity = new ResponseEntity<List<CarpooldetailsDto>>(cpdtolist,
 						HttpStatus.OK);
 				return entity;
