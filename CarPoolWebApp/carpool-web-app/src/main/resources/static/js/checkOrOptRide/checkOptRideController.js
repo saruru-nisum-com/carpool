@@ -71,7 +71,7 @@ checkOrOptRideModuleApp.controller('checkOptRideController',
 		   }
 		
 		$scope.optedARideFn = function(notOptARide) {
-			alert(JSON.stringify(notOptARide)); 
+			
 			//debugger;
 			var notOptedARideVar = notOptARide;
 			//$scope.cpid = notOptedARideVar.cpid;
