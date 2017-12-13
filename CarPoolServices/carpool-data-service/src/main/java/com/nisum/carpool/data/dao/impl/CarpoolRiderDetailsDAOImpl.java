@@ -138,9 +138,10 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 	 *         cp_carpoolriderdetails db when rider cancels a ride
 	 */
 	@Override
-	public List<CarpoolRiderDetails> cancelRiderBookingdetails(List<CarpoolRiderDetails> carpoolriderdetailslist) {
+	public String cancelRiderBookingdetails(List<CarpoolRiderDetails> carpoolriderdetailslist) {
 		logger.info("carpoolriderdetailsdaoimpl:cancelling a ride");
 		
+		String status="";
 		try {
 			
 		for(CarpoolRiderDetails cprider: carpoolriderdetailslist) {
@@ -152,11 +153,11 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 		} catch(Exception e) {
 			e.printStackTrace();
 			logger.info("Canceling ride(s) failed");
-			return null;
+			return Constants.CANCELING_RIDE_FAILED;
 		}
 		
 		//returning the list of all booked rides by the rider
-		return getRiderBookingDetails(carpoolriderdetailslist.get(0).getEmailid());
+		return Constants.CANCELING_RIDE_SUCCESS;
 	}
 	
 	/**
@@ -340,6 +341,14 @@ public String cleanCarpoolRiderNotifications() {
 	public List<Carpooldetails> getCPDetailsByCPID(String emailId, Integer id) {
 		return carpooldetailsRepository.getCPDetailsByCPID(emailId, id);
 	}
+	
+	@Override
+	public CarpoolRiderDetails findRideByCPIdAndEmail(int cpid, String ridermail) {
+		// TODO Auto-generated method stub
+		logger.info("CarpoolRiderDetailsDAOImpl::findRideByCPIdAndEmail");
+		return carpoolRiderDetailsRepository.findRideByCPIdAndEmail(cpid,ridermail);
+	}
+
 
 	
 }
