@@ -22,6 +22,16 @@ app.factory('riderBookingDetailsService', function($http, $q) {
 		return deferred.promise;
 	}
 	
+	ls.cancelRide=function(data) {
+        var deferred = $q.defer();
+
+        $http.post('v1/carpool/cancelRiderBookingDetails', data).success(function(response) {
+            deferred.resolve(response);
+        }).error(function(response) {
+            deferred.reject(response);
+        })
+        return deferred.promise;
+    }
 	
 	return ls;
 

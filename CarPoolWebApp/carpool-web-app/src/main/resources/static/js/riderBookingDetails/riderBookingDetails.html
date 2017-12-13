@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-xl-12">
         <div >
-         <input type="button" value="Cancel" style="float: right;" ng-if="riderBookingList.length>0" class="btn btn-primary">
+         <input type="button" value="Cancel" style="float: right;" ng-click="cancelRide()" ng-if="riderBookingList.length>0" class="btn btn-primary">
                 </div>
             <table class="grid" border="2x">
             
@@ -35,18 +35,43 @@
                         <td>{{riderDetails.statusName}}</td>
                         
 <!--                         <td data-ng-include='tempId'></td> -->
-                         <td><select  ng-if="riderDetails.statusName=='APPROVED' || riderDetails.statusName=='REQUESTED'" 
-                                 ng-disabled="!selectedRiderDetails[$index]" ng-class="{'txtdisabled': !selectedRiderDetails[$index]}">
-                              <option value="0">Select</option>                            
-                      <option ng-repeat="(key,value) in reasons">{{value}}</option>
-                      </select>
-                       <span ng-if="riderDetails.statusName!='APPROVED' && riderDetails.statusName!='REQUESTED'" ng-model="reasons[riderDetails.reason]" ng-bind="reasons[riderDetails.reason]"> </span>
-                        </td> 
+                          <td>
+                        
+                        
+                        <select ng-show="riderDetails.statusName=='APPROVED' || riderDetails.statusName=='REQUESTED'"
+                        ng-disabled="!selectedRiderDetails[$index]" ng-class="{'txtdisabled': !selectedRiderDetails[$index]}"
+                        ng-change="changeLocation(riderDetails, selected)" ng-model="selected" ng-options="reason as reason.name for reason in reasons"></select>
+                           </td>
                     </tr>
 
                 </thead>
                 
             </table>
+            
+             <!-- share a ride validation model start -->
+				<div class="modal fade" id="cancelARideFormModal" role="dialog">
+					<div class="modal-dialog">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title" style="color: #f0ad4e;">Warning</h4>
+							</div>
+							<div class="modal-body">
+								<p id="alertMsg"></p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-info"
+									ng-click="cancelModelPopUp();">Ok</button>
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Close</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<!-- share a ride validation model end -->
             
             
         </div>

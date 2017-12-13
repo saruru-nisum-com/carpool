@@ -3,6 +3,7 @@ riderDetailsApp.controller('riderBookingDetailsController',
 	$scope.riderBookingList=[];
 	$scope.emailId = commonService.emailId;
 	$scope.reasons={};
+	$scope.selection=[];
 	console.log('in riderBookingDetailsController');
 	
 	$scope.getRiderBookingDetails = function() {
@@ -20,6 +21,37 @@ riderDetailsApp.controller('riderBookingDetailsController',
 	}
 
 	$scope.getRiderBookingDetails();
+	
+	$scope.changeLocation = function(riderDetails, selected) {
+		
+		console.log("selected name " + selected.id);
+		riderDetails.reason = selected.id;
+		console.log("riderDetails name " + riderDetails.userName + " email " + riderDetails.email + " mobile " + riderDetails.mobile);
+		$scope.selection.push(riderDetails);
+		
+		
+	}
+	
+	$scope.cancelRide = function() {
+	      
+		  riderBookingDetailsService.cancelRide(angular.toJson($scope.selection)).then(function(response) {
+			  if(response.errorCode) {
+				  $scope.message = response.errorMessage;
+				  setTimeout(function(){ $('#cancelARideFormModal').modal('hide');
+					}, 3000);
+					$("#alertMsg").text("Cancelling a ride failed.");
+					$('#cancelARideFormModal').modal('show'); 
+			  } else {
+				  console.log("selected items " + $scope.selection);
+				  setTimeout(function(){ $('#cancelARideFormModal').modal('hide');
+					}, 3000);
+					$("#alertMsg").text("Cancelled a ride successfully.");
+					$('#cancelARideFormModal').modal('show'); 
+				  $scope.riderBookingList = response;
+			  }
+		  });
+	  }
+
 	
 	
 	$scope.getReasons = function() {
