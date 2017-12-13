@@ -71,6 +71,9 @@ public class RegisterServiceImpl  implements RegisterService{
 			logger.info("RegisterServiceImpl:registerDriver ::" + rDomain.toString());
 			serviceStatusDto.setStatus(true);
 			serviceStatusDto.setMessage(Constants.MSG_RECORD_ADD);
+		}else {
+			serviceStatusDto.setStatus(false);
+			serviceStatusDto.setMessage(Constants.ERROR_MESSAGE);
 		}
 		return serviceStatusDto;
 	}

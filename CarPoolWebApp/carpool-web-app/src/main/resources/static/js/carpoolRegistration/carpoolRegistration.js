@@ -13,10 +13,6 @@ var carpoolRegApp=angular.module('carpoolRegistrationApp', ['ui.router', 'gm'])
 		url:'/myRides',
 		templateUrl:'./js/history/myRides.html',
 		controller: 'carpoolRegistrationController'
-	}).state('todaysRide',{
-		url:'/todaysRide',
-		templateUrl:'./js/todaysRide/todaysRide.html',
-		controller: 'carpoolRegistrationController'
 	}).state('faq',{
 		url:'/faq',
 		templateUrl:'./js/faq/faq.html',
