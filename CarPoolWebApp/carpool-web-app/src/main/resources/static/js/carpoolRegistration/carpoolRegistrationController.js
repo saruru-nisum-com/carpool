@@ -398,7 +398,8 @@ carpoolRegApp
 					$scope.vehicleWheelSeats = [];
 					var VwheelPbj = {
 						id : 0,
-						name : 'Select Vehicle Type'
+						name : 'Select Vehicle Type',
+					    noofseats : 0
 					}
 					var VWheelSeats = {};
 					$scope.data.push(VwheelPbj);
@@ -422,10 +423,10 @@ carpoolRegApp
 											if (vNames.id == splitVTypes[spType]) {
 												VwheelPbj = {
 													id : vNames.id,
-													name : vNames.vehicletype
+													name : vNames.vehicletype,
+													noofseats: vNames.noofseats
 												}
 												$scope.data.push(VwheelPbj);
-												debugger;
 												VWheelSeats = {
 													id : vNames.id,
 													name : vNames.noofseats
@@ -446,7 +447,7 @@ carpoolRegApp
 						} catch (e) {
 						}
 					};
-
+					
 					$scope.readVehicleTypeNames = function(response) {
 						$scope.readVehicleTypeNamesVar = response;
 					};
@@ -537,13 +538,9 @@ carpoolRegApp
 												console.log(response);
 											} else {
 												if (response.length > 0) {
-													$scope
-															.loadTableGrid(response);
+													$scope.loadTableGrid(response);
 												} else {
-													console
-															.log("No Carpools Available");
-													$scope
-													.loadTableGrid(response);
+													console.log("No Carpools Available");
 												}
 											}
 										}, function(response) {
@@ -730,7 +727,6 @@ carpoolRegApp
 							$scope.childIncrement = 0;
 							$scope.childIdData = [];
 						}
-
 						// Child Elements Toggle
 						for (var j = 0; j < $scope.parentIdDetails.length; j++) { // Dynamically
 							// creating
@@ -739,8 +735,6 @@ carpoolRegApp
 							var x = "show" + j;
 							$scope[x] = false;
 						}
-
-						console.log($scope.parentIdData);
 
 					}
 
@@ -783,14 +777,18 @@ carpoolRegApp
                     $scope.selectedchild = [];
                     
 					$scope.confirmEdit = function(item,selectedRowIndex,selectedRowType) {
-						var parseStartTime = $filter('date')(new Date(item.startTime), 'h:mm a');
-						var parseEndTime = $filter('date')(new Date(item.toTime), 'h:mm a');
-						
-						if(!$scope.validateSelectedTime(parseStartTime,parseEndTime)) 
-							return false;
-						
-						item['startTime'] = parseStartTime;
-						item['toTime'] = parseEndTime;
+						try{
+							var parseStartTime = $filter('date')(new Date(item.startTime), 'h:mm a');
+							var parseEndTime = $filter('date')(new Date(item.toTime), 'h:mm a');
+							
+							if(!$scope.validateSelectedTime(parseStartTime,parseEndTime)) 
+								return false;
+							
+							item['startTime'] = parseStartTime;
+							item['toTime'] = parseEndTime;
+						}catch(e){
+							console.log(e)
+						}
 						
 						$scope.editteditem = item;
 						$scope.selectedRowIndex = selectedRowIndex;
@@ -824,12 +822,30 @@ carpoolRegApp
 												$scope.getAvailablePools();
 											}
 											$('#editStatus').modal('show');
+											if($scope.selectedRowType == 'child'){
+												$scope.selectedchild[$scope.selectedRowIndex] = false;
+											}else{
+												$scope.selectedParent[$scope.selectedRowIndex] = false;
+											}
 										},
 										function(response) {
 											console.log(response);
 											window.alert(response.errorMessage);
 										});
 						$('#editModal').modal('hide');
+					}
+					
+					$scope.getSeatsOrVechicleName= function(id,type){
+						for(var i=0;i<$scope.data.length;i++){
+							if($scope.data[i].id == id){
+								if(type == 'seats'){
+									return $scope.data[i].noofseats;
+								}else{
+									return $scope.data[i].name;
+								}
+							}
+								
+						}
 					}
 
 					$scope.cancelModelPopUp = function() {

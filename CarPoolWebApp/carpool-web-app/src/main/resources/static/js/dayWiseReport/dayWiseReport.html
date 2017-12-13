@@ -1,13 +1,19 @@
 <link rel="stylesheet" href="css/./carpool.css">
 
-<div class="modal-header"></div>
-<div class="modal-body">
+<!--  <div class="modal-header"></div>
+<div class="modal-body">-->
+<div class = "col-md-2">
+	<div id = "leftHandMenu">
+		<div ng-include="'js/partials/leftSideMenu.html'"></div>
+       </div>
+</div>
+<div class = "col-md-8">
 	<div class="container" style="padding-top: 25px;">
-	  <ul class="nav nav-pills">
+	<a href="#mySharedRides"><span class="glyphicon glyphicon-arrow-left" style="margin-right: 8px;"></span>Back To My Shared Rides</a>
+	  <ul class="nav nav-pills" style="margin-top: 15px;">
 	    <li class="active"><a data-toggle="pill" data-target="#approveOrReject">Approval</a></li>
 	    <li><a data-toggle="pill" data-target="#dayWiseReport">Day wise Report</a></li>
 	  </ul>
-	  
 	  <div class="tab-content">
 	    <div id="approveOrReject" class="tab-pane fade in active">
 	 
@@ -94,6 +100,6 @@
 					</div>
 				</div>
 				<!-- MyShareRides model end -->
-<div class="modal-footer">
+<!-- <div class="modal-footer">
 <button type="button" class="btn btn-default" ng-click="closePopup();">Close</button>
-</div>
+</div>-->

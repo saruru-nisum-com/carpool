@@ -4,9 +4,8 @@ var mySharedRidesApp = angular.module('mySharedRidesApp', ['ui.router','ui.boots
 		url:'/mySharedRides',
 		templateUrl:'js/mySharedRides/mySharedRides.html',
 		controller: 'mySharedRidesController'
-	})
-	$stateProvider.state('dayWiseReport',{
-		parent: "mySharedRides",
+	}).state('dayWiseReport',{
+		/*parent: "mySharedRides",
 	      params: {
 	    	  parentid: 0
 	      },
@@ -15,14 +14,16 @@ var mySharedRidesApp = angular.module('mySharedRidesApp', ['ui.router','ui.boots
 	        function($modal) {
 	          $modal.open({
 	            controller: "dayWiseReportController",
-	            controllerAs: "empDetails",
 	            templateUrl: 'js/dayWiseReport/dayWiseReport.html',
 	            size: 'lg'
 	          }).result.finally(function() {
 	              $stateProvider.go('^');
 	          });
 	        }
-	      ]
+	      ]*/
+		url:'/dayWiseReport/:parentid',
+		templateUrl:'js/dayWiseReport/dayWiseReport.html',
+		controller: 'dayWiseReportController'
 	})
 	
 })	 

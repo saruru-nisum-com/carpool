@@ -28,7 +28,7 @@
 					<td>ToDate: {{myRide.toDate | dateFilter}}</td>
 				</tr>
 				<tr>
-					<td><a ui-sref="dayWiseReport({parentid: myRide.parentid})" data-ui-sref-opts="{reload:true}" data-toggle="modal" data-target="truckModal">
+					<td><a ui-sref='dayWiseReport({parentid: myRide.parentid})' data-ui-sref-opts="{reload:true}" data-toggle="modal" data-target="truckModal">
 					      <button class = "button" name="Details">Details</button></a>
 					</td>
 					<td><button class = "button" name="Cancel" ng-click="confirmCancel(myRide)">Cancel</button></td>
