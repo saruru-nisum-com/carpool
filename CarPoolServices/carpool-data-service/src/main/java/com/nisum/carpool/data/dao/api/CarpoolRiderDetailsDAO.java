@@ -19,7 +19,7 @@ public interface CarpoolRiderDetailsDAO {
 	
 	public List<CarpoolRiderDetails> getRidersByCpID(Integer poolid) ;
 	
-	public List<CarpoolRiderDetails> cancelRiderBookingdetails(List<CarpoolRiderDetails> carpoolriderdetailslist);
+	public String cancelRiderBookingdetails(List<CarpoolRiderDetails> carpoolriderdetailslist);
 	
 	public List<CarpoolRiderNotifications> findRidersToNotifyByCPId(int cpid);
 	
@@ -53,5 +53,7 @@ public interface CarpoolRiderDetailsDAO {
 
 //	public CarpoolRiderDetails saveOptedRiderDetails(CarpoolRiderDetails carpoolRiderDetails);
 	public List<CarpoolRiderDetails> saveOptedRiderDetails(List<CarpoolRiderDetails> carpoolRiderDetails);
+	
+	public CarpoolRiderDetails findRideByCPIdAndEmail(int cpid, String ridermail);
 	
 }
