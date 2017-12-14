@@ -39,6 +39,6 @@ public interface CarpoolRiderDetailsService {
 	Map<String, List<CarpoolRiderOptedDetailsDto>> findCarpoolRiderDetailsByParentId(int parentid);
 	
 	ServiceStatusDto cleanCarpoolRiderNotifications();
-	List<RiderBookingDetailsDTO> getRiderBookingHistory(String email, RiderBookingDetailsDTO historyDTO)
+	List<RiderBookingDetailsDTO> getRiderBookingHistory(String email, RiderBookingDetailsDTO riderHistoryDTO)
 			throws Exception;
 }

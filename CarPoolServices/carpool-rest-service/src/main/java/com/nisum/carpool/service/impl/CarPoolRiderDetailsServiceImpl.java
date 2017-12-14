@@ -41,7 +41,6 @@ import com.nisum.carpool.util.CarpoolRiderDetailsServiceUtil;
 import com.nisum.carpool.util.Constants;
 import com.nisum.carpool.util.GenericMailTemplate;
 
-
 @Service
 public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsService {
 
@@ -60,7 +59,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 
 	@Autowired
 	CarpoolRiderDetailsDAO carpoolRiderDetailsDAO;
-	
+
 	@Autowired
 	CarpooldetailsService carpooldetailsservice;
 
@@ -110,13 +109,10 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 			List<CarpoolRiderDetails> carpoolRiderLists = (List<CarpoolRiderDetails>) carpoolRiderDetailsDAO
 					.getRiderBookingDetails(emailId);
 
-			
 			if (carpoolRiderLists != null) {
 				for (CarpoolRiderDetails car : carpoolRiderLists) {
 
 					int cpid = car.getCpid();
-
-					
 
 					List<Carpooldetails> carpoolList = carpooldetailsDAO.getCarPoolByCpIDandDate(cpid, date);
 
@@ -124,7 +120,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 
 						RiderBookingDetailsDTO carpoolRiderdetailsDto = new RiderBookingDetailsDTO();
 						emailid = carPool.getEmailId();
-						
+
 						carpoolRiderdetailsDto.setEmail(emailid);
 
 						carpoolRiderdetailsDto.setLocation(carPool.getLocation());
@@ -154,13 +150,12 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 
 						carpoolRiderdetailsDto.setStatusName(ride_Status.toString());
 						System.out.println(ride_Status.toString());
-						
+
 						carpoolRiderdetailsDto.setCpid(cpid);
 						carpoolRiderdetailsDto.setRidermail(emailId);
-						
 
 						carpoolRiderdetailsDto.setStatus(car.getStatus());
-						//carpoolRiderdetailsDto.setLocation(car.getLocation());
+						// carpoolRiderdetailsDto.setLocation(car.getLocation());
 						riderBookingdetailsDtoList.add(carpoolRiderdetailsDto);
 
 					}
@@ -177,8 +172,11 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 
 	/*
 	 * @author: Rajesh Sekhamuri (non-Javadoc)
+	 * 
 	 * @param List<RiderStatusDTO>
+	 * 
 	 * @return Boolean isRiderUpdated, isMailSent
+	 * 
 	 * @see
 	 * com.nisum.carpool.service.api.CarpoolRiderDetailsService#updateRiderStatus(
 	 * java.util.List)
@@ -189,34 +187,35 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 		Boolean isRiderUpdated = false;
 		Boolean isMailSent = false;
 		List riderStatusListObj = null;
-		logger.info("Start of updateRiderStatus() method in CarPoolRiderDetailsServiceImpl"); 
+		logger.info("Start of updateRiderStatus() method in CarPoolRiderDetailsServiceImpl");
 		riderStatusListObj = riderStatusDtoListObj;
 		int riderObjSize = riderStatusListObj.size();
-		logger.debug("Input Rider Status object list size "+riderObjSize);
+		logger.debug("Input Rider Status object list size " + riderObjSize);
 		for (int riderVar = 0; riderVar <= riderObjSize - 1; riderVar++) {
 			RiderStatusDTO riderStatusObj = (RiderStatusDTO) riderStatusListObj.get(riderVar); // Downcast into
-			logger.debug("Each rider object "+riderStatusObj);
+			logger.debug("Each rider object " + riderStatusObj);
 			System.out.println("Real object " + riderStatusObj);
 			CarpoolRiderDetails carpoolRiderDaoObj = CarpoolRiderDetailsServiceUtil
 					.convertRiderStatusDtoToDao(riderStatusObj);
-			logger.debug("Convert DTO to DAO Object  " + carpoolRiderDaoObj.getId() + " " + carpoolRiderDaoObj.getEmailid());
+			logger.debug(
+					"Convert DTO to DAO Object  " + carpoolRiderDaoObj.getId() + " " + carpoolRiderDaoObj.getEmailid());
 			Integer riderStatusCount = 0; //
 			riderStatusCount = carpoolRiderdetailsDAO.updateRiderStatus(carpoolRiderDaoObj);
-			logger.debug("Rider Status updated "+riderStatusCount);
+			logger.debug("Rider Status updated " + riderStatusCount);
 			if (riderStatusCount > 0) { // If rider status record updated into db, should send mail to rider
 				// Email send code start
 				logger.debug("Email send implementation starts **** " + riderStatusCount);
 				int id = riderStatusObj.getCpid();
 				String emailId = riderStatusObj.getRiderEmailId() != "" ? riderStatusObj.getRiderEmailId() : "";
-				if(emailId.equals("") || emailId == null ) {
-					logger.debug("Invalid email id "+emailId);
+				if (emailId.equals("") || emailId == null) {
+					logger.debug("Invalid email id " + emailId);
 					return isRiderUpdated;
 				}
 				List<Carpooldetails> cpDetailsListObj = carpoolRiderdetailsDAO.getCPDetailsByCPID(emailId, id);
 				logger.debug("Get basic ride details from carpooldetails " + cpDetailsListObj.size());
 				for (int cpDetVar = 0; cpDetVar < cpDetailsListObj.size(); cpDetVar++) {
 					Carpooldetails cpDetObject = cpDetailsListObj.get(cpDetVar);
-					GenericEmailDto genericEmailDTOObj = new GenericEmailDto(); 
+					GenericEmailDto genericEmailDTOObj = new GenericEmailDto();
 					genericEmailDTOObj.setUserName(riderStatusObj.getRiderName());
 					genericEmailDTOObj.setLocation(cpDetObject.getLocation());
 					genericEmailDTOObj.setStatus(carpoolRiderDaoObj.getStatus());
@@ -224,7 +223,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 					genericEmailDTOObj.setStartTime(cpDetObject.getFromtime());
 					genericEmailDTOObj.setReturnTime(cpDetObject.getToTime());
 					SimpleDateFormat sDateFormateObj = new SimpleDateFormat("dd/mm/yyyy");
-					Timestamp timestampObj =riderStatusObj.getCurrentDate();
+					Timestamp timestampObj = riderStatusObj.getCurrentDate();
 					Date dateObj = new Date(timestampObj.getTime());
 					String currentDateStrObj = sDateFormateObj.format(dateObj);
 					genericEmailDTOObj.setDate(currentDateStrObj);
@@ -232,17 +231,17 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 					mailObj.put(emailId, genericEmailDTOObj);
 					isMailSent = genericMailTemplateObj.sendGenericMail("", mailObj);
 					logger.debug("Mail send successfully? " + isMailSent);
-					logger.info("End of updateRiderStatus() method in CarPoolRiderDetailsServiceImpl"); 
+					logger.info("End of updateRiderStatus() method in CarPoolRiderDetailsServiceImpl");
 					return isMailSent;
 				}
 
 			} else {
 				logger.debug("Unable to update carpool rider status into db ");
-				logger.info("End of updateRiderStatus() method in CarPoolRiderDetailsServiceImpl"); 
+				logger.info("End of updateRiderStatus() method in CarPoolRiderDetailsServiceImpl");
 				return isRiderUpdated;
 			}
 		}
-		logger.info("End of updateRiderStatus() method in CarPoolRiderDetailsServiceImpl"); 
+		logger.info("End of updateRiderStatus() method in CarPoolRiderDetailsServiceImpl");
 		return isMailSent;
 	}
 
@@ -255,32 +254,29 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 	@Override
 	public ResponseEntity<?> cancelRiderBookingdetails(List<RiderBookingDetailsDTO> rides) {
 		logger.info("carpoolriderdetailsserviceimpl:cancelling a ride");
-		
-		Map<String,GenericEmailDto> riderMap = new HashMap<String, GenericEmailDto>();
-		Map<String,GenericEmailDto> driverMap = new HashMap<String, GenericEmailDto>();
-		
+
+		Map<String, GenericEmailDto> riderMap = new HashMap<String, GenericEmailDto>();
+		Map<String, GenericEmailDto> driverMap = new HashMap<String, GenericEmailDto>();
+
 		List<CarpoolRiderDetails> carpoolriderdetailslist = new ArrayList<CarpoolRiderDetails>();
-		
-		for(RiderBookingDetailsDTO ride:rides) {
-			
+
+		for (RiderBookingDetailsDTO ride : rides) {
+
 			int cpid = ride.getCpid();
 			String ridermail = ride.getRidermail();
-			
+
 			CarpoolRiderDetails crd = carpoolRiderdetailsDAO.findRideByCPIdAndEmail(cpid, ridermail);
 			logger.info("cprider from table " + crd);
 			carpoolriderdetailslist.add(crd);
 		}
 
-		
-		String msg = carpoolRiderDetailsDAO
-			.cancelRiderBookingdetails(carpoolriderdetailslist);
-		
+		String msg = carpoolRiderDetailsDAO.cancelRiderBookingdetails(carpoolriderdetailslist);
+
 		String riderEmail = "";
 		String driverEmail = "";
-		
-			
+
 		if (msg.equals(Constants.CANCELING_RIDE_FAILED)) {
-			
+
 			logger.info("carpoolriderdetailsrestservice:Canceling ride failed");
 			ServiceStatusDto statusDto = new ServiceStatusDto();
 			statusDto.setStatus(false);
@@ -288,19 +284,18 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 			ResponseEntity<ServiceStatusDto> entity = new ResponseEntity<ServiceStatusDto>(statusDto,
 					HttpStatus.BAD_REQUEST);
 			return entity;
-			
+
 		}
-			
 
 		else
 
 		{
 			logger.info("carpoolriderdetailsserviceimpl: carpool list is not null");
-			
+
 			for (CarpoolRiderDetails cprider : carpoolriderdetailslist) {
-				
+
 				logger.info("updating car pool status");
-				
+
 				try {
 					carpooldetailsservice.UpdatecarpoolStatus(cprider.getCpid());
 				} catch (CarpooldetailsServiceException e1) {
@@ -308,149 +303,146 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 					logger.info("error updating pool status");
 					logger.info(e1.getMessage());
 				}
-					
-				//end
 
-				//sending mail to other notified riders
-				
+				// end
+
+				// sending mail to other notified riders
+
 				List<CarpoolRiderNotifications> cpridernotifications = null;
-				
+
 				try {
-				cpridernotifications = carpoolRiderDetailsDAO
-						.findRidersToNotifyByCPId(cprider.getCpid());
-				
-				} catch(Exception e) {
-					
+					cpridernotifications = carpoolRiderDetailsDAO.findRidersToNotifyByCPId(cprider.getCpid());
+
+				} catch (Exception e) {
+
 					logger.info("Error finding riders to notify in cp_carpoolnotifications table");
 					logger.info(e.getMessage());
-					
+
 				}
-				
+
 				logger.info("cpid " + cprider.getCpid());
 				for (CarpoolRiderNotifications cpridernotify : cpridernotifications) {
 					GenericEmailDto gmaildto = new GenericEmailDto();
-					
+
 					logger.info("cpridernotifications not null");
 					if (!cpridernotify.isNotified()) {
 						logger.info("cp rider notify value is 0");
 						riderEmail = cpridernotify.getEmailid();
-						
+
 						Carpooldetails cpd = null;
-						
+
 						try {
-						cpd = carpooldetailsDAO.getCarpoolByPoolID(cprider.getCpid());
-						
-						} catch(Exception e) {
+							cpd = carpooldetailsDAO.getCarpoolByPoolID(cprider.getCpid());
+
+						} catch (Exception e) {
 							logger.info("Error finding carpool in cp_carpooldetails table");
 							logger.info(e.getMessage());
 						}
-								
-						if(cpd!=null) {
-						gmaildto.setDate(cpd.getFromDate());
-						gmaildto.setLocation(cpd.getLocation());
-						gmaildto.setStartTime(cpd.getFromtime());
-						gmaildto.setReturnTime(cpd.getToTime());
-						gmaildto.setStatus(Ride_Status.CANCELLED.getValue());
-						gmaildto.setRemarks(Reject_Reason.values()[cprider.getReason()].toString());
-						gmaildto.setUserName(userDAO.findByEmailId(riderEmail).getUserName());
-						
-						gmaildto.setIsRider(0);
-						gmaildto.setNotifyMe(true);
-						riderMap.put(riderEmail, gmaildto);
-						
-						//setting notify status to true so the rider wont recieve notification 
-						//again when another rider cancels a ride
-						logger.info("setting notify");
-						cpridernotify.setNotified(true);
-						logger.info("cpridernotify " + cpridernotify.getEmailid() + " " + cpridernotify.getCpid() + " " + cpridernotify.getId() + cpridernotify.isNotified());
-						carpoolRiderDetailsDAO.updatecpridernotifications(cpridernotify);
-						
-						}
-					}
-					
-				}
-				
-				//end
-						
-						Carpooldetails cpd = null;
-						logger.info("sending mail to driver");
-						try {
-						driverEmail = carpooldetailsDAO.getDriverEmailByCPId(cprider.getCpid());
-						
-						} catch(Exception e) {
-							logger.info("Error finding driver email in cp_carpooldetails table");
-							logger.info(e.getMessage());
-						}
- 						logger.info("driver mail" + driverEmail);
- 						try {
-						cpd = carpooldetailsDAO.getCarpoolByPoolID(cprider.getCpid());
- 						} catch(Exception e) {
- 							logger.info("Error finding carpool in cp_carpooldetails table");
-							logger.info(e.getMessage());
- 						}
- 						
- 						if(cpd!=null) {
- 						
-						GenericEmailDto gmaildto = new GenericEmailDto();
-						
-						
-						gmaildto.setDate(cpd.getFromDate());
-						gmaildto.setLocation(cpd.getLocation());
-						gmaildto.setStartTime(cpd.getFromtime());
-						gmaildto.setReturnTime(cpd.getToTime());
-						gmaildto.setStatus(Ride_Status.CANCELLED.getValue());
-						
-						User userRider = null;
-						User userDriver = null;
-						
-						try {
-							
-							userRider = userDAO.findByEmailId(carpoolriderdetailslist.get(0).getEmailid());
-							
-						} catch(Exception e) {
-							logger.info("Error finding user details in user table");
-							logger.info(e.getMessage());
-						}
-						
-						
-						if(userRider!=null)
-						gmaildto.setRiderUserName(userRider.getUserName());
-						gmaildto.setRemarks(Reject_Reason.values()[cprider.getReason()].toString());
-						
-						try {
-							
-							userDriver = userDAO.findByEmailId(driverEmail);
-							
-						} catch(Exception e) {
-							
-							logger.info("Error finding user details in user table");
-							logger.info(e.getMessage());
-						}
-						
-						
-						if(userDriver!=null)
-						gmaildto.setUserName(userDriver.getUserName());
-						gmaildto.setNotifyMe(false);
-						gmaildto.setIsRider(1); 
-						
-						logger.info("gmail dto " + gmaildto.toString());
-						
-						driverMap.put(driverEmail, gmaildto);
-						
-						//end
-						
- 						}
 
+						if (cpd != null) {
+							gmaildto.setDate(cpd.getFromDate());
+							gmaildto.setLocation(cpd.getLocation());
+							gmaildto.setStartTime(cpd.getFromtime());
+							gmaildto.setReturnTime(cpd.getToTime());
+							gmaildto.setStatus(Ride_Status.CANCELLED.getValue());
+							gmaildto.setRemarks(Reject_Reason.values()[cprider.getReason()].toString());
+							gmaildto.setUserName(userDAO.findByEmailId(riderEmail).getUserName());
+
+							gmaildto.setIsRider(0);
+							gmaildto.setNotifyMe(true);
+							riderMap.put(riderEmail, gmaildto);
+
+							// setting notify status to true so the rider wont recieve notification
+							// again when another rider cancels a ride
+							logger.info("setting notify");
+							cpridernotify.setNotified(true);
+							logger.info("cpridernotify " + cpridernotify.getEmailid() + " " + cpridernotify.getCpid()
+									+ " " + cpridernotify.getId() + cpridernotify.isNotified());
+							carpoolRiderDetailsDAO.updatecpridernotifications(cpridernotify);
+
+						}
 					}
-						
+
 				}
+
+				// end
+
+				Carpooldetails cpd = null;
+				logger.info("sending mail to driver");
+				try {
+					driverEmail = carpooldetailsDAO.getDriverEmailByCPId(cprider.getCpid());
+
+				} catch (Exception e) {
+					logger.info("Error finding driver email in cp_carpooldetails table");
+					logger.info(e.getMessage());
+				}
+				logger.info("driver mail" + driverEmail);
+				try {
+					cpd = carpooldetailsDAO.getCarpoolByPoolID(cprider.getCpid());
+				} catch (Exception e) {
+					logger.info("Error finding carpool in cp_carpooldetails table");
+					logger.info(e.getMessage());
+				}
+
+				if (cpd != null) {
+
+					GenericEmailDto gmaildto = new GenericEmailDto();
+
+					gmaildto.setDate(cpd.getFromDate());
+					gmaildto.setLocation(cpd.getLocation());
+					gmaildto.setStartTime(cpd.getFromtime());
+					gmaildto.setReturnTime(cpd.getToTime());
+					gmaildto.setStatus(Ride_Status.CANCELLED.getValue());
+
+					User userRider = null;
+					User userDriver = null;
+
+					try {
+
+						userRider = userDAO.findByEmailId(carpoolriderdetailslist.get(0).getEmailid());
+
+					} catch (Exception e) {
+						logger.info("Error finding user details in user table");
+						logger.info(e.getMessage());
+					}
+
+					if (userRider != null)
+						gmaildto.setRiderUserName(userRider.getUserName());
+					gmaildto.setRemarks(Reject_Reason.values()[cprider.getReason()].toString());
+
+					try {
+
+						userDriver = userDAO.findByEmailId(driverEmail);
+
+					} catch (Exception e) {
+
+						logger.info("Error finding user details in user table");
+						logger.info(e.getMessage());
+					}
+
+					if (userDriver != null)
+						gmaildto.setUserName(userDriver.getUserName());
+					gmaildto.setNotifyMe(false);
+					gmaildto.setIsRider(1);
+
+					logger.info("gmail dto " + gmaildto.toString());
+
+					driverMap.put(driverEmail, gmaildto);
+
+					// end
+
+				}
+
+			}
+
+		}
 		logger.info("mail sender");
 		try {
-			if(riderEmail!=null && !riderEmail.equals(""))
-			genericMailTemplateObj.sendGenericMail("mdhavala@nisum.com", riderMap);
-			if(driverEmail!=null && !driverEmail.equals(""))
-			genericMailTemplateObj.sendGenericMail("mdhavala@nisum.com", driverMap);
-		} catch(Exception e) {
+			if (riderEmail != null && !riderEmail.equals(""))
+				genericMailTemplateObj.sendGenericMail("mdhavala@nisum.com", riderMap);
+			if (driverEmail != null && !driverEmail.equals(""))
+				genericMailTemplateObj.sendGenericMail("mdhavala@nisum.com", driverMap);
+		} catch (Exception e) {
 			logger.info(e.getMessage());
 			ServiceStatusDto statusDto = new ServiceStatusDto();
 			statusDto.setStatus(false);
@@ -459,14 +451,14 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 					HttpStatus.BAD_REQUEST);
 			return entity;
 		}
-		
+
 		List<RiderBookingDetailsDTO> rbdlist = getRiderBookingDetails(carpoolriderdetailslist.get(0).getEmailid());
 
 		logger.info("carpoolriderdetailsrestservice:Successfully cancelled a ride");
-		ResponseEntity<List<RiderBookingDetailsDTO>> entity = new ResponseEntity<List<RiderBookingDetailsDTO>>(
-				rbdlist, HttpStatus.OK);
+		ResponseEntity<List<RiderBookingDetailsDTO>> entity = new ResponseEntity<List<RiderBookingDetailsDTO>>(rbdlist,
+				HttpStatus.OK);
 		return entity;
-		
+
 	}
 
 	/**
@@ -483,7 +475,8 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 		if (ObjectUtils.anyNotNull(updaterewardPointsWithId)) {
 			serviceStatusDto.setStatus(true);
 			serviceStatusDto.setMessage(updaterewardPointsWithId);
-			logger.info("CLOSED :: CarPoolRiderDetailsServiceImpl : addRewards : To Rider : "+serviceStatusDto.getMessage());
+			logger.info("CLOSED :: CarPoolRiderDetailsServiceImpl : addRewards : To Rider : "
+					+ serviceStatusDto.getMessage());
 		}
 		return serviceStatusDto;
 	}
@@ -492,14 +485,14 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 	public Map<String, List<CarpoolRiderOptedDetailsDto>> findCarpoolRiderDetailsByParentId(int parentid) {
 
 		List<Carpooldetails> carpooldetails = carpooldetailsDAO.findCarpoolDetailsByParentId(parentid);
-		System.out.println("list if carpool details by parent id"+carpooldetails);
+		System.out.println("list if carpool details by parent id" + carpooldetails);
 		List<CarpoolRiderOptedDetailsDto> riderOptedDetailsDto = new ArrayList<>();
 		for (Carpooldetails details : carpooldetails) {
 			System.out.println(details.getParentid());
 			List<CarpoolRiderDetails> carpoolRiderDetails = carpoolRiderDetailsDAO
 					.findCarpoolRiderDetailsByCPId(details.getParentid());
-			
-			System.out.println("carpool rider details by parentId:"+carpoolRiderDetails);
+
+			System.out.println("carpool rider details by parentId:" + carpoolRiderDetails);
 			for (CarpoolRiderDetails riderDetails : carpoolRiderDetails) {
 				CarpoolRiderOptedDetailsDto optedDetailsDto = new CarpoolRiderOptedDetailsDto();
 				RegisterDomain domain = registerDAO.findByemailId(riderDetails.getEmailid());
@@ -508,12 +501,11 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 				optedDetailsDto.setMobile(domain.getMobile());
 				optedDetailsDto.setName(user.getUserName());
 				optedDetailsDto.setReason(riderDetails.getReason());
-				Ride_Status ride_Status = Ride_Status.values()[(riderDetails.getStatus()-1)];
-				
-				
+				Ride_Status ride_Status = Ride_Status.values()[(riderDetails.getStatus() - 1)];
+
 				optedDetailsDto.setStatusName(ride_Status.toString());
-				
-				//optedDetailsDto.setStatus(riderDetails.getStatus());
+
+				// optedDetailsDto.setStatus(riderDetails.getStatus());
 				optedDetailsDto.setCarpoolRiderDetailsId(riderDetails.getId());
 				optedDetailsDto.setFromdate(details.getFromDate());
 				optedDetailsDto.setCarpoolId(details.getId());
@@ -534,36 +526,36 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 		// TODO Auto-generated method stub
 		logger.info("BEGIN :: CarPoolRiderDetailsServiceImpl : cleanCarpoolRiderNotifications");
 		ServiceStatusDto statusDto = new ServiceStatusDto();
-			String carpoolRiderNotifications = carpoolRiderDetailsDAO.cleanCarpoolRiderNotifications();
-			if(ObjectUtils.anyNotNull(carpoolRiderNotifications)) {
-				statusDto.setMessage(carpoolRiderNotifications);
-				statusDto.setStatus(true);
-				logger.info("CLOSED :: CarPoolRiderDetailsServiceImpl : cleanCarpoolRiderNotifications : status : "+statusDto.getMessage());
-			}
-			return statusDto;
+		String carpoolRiderNotifications = carpoolRiderDetailsDAO.cleanCarpoolRiderNotifications();
+		if (ObjectUtils.anyNotNull(carpoolRiderNotifications)) {
+			statusDto.setMessage(carpoolRiderNotifications);
+			statusDto.setStatus(true);
+			logger.info("CLOSED :: CarPoolRiderDetailsServiceImpl : cleanCarpoolRiderNotifications : status : "
+					+ statusDto.getMessage());
+		}
+		return statusDto;
 	}
 
 	@Override
 	public List<CarpoolRiderDetails> saveOptedRiderDetails(List<CarpoolRiderDetailsDTO> carpoolRiderDetailsDTO) {
 
+		List<CarpoolRiderDetails> saveOptedRiderDetails = null;
 
-       List<CarpoolRiderDetails> saveOptedRiderDetails=null;
-		
-		List<CarpoolRiderDetails> carpoolRiderDetails=CarpoolRiderDetailsServiceUtil.convertOptedRiderDtoToDao(carpoolRiderDetailsDTO);
+		List<CarpoolRiderDetails> carpoolRiderDetails = CarpoolRiderDetailsServiceUtil
+				.convertOptedRiderDtoToDao(carpoolRiderDetailsDTO);
 
-//The list of carpoolRiderDetails save in to db
-		try
-		{
-		logger.info("CarPoolRiderDetailsServiceImpl::saveOptedRiderDetails");
-		
-		if(carpoolRiderDetails != null && carpoolRiderDetails.size() !=0)
-		
-          saveOptedRiderDetails = carpoolRiderdetailsDAO.saveOptedRiderDetails(carpoolRiderDetails);
+		// The list of carpoolRiderDetails save in to db
+		try {
+			logger.info("CarPoolRiderDetailsServiceImpl::saveOptedRiderDetails");
+
+			if (carpoolRiderDetails != null && carpoolRiderDetails.size() != 0)
+
+				saveOptedRiderDetails = carpoolRiderdetailsDAO.saveOptedRiderDetails(carpoolRiderDetails);
+		} catch (Exception e) {
 		}
-		catch (Exception e) {
-		}
-	  return saveOptedRiderDetails;
+		return saveOptedRiderDetails;
 	}
+
 	/**
 	 * @author Simhadri Naidu Guntreddi
 	 * 
@@ -572,37 +564,36 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 	 */
 
 	@Override
-	public List<RiderBookingDetailsDTO> getRiderBookingHistory(String email,
-			RiderBookingDetailsDTO historyDTO) throws Exception {
+	public List<RiderBookingDetailsDTO> getRiderBookingHistory(String email, RiderBookingDetailsDTO riderHistoryDTO)
+			throws Exception {
+		logger.info("BEGIN :: CarPoolRiderDetailsServiceImpl : myRiderDetailsHistory");
 
-		List<RiderBookingDetailsDTO> historyDTOList = new ArrayList<>();
+		List<RiderBookingDetailsDTO> riderBookingDetailsDtoList = new ArrayList<>();
 		List<CarpoolRiderDetails> carpoolRiderDetailsList = carpoolRiderDetailsDAO.getRiderBookingDetails(email);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String date = sdf.format(new Date());
 		Date today = sdf.parse(date);
-		
-		
+		List<RiderBookingDetailsDTO> riderBookingDetailsDtoList1 = new ArrayList<>();
+
 		for (CarpoolRiderDetails carpoolRiderDetails : carpoolRiderDetailsList) {
 			RiderBookingDetailsDTO riderBookingDetailsHistoryDTO = new RiderBookingDetailsDTO();
 			Carpooldetails carpooldetails = carpooldetailsDAO.getCarpoolByPoolID(carpoolRiderDetails.getCpid());
 			if (carpooldetails != null) {
-			//	Date fromDate = sdf.parse(carpooldetails.getFromDate());
-				//Date toDate = sdf.parse(carpooldetails.getToDate());
 				riderBookingDetailsHistoryDTO.setEmail(carpooldetails.getEmailId());
 				riderBookingDetailsHistoryDTO.setFromDate(carpooldetails.getFromDate());
 				riderBookingDetailsHistoryDTO.setToDate(carpooldetails.getToDate());
 				riderBookingDetailsHistoryDTO.setLocation(carpooldetails.getLocation());
-				riderBookingDetailsHistoryDTO.setStatus(carpoolRiderDetails.getStatus());
-				// Ride_Status ride_Status =
-				// Ride_Status.values()[(carpoolRiderDetails.getStatus() - 1)];
-				// riderBookingDetailsHistoryDTO.setStatusName(ride_Status.toString());
+				// riderBookingDetailsHistoryDTO.setStatus(carpoolRiderDetails.getStatus());
+				Ride_Status ride_Status = Ride_Status.values()[(carpoolRiderDetails.getStatus() - 1)];
+				riderBookingDetailsHistoryDTO.setStatusName(ride_Status.toString());
 				riderBookingDetailsHistoryDTO.setReason(carpoolRiderDetails.getReason());
 				riderBookingDetailsHistoryDTO.setVehicleType(carpooldetails.getVehicleType());
 				User user = userDAO.findByEmailId(carpooldetails.getEmailId());
 				if (user != null) {
 					riderBookingDetailsHistoryDTO.setUserName(user.getUserName());
 				}
-				List<RegisterDomain> registerDomainList = registerDAO.findUserRegistrationByUserId(carpooldetails.getEmailId());
+				List<RegisterDomain> registerDomainList = registerDAO
+						.findUserRegistrationByUserId(carpooldetails.getEmailId());
 
 				if (registerDomainList != null && registerDomainList.size() > 0) {
 					for (RegisterDomain registerDomain : registerDomainList) {
@@ -611,44 +602,42 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 						}
 					}
 				}
-				
+
 			}
-			historyDTOList.add(riderBookingDetailsHistoryDTO);
+			riderBookingDetailsDtoList.add(riderBookingDetailsHistoryDTO);
 		}
-		if (historyDTO.getFromDate() != null || historyDTO.getToDate() != null || historyDTO.getLocation() != null
-				|| historyDTO.getStatus() != 0) {
-			List<RiderBookingDetailsDTO> historyDTOList1 = new ArrayList<>();
+		if ((riderHistoryDTO.getToDate() != null && riderHistoryDTO.getFromDate() != null)
+				|| riderHistoryDTO.getLocation() != null || riderHistoryDTO.getStatus() != 0) {
 
-			for (RiderBookingDetailsDTO dto : historyDTOList) {
-				if (historyDTO.getLocation() != null) {
-					if (!(dto.getLocation().equals(historyDTO.getLocation()))) {
-						continue;
-
-					}	
-				}
-				if (historyDTO.getFromDate() != null && historyDTO.getToDate() != null) {
-					Date fromDate = sdf.parse(historyDTO.getFromDate());
-					Date toDate = sdf.parse(historyDTO.getToDate());
-					
-					if(!(fromDate.after(toDate) || fromDate.equals(toDate)) && !( toDate.before(today) ||
-							toDate.equals(today) || toDate.before(fromDate)) )
-						continue;
-
-					
-				}
-				if (historyDTO.getStatus() != 0 ) {
-					if (!(dto.getStatus() == historyDTO.getStatus())) {
+			for (RiderBookingDetailsDTO dto : riderBookingDetailsDtoList) {
+				if (riderHistoryDTO.getLocation() != null) {
+					if (!(dto.getLocation().equals(riderHistoryDTO.getLocation()))) {
 						continue;
 
 					}
 				}
-				
-				historyDTOList1.add(dto);
+				if (riderHistoryDTO.getFromDate() != null && riderHistoryDTO.getToDate() != null) {
+					Date fromDate = sdf.parse(riderHistoryDTO.getFromDate());
+					Date toDate = sdf.parse(riderHistoryDTO.getToDate());
+
+					if ((fromDate.after(today) || toDate.after(today) || toDate.before(fromDate)
+							|| fromDate.before(fromDate)))
+						continue;
+
+				}
+				if (riderHistoryDTO.getStatus() != 0) {
+					if (!(dto.getStatus() == riderHistoryDTO.getStatus())) {
+						continue;
+
+					}
+				}
+
+				riderBookingDetailsDtoList1.add(dto);
 			}
-			return historyDTOList1;
 
 		}
+		logger.info("END :: CarPoolRiderDetailsServiceImpl::myRiderDetailsHistory");
 
-		return historyDTOList;
+		return riderBookingDetailsDtoList1;
 	}
 }
