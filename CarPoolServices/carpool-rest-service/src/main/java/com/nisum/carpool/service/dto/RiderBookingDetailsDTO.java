@@ -11,6 +11,8 @@ public class RiderBookingDetailsDTO {
 	 private String statusName;
 	 private String ridermail;
 	 private int cpid;
+	 private int vehicleType;
+	private String toDate;
 	 
 
     public String getRidermail() {
@@ -32,6 +34,19 @@ public class RiderBookingDetailsDTO {
 		return statusName;
 	}
 	/**
+	 * @return the vehicleType
+	 */
+	public int getVehicleType() {
+		return vehicleType;
+	}
+	/**
+	 * @param vehicleType the vehicleType to set
+	 */
+	public void setVehicleType(int vehicleType) {
+		this.vehicleType = vehicleType;
+	}
+	
+	/**
 	 * @param statusName the statusName to set
 	 */
 	public void setStatusName(String statusName) {
@@ -42,6 +57,18 @@ public class RiderBookingDetailsDTO {
 	 */
 	public String getLocation() {
 		return location;
+	}
+	/**
+	 * @return the toDate
+	 */
+	public String getToDate() {
+		return toDate;
+	}
+	/**
+	 * @param toDate the toDate to set
+	 */
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
 	}
 	/**
 	 * @param location the location to set

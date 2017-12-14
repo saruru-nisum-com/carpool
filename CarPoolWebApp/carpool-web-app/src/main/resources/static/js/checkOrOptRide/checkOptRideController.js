@@ -47,14 +47,16 @@ checkOrOptRideModuleApp.controller('checkOptRideController',
 		$scope.showPoolsOpted = function() {
 			$scope.selectedAll = false;
 		   };
-		 $scope.checkAll = function() {
-		        if ($scope.selectedAll) {
-		            $scope.selectedAll = true;
+		   $scope.checkAll = function() {
+				 
+		        if (!$scope.notoptdatamodel) {
+		            $scope.notoptdatamodel = true;
 		        } else {
-		            $scope.selectedAll = false;
+		            $scope.notoptdatamodel = false;   
 		        }
-		        angular.forEach($scope.notoptdata, function (notOptOrOptARide) {
-		           notoptdatamodel= $scope.selectedAll;
+		      angular.forEach($scope.optedorNotOptedDataList, function (notOptARide) {
+		    	  
+		    	  $scope.notoptdatamodel= $scope.notoptdatamodel;
 		        });
 		    };
 		    
@@ -71,7 +73,7 @@ checkOrOptRideModuleApp.controller('checkOptRideController',
 		   }
 		
 		$scope.optedARideFn = function(notOptARide) {
-			alert(JSON.stringify(notOptARide)); 
+			
 			//debugger;
 			var notOptedARideVar = notOptARide;
 			//$scope.cpid = notOptedARideVar.cpid;

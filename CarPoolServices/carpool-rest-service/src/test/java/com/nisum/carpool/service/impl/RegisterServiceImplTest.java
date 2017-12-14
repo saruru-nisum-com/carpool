@@ -120,6 +120,43 @@ public class RegisterServiceImplTest {
 	 */
 	@Test
 	public void testUpdateDriverData() throws Exception{
+		RegisterDomain driverDomain = new RegisterDomain();
+		driverDomain.setEmailid("dsingh@nisum.com");
+		driverDomain.setCreateddate(mockDate.toLocalDateTime());
+		List<Integer> vehicleTypeList = new ArrayList<>();
+		vehicleTypeList.add(0);
+		vehicleTypeList.add(1);
+		driverDomain.setVehicletype(vehicleTypeList);
+		driverDomain.setGender(2);
+		driverDomain.setIsrider(0);
+		driverDomain.setLocation("Hyderbad");
+		driverDomain.setLatitude("199.90");
+		driverDomain.setLongitude("404.00");
+		driverDomain.setNearby("near to flyover");
+		driverDomain.setRegistrationid(1);
 		
+		when(registerDAO.updateDriverOrRider(driverDomain)).thenReturn(driverDomain);
+	}
+	
+	/**
+	 * @author dhiraj singh
+	 * description: this taste case is updating the driver details and checking whether rider's location, lat,
+	 * long, mobile no gets updated or not
+	 * Date created: 10/12/17
+	 * Date modified: 13/12/17 
+	 */
+	@Test
+	public void testRiderDataUpdatedOnDriverUpdate() throws Exception{
+	}
+	
+	/**
+	 * @author dhiraj singh
+	 * description: this taste case is updating the rider details and checking whether driver's location, lat,
+	 * long, mobile no gets updated or not
+	 * Date created: 10/12/17
+	 * Date modified: 10/12/17 
+	 */
+	@Test
+	public void testDriverDataUpdatedOnRiderUpdate() throws Exception{
 	}
 }

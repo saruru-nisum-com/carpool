@@ -178,7 +178,7 @@ public class CarpooldetailsServiceImpl implements CarpooldetailsService{
 			logger.info("Car pool has been created succesfully");
 			try {
 				List<CarpooldetailsDto> cpdtolist = CarpooldetailsServiceUtil
-						.convertDaoTODto(carpooldetailsDAO.getCarPoolByMailID(carpooldetails.getEmailId()));
+						.convertDaoTODto(carpooldetailsDAO.getCarPoolByMailIDAndFutureDates(carpooldetails.getEmailId()));
 				ResponseEntity<List<CarpooldetailsDto>> entity = new ResponseEntity<List<CarpooldetailsDto>>(cpdtolist,
 						HttpStatus.OK);
 				return entity;
@@ -855,11 +855,12 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		private List<OptRideDto> constructListOfOptRides(String emailId, List<Carpooldetails> carPoolDataList) throws Exception {
 			CarpoolRiderDetails carPoolRiderDetails;
 			List<OptRideDto> optRideDtoList = new ArrayList<OptRideDto>();
+			int optedCount = 0;
 			for (Carpooldetails carppol : carPoolDataList) {
 				carPoolRiderDetails = carpoolRiderDAO.getOptedRiderDeatils(carppol.getId(), emailId);
-				int optedCount = 0;
+				
 				if (carPoolRiderDetails != null) {
-					optedCount = calculateOptedCount(carppol);
+					optedCount = optedCount+1;
 					OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDtoOptedPool(carppol, optedCount, carPoolRiderDetails);
 					optRideDtoList.add(optRideDto);
 				}
@@ -867,17 +868,7 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			return optRideDtoList;
 		}
 
-		private int calculateOptedCount(Carpooldetails carppol) {
-			List<CarpoolRiderDetails> CarPoolDetailsList = carpoolRiderDAO.getOptedRiderDeatils(carppol.getId());
-			List<CarpoolRiderDetails> CarPoolDetailsOptedList = new ArrayList<CarpoolRiderDetails>();
-			CarpoolRiderDetails carPoolRiderDetails = null;
-			Iterator<CarpoolRiderDetails> itr = CarPoolDetailsList.iterator();
-			while (itr.hasNext()) {
-				carPoolRiderDetails = OptARideServiceUtil.acceptRiderStatusList(itr.next());
-				CarPoolDetailsOptedList.add(carPoolRiderDetails);
-			}
-			return CarPoolDetailsOptedList.size();
-		}
+		
 		/**
 		 * @author Mahesh Bheemanapalli : CPL049: Functionality to update car pool
 		 *         status using scheduler
