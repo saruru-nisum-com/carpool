@@ -3,7 +3,9 @@
  */
 package com.nisum.carpool.data.dao.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -37,8 +39,10 @@ public class DriverPoolHistoryDAOImpl implements IDriverPoolHistoryDAO {
 		final String methodName = "[DriverPoolHistoryDAOImpl :: getDriverPoolHistory]";
 		LOGGER.debug(methodName+" Started");
 		List<Carpooldetails> driverPoolHistoryData = Collections.emptyList();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String currentDate = format.format(new Date());
 		try {
-			driverPoolHistoryData = driverPoolHistoryRepository.getCarPoolsByEmail(carpoolDetails.getEmailId());
+			driverPoolHistoryData = driverPoolHistoryRepository.getCarPoolsByEmail(carpoolDetails.getEmailId(), currentDate);
 			LOGGER.debug("Size of Driver pool history data :: "+driverPoolHistoryData.size());
 		} catch (Exception e) {
 			LOGGER.error("Exception fetching the driver pool history :: ", e);

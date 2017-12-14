@@ -6,7 +6,7 @@
 
 console.log("Driver history controller initiated");
 
-driverHistoryMod.controller("DriverHistoryCtrl", function($scope,DriverHistoryService,localStorageService) {
+driverHistoryMod.controller("DriverHistoryCtrl", function($scope,DriverHistoryService,localStorageService,$filter) {
 	
 	console.log("Driver history controller initiated");
 	$scope.searchResults = [];
@@ -33,15 +33,19 @@ driverHistoryMod.controller("DriverHistoryCtrl", function($scope,DriverHistorySe
 		//Get user email from local storage
 		var profileSessionData = localStorageService.get('profile');
 		$scope.userId = profileSessionData.emailId;
-	
-		console.log("location :: "+$scope.selectedLocation);
 		
-		console.log("emailId :: "+$scope.userId)
+		var formattedFromDate = $filter('date')(new Date($scope.fromDate),
+				'MM/dd/yyyy');
+		var formattedToDate = $filter('date')(new Date($scope.toDate),
+				'MM/dd/yyyy');
+		
+//		var fd = new Date(formattedFromDate);
+//		var td = new Date(formattedToDate);
 		
 		var data = {
 				"emailId" : $scope.userId,
-				"fromDate" : $scope.fromDate,
-				"toDate" : $scope.toDate,
+				"fromDate" : formattedFromDate,
+				"toDate" : formattedToDate,
 				"status" : $scope.status,
 				"location" : $scope.selectedLocation
 		}
@@ -50,7 +54,7 @@ driverHistoryMod.controller("DriverHistoryCtrl", function($scope,DriverHistorySe
 			$scope.driverPoolHistoryData = successResponse;
 			if($scope.driverPoolHistoryData.length == 0)
 				console.log("No History found.");
-			console.log("The driver history response data : "+successResponse);
+			console.log("The driver pool history response data : "+$scope.driverPoolHistoryData.length);
 		}, function(errorResponse) {
 			console.log("Error occured fetching the driver history.");
 			console.log("The driver history error response : "+errorResponse);
