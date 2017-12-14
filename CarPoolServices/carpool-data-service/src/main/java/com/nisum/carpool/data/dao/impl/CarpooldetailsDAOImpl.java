@@ -340,7 +340,8 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	@Override
 	public Carpooldetails getCarpoolByDateAndEmail(String date, String email) {
 		// TODO Auto-generated method stub
-		return null;
+		return carpooldetailsRepository.getCarpoolByDateAndEmail(date, email);
+		
 	}
 
 	@Override

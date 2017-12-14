@@ -259,7 +259,10 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 
 public CarpoolRiderDetails getRidesByMailandAllCarpoolIds(String email, List<Integer> allCarpoolIds){
 	CarpoolRiderDetails carpoolRiderDetails=null;
-	
+	if(allCarpoolIds==null)
+	{
+		return carpoolRiderDetails;
+	}
 	for(int i=0;i<allCarpoolIds.size();i++)
 	{
 		carpoolRiderDetails= carpoolRiderDetailsRepository.getRidesByMailandAllCarpoolIds(email,allCarpoolIds.get(i));

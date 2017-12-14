@@ -1,14 +1,18 @@
-<div class="col-md-12">
-	<div class="col-md-2">
+<div class="col-md-2">
 		<div id="leftHandMenu">
 			<div ng-include="'js/partials/leftSideMenu.html'"></div>
 		</div>
-	</div>
-	<div class="col-md-8">
-		<div align="center">
-			<h3>My Tody Rides</h3>
-		</div>
-		<div style="width: 50%">
+</div>
+<link rel="stylesheet" href="css/./carpool.css">
+<div class="tab-pane active" id="1" >
+    <div align="center" style="color: #2535A9 ;">
+        <h3>My Today Rides</h3>
+    </div>
+    
+    <div align="center" ng-if="todayRidesList.length<=0">No Rides Found</div>
+    <div class="row" ng-if="todayRidesList.length>0">
+        <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8 col-xl-8">
+        <div style="width: 50%">
 			<span>Driver Name:</span> <span style="float: right;">Mobile
 				Number:</span>
 		</div>
@@ -16,21 +20,23 @@
 			<span>Total seats:</span> <span style="float: right;">Filled :</span>
 		</div>
 		<span>Email Id :</span> <br></br>
-		<Table border="1">
-			<thead>
-				<tr>
+            <table class="grid" border="2x" align="center">
+            
+                <thead class="thead-inverse" align="center">
+                    <tr>
 					<th>Rider Name</th>
 					<th>Mobile No</th>
 					<th>Email</th>
 				</tr>
-			</thead>
-			<tbody>
 				<tr ng-repeat="todayRide in todayRidesList">
 					<td>{{todayRide.riderName}}</td>
 					<td>{{todayRide.mobileNo}}</td>
 					<td>{{todayRide.email}}</td>
 				</tr>
-			</tbody>
-		</Table>
-	</div>
-</div>
+
+                </thead>
+                
+            </table>
+        </div>
+        </div>
+        </div>

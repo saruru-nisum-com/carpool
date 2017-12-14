@@ -737,14 +737,15 @@ if(registerDomain!=null && registerDomain.size()>0) {
 		 {
 			
 			logger.info("Entered into CarpooldetailsServiceImpl Method:getRidesForDrivers");
-			 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				String currentdate=sdf.format(new Date());
 			 Carpooldetails carpooldetails= carpooldetailsDAO.getCarpoolByDateAndEmail(currentdate,email);
 			
 			
-				 List<TodayRiderDetailsDTO> riderDetails=new ArrayList<>();
+				 List<TodayRiderDetailsDTO> riderDetails=null;
 				 if(carpooldetails!=null)
 				 {
+					 riderDetails=new ArrayList<>();
 					 List<CarpoolRiderDetails> ridersList=	 carpoolRiderDAO.getRidersByCpID(carpooldetails.getId());
 					 for(CarpoolRiderDetails carpoolRiderDetails:ridersList)
 					 {
@@ -777,16 +778,17 @@ if(registerDomain!=null && registerDomain.size()>0) {
 			
 			logger.info("Entered into CarpooldetailsServiceImpl Method:getRidesForDrivers");
 			List<Carpooldetails> caList = new ArrayList<>();
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			String currentdate = sdf.format(new Date());
 			List<Integer> allCarpoolIds = carpooldetailsDAO.getCarpoolByDate(currentdate);
 			CarpoolRiderDetails carpoolRiderDetails = carpoolRiderDAO.getRidesByMailandAllCarpoolIds(email, allCarpoolIds);
-			DriverCarPoolDto driverCarPoolDto = new DriverCarPoolDto();
+			DriverCarPoolDto driverCarPoolDto = null;
 			if (carpoolRiderDetails != null) {
 
 				Carpooldetails carpooldetails = carpooldetailsDAO.loadCarpoolDetailsById(carpoolRiderDetails.getCpid());
 				
 				if (carpooldetails != null) {
+					driverCarPoolDto=new DriverCarPoolDto();
                      driverCarPoolDto.setParentId(carpooldetails.getParentid());
 					driverCarPoolDto.setFromDate(carpooldetails.getFromDate());
 					driverCarPoolDto.setLocation(carpooldetails.getLocation());
