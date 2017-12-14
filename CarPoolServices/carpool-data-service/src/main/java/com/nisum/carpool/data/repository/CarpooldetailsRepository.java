@@ -28,7 +28,7 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	@Query("select * from cp_carpooldetails where parentid=?0 ALLOW FILTERING")
 	List<Carpooldetails> findByParentid(Integer parentid);
 	
-    @Query("select * from cp_carpooldetails where emailid=:emailId and fromdate>:date and status<5 allow filtering")
+    @Query("select * from cp_carpooldetails where emailid=:emailId and todate>:date and status<5 allow filtering")
     List<Carpooldetails> getCarPoolsByEmailAndFutureDates(@Param("emailId") String emailId,@Param("date") String date); 
 	
 	@Query("select id from cp_carpooldetails where parentid=?0 allow filtering")
