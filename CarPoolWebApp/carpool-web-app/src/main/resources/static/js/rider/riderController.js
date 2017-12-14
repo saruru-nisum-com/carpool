@@ -76,16 +76,11 @@ riderApp.controller('riderController',function($scope, $state, localStorageServi
 		var nearby = $scope.riderNearBy;
 		var mobile = $scope.mobile;
 		var gender = $scope.gender;
-		if ($scope.notifyEmail == true) {
-			var emailNotification = true;
-		} else {
-			var emailNotification = false;
-		}
+		var emailNotification = $scope.notifyEmail;
 
 		var isRider = 1;// driver==>0 || rider==>1
 		var createdDate = $filter('date')(new Date(),'yyyy-MM-dd');
 		var modifiedDate = $filter('date')(new Date(),'yyyy-MM-dd');
-		// window.alert(parseFromDate + " " + parseEndTime);
 
 		$scope.registerRiderJson = {
 				"registrationId" : registrationId,
