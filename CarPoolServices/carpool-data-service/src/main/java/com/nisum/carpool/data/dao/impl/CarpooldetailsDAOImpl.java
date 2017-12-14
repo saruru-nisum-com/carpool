@@ -46,7 +46,7 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		logger.info("CarpooldetailsDAOImpl: updateCarpooldetails");
 		Long countByParentid = carpooldetailsRepository.countByParentid(carpooldetails.getId());
 
-		if (countByParentid == 1) {
+		if (countByParentid == 0 || countByParentid == 1) {
 			logger.info("CarpooldetailsDAOImpl: updateCarpooldetails : Single CarpoolDetails update");
 			carpooldetailsRepository.save(carpooldetails);
 			return Constants.MSG_CARPOOL_UPDATE_SINGLE;

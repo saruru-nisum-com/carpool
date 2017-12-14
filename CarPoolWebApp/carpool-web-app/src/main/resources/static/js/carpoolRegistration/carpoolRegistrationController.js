@@ -376,8 +376,8 @@ carpoolRegApp
 												console.log(response);
 											} else {
 												if (response.length > 0) {
-													$scope
-															.readVehicleTypeNames(response);
+													$scope.readVehicleTypeNames(response);
+													$scope.vehicleTypesList = response;
 												} else {
 													$("#alertMsg")
 															.text(
@@ -785,6 +785,11 @@ carpoolRegApp
                     
 					$scope.confirmEdit = function(item,selectedRowIndex,selectedRowType) {
 						try{
+							if(item.totalNoOfSeats == undefined){
+								$("#alertMsg").text("Number of seats should be less than or equal to "+$scope.getSeatsOrVechicleName(item.vehicleType,'seats'));
+						        $('#postARideFormModal').modal('show');
+						        return false;
+							}
 							var parseStartTime = $filter('date')(new Date(item.startTime), 'h:mm a');
 							var parseEndTime = $filter('date')(new Date(item.toTime), 'h:mm a');
 							
@@ -825,6 +830,7 @@ carpoolRegApp
 												$scope.getAvailablePools();
 											}
 											$('#editStatus').modal('show');
+											$scope.unCheckSelectedCheckBox();
 										},
 										function(response) {
 											console.log(response);
@@ -842,12 +848,12 @@ carpoolRegApp
 					}
 					
 					$scope.getSeatsOrVechicleName= function(id,type){
-						for(var i=0;i<$scope.data.length;i++){
-							if($scope.data[i].id == id){
+						for(var i=0;i<$scope.vehicleTypesList.length;i++){
+							if($scope.vehicleTypesList[i].id == id){
 								if(type == 'seats'){
-									return $scope.data[i].noofseats;
+									return $scope.vehicleTypesList[i].noofseats;
 								}else{
-									return $scope.data[i].name;
+									return $scope.vehicleTypesList[i].vehicletype;
 								}
 							}
 								

@@ -176,32 +176,25 @@ padding-left: 50px !important;
 						<th style="width: 100px;">From Date</th>
 						<th style="width: 100px;">To Date</th>
 						<th style="width: 100px;">Start Time</th>
-						<th style="width: 100px;">End Time</th>
+						<th style="width: 100px;">Return Time</th>
 						<th style="width: 100px;">Actions</th>
 					</tr>
 					<tbody ng-repeat="(key, value) in parentIdData">
 						<tr ng-if="value.id == value.parentid">
 							<td style="width: 30px"><button
 									class="btn btn-primary btn-xs" id="gridButton{{key}}"
-									ng-click="showChildData(key)" style="width: 30px">+</button> <input
-								type="checkbox" style="position: relative; left: 5px;"
+									ng-click="showChildData(key)" style="width: 19px">+</button> <input
+								type="checkbox" style="position: relative;"
 								ng-model="selectedParent[$index]"
 								ng-disabled="disablePastDates(value.fromDate)"
 								ng-checked="selectedParent[$index]" /></td>
 							<td>{{getSeatsOrVechicleName(value.vehicleType,'name')}}</td>
-							<td><span ng-switch="value.vehicleType" class="spanCls">
-									<span ng-switch-when="2"> <input type="number"
+							<td><input type="number"
 										name="input" ng-model="value.totalNoOfSeats" min="1"
-										max="{{getSeatsOrVechicleName(2,'seats')}}" value='1'
-										ng-readonly="true" ng-disabled="!selectedParent[$index]"
-										ng-class="{'txtdisabled': !selectedParent[$index]}">
-								</span> <span ng-switch-when="4"> <input type="number"
-										name="input" ng-model="value.totalNoOfSeats" min="1"
-										max="{{getSeatsOrVechicleName(4,'seats')}}"
+										max="{{getSeatsOrVechicleName(value.vehicleType,'seats')}}"
 										ng-disabled="!selectedParent[$index]"
-										ng-class="{'txtdisabled': !selectedParent[$index]}" required>
-								</span>
-							</span></td>
+										ng-class="{'txtdisabled': !selectedParent[$index]}">
+							</td>
 							<td>{{value.fromDate}}</td>
 							<td>{{value.toDate}}</td>
 							<td><input type="time" ng-model="value.startTime"
@@ -229,20 +222,13 @@ padding-left: 50px !important;
 								ng-model="selectedchild[$index]"
 								ng-disabled="disablePastDates(x.fromDate)"
 								ng-checked="selectedchild[$index]" /></td>
-							<td>{{getSeatsOrVechicleName(value.vehicleType,'name')}}</td>
-							<td><span ng-switch="x.vehicleType" class="spanCls">
-									<span ng-switch-when="2"> <input type="number"
+							<td>{{getSeatsOrVechicleName(x.vehicleType,'name')}}</td>
+							<td><input type="number"
 										name="input" ng-model="x.totalNoOfSeats" min="1"
-										max="{{getSeatsOrVechicleName(2,'seats')}}" value='1'
-										ng-readonly="true" ng-disabled="!selectedchild[$index]"
-										ng-class="{'txtdisabled': !selectedchild[$index]}">
-								</span> <span ng-switch-when="4"> <input type="number"
-										name="input" ng-model="x.totalNoOfSeats" min="1"
-										max="{{getSeatsOrVechicleName(2,'seats')}}"
+										max="{{getSeatsOrVechicleName(x.vehicleType,'seats')}}"
 										ng-disabled="!selectedchild[$index]"
-										ng-class="{'txtdisabled': !selectedchild[$index]}" required>
-								</span>
-							</span></td>
+										ng-class="{'txtdisabled': !selectedchild[$index]}">
+							</td>
 							<td>{{x.fromDate}}</td>
 							<td>{{x.toDate}}</td>
 							<td><input type="time" ng-model="x.startTime"
@@ -272,7 +258,7 @@ padding-left: 50px !important;
 						<div class="modal-content">
 							<div class="modal-body">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h3>Are you sure. Do you want to edit this carPool?</h3>
+								<h5>Are you sure, Do you want to edit this carpool?</h5>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-info"
@@ -304,7 +290,7 @@ padding-left: 50px !important;
 						<div class="modal-content">
 							<div class="modal-body">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h3>Are you sure. Do you want to Delete this carPool?</h3>
+								<h5>Are you sure, Do you want to cancel this carpool?</h5>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-info"
