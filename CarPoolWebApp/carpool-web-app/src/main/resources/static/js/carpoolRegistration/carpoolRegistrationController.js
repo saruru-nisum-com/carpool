@@ -505,12 +505,27 @@ carpoolRegApp
 						carpoolRegistrationService.getUserLocation(
 								$scope.userId).then(function(response) {
 							$scope.shareARideAutocomplete = response.location;
+							$scope.lat =response.latitude;
+							$scope.lng = response.longitude;
+							$scope.selectedLocation =$scope.shareARideAutocomplete;
 						});
 					}
 
-					$scope.lat = undefined;
+					
+					//function to clear the longitude and latitude
+					$scope.clearLongAndLat = function() {
+						$scope.lat =undefined;
+						$scope.lng =undefined;
+					}
+					
+					$scope.cleanErrorMsg = function() {
+						$scope.errorMessageForLocation="";
+					}				
+					
+					
+					$scope.lat =undefined;
 					$scope.lng = undefined;
-					$scope.selectedLocation = undefined;
+					$scope.selectedLocation =undefined;
 					$scope.shareARideAutocomplete = undefined;
 
 					$scope
@@ -525,6 +540,7 @@ carpoolRegApp
 										$scope.lng = location.lng();
 										$scope.$apply();
 									});
+					
 
 					$scope.names = [ 'Two-Wheller', 'Four-Wheller' ];
 //					$scope.seats = function(vType) {
@@ -630,7 +646,12 @@ carpoolRegApp
 						var location = $scope.selectedLocation;
 						var lat = $scope.lat;
 						var lng = $scope.lng;
-
+						
+						if(lat==undefined && lng==undefined){
+							$scope.errorMessageForLocation="Select Location From Google API";
+							return false;
+						}
+						
 						var parseFromDate = $filter('date')(new Date(fromDate),
 								'yyyy-MM-dd');
 						var parseToDate = $filter('date')(new Date(toDate),

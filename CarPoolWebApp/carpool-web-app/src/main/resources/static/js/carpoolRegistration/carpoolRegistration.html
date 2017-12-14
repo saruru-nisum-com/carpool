@@ -92,23 +92,22 @@ padding-left: 50px !important;
 								</div>
 							</div>
 
+						<div class="row pool-element">
+							<div class="col-md-2">
+								<label>Location</label><span style='color:red;'>*</span>
+							</div>
+							<div class="col-md-4" data-ng-init="getUserLocation();">
+								<input type="text" id="locId" class="form-control"
+									gm-places-autocomplete name="location"
+									ng-model="shareARideAutocomplete"
+									ng-keypress="clearLongAndLat();"
+									ng-click="cleanErrorMsg();"
+									placeholder="Please Enter location here"> <br />
+									
+									<div ng-show="postRideForm.$submitted || postRideForm.location.$touched">
+									<div ng-show="postRideForm.location.$error.required " style="color: red">Tell us your location.</div>
+									<div style="color: red" ng-bind-html="errorMessageForLocation"></div>
 
-
-							<div class="row pool-element">
-								<div class="col-md-2">
-									<label>Location</label>
-								</div>
-								<div class="col-md-4" data-ng-init="getUserLocation();">
-									<input type="text" id="locId" class="form-control"
-										gm-places-autocomplete name="location"
-										ng-model="shareARideAutocomplete"
-										placeholder="Please Enter location here"> <br />
-
-									<div
-										ng-show="postRideForm.$submitted || postRideForm.location.$touched">
-										<div ng-show="postRideForm.location.$error.required "
-											style="color: red">Tell us your location.</div>
-									</div>
 								</div>
 							</div>
 
