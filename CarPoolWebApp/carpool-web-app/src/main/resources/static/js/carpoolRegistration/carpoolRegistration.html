@@ -219,7 +219,7 @@ padding-left: 50px !important;
 								ng-click="!selectedParent[$index]|| confirmEdit(value,$index,'parent');" />
 								<img src="images/./delete2.png"
 								style="width: 20px; height: 20px;" title="delete"
-								ng-click="!selectedParent[$index]|| confirmDelete('carpool',value);" />
+								ng-click="!selectedParent[$index]|| confirmDelete(value,$index,'parent');" />
 							</td>
 						</tr>
 						<tr ng-repeat="x in value.child" class="hideChild{{key}}"
@@ -260,7 +260,7 @@ padding-left: 50px !important;
 								ng-click="!selectedchild[$index]|| confirmEdit(x,$index,'child');" />
 								<img src="images/./delete2.png"
 								style="width: 20px; height: 20px;" left: -5px;" title="delete"
-								ng-click="!selectedchild[$index]|| confirmDelete('carpool',x);" />
+								ng-click="!selectedchild[$index]|| confirmDelete(x,$index,'child');" />
 							</td>
 						</tr>
 					</tbody>
@@ -310,7 +310,7 @@ padding-left: 50px !important;
 								<button type="button" class="btn btn-info"
 									ng-click="deleteItem();">Ok</button>
 								<button type="button" class="btn btn-default"
-									data-dismiss="modal">cancel</button>
+									ng-click="closeDeleteModal();">cancel</button>
 							</div>
 						</div>
 					</div>
