@@ -31,7 +31,7 @@ public class CarpoolRiderNotificationsRestService {
 
 	@RequestMapping(value = "/notified", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public ResponseEntity<?> saveNotifiedRider(
-			@RequestBody @Valid   List<CarpoolRiderNotificationsDTO > carpoolRiderNotificationsDTO,BindingResult bindingResult) {
+			@RequestBody    List<CarpoolRiderNotificationsDTO > carpoolRiderNotificationsDTO) {
 		logger.info("CarpoolRiderNotificationsRestService :: saveNotifiedRider");
 
 		List<CarpoolRiderNotifications> saveNotifiedRiderDetails = null;

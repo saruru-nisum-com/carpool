@@ -73,22 +73,29 @@ public class CarpoolRiderDetailsServiceUtil {
 	}
 
 	public static List<CarpoolRiderDetails> convertOptedRiderDtoToDao(List<CarpoolRiderDetailsDTO> carpoolRiderDetailsDTO) {
-	
+		
 		List<CarpoolRiderDetails> listOfCarpools=new ArrayList<>();
-		for (CarpoolRiderDetailsDTO carpoolRiderDetailsDTO2 : carpoolRiderDetailsDTO) {
-			CarpoolRiderDetails carpoolRiderDetails = new CarpoolRiderDetails();
-			carpoolRiderDetails.setId(carpoolRiderDetailsDTO2.getId());
-			carpoolRiderDetails.setCpid(carpoolRiderDetailsDTO2.getCpid());
-			carpoolRiderDetails.setEmailid(carpoolRiderDetailsDTO2.getEmailid());
-			carpoolRiderDetails.setStatus(Ride_Status.REQUESTED.getValue());
-			carpoolRiderDetails.setReason(carpoolRiderDetailsDTO2.getReason());
-			carpoolRiderDetails.setLocation(carpoolRiderDetailsDTO2.getLocation());
-		    carpoolRiderDetails.setCreateddate(carpoolRiderDetailsDTO2.getCreateddate().toLocalDateTime());
-			carpoolRiderDetails.setModifieddate(carpoolRiderDetailsDTO2.getModifieddate().toLocalDateTime());
-			carpoolRiderDetails.setRewards(carpoolRiderDetailsDTO2.getRewards());
-			carpoolRiderDetails.setNotifyme(false);
-			listOfCarpools.add(carpoolRiderDetails);
-			
+		if (CollectionUtils.isNotEmpty(carpoolRiderDetailsDTO)) {
+			carpoolRiderDetailsDTO.forEach(c->{
+				CarpoolRiderDetails carpoolRiderdetails = new CarpoolRiderDetails();
+				carpoolRiderdetails.setId(CarpooldetailsServiceUtil.getRandomInt());
+				carpoolRiderdetails.setCpid(c.getCpid());
+				carpoolRiderdetails.setEmailid(c.getEmailid());
+				carpoolRiderdetails.setStatus(Ride_Status.REQUESTED.getValue());
+				carpoolRiderdetails.setReason(c.getReason());
+				carpoolRiderdetails.setRewards(c.getRewards());
+				carpoolRiderdetails.setLocation(c.getLocation());
+				if(c.getModifieddate()!=null)
+				carpoolRiderdetails.setModifieddate(c.getModifieddate().toLocalDateTime());
+				try {
+				if(c.getCreateddate()!=null)
+				carpoolRiderdetails.setCreateddate(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+				}catch (Exception e) {
+					e.getMessage();
+				}
+				//System.out.println("timstamp"+new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+				listOfCarpools.add(carpoolRiderdetails);
+			});
 		}
 		return listOfCarpools;
 	}

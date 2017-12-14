@@ -25,7 +25,7 @@
 	</tr>
 	<tr>
 		<td><input type="radio" ng-model="showNotOptedOrOptedPool"  name="optedornot" ng-checked=false ng-click="toggler2();radioChecked()" ng-value="true"/>Show Pools Opted by Me</td>
-		<td><button class="btn btn-primary" style="border-radius: 150px;">OPT</button></td>
+		<td><button class="btn btn-primary" style="border-radius: 150px;" ng-click="saveOptedRider()">OPT</button></td>
 		<td><button class="btn btn-primary" style="border-radius: 150px;">Notify Me</button></td>
 	</tr>
 </table>
@@ -42,7 +42,7 @@
     <th>Status</th>
   </tr>
   <tr  ng-repeat = "notOptARide in optedorNotOptedDataList">
-  	<td ><input type="checkbox" ng-model="selectedAll"/></td>
+  	<td ><input type="checkbox" ng-model="selectedAll" data-ng-click="optedARideFn(notOptARide)"/></td>
     <td>{{notOptARide.date}}</td>
     <td>{{notOptARide.totalSeats}}</td>
     <td>{{notOptARide.optedSeats}}</td>
@@ -71,5 +71,29 @@
 
 </div>
 </div>
+<!-- opt a ride validation model start -->
+				<div class="modal fade" id="optARideFormModal" role="dialog">
+					<div class="modal-dialog">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title" style="color: green;">Success</h4>
+							</div>
+							<div class="modal-body">
+								<p id="alertMsg"></p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-info"
+									ng-click="cancelModelPopUp();">Ok</button>
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Close</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<!-- opt a ride validation model end -->
 
 
