@@ -102,7 +102,7 @@ driverApp.controller('driverController',
 		//alert("hi user id : "+userId);
 		$scope.userId = userId
 	
-		var vehicleType = $scope.selectedVehicleTypes;
+		var vehicleType = $scope.selectedVehicleTypes;//myLocation
 		var location = $scope.selectedLocation;
 		var latitude = $scope.lat;
 		var longitude = $scope.lng;
