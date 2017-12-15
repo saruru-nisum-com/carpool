@@ -71,29 +71,36 @@ checkOrOptRideModuleApp.controller('checkOptRideController',
 			   $scope.opt1 = false;
 			   $scope.opt2 = true;  
 		   }
-		
+		$scope.saveOptedRidesDetails = [];
+		$scope.notOptedARideVar = undefined; 
 		$scope.optedARideFn = function(notOptARide) {
-			
 			//debugger;
 			var notOptedARideVar = notOptARide;
 			//$scope.cpid = notOptedARideVar.cpid;
-			window.alert("cpid "+notOptedARideVar.cpId)
-			$scope.optRiderData = [
+			$scope.optRiderData = 
 						{
-						"cpid":notOptedARideVar.cpId,
+						"cpid":$scope.notOptedARideVar.cpId,
 						"emailid":localStorageService.get('profile').emailId,
 						"status":1
-						
 						}
-					]
+					
+			$scope.saveOptedRidesDetails.push($scope.optRiderData);
 		}
-		
+		//notified pass data cpid and emailId
+//		$scope.notifiedRiderData=[
+//			{
+//				"cpid":$scope.notOptedARideVar.cpId,
+//				"emailid":localStorageService.get('profile').emailId
+//			}
+//		]
 		
 		
 		$scope.saveOptedRider = function(){
 			console.log("saveOptedRider clicked");
 			//debugger;
-			optRideService.saveOptRiderDetails($scope.optRiderData).then(function(response) {
+			//alert(JSON.stringify($scope.saveOptedRidesDetails))
+			//console.log("bala===> "+JSON.stringify($scope.saveOptedRidesDetails));
+			optRideService.saveOptRiderDetails($scope.saveOptedRidesDetails).then(function(response) {
 				console.log("response from saveOptedRider from server...."+JSON.stringify(response));
 				$("#alertMsg").text("Opt a ride successfully.")
 				$("#optARideFormModal").modal('show');
@@ -102,6 +109,17 @@ checkOrOptRideModuleApp.controller('checkOptRideController',
 		
 		$scope.cancelModelPopUp = function() {
 			$("#optARideFormModal").modal('hide');
+		}
+		
+		//notified controller function
+		$scope.saveNotifiedRider = function(){
+			console.log("saveNotifiedRider clicked");
+			//debugger;
+			optRideService.saveNotifiedRiderDetails($scope.notifiedRiderData).then(function(response) {
+				console.log("response from saveNotifiedRider from server...."+JSON.stringify(response));
+				$("#alertMsg").text("Notified successfully.")
+				$("#optARideFormModal").modal('show');
+			})
 		}
 });
 

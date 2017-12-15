@@ -25,6 +25,8 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	@Query("select count(*) from cp_carpooldetails where id=?0 ALLOW FILTERING")
 	Long findById(int id);
 	
+	
+	
 	@Query("select * from cp_carpooldetails where parentid=?0 ALLOW FILTERING")
 	List<Carpooldetails> findByParentid(Integer parentid);
 	
@@ -41,7 +43,7 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	@Query("select * from cp_carpooldetails where emailid=?0 allow filtering")
 	List<Carpooldetails> getCarPoolsByEmail(String email);
 	
-    @Query("select * from cp_carpooldetails where emailid=:emailId and todate>=:date and status<5 allow filtering")
+    @Query("select * from cp_carpooldetails where emailid=:emailId and todate>:date and status<5 allow filtering")
     List<Carpooldetails> getCarPoolsByEmailAndCurrentDate(@Param("emailId") String emailId,@Param("date") String date); 
     
 	@Query("update cp_carpooldetails set modifieddate=:#{#carpoolDetails.modifieddate}, status=:#{#carpoolDetails.status} where parentid=:#{#carpoolDetails.parentid}")
@@ -100,4 +102,6 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
     List<Carpooldetails> getCPDetailsByCPID(@Param("emailId") String emailId,@Param("id") Integer id); 
     
 	//int checkUpdateCarpoolStatusClosedCount(@Param("poolStatus") int poolStatus);
+	
+	
 }

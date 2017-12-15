@@ -3,6 +3,9 @@ package com.nisum.carpool.service.dto;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties
 public class DriverCarPoolDto {
 	private Integer parentId;
 	private String location;

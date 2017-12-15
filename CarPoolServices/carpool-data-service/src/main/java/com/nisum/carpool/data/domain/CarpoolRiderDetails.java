@@ -11,6 +11,7 @@ import org.springframework.data.cassandra.mapping.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 @Table("cp_carpoolriderdetails")
 public class CarpoolRiderDetails {
 	

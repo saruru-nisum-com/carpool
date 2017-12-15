@@ -340,7 +340,8 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	@Override
 	public Carpooldetails getCarpoolByDateAndEmail(String date, String email) {
 		// TODO Auto-generated method stub
-		return null;
+		return carpooldetailsRepository.getCarpoolByDateAndEmail(date, email);
+		
 	}
 
 	@Override
@@ -428,6 +429,12 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 	public List<Carpooldetails> findCarpoolDetailsByParentId(int parentid) {
 		// TODO Auto-generated method stub
 		return carpooldetailsRepository.findByParentid(parentid);
+	}
+	
+	@Override
+	public Carpooldetails findCarpoolDetailsByCpId(int cpid) {
+		// TODO Auto-generated method stub
+		return carpooldetailsRepository.findCarpoolDetailsById(cpid);
 	}
 
 	@Override

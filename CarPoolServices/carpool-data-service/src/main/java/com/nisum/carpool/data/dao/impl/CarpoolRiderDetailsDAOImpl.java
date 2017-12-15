@@ -259,7 +259,10 @@ public class CarpoolRiderDetailsDAOImpl implements CarpoolRiderDetailsDAO {
 
 public CarpoolRiderDetails getRidesByMailandAllCarpoolIds(String email, List<Integer> allCarpoolIds){
 	CarpoolRiderDetails carpoolRiderDetails=null;
-	
+	if(allCarpoolIds==null)
+	{
+		return carpoolRiderDetails;
+	}
 	for(int i=0;i<allCarpoolIds.size();i++)
 	{
 		carpoolRiderDetails= carpoolRiderDetailsRepository.getRidesByMailandAllCarpoolIds(email,allCarpoolIds.get(i));
@@ -326,6 +329,11 @@ public String cleanCarpoolRiderNotifications() {
 	public List<CarpoolRiderDetails> saveOptedRiderDetails(List<CarpoolRiderDetails> carpoolRiderDetails) {
 		try {
 			logger.info("CarpoolRiderDetailsDAOImpl::saveOptedRiderDetails");
+			for (CarpoolRiderDetails carpoolRiderDetails2 : carpoolRiderDetails) {
+				carpoolRiderDetails2.setCreateddate(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+				
+				
+			}
 			 carpoolRiderDetailsRepository.save(carpoolRiderDetails);
 		}
 		catch (Exception e) {

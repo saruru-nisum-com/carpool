@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.nisum.carpool.data.dao.api.CarpooldetailsDAO;
 import com.nisum.carpool.data.domain.CarpoolRiderDetails;
 import com.nisum.carpool.data.util.Ride_Status;
 import com.nisum.carpool.service.dto.CarpoolRiderDetailsDTO;
@@ -13,6 +15,8 @@ import com.nisum.carpool.service.dto.RiderStatusDTO;
 
 
 public class CarpoolRiderDetailsServiceUtil {
+	
+	
 	
 	public static List<CarpoolRiderDetailsDTO> convertDaoTODto(List<CarpoolRiderDetails> carpoolRiderdetailsList) {
 		List<CarpoolRiderDetailsDTO> carpooldetailsDtos = new ArrayList<>();
@@ -89,7 +93,7 @@ public class CarpoolRiderDetailsServiceUtil {
 				carpoolRiderdetails.setModifieddate(c.getModifieddate().toLocalDateTime());
 				try {
 				if(c.getCreateddate()!=null)
-				carpoolRiderdetails.setCreateddate(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+				carpoolRiderdetails.setCreateddate(c.getCreateddate().toLocalDateTime());
 				}catch (Exception e) {
 					e.getMessage();
 				}

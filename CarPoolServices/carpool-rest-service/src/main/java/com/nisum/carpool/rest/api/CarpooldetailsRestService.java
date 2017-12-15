@@ -445,6 +445,11 @@ public class CarpooldetailsRestService {
 				driverCarPoolDto.setTodayRiderDetailsDTOs(ridersList);
 				return new ResponseEntity<DriverCarPoolDto>(driverCarPoolDto,HttpStatus.OK);
 			}
+			if(ridersList==null)
+			{
+				return new ResponseEntity<String>("No rides found.",HttpStatus.OK);
+			}
+			
 				
 				}
 				
@@ -460,10 +465,9 @@ public class CarpooldetailsRestService {
 				}
 				
 				}
-				else
-				{
+				
 					return new ResponseEntity<String>("No rides found.",HttpStatus.OK);
-				}
+				
 			} catch (Exception ex) {
 				logger.error("Exception Occured in Class:CarpooldetailsRestService getTodayRides Message:"+ex.getMessage());
 				ex.printStackTrace();

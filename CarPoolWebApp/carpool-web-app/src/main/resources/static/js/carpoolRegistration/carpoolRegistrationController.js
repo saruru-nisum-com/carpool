@@ -805,12 +805,8 @@ carpoolRegApp
 					
 					$scope.closeEditModal = function(){
 						$('#editModal').modal('hide');
-						if($scope.selectedRowType == 'child'){
-							$scope.selectedchild[$scope.selectedRowIndex] = false;
-						}else{
-							$scope.selectedParent[$scope.selectedRowIndex] = false;
-						}
-						
+						$scope.getAvailablePools();
+						$scope.unCheckSelectedCheckBox();
 					}
 
 					$scope.editItem = function() {
@@ -829,17 +825,20 @@ carpoolRegApp
 												$scope.getAvailablePools();
 											}
 											$('#editStatus').modal('show');
-											if($scope.selectedRowType == 'child'){
-												$scope.selectedchild[$scope.selectedRowIndex] = false;
-											}else{
-												$scope.selectedParent[$scope.selectedRowIndex] = false;
-											}
 										},
 										function(response) {
 											console.log(response);
 											window.alert(response.errorMessage);
 										});
 						$('#editModal').modal('hide');
+					}
+					
+					$scope.unCheckSelectedCheckBox = function(){
+						if($scope.selectedRowType == 'child'){
+							$scope.selectedchild[$scope.selectedRowIndex] = false;
+						}else{
+							$scope.selectedParent[$scope.selectedRowIndex] = false;
+						}
 					}
 					
 					$scope.getSeatsOrVechicleName= function(id,type){
@@ -863,12 +862,14 @@ carpoolRegApp
 						$('#postARideFormModalSuccess').modal('hide');
 					}
 					
-					$scope.confirmDelete = function(name, item) {
+					$scope.confirmDelete = function(item,selectedRowIndex,selectedRowType) {
 						item['startTime'] = $filter('date')(
 								new Date(item.startTime), 'h:mm a');
 						item['toTime'] = $filter('date')(new Date(item.toTime),
 								'h:mm a');
 						$scope.deleteitem = item;
+						$scope.selectedRowIndex = selectedRowIndex;
+						$scope.selectedRowType = selectedRowType;
 						$('#deleteModal').modal('show');
 					}
 					$scope.deleteItem = function() {
@@ -890,6 +891,12 @@ carpoolRegApp
 											window.alert(response.errorMessage);
 										});
 						$('#deleteModal').modal('hide');
+					}
+					
+					$scope.closeDeleteModal = function(){
+						$('#deleteModal').modal('hide');
+						$scope.getAvailablePools();
+						$scope.unCheckSelectedCheckBox();
 					}
 
 					$scope.disablePastDates = function(strDate) {
