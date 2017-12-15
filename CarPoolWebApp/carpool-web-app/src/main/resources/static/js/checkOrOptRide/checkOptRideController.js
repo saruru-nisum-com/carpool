@@ -79,7 +79,8 @@ checkOrOptRideModuleApp.controller('checkOptRideController',
 			//$scope.cpid = notOptedARideVar.cpid;
 			$scope.optRiderData = 
 						{
-						"cpid":$scope.notOptedARideVar.cpId,
+					
+						"cpid":notOptedARideVar.cpId,
 						"emailid":localStorageService.get('profile').emailId,
 						"status":1
 						}
