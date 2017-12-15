@@ -1,4 +1,5 @@
 dayWiseReportsApp.controller('dayWiseReportController',function($scope,$stateParams,mySharedRidesService,$state){
+	$scope.selection=[];
 		mySharedRidesService.getRideDetails($stateParams.parentid).then(function(response){
 			if(response.errorCode){
 				$scope.message = response.errorMessage;
@@ -42,12 +43,17 @@ dayWiseReportsApp.controller('dayWiseReportController',function($scope,$statePar
 			$scope.poolDetails = pool; 
 		}
 		
-	    
-			mySharedRidesService.getRidesByParentId($scope.parentid).then(function(response) {
+		$scope.approveOrRejectFn = function(pool, selected) {			
+			$scope.poolDetails = pool;
+			pool.reason = selected.id;
+			$scope.selection.push(pool);
+		}
+			mySharedRidesService.getRidesByParentId($stateParams.parentid).then(function(response) {
 				if (response.errorCode) {
 					$scope.message = response.errorMessage;
 				} else {
 					$scope.poolsList=response;
+					console.log(JSON.stringify($scope.poolsList))
 				}
 			}, function(response) {
 				console.log(response);
@@ -59,7 +65,6 @@ dayWiseReportsApp.controller('dayWiseReportController',function($scope,$statePar
 				$scope.message = response.errorMessage
 			} else {
 				
-				console.log(response);
 				$scope.reasons=response;
 				//console.log(reasons);
 			}

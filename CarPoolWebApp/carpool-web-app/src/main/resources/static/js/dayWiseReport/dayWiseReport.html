@@ -15,11 +15,11 @@
 	    <li><a data-toggle="pill" data-target="#dayWiseReport">Day wise Report</a></li>
 	  </ul>
 	  <div class="tab-content">
-	    <div id="approveOrReject" class="tab-pane fade in active">
-	 
+	    <div id="approveOrReject" class="tab-pane fade in active"  >
+	 	<div align="center" ng-if="">No Riders Opted Your Ride</div>
 	     	
-	     	<button class = "driverRejectBtn" name="Reject" style="position:absolute; margin-left: 667px;">Reject</button>
-	     	<button class = "driverApproveBtn"  name="Approve" data-ng-click="doApproval();" style="margin-left: 730px;" >Approve</button>
+	     	<button class = "driverRejectBtn" name="Reject" style="position:absolute; margin-left: 667px;" data-ng-click="doApproval();">Reject</button>
+	     	<button class = "driverApproveBtn"  name="Approve" data-ng-click="doApproval();" style="margin-left: 730px;">Approve</button>
 	     
 	     <table class="approveGrid">
 			<tr>
@@ -41,12 +41,16 @@
 			     	     
                         
 <!--                         <td data-ng-include='tempId'></td> -->
-                         <td><select  ng-if="pool.statusName=='APPROVED' || pool.statusName=='REQUESTED'" 
+                         <td>
+                         <!-- <select  ng-if="pool.statusName=='APPROVED' || pool.statusName=='REQUESTED'" 
                                  ng-disabled="!selectedPoolList[$index]" ng-class="{'txtdisabled': !selectedPoolList[$index]}">
                               <option value="0">Select</option>                            
                       <option ng-repeat="(key,value) in reasons">{{value}}</option>
-                      </select>
-                       <span ng-if="pool.statusName!='APPROVED' && pool.statusName!='REQUESTED'" ng-model="reasons[pool.reason]" ng-bind="reasons[pool.reason]"> </span>
+                      </select> -->
+                       <select ng-show="pool.statusName=='APPROVED' || pool.statusName=='REQUESTED'"
+                        ng-disabled="!selectedPoolList[$index]" ng-class="{'txtdisabled': !selectedPoolList[$index]}"
+                        ng-change="approveOrRejectFn(pool, selected)" ng-model="selected" ng-options="reason as reason.name for reason in reasons"></select>
+                       <span  ng-model="reason.name" ng-bind="reason.name"> {{reason.name}}</span>
                         </td> 
                     </tr>
 
