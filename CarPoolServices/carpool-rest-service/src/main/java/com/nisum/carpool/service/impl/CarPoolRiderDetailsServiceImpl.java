@@ -542,11 +542,16 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 	public List<CarpoolRiderDetails> saveOptedRiderDetails(List<CarpoolRiderDetailsDTO> carpoolRiderDetailsDTO) {
 
 		List<CarpoolRiderDetails> saveOptedRiderDetails = null;
+		
+      for (CarpoolRiderDetailsDTO carpoolRiderDetails : carpoolRiderDetailsDTO) {
+  	  carpoolRiderDetails.setLocation(carpooldetailsDAO.findCarpoolDetailsByCpId(carpoolRiderDetails.getCpid()).getLocation());
+  	 
+  	  
+	}
 
 		List<CarpoolRiderDetails> carpoolRiderDetails = CarpoolRiderDetailsServiceUtil
 				.convertOptedRiderDtoToDao(carpoolRiderDetailsDTO);
 
-		// The list of carpoolRiderDetails save in to db
 		try {
 			logger.info("CarPoolRiderDetailsServiceImpl::saveOptedRiderDetails");
 
@@ -555,11 +560,7 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 				saveOptedRiderDetails = carpoolRiderdetailsDAO.saveOptedRiderDetails(carpoolRiderDetails);
 		} catch (Exception e) {
       
-//      for (CarpoolRiderDetailsDTO carpoolRiderDetails : carpoolRiderDetailsDTO) {
-//    	  carpoolRiderDetails.setLocation(carpooldetailsDAO.findCarpoolDetailsByCpId(carpoolRiderDetails.getCpid()).getLocation());
-//    	  System.out.println("service implementation");
-//    	  
-//	}
+
  
 		}
 		return saveOptedRiderDetails;
