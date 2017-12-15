@@ -41,11 +41,11 @@ public class OptARideServiceUtil {
 	}
 	
 	
-	public static CarpoolRiderDetails acceptCarPoolStatusList(CarpoolRiderDetails carpoolRiderDetails) {
-		if (carpoolRiderDetails.getStatus() == Pool_Status.OPEN.getValue()
-				|| carpoolRiderDetails.getStatus() == Pool_Status.CLOSED.getValue()||
-				carpoolRiderDetails.getStatus() == Pool_Status.COMPLETED.getValue()|| carpoolRiderDetails.getStatus() == Pool_Status.PARTIALLY_COMPLETED.getValue()) {
-			return carpoolRiderDetails;
+	public static Carpooldetails acceptCarPoolStatusList(Carpooldetails carpooldetails) {
+		if (carpooldetails.getStatus() == Pool_Status.OPEN.getValue()
+				|| carpooldetails.getStatus() == Pool_Status.CLOSED.getValue()||
+						carpooldetails.getStatus() == Pool_Status.COMPLETED.getValue()|| carpooldetails.getStatus() == Pool_Status.PARTIALLY_COMPLETED.getValue()) {
+			return carpooldetails;
 		}
 		return null;
 	}

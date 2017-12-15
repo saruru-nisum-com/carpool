@@ -847,12 +847,17 @@ if(registerDomain!=null && registerDomain.size()>0) {
 				}
 				else
 				{
-					OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDtoNotOptedPool(carppol, optedCount);
+					Carpooldetails acceptCarPoolDeatilsList = OptARideServiceUtil.acceptCarPoolStatusList(carppol);
+					if(acceptCarPoolDeatilsList != null) {
+					OptRideDto optRideDto = OptARideServiceUtil.convertToOptRideDtoNotOptedPool(acceptCarPoolDeatilsList, optedCount);
 					optRideDtoList.add(optRideDto);	
+					}
 				}
 			}
 			return optRideDtoList;
 		}
+
+		
 
 		private List<OptRideDto> constructListOfOptRides(String emailId, List<Carpooldetails> carPoolDataList) throws Exception {
 			CarpoolRiderDetails carPoolRiderDetails;
