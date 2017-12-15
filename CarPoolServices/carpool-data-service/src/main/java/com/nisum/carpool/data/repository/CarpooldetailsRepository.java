@@ -25,6 +25,8 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
 	@Query("select count(*) from cp_carpooldetails where id=?0 ALLOW FILTERING")
 	Long findById(int id);
 	
+	
+	
 	@Query("select * from cp_carpooldetails where parentid=?0 ALLOW FILTERING")
 	List<Carpooldetails> findByParentid(Integer parentid);
 	
@@ -100,4 +102,6 @@ public interface CarpooldetailsRepository extends CassandraRepository<Carpooldet
     List<Carpooldetails> getCPDetailsByCPID(@Param("emailId") String emailId,@Param("id") Integer id); 
     
 	//int checkUpdateCarpoolStatusClosedCount(@Param("poolStatus") int poolStatus);
+	
+	
 }

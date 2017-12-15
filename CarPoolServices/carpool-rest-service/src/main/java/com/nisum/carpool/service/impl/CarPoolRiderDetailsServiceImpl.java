@@ -65,6 +65,8 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 
 	@Autowired
 	GenericMailTemplate genericMailTemplateObj;
+	
+	Timestamp currentDate = new Timestamp(System.currentTimeMillis());
 
 	@Override
 	public List<CarpoolRiderDetailsDTO> findCarpoolRiderDetailsByCPId(int cpid) {
@@ -552,6 +554,13 @@ public class CarPoolRiderDetailsServiceImpl implements CarpoolRiderDetailsServic
 
 				saveOptedRiderDetails = carpoolRiderdetailsDAO.saveOptedRiderDetails(carpoolRiderDetails);
 		} catch (Exception e) {
+      
+//      for (CarpoolRiderDetailsDTO carpoolRiderDetails : carpoolRiderDetailsDTO) {
+//    	  carpoolRiderDetails.setLocation(carpooldetailsDAO.findCarpoolDetailsByCpId(carpoolRiderDetails.getCpid()).getLocation());
+//    	  System.out.println("service implementation");
+//    	  
+//	}
+ 
 		}
 		return saveOptedRiderDetails;
 	}

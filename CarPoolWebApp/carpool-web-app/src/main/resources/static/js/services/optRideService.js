@@ -23,6 +23,17 @@ app.factory('optRideService', function($http, $q) {
 		return deferred.promise;
 	}
 	
+	ors.saveNotifiedRiderDetails=function(data) {
+		console.log("inside saveNotifiedRide service");
+		var deferred = $q.defer();
+
+		$http.post('v1/carpool/notified', data).success(function(response) {
+			deferred.resolve(response);
+		}).error(function(response) {
+			deferred.reject(response);
+		})
+		return deferred.promise;
+	}
 	return ors;
 	
 	

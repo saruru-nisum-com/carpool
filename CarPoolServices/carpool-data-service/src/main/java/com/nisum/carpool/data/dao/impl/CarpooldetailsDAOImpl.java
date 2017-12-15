@@ -429,6 +429,12 @@ public class CarpooldetailsDAOImpl implements CarpooldetailsDAO {
 		// TODO Auto-generated method stub
 		return carpooldetailsRepository.findByParentid(parentid);
 	}
+	
+	@Override
+	public Carpooldetails findCarpoolDetailsByCpId(int cpid) {
+		// TODO Auto-generated method stub
+		return carpooldetailsRepository.findCarpoolDetailsById(cpid);
+	}
 
 	@Override
 	public String cancelCarpooldetailsByParentId(Carpooldetails carpooldetails) {

@@ -14,7 +14,7 @@ public class CarpoolRiderNotificationsUtil {
 			CarpoolRiderNotifications carpoolRiderNotifications = new CarpoolRiderNotifications();
 			carpoolRiderNotifications.setCpid(carpoolRiderNotificationsDTO.getCpid());
 			carpoolRiderNotifications.setEmailid(carpoolRiderNotificationsDTO.getEmailid());
-			carpoolRiderNotifications.setId(carpoolRiderNotificationsDTO.getId());
+			carpoolRiderNotifications.setId(CarpooldetailsServiceUtil.getRandomInt());
 			carpoolRiderNotifications.setNotified(carpoolRiderNotificationsDTO.isNotified());
 
 			listOfCarpools.add(carpoolRiderNotifications);
