@@ -1,5 +1,8 @@
 loginApp.controller('loginController', function($scope, $state,
 		localStorageService, loginLogoutService, carpoolRegistrationService,$rootScope,GoogleSignin) {
+	function timedRefresh(timeoutPeriod) {
+		setTimeout("location.reload(true);",timeoutPeriod);
+	}
 
 	// --google sign in methods
 	$scope.login = function() { 
@@ -19,9 +22,11 @@ loginApp.controller('loginController', function($scope, $state,
 			 if (response.errorCode === 500) {
 			 $scope.message = response.errorMessage
 			 } else {
+				 window.onload = timedRefresh(100);
 			 localStorageService.set('profile', response);
 			 $state.go("configurations");
 			 $scope.getUserData = function() {
+				 
 					var profileSessionData = localStorageService
 							.get('profile');
 					$scope.userId = profileSessionData.emailId;
